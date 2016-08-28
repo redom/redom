@@ -58,6 +58,10 @@ const login = form(
     }
   })
 );
+
+// Mount to DOM
+
+mount(document.body, login);
 ```
 ## Iteration / component example
 ```js
