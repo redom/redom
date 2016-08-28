@@ -117,5 +117,8 @@ app.update({
 ## What else can you do with RE:DOM?
 Documentation is a bit lacking yet, please check out the source for now: https://github.com/pakastin/redom/tree/master/src
 
+## Special thanks
+Special thanks to [maciejhirsz](https://github.com/maciejhirsz) for [the bind trick](https://github.com/pakastin/frzr/issues/35#issuecomment-242936751)!
+
 ## License
 [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
