@@ -93,10 +93,10 @@ function extend () {
   return el;
 }
 
-var cached$1 = {};
+var cached = {};
 
 function el (tagName) {
-  return cached$1[tagName] || (cached$1[tagName] = extend.bind(document.createElement(tagName)));
+  return cached[tagName] || (cached[tagName] = extend.bind(document.createElement(tagName)));
 }
 
 function events (_events) {
@@ -164,8 +164,10 @@ function setProps (el, _props) {
 
 var SVG = 'http://www.w3.org/2000/svg';
 
+var cached$1 = {};
+
 function svg (tagName) {
-  return cached[tagName] || (cached[tagName] = extend.bind(document.createElementNS(SVG, tagName)))
+  return cached$1[tagName] || (cached$1[tagName] = extend.bind(document.createElementNS(SVG, tagName)))
 }
 
 function text (text) {
