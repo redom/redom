@@ -3,11 +3,15 @@
   <head>
     <title>RE:DOM</title>
     <style>
+      *, *:before, *:after {
+        box-sizing: inherit;
+      }
       body {
         font-family: 'Work Sans', sans-serif;
         font-size: .875rem;
         background-color: #f5f5f5;
         color: #222;
+        box-sizing: border-box;
       }
       .container {
         position: absolute;
@@ -16,12 +20,17 @@
         transform: translate(-50%, -50%);
         text-align: center;
         max-height: 100%;
+        padding: 3rem;
       }
       a {
         color: #555;
+        cursor: pointer;
       }
       a:not(:hover) {
         text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
       }
       code {
         font-family: Source Code Pro, monospace;
@@ -31,12 +40,16 @@
         color: #444;
         text-align: left;
         display: block;
+        margin: 1rem;
         padding: 1rem;
       }
       pre {
         font: inherit;
         margin: 0;
         padding: 0;
+      }
+      .hidden {
+        display: none;
       }
     </style>
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600|Source+Code+Pro" rel="stylesheet">
@@ -49,9 +62,13 @@
         <pre>import { el, text, mount } from 'redom';
 import { children, props, events } from 'redom';
 
+// Define element tags
+
 const form = el('form');
 const input = el('input');
 const button = el('button');
+
+// Define component
 
 const login = form(
   children(el => [
@@ -66,13 +83,79 @@ const login = form(
       console.log(el.email.value, el.pass.value);
     }
   })
-);</pre>
+);
+
+// Mount to DOM
+
+mount(document.body, login);</pre>
+      </code>
+      <code class="hidden">
+        <pre>import { el, list, mount } from 'redom';
+
+// Define element tags
+
+const table = el('table');
+const tbody = el('tbody');
+const tr = el('tr');
+const td = el('td');
+
+// Define components
+
+const cell = (data) => td(
+  update((el, data) => {
+    el.textContent = data;
+  })
+)
+
+const row = (data) => tr(
+  children(el => [
+    el.cols = list(el, cell)
+  ]),
+  update((el, data) => {
+    el.cols.update(data)
+  })
+);
+
+// Init the app
+
+const app = table(
+  children(el => [
+    el.rows = list(tbody(), row)
+  ]),
+  update((el, data) => {
+    el.rows.update(data.tbody)
+  })
+)
+
+// Mount to DOM
+
+mount(document.body, app);
+
+// update app
+
+app.update({
+  tbody: [
+    [ 1, 2, 3 ]
+  ]
+});</pre>
       </code>
       <p>
+        <a onclick="toggleCode()">Another example</a>
+      </p>
+      <p style="margin-bottom: 3rem;">
         <a href="https://github.com/pakastin/redom">Github</a><br>
         <a href="https://pakastin.github.io/redom/redom.js">Development</a><br>
         <a href="https://pakastin.github.io/redom/redom.min.js">Production</a>
       </p>
     </div>
+    <script>
+      function toggleCode () {
+        var visibleCode = document.querySelector('code:not(.hidden)');
+        var hiddenCode = document.querySelector('code.hidden');
+
+        visibleCode.classList.add('hidden');
+        hiddenCode.classList.remove('hidden');
+      }
+    </script>
   </body>
 </html>
