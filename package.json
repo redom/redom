@@ -31,6 +31,7 @@
   "homepage": "https://github.com/pakastin/redom#readme",
   "devDependencies": {
     "chokidar-cli": "~1.2.0",
+    "gh-pages": "~0.11.0",
     "rollup": "~0.34.10",
     "uglifyjs": "~2.4.10"
   }
