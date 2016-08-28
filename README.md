@@ -1,6 +1,8 @@
 # RE:DOM
 Tiny DOM library
 
+![RE:DOM!](pakastin.github.io/redom/meme.jpg)
+
 ## Installation
 ```
 npm install redom
