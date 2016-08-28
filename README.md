@@ -35,7 +35,7 @@ var mount = redom.mount;
 var text = redom.text;
 ```
 
-## Simple example
+## Login example
 ```js
 import { el, text, mount } from 'redom';
 import { children, props, events } from 'redom';
@@ -59,7 +59,57 @@ const login = form(
   })
 );
 ```
+## Iteration / component example
+```js
+import { el, list, mount } from 'redom';
 
+// Define element tags
+
+const table = el('table');
+const tbody = el('tbody');
+const tr = el('tr');
+const td = el('td');
+
+// Define components
+
+const cell = (data) => td(
+  update((el, data) => {
+    el.textContent = data;
+  })
+)
+
+const row = (data) => tr(
+  children(el => [
+    el.cols = list(el, cell)
+  ]),
+  update((el, data) => {
+    el.cols.update(data)
+  })
+);
+
+// Init the app
+
+const app = table(
+  children(el => [
+    el.rows = list(tbody(), row)
+  ]),
+  update((el, data) => {
+    el.rows.update(data.tbody)
+  })
+)
+
+// Mount to DOM
+
+mount(document.body, app);
+
+// update app
+
+app.update({
+  tbody: [
+    [ 1, 2, 3 ]
+  ]
+});
+```
 ## What else can you do with RE:DOM?
 Documentation is a bit lacking yet, please check out the source for now: https://github.com/pakastin/redom/tree/master/src
 
