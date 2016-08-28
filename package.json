@@ -1,0 +1,37 @@
+{
+  "name": "redom",
+  "version": "0.0.1",
+  "description": "Tiny DOM library",
+  "main": "dist/redom.js",
+  "scripts": {
+    "dev": "node watch",
+    "dist": "gh-pages -d dist",
+    "build": "rollup -n redom -f umd -i src/index.js -o dist/redom.js",
+    "uglify": "uglifyjs dist/redom.js -cmo dist/redom.min.js",
+    "preversion": "npm run build && npm run uglify",
+    "postversion": "git push --tags",
+    "prepublish": "npm run build && npm run uglify",
+    "postpublish": "npm run dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pakastin/redom.git"
+  },
+  "keywords": [
+    "redom",
+    "tiny",
+    "dom",
+    "library"
+  ],
+  "author": "Juha Lindstedt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pakastin/redom/issues"
+  },
+  "homepage": "https://github.com/pakastin/redom#readme",
+  "devDependencies": {
+    "chokidar-cli": "~1.2.0",
+    "rollup": "~0.34.10",
+    "uglifyjs": "~2.4.10"
+  }
+}

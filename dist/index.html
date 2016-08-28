@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RE:DOM</title>
+    <style>
+      body {
+        font-family: 'Work Sans', sans-serif;
+        font-size: .875rem;
+        background-color: #f5f5f5;
+        color: #222;
+      }
+      .container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        max-height: 100%;
+      }
+      a {
+        color: #555;
+      }
+      a:not(:hover) {
+        text-decoration: none;
+      }
+      code {
+        font-family: Source Code Pro, monospace;
+        font-size: .75rem;
+        background-color: #fff;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+        color: #444;
+        text-align: left;
+        display: block;
+        padding: 1rem;
+      }
+      pre {
+        font: inherit;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600|Source+Code+Pro" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <img src="logo.svg">
+      <p>Make DOM great again!</p>
+      <code>
+        <pre>import { el, text, mount } from 'redom';
+import { children, props, events } from 'redom';
+
+const form = el('form');
+const input = el('input');
+const button = el('button');
+
+const login = form(
+  children(el => [
+    el.email = input(props({ type: 'email' })),
+    el.pass = input(props({ type: 'pass' })),
+    el.submit = button(text('Sign in'))
+  ]),
+  events({
+    onsubmit (el, e) {
+      e.preventDefault();
+
+      console.log(el.email.value, el.pass.value);
+    }
+  })
+);</pre>
+      </code>
+      <p>
+        <a href="https://github.com/pakastin/redom">Github</a><br>
+        <a href="https://pakastin.github.io/redom/redom.js">Development</a><br>
+        <a href="https://pakastin.github.io/redom/redom.min.js">Production</a>
+      </p>
+    </div>
+  </body>
+</html>
