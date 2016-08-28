@@ -1,7 +1,7 @@
 # RE:DOM
 Tiny DOM library
 
-![RE:DOM!](pakastin.github.io/redom/meme.jpg)
+![RE:DOM!](https://pakastin.github.io/redom/meme.jpg)
 
 ## Installation
 ```
