@@ -37,3 +37,6 @@ var text = redom.text;
 
 ## What can you do?
 Documentation is a bit lacking yet, please check out the source for now: https://github.com/pakastin/redom/tree/master/src
+
+## License
+[MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
