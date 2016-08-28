@@ -35,7 +35,32 @@ var mount = redom.mount;
 var text = redom.text;
 ```
 
-## What can you do?
+## Simple example
+```js
+import { el, text, mount } from 'redom';
+import { children, props, events } from 'redom';
+
+const form = el('form');
+const input = el('input');
+const button = el('button');
+
+const login = form(
+  children(el => [
+    el.email = input(props({ type: 'email' })),
+    el.pass = input(props({ type: 'pass' })),
+    el.submit = button(text('Sign in'))
+  ]),
+  events({
+    onsubmit (el, e) {
+      e.preventDefault();
+
+      console.log(el.email.value, el.pass.value);
+    }
+  })
+);
+```
+
+## What else can you do with RE:DOM?
 Documentation is a bit lacking yet, please check out the source for now: https://github.com/pakastin/redom/tree/master/src
 
 ## License
