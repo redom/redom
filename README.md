@@ -42,9 +42,13 @@ var text = redom.text;
 import { el, text, mount } from 'redom';
 import { children, props, events } from 'redom';
 
+// Define element tags
+
 const form = el('form');
 const input = el('input');
 const button = el('button');
+
+// Define component
 
 const login = form(
   children(el => [
