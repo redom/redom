@@ -17,7 +17,7 @@ export function list (el, factory, keyResolver) {
         var id = i;
       }
 
-      var view = newLookup[id] = lookup[id] || (newLookup[id] = factory(item, i));
+      var view = newLookup[id] = lookup[id] || factory(item, i);
       view && view.update(item);
       views.push(view);
     }
