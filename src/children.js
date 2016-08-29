@@ -20,6 +20,7 @@ export function setChildren(parent, _children) {
 
     if (child === traverse) {
       traverse = traverse.nextSibling;
+      continue;
     }
 
     if (child && child.nodeType) {
