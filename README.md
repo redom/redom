@@ -71,7 +71,7 @@ mount(document.body, login);
 ```
 ## Iteration / component example
 ```js
-import { el, list, mount } from 'redom';
+import { el, list, mount, update } from 'redom';
 
 // Define element tags
 
