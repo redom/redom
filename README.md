@@ -81,7 +81,7 @@ const td = el('td');
 
 // Define components
 
-const cell = view({
+const Cell = view({
   init () {
     this.el = td();
   },
@@ -90,7 +90,7 @@ const cell = view({
   }
 });
 
-const row = view({
+const Row = view({
   init () {
     this.el = tr(
       this.cols = list(cell)
@@ -101,7 +101,7 @@ const row = view({
   }
 });
 
-const tableApp = view({
+const Table = view({
   init () {
     this.el = table(
       tbody(
@@ -116,7 +116,7 @@ const tableApp = view({
 
 // Init the app
 
-const app = tableApp();
+const app = Table();
 
 // Mount to DOM
 
