@@ -1,28 +1,65 @@
-import { setChildren } from './children';
 
-export function list (el, factory, keyResolver) {
-  el.lookup = {};
+import { setChildren } from './setchildren';
 
-  el.update = function (data) {
-    var lookup = el.lookup;
-    var newLookup = {};
-    var views = [];
+export function list (View, key, initData) {
+  return new List(View, key, initData);
+}
+
+export function List(View, key, initData) {
+  this.View = View;
+  this.key = key;
+  this.initData = initData;
+  this.views = [];
+
+  if (key) {
+    this.lookup = {};
+  }
+}
+
+List.prototype.update = function (data) {
+  var View = this.View;
+  var key = this.key;
+  var initData = this.initData;
+  var views = this.views;
+  var parent = this.parent;
+
+  if (key) {
+    var lookup = this.lookup;
 
     for (var i = 0; i < data.length; i++) {
       var item = data[i];
+      var id = typeof key === 'function' ? key(item) : item[key];
+      var view = lookup[id] || (lookup[id] = new View(initData, item, i));
 
-      if (keyResolver) {
-        var id = keyResolver(item);
-      } else {
-        var id = i;
-      }
-
-      var view = newLookup[id] = lookup[id] || factory(item, i);
-      view && view.update(item);
-      views.push(view);
+      views[i] = view;
+      lookup[id] = view;
     }
-    setChildren(el, views);
-    el.lookup = newLookup;
+    for (var i = data.length; i < views.length; i++) {
+      var id = typeof key === 'function' ? key(item) : item[key];
+
+      lookup[id] = null;
+      views[i] = null;
+    }
+  } else {
+    for (var i = 0; i < data.length; i++) {
+      var item = data[i];
+      var view = views[i] || (views[i] = new View(initData, item, i));
+
+      views[i] = view;
+    }
+    for (var i = data.length; i < views.length; i++) {
+      views[i] = null;
+    }
   }
-  return el;
+
+  for (var i = 0; i < views.length; i++) {
+    var item = data[i];
+    var view = views[i];
+
+    view.update && view.update(item);
+  }
+
+  views.length = data.length;
+
+  parent && setChildren(parent, views);
 }

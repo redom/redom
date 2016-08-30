@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <script src="dist/redom.js"></script>
+    <script>
+      var { el, svg, on, list, mount, unmount, view } = redom;
+
+      var Circle = view({
+        init (params) {
+          this.el = svg('circle',
+            on({ click: this.click })
+          );
+          console.log(params);
+        },
+        update ({ x, y, r }) {
+          this.el.setAttribute('cx', x);
+          this.el.setAttribute('cy', x);
+          this.el.setAttribute('r', r);
+        },
+        mount () {
+          console.log('mounted');
+        },
+        unmount () {
+          console.log('unmounted');
+        },
+        click (e) {
+          console.log(this, e);
+        }
+      });
+
+      var circle = el(Circle, { foo: 'bar' });
+
+      mount(document.body, el('h1', 'Hello world!', { style: { color: 'red' }}));
+      mount(document.body, svg('svg', circle));
+
+      circle.update({
+        x: 10,
+        y: 10,
+        r: 10
+      });
+
+      var Item = view({
+        init () {
+          this.el = el('li')
+        },
+        update (data) {
+          this.el.textContent = 'Item ' + data;
+        }
+      });
+
+      var List = view({
+        init () {
+          this.el = el('ul',
+            this.list = list(Item)
+          )
+        },
+        update (data) {
+          this.list.update(data);
+        }
+      });
+
+      var app = el(List);
+
+      mount(document.body, app);
+
+      app.update([1, 2, 3, 4, 5]);
+    </script>
+  </body>
+</html>

@@ -1,5 +1,1 @@
-export function text (text) {
-  return function (el) {
-    el.appendChild(document.createTextNode(text));
-  }
-}
+export var text = document.createTextNode.bind(document);
