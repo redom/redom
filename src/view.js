@@ -1,19 +1,29 @@
 
 export function view (proto) {
-  return function () {
+  return function (a, b, c) {
     var view = Object.create(proto);
 
     var len = arguments.length;
 
-    if (!len) {
-      proto.init.call(view);
-      return view;
+    switch (len) {
+      case 0:
+        proto.init.call(view);
+        return view;
+      case 1:
+        proto.init.call(view, a);
+        return view;
+      case 2:
+        proto.init.call(view, a, b);
+        return view;
+      case 3:
+        proto.init.call(view, a, b, c);
+        return view;
     }
 
     var args = new Array(len);
-
-    for (var i = 0; i < len; i++) {
-      args[i] = arguments[i];
+    var i = 0;
+    while (i < len) {
+      args[i] = arguments[++i];
     }
 
     proto.init.apply(view, args);

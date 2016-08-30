@@ -9,20 +9,21 @@ var cachedSVG = {};
 
 var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
 
-function el (query) {
+function el (query, a, b, c) {
   if (typeof query === 'function') {
     var len = arguments.length - 1;
 
-    if (!len) {
-      return query();
+    switch (len) {
+      case 0: return query();
+      case 1: return query(a);
+      case 2: return query(a, b);
+      case 3: return query(a, b, c);
     }
 
-    // arguments' optimization
-    // (https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments)
     var args = new Array(len);
-
-    for (var i = 0; i < len; i++) {
-      args[i] = arguments[i + 1];
+    var i = 0;
+    while (i < len) {
+      args[i] = arguments[++i];
     }
 
     return query.apply(this, args);
@@ -264,20 +265,30 @@ svg.extend = function (query) {
 }
 
 function view (proto) {
-  return function () {
+  return function (a, b, c) {
     var view = Object.create(proto);
 
     var len = arguments.length;
 
-    if (!len) {
-      proto.init.call(view);
-      return view;
+    switch (len) {
+      case 0:
+        proto.init.call(view);
+        return view;
+      case 1:
+        proto.init.call(view, a);
+        return view;
+      case 2:
+        proto.init.call(view, a, b);
+        return view;
+      case 3:
+        proto.init.call(view, a, b, c);
+        return view;
     }
 
     var args = new Array(len);
-
-    for (var i = 0; i < len; i++) {
-      args[i] = arguments[i];
+    var i = 0;
+    while (i < len) {
+      args[i] = arguments[++i];
     }
 
     proto.init.apply(view, args);
