@@ -106,6 +106,8 @@ function createElement (query, svg) {
   var mode = 0;
   var from = 0;
 
+  // parse query
+
   for (var i = 0, len = query.length; i <= len; i++) {
     var cp = i === len ? 0 : query.charCodeAt(i);
 
@@ -131,13 +133,17 @@ function createElement (query, svg) {
     }
   }
 
+  // create SVG or HTML element
   var el = svg ? createSVG(tag) : document.createElement(tag);
 
+  // set id + classNames
   id && (el.id = id);
   className && (el.className = className);
 
+  // save to cache
   cache[query] = el;
 
+  // return cloned
   return el.cloneNode(false);
 }
 
