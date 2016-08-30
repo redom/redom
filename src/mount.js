@@ -18,9 +18,8 @@ export function mount (parent, child, before) {
   }
 
   var childEl = child.el || child;
-  var childType = typeof ChildEl;
 
-  if (childType === 'string' || childType === 'number') {
+  if (typeof child === 'string' || typeof child === 'number') {
     doMount(parentEl, text(child), before);
     return true;
   } else if (child.views) {
@@ -29,7 +28,7 @@ export function mount (parent, child, before) {
     return true;
   } else if (child.length) {
     for (var i = 0; i < child.length; i++) {
-      mount(parentEl, child[i], before);
+      mount(parent, child[i], before);
     }
     return true;
   } else if (childEl.nodeType) {
