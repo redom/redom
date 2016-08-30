@@ -12,27 +12,9 @@ function doMount (parent, child, before) {
 
 export function mount (parent, child, before) {
   var parentEl = parent.el || parent;
-
-  if (child == null) {
-    return;
-  }
-
   var childEl = child.el || child;
-  var childType = typeof ChildEl;
 
-  if (childType === 'string' || childType === 'number') {
-    doMount(parentEl, text(child), before);
-    return true;
-  } else if (child.views) {
-    child.parent = parent;
-    setChildren(parentEl, child.views);
-    return true;
-  } else if (child.length) {
-    for (var i = 0; i < child.length; i++) {
-      mount(parentEl, child[i], before);
-    }
-    return true;
-  } else if (childEl.nodeType) {
+  if (childEl.nodeType) {
     if (child !== childEl) {
       childEl.view = child;
     }
@@ -46,6 +28,15 @@ export function mount (parent, child, before) {
       childEl.mounted = true;
       child.mount && child.mount();
       notifyMountDown(childEl);
+    }
+    return true;
+  } else if (child.views) {
+    child.parent = parent;
+    setChildren(parentEl, child.views);
+    return true;
+  } else if (child.length) {
+    for (var i = 0; i < child.length; i++) {
+      mount(parent, child[i], before);
     }
     return true;
   }

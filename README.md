@@ -1,5 +1,5 @@
 # RE:DOM
-Tiny DOM library
+Make DOM great again!
 
 ![RE:DOM!](https://redom.js.org/meme.jpg)
 

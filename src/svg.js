@@ -23,6 +23,8 @@ export function svg (query) {
       continue;
     }
 
+    if (arg == null) continue;
+
     if (mount(element, arg)) {
       empty = false;
       continue;
