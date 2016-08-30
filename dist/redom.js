@@ -163,6 +163,9 @@ function notifyMountDown (child) {
   var traverse = child.firstChild;
 
   while (traverse) {
+    if (traverse.mounted) {
+      return;
+    }
     traverse.mounted = true;
     traverse.view && traverse.view.mount && traverse.view.mount();
     notifyMountDown(traverse);
@@ -174,6 +177,9 @@ function notifyUnmountDown (child) {
   var traverse = child.firstChild;
 
   while (traverse) {
+    if (!traverse.mounted) {
+      return;
+    }
     traverse.mounted = false;
     traverse.view && traverse.view.unmount && traverse.view.unmount();
     notifyUnmountDown(traverse);
