@@ -20,10 +20,6 @@ export function el (query, a, b, c, d, e, f) {
   }
 
   if (typeof query === 'function') {
-    if (query.constructor) {
-      // ?
-    }
-
     return len === 1 ? new query()
          : len === 2 ? new query(a)
          : len === 3 ? new query(a, b)
@@ -62,9 +58,9 @@ function expand (templateElement) {
     if (typeof arg === 'string' || typeof arg === 'number') {
       if (empty) {
         element.textContent = arg;
+        empty = false;
       } else {
         element.appendChild(document.createTextNode(arg));
-        empty = false;
       }
       continue;
     }
