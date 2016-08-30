@@ -11,20 +11,19 @@ function doMount (parent, child, before) {
 
 export function mount (parent, child, before) {
   var parentEl = parent.el || parent;
+  var childEl = child.el || child;
   var type = child && child.constructor;
 
   if (type === String || type === Number) {
-    doMount(parent, text(child), before);
+    doMount(parentEl, text(child), before);
     return true;
   } else if (type === Array) {
     for (var i = 0; i < child.length; i++) {
-      mount(parent, child[i], before);
+      mount(parentEl, child[i], before);
     }
     return true;
-  } else if (child.nodeType) {
-    var childEl = child.el || child;
-
-    doMount(parent, child, before);
+  } else if (childEl.nodeType) {
+    doMount(parentEl, childEl, before);
     return true;
   }
   return false;

@@ -5,10 +5,23 @@
     <script>
       var { el, mount, svg } = redom;
 
+      class Circle {
+        constructor () {
+          this.el = svg('circle');
+        }
+        update ({ x, y, r }) {
+          this.el.setAttribute('cx', x);
+          this.el.setAttribute('cy', x);
+          this.el.setAttribute('r', r);
+        }
+      }
+
       mount(document.body, el('h1', 'Hello world!', { style: 'color: red' }));
+      var circle = new Circle();
       mount(document.body, svg('svg',
-        svg('circle', { cx: 10, cy: 10, r: 10 })
-      ))
+        circle
+      ));
+      circle.update({ x: 10, y: 10, r: 10 });
     </script>
   </body>
 </html>
