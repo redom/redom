@@ -1,8 +1,31 @@
 
 import { mount } from './mount';
 
-export function expand (templateElement) {
-  var element = templateElement.cloneNode(false);
+export function expand (source, a, b, c) {
+  var element;
+
+  if (source.nodeType) {
+    element = source.cloneNode(false);
+  } else if (typeof source === 'string') {
+    element = this.createElement(source).cloneNode(false);
+  } else if (this.allowComponents) {
+    var len = arguments.length;
+
+    switch (len) {
+      case 1: return new source();
+      case 2: return new source(a);
+      case 3: return new source(a, b);
+      case 4: return new source(a, b, c);
+    }
+
+    var args = new Array(len);
+    while (len--) args[len] = arguments[len];
+
+    return new (query.bind.apply(query, args));
+  } else {
+    throw new Error('Must pass a valid query or component!');
+  }
+
   var empty = true;
 
   for (var i = 1; i < arguments.length; i++) {
