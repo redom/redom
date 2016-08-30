@@ -3,6 +3,14 @@ var cached = {};
 var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
 
 export function el (query) {
+  if (typeof query === 'function') {
+    var args = new Array(arguments.length - 1);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i + 1];
+    }
+    return query.apply(this, args);
+  }
+
   var element = createElement(query);
   var empty = true;
 

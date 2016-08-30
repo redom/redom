@@ -9,6 +9,14 @@ var cached = {};
 var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
 
 function el (query) {
+  if (typeof query === 'function') {
+    var args = new Array(arguments.length - 1);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i + 1];
+    }
+    return query.apply(this, args);
+  }
+
   var element = createElement(query);
   var empty = true;
 
@@ -236,12 +244,29 @@ svg.extend = function (query) {
   return svg.bind(this, query);
 }
 
+function view (proto) {
+  return function () {
+    var view = Object.create(proto);
+
+    var args = new Array(arguments.length);
+
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+
+    proto.init.apply(view, args);
+
+    return view;
+  }
+}
+
 exports.el = el;
 exports.createElement = createElement;
 exports.mount = mount$1;
 exports.unmount = unmount;
 exports.text = text;
 exports.svg = svg;
+exports.view = view;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
