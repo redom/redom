@@ -46,15 +46,23 @@
         init () {
           this.el = el('li')
         },
-        update (data) {
-          this.el.textContent = 'Item ' + data;
+        update (data) {
+          this.data = data;
+          this.el.textContent = 'Item ' + data.id;
+          console.log('update', data.id);
+        },
+        mount () {
+          console.log('mount', this.data.id);
+        },
+        unmount () {
+          console.log('unmount', this.data.id);
         }
       });
 
       var List = view({
         init () {
           this.el = el('ul',
-            this.list = list(Item)
+            this.list = list(Item, 'id')
           )
         },
         update (data) {
@@ -66,7 +74,10 @@
 
       mount(document.body, app);
 
-      app.update([1, 2, 3, 4, 5]);
+      app.update([{ id: 1 }, { id: 2 }, { id: 3 }]);
+      setTimeout(function () {
+        app.update([{ id: 2 }, { id: 3 }, { id: 4 }]);
+      }, 1000);
     </script>
   </body>
 </html>

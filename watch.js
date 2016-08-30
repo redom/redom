@@ -15,8 +15,8 @@ const uglify = exec('npm', ['run', 'uglify']);
 
 chokidar.watch('src/**/*.js')
   .on('add', build)
-  .on('update', build)
+  .on('change', build)
   .on('unlink', build);
 
 chokidar.watch('dist/redom.js')
-  .on('update', uglify);
+  .on('change', uglify);
