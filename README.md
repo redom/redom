@@ -12,9 +12,7 @@ npm install redom
 ```js
 import { el, mount } from 'redom';
 
-const h1 = el.extend('h1');
-
-const hello = h1('Hello world!');
+const hello = el('h1', 'Hello world!');
 
 mount(document.body, hello);
 ```
@@ -41,7 +39,7 @@ import { el, view, on, mount } from 'redom';
 
 // Define component
 
-const login = view({
+const Login = view({
   init () {
     this.el = el('form',
       on({ submit: this.submit }),
@@ -57,9 +55,13 @@ const login = view({
     console.log(this.email.value, this.pass.value);
 });
 
+// init "app"
+
+var login = el(Login);
+
 // Mount to DOM
 
-mount(document.body, login());
+mount(document.body, login);
 
 ```
 ## Iteration / component example
