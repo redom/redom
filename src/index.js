@@ -1,12 +1,9 @@
-export * from './attrs';
-export * from './children';
-export * from './class';
+
 export * from './el';
-export * from './events';
-export * from './id';
 export * from './list';
 export * from './mount';
-export * from './props';
-export * from './svg';
+export * from './on';
 export * from './text';
-export * from './update';
+export * from './setchildren';
+export * from './svg';
+export * from './view';
