@@ -5,13 +5,16 @@ var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/
 
 export function el (query, a, b, c) {
   if (typeof query === 'function') {
+    if (query.constructor) {
+
+    }
     var len = arguments.length - 1;
 
     switch (len) {
-      case 0: return query();
-      case 1: return query(a);
-      case 2: return query(a, b);
-      case 3: return query(a, b, c);
+      case 0: return new query();
+      case 1: return new query(a);
+      case 2: return new query(a, b);
+      case 3: return new query(a, b, c);
     }
 
     var args = new Array(len);
@@ -20,7 +23,7 @@ export function el (query, a, b, c) {
       args[i] = arguments[++i];
     }
 
-    return query.apply(this, args);
+    return new (query.bind.apply(query, args));
   }
 
   var element = createElement(query);
