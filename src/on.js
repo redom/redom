@@ -1,14 +1,7 @@
-export function on (eventHandlers) {
-  return function (el) {
-    for (var key in eventHandlers) {
-      addHandler(el, key, eventHandlers[key]);
-    }
-    return;
-  }
-}
+import { createElementCurry } from './curry';
 
-function addHandler (el, key, handler) {
-  el.addEventListener(key, function (e) {
-    handler.call(el.view, e);
+export var on = createElementCurry(function (el, event, callback) {
+  el.addEventListener(event, function (e) {
+    callback.call(el.view, e);
   });
-}
+});

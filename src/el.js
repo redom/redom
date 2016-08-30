@@ -20,10 +20,6 @@ export function el (query, a, b, c, d, e, f) {
   }
 
   if (typeof query === 'function') {
-    if (query.constructor) {
-      // ?
-    }
-
     return len === 1 ? new query()
          : len === 2 ? new query(a)
          : len === 3 ? new query(a, b)
@@ -53,24 +49,26 @@ function expand (templateElement) {
   for (var i = 1; i < arguments.length; i++) {
     var arg = arguments[i];
 
-    if (arg == null) continue;
+    if (typeof arg === 'string' || typeof arg === 'number') {
+      if (empty) {
+        element.textContent = arg;
+        empty = false;
+      } else {
+        element.appendChild(document.createTextNode(arg));
+      }
+      continue;
+    }
 
     if (typeof arg === 'function') {
       arg = arg(element);
     }
 
-    if (empty && (typeof arg === 'string' || typeof arg === 'number')) {
-      element.textContent = arg;
-      empty = false;
-      continue;
-    }
+    // null guard before we attempt to mount
+    if (arg == null) continue;
 
     if (mount(element, arg)) {
       empty = false;
-      continue;
-    }
-
-    if (typeof arg === 'object') {
+    } else {
       for (var attr in arg) {
         var value = arg[attr];
 
