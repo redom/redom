@@ -9,6 +9,7 @@ export function view (proto) {
       case 1: proto.init.call(view, a); break;
       case 2: proto.init.call(view, a, b); break;
       case 3: proto.init.call(view, a, b, c); break;
+      
       default:
         var args = new Array(len);
         var i = 0;

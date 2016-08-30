@@ -59,73 +59,74 @@
       <img src="logo.svg">
       <p>Make DOM great again!</p>
       <code>
-        <pre>import { el, text, mount } from 'redom';
-import { children, props, events } from 'redom';
-
-// Define element tags
-
-const form = el('form');
-const input = el('input');
-const button = el('button');
+        <pre>import { el, on, mount, view } from 'redom';
 
 // Define component
 
-const login = form(
-  children(el => [
-    el.email = input(props({ type: 'email' })),
-    el.pass = input(props({ type: 'pass' })),
-    el.submit = button(text('Sign in'))
-  ]),
-  events({
-    onsubmit (el, e) {
-      e.preventDefault();
+const Login = view({
+  init () {
+    this.el = el('form',
+      on({ submit: this.submit }),
 
-      console.log(el.email.value, el.pass.value);
-    }
-  })
-);
+      this.email = el('input', { type: 'email' }),
+      this.pass = el('input', { type: 'pass' }),
+      this.submit = el('button', 'Sign in')
+    )
+  },
+  submit (e) {
+    e.preventDefault();
+
+    console.log(this.email.value, this.pass.value);
+  }
+})
+
+// init "app"
+
+const app = el(Login);
 
 // Mount to DOM
 
-mount(document.body, login);</pre>
+mount(document.body, app);</pre>
       </code>
       <code class="hidden">
         <pre>import { el, list, mount } from 'redom';
 
-// Define element tags
-
-const table = el('table');
-const tbody = el('tbody');
-const tr = el('tr');
-const td = el('td');
-
 // Define components
 
-const cell = (data) => td(
-  update((el, data) => {
-    el.textContent = data;
-  })
-)
+const Cell = view({
+  init () {
+    this.el = el('td')
+  },
+  update (data) {
+    this.el.textContent = data;
+  }
+});
 
-const row = (data) => tr(
-  children(el => [
-    el.cols = list(el, cell)
-  ]),
-  update((el, data) => {
-    el.cols.update(data)
-  })
-);
+const Row = view({
+  init () {
+    this.el = el('tr',
+      this.cols = list(Cell)
+    );
+  },
+  update (data) {
+    this.cols.update(data);
+  }
+});
+
+const Table = view({
+  init () {
+    this.el = el('table',
+      this.rows = list(Row)
+    )
+  },
+  update (data) {
+    this.rows.update(data.tbody);
+  }
+})
 
 // Init the app
 
-const app = table(
-  children(el => [
-    el.rows = list(tbody(), row)
-  ]),
-  update((el, data) => {
-    el.rows.update(data.tbody)
-  })
-)
+const app = el(Table);
 
 // Mount to DOM
 

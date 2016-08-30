@@ -38,7 +38,7 @@ export function el (query, a, b, c) {
       arg = arg(element);
     }
 
-    if (empty && (typeof arg === 'string' || typeof arg === 'number')) {
+    if (empty && (typeof arg === 'string' || typeof arg === 'number')) {
       element.textContent = arg;
       empty = false;
       continue;

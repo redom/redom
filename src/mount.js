@@ -1,9 +1,10 @@
 
-import { text } from './text';
+import { text } from './text';
+import { setChildren } from './setchildren';
 
 function doMount (parent, child, before) {
   if (before) {
-    parent.insertBefore(child, before.el || before);
+    parent.insertBefore(child, before.el || before);
   } else {
     parent.appendChild(child);
   }
@@ -16,11 +17,15 @@ export function mount (parent, child, before) {
     return;
   }
 
-  var childEl = child.el || child;
+  var childEl = child.el || child;
   var childType = typeof ChildEl;
 
   if (childType === 'string' || childType === 'number') {
     doMount(parentEl, text(child), before);
+    return true;
+  } else if (child.views) {
+    child.parent = parent;
+    setChildren(parentEl, child.views);
     return true;
   } else if (child.length) {
     for (var i = 0; i < child.length; i++) {
@@ -48,8 +53,8 @@ export function mount (parent, child, before) {
 }
 
 export function unmount (parent, child) {
-  var parentEl = parent.el || parent;
-  var childEl = child.el || child;
+  var parentEl = parent.el || parent;
+  var childEl = child.el || child;
 
   parentEl.removeChild(childEl);
 
