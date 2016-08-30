@@ -3,20 +3,21 @@ var cachedSVG = {};
 
 var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
 
-export function el (query) {
+export function el (query, a, b, c) {
   if (typeof query === 'function') {
     var len = arguments.length - 1;
 
-    if (!len) {
-      return query();
+    switch (len) {
+      case 0: return query();
+      case 1: return query(a);
+      case 2: return query(a, b);
+      case 3: return query(a, b, c);
     }
 
-    // arguments' optimization
-    // (https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments)
     var args = new Array(len);
-
-    for (var i = 0; i < len; i++) {
-      args[i] = arguments[i + 1];
+    var i = 0;
+    while (i < len) {
+      args[i] = arguments[++i];
     }
 
     return query.apply(this, args);
