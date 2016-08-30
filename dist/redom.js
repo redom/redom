@@ -129,15 +129,18 @@ function mount$1 (parent, child, before) {
     }
     return true;
   } else if (childEl.nodeType) {
+    if (child !== childEl) {
+      childEl.view = child;
+    }
     if (childEl.mounted) {
-      child.mounted = false;
+      childEl.mounted = false;
       child.unmount && child.unmount();
       notifyUnmountDown(childEl);
     }
     doMount(parentEl, childEl, before);
-    childEl.mounted = true;
-    child.mount && child.mount();
     if (parentEl.mounted || document.contains(childEl)) {
+      childEl.mounted = true;
+      child.mount && child.mount();
       notifyMountDown(childEl);
     }
     return true;
@@ -145,12 +148,23 @@ function mount$1 (parent, child, before) {
   return false;
 }
 
+function unmount (parent, child) {
+  var parentEl = parent.el || parent;
+  var childEl = child.el || child;
+
+  parentEl.removeChild(childEl);
+
+  childEl.mounted = false;
+  childEl.unmount && childEl.unmount();
+  notifyUnmountDown(childEl);
+}
+
 function notifyMountDown (child) {
   var traverse = child.firstChild;
 
   while (traverse) {
     traverse.mounted = true;
-    traverse.mount && traverse.mount();
+    traverse.view && traverse.view.mount && traverse.view.mount();
     notifyMountDown(traverse);
     traverse = traverse.nextSibling;
   }
@@ -161,7 +175,7 @@ function notifyUnmountDown (child) {
 
   while (traverse) {
     traverse.mounted = false;
-    traverse.unmount && traverse.unmount();
+    traverse.view && traverse.view.unmount && traverse.view.unmount();
     notifyUnmountDown(traverse);
     traverse = traverse.nextSibling;
   }
@@ -223,6 +237,7 @@ svg.extend = function (query) {
 exports.el = el;
 exports.createElement = createElement;
 exports.mount = mount$1;
+exports.unmount = unmount;
 exports.text = text;
 exports.svg = svg;
 

@@ -3,7 +3,7 @@
   <body>
     <script src="dist/redom.min.js"></script>
     <script>
-      var { el, mount, svg } = redom;
+      var { el, svg, mount, unmount } = redom;
 
       class Circle {
         constructor () {
@@ -17,16 +17,25 @@
         mount () {
           console.log('mounted');
         }
+        unmount () {
+          console.log('unmounted');
+        }
       }
 
-      mount(document.body, el('h1', 'Hello world!', { style: 'color: red' }));
+      var hello = el('h1', 'Hello world!', { style: 'color: red' });
+
+      mount(document.body, hello);
 
       var circle = new Circle();
+      var _svg = svg('svg', circle);
 
-      mount(document.body, svg('svg',
-        circle
-      ));
+      mount(document.body, _svg);
       circle.update({ x: 10, y: 10, r: 10 });
+
+      setTimeout(function () {
+        unmount(document.body, hello);
+        unmount(document.body, _svg);
+      }, 1000);
     </script>
   </body>
 </html>
