@@ -4,8 +4,9 @@ var cachedSVG = {};
 var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
 
 export function el (query) {
-  // check if called with el(Component):
   if (typeof query === 'function') {
+    // called with el(Component)
+
     var len = arguments.length - 1;
 
     // call immediately when no arguments provided
@@ -21,7 +22,7 @@ export function el (query) {
       args[i] = arguments[i + 1];
     }
 
-    // call Component(...args)
+    // Component(...args)
     return query.apply(this, args);
   }
 
@@ -29,34 +30,35 @@ export function el (query) {
   var element = createElement(query);
   var empty = true;
 
-  // go through arguments
   for (var i = 1; i < arguments.length; i++) {
+    // loop through arguments starting from 1 (query is 0)
     var arg = arguments[i];
 
     // skip null arguments
     if (arg == null) continue;
 
-    // call function arguments
     if (typeof arg === 'function') {
+      // call function argument
       arg = arg(element);
     }
 
-    // append strings and numbers as textContent
     if (empty && (typeof arg === 'string' || typeof arg === 'number')) {
+      // append first string or number as textContent
       element.textContent = arg;
       empty = false;
       continue;
     }
 
-    // try to mount argument
     if (mount(element, arg)) {
+      // argument was mountable
       empty = false;
       continue;
     }
 
-    // go through object argument
     if (typeof arg === 'object') {
+      // argument is an object
       for (var attr in arg) {
+        // going though keys
         var value = arg[attr];
 
         // parse style values differently
@@ -91,16 +93,18 @@ el.extend = function (query) {
 }
 
 export function createElement (query, svg) {
+  // choose cache to use
   var cache = svg ? cachedSVG : cached;
+
   // if element already created with the query, use it:
   if (query in cached) return cache[query].cloneNode(false);
+
+  // query parsing magic by https://github.com/maciejhirsz
 
   var tag, id, className;
 
   var mode = 0;
   var from = 0;
-
-  // parse query
 
   for (var i = 0, len = query.length; i <= len; i++) {
     var cp = i === len ? 0 : query.charCodeAt(i);
