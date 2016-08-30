@@ -14,10 +14,15 @@
           this.el.setAttribute('cy', x);
           this.el.setAttribute('r', r);
         }
+        mount () {
+          console.log('mounted');
+        }
       }
 
       mount(document.body, el('h1', 'Hello world!', { style: 'color: red' }));
+
       var circle = new Circle();
+
       mount(document.body, svg('svg',
         circle
       ));

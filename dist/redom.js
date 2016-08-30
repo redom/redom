@@ -129,10 +129,42 @@ function mount$1 (parent, child, before) {
     }
     return true;
   } else if (childEl.nodeType) {
+    if (childEl.mounted) {
+      child.mounted = false;
+      child.unmount && child.unmount();
+      notifyUnmountDown(childEl);
+    }
     doMount(parentEl, childEl, before);
+    childEl.mounted = true;
+    child.mount && child.mount();
+    if (parentEl.mounted || document.contains(childEl)) {
+      notifyMountDown(childEl);
+    }
     return true;
   }
   return false;
+}
+
+function notifyMountDown (child) {
+  var traverse = child.firstChild;
+
+  while (traverse) {
+    traverse.mounted = true;
+    traverse.mount && traverse.mount();
+    notifyMountDown(traverse);
+    traverse = traverse.nextSibling;
+  }
+}
+
+function notifyUnmountDown (child) {
+  var traverse = child.firstChild;
+
+  while (traverse) {
+    traverse.mounted = false;
+    traverse.unmount && traverse.unmount();
+    notifyUnmountDown(traverse);
+    traverse = traverse.nextSibling;
+  }
 }
 
 var clones$1 = {};
