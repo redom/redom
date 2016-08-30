@@ -1,10 +1,14 @@
 export function on (eventHandlers) {
   return function (el) {
     for (var key in eventHandlers) {
-      el.addEventListener(key, function (e) {
-        eventHandlers[key].call(el.view, e);
-      });
+      addHandler(el, key, eventHandlers[key]);
     }
     return;
   }
+}
+
+function addHandler (el, key, handler) {
+  el.addEventListener(key, function (e) {
+    handler.call(el.view, e);
+  });
 }
