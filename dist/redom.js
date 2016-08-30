@@ -4,212 +4,196 @@
   (factory((global.redom = global.redom || {})));
 }(this, (function (exports) { 'use strict';
 
-function attrs (_attrs) {
-  return function (el) {
-    for (var key in _attrs) {
-      el.setAttribute(key, _attrs[key]);
-    }
-  }
-}
-
-function setAttrs (el, _attrs) {
-  return attrs(_attrs)(el);
-}
-
-function children (handler) {
-  return function (el) {
-    var _children = handler instanceof Array ? handler : handler(el);
-
-    for (var i = 0; i < _children.length; i++) {
-      var child = _children[i];
-
-      if (child && child.nodeType) {
-        el.appendChild(child);
-      }
-    }
-  }
-}
-
-function setChildren(parent, _children) {
-  var traverse = parent.firstChild;
-
-  for (var i = 0; i < _children.length; i++) {
-    var child = _children[i];
-
-    if (child === traverse) {
-      traverse = traverse.nextSibling;
-    }
-
-    if (child && child.nodeType) {
-      if (traverse) {
-        parent.insertBefore(child, traverse);
-      } else {
-        parent.appendChild(child);
-      }
-    }
-  }
-
-  while (traverse) {
-    var next = traverse.nextSibling;
-
-    parent.removeChild(traverse);
-
-    traverse = next;
-  }
-}
-
-function clearChildren (parent) {
-  setChildren(parent, []);
-}
-
-function className (className) {
-  return function (el) {
-    el.className = className;
-  }
-}
-function classList (classes) {
-  return function (el) {
-    for (var className in classes) {
-      if (classes[className]) {
-        el.classList.add(className);
-      } else {
-        el.classList.remove(className);
-      }
-    }
-  }
-}
-
-function setClassList (el, classes) {
-  return classList(classes)(el);
-}
-
-function extend () {
-  var el = this.cloneNode(true);
-
-  for (var i = 0; i < arguments.length; i++) {
-    arguments[i](el);
-  }
-
-  return el;
-}
-
 var cached = {};
+var clones = {};
 
-function el (tagName) {
-  return cached[tagName] || (cached[tagName] = extend.bind(document.createElement(tagName)));
-}
+var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
 
-function events (_events) {
-  return function (el) {
-    for (var key in _events) {
-      el[key] = function (e) {
-        _events[key](el, e);
-      }
+function el (query) {
+  var clone = clones[query] || (clones[query] = createClone(query));
+  var element = clone.cloneNode(false);
+  var empty = true;
+
+  for (var i = 1; i < arguments.length; i++) {
+    var arg = arguments[i];
+
+    if (arg == null) continue;
+
+    if (typeof arg === 'function') {
+      arg = arg(element);
     }
-  }
-}
 
-function id (id) {
-  return function (el) {
-    el.setAttribute('id', id);
-  }
-}
+    var type = arg.constructor;
 
-function list (el, factory, keyResolver) {
-  el.lookup = {};
+    if (empty && (arg === String || arg === Number)) {
+      element.textContent = arg;
+      empty = false;
+      continue;
+    }
 
-  el.update = function (data) {
-    var lookup = el.lookup;
-    var newLookup = {};
-    var views = [];
+    if (mount(element, arg)) {
+      empty = false;
+      continue;
+    }
 
-    for (var i = 0; i < data.length; i++) {
-      var item = data[i];
-
-      if (keyResolver) {
-        var id = keyResolver(item);
+    for (var attr in arg) {
+      if (attr === 'style') {
+        var elementStyle = element.style;
+        var style = arg.style;
+        if (style.constructor !== String) {
+          for (var key in style) {
+            elementStyle[key] = style[key];
+          }
+        } else {
+          element.setAttribute(attr, arg[attr]);
+        }
+      } else if (attr in element) {
+        element[attr] = arg[attr];
       } else {
-        var id = i;
+        element.setAttribute(attr, arg[attr]);
       }
-
-      var view = newLookup[id] = lookup[id] || (newLookup[id] = factory(item, i));
-      view && view.update(item);
-      views.push(view);
     }
-    setChildren(el, views);
-    el.lookup = newLookup;
   }
-  return el;
+
+  return element;
 }
 
-function mount (parent, child, before) {
+el.extend = function (query) {
+  return el.bind(this, query);
+}
+
+function createClone (query, svg) {
+  if (query in cached) return cached[query];
+
+  var tag, id, className;
+
+  var mode = 0;
+  var from = 0;
+
+  for (var i = 0, len = query.length; i <= len; i++) {
+    var cp = i === len ? 0 : query.charCodeAt(i);
+
+    if (cp === 0x23 || cp === 0x2E || cp === 0) {
+      var slice = query.substring(from, i);
+
+      if (mode === 0) {
+        tag = i === 0 ? 'div' : slice;
+      } else if (mode === 1) {
+        id = slice;
+      } else {
+        if (className) {
+          className += ' ' + slice;
+        } else {
+          className = slice;
+        }
+      }
+
+      from = i + 1;
+      mode = cp === 0x23 ? 1 : 2;
+    }
+  }
+
+  if (svg) {
+    var el = createSVG(tag);
+  } else {
+    var el = document.createElement(tag);
+  }
+
+  id && (el.id = id);
+  className && (el.className = className);
+
+  return cached[query] = el;
+}
+
+var text = document.createTextNode.bind(document);
+
+function doMount (parent, child, before) {
   if (before) {
-    parent.insertBefore(child, before);
+    parent.insertBefore(child, before.el || before);
   } else {
     parent.appendChild(child);
   }
 }
 
-function props (_props) {
-  return function (el) {
-    for (var key in _props) {
-      el[key] = _props[key];
+function mount$1 (parent, child, before) {
+  var parentEl = parent.el || parent;
+  var type = child && child.constructor;
+
+  if (type === String || type === Number) {
+    doMount(parent, text(child), before);
+    return true;
+  } else if (type === Array) {
+    for (var i = 0; i < child.length; i++) {
+      mount$1(parent, child[i], before);
+    }
+    return true;
+  } else if (child.nodeType) {
+    var childEl = child.el || child;
+
+    doMount(parent, child, before);
+    return true;
+  }
+  return false;
+}
+
+var clones$1 = {};
+
+function svg (query) {
+  var clone = clones$1[query] || (clones$1[query] = createClone(query, true));
+  var element = clone.cloneNode(false);
+  var empty = true;
+
+  for (var i = 1; i < arguments.length; i++) {
+    var arg = arguments[i];
+
+    if (arg == null) continue;
+
+    if (typeof arg === 'function') {
+      arg = arg(element);
+    }
+
+    var type = arg.constructor;
+
+    if (empty && (arg === String || arg === Number)) {
+      element.textContent = arg;
+      empty = false;
+      continue;
+    }
+
+    if (mount(element, arg)) {
+      empty = false;
+      continue;
+    }
+
+    for (var attr in arg) {
+      if (attr === 'style') {
+        var elementStyle = element.style;
+        var style = arg.style;
+        if (style.constructor !== String) {
+          for (var key in style) {
+            elementStyle[key] = style[key];
+          }
+        } else {
+          element.setAttribute(attr, arg[attr]);
+        }
+      } else {
+        element.setAttribute(attr, arg[attr]);
+      }
     }
   }
+
+  return element;
 }
 
-function setProps (el, _props) {
-  return props(_props)(el);
+svg.extend = function (query) {
+  return svg.bind(this, query);
 }
 
-var SVG = 'http://www.w3.org/2000/svg';
-
-var cached$1 = {};
-
-function svg (tagName) {
-  return cached$1[tagName] || (cached$1[tagName] = extend.bind(document.createElementNS(SVG, tagName)))
-}
-
-function text (text) {
-  return function (el) {
-    el.appendChild(document.createTextNode(text));
-  }
-}
-
-function update (handler) {
-  return function (el) {
-    if (el.update) {
-      var originalUpdate = el.update;
-      el.update = function (data) {
-        handler(el, data);
-        originalUpdate(el, data);
-      }
-    } else {
-      el.update = function (data) {
-        handler(el, data);
-      }
-    }
-  }
-}
-
-exports.attrs = attrs;
-exports.setAttrs = setAttrs;
-exports.children = children;
-exports.setChildren = setChildren;
-exports.clearChildren = clearChildren;
-exports.className = className;
-exports.classList = classList;
-exports.setClassList = setClassList;
 exports.el = el;
-exports.events = events;
-exports.id = id;
-exports.list = list;
-exports.mount = mount;
-exports.props = props;
-exports.setProps = setProps;
-exports.svg = svg;
+exports.createClone = createClone;
+exports.mount = mount$1;
 exports.text = text;
-exports.update = update;
+exports.svg = svg;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

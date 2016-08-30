@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script src="dist/redom.min.js"></script>
+    <script>
+      var { el, mount, svg } = redom;
+
+      mount(document.body, el('h1', 'Hello world!', { style: 'color: red' }));
+      mount(document.body, svg('svg',
+        svg('circle', { cx: 10, cy: 10, r: 10 })
+      ))
+    </script>
+  </body>
+</html>
