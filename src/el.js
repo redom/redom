@@ -1,11 +1,9 @@
 var cached = {};
-var clones = {};
 
 var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
 
 export function el (query) {
-  var clone = clones[query] || (clones[query] = createElement(query));
-  var element = clone.cloneNode(false);
+  var element = createElement(query);
   var empty = true;
 
   for (var i = 1; i < arguments.length; i++) {
@@ -17,9 +15,7 @@ export function el (query) {
       arg = arg(element);
     }
 
-    var type = arg.constructor;
-
-    if (empty && (arg === String || arg === Number)) {
+    if (empty && (typeof arg !== 'object') {
       element.textContent = arg;
       empty = false;
       continue;
@@ -31,15 +27,15 @@ export function el (query) {
     }
 
     for (var attr in arg) {
+      var value = arg[attr];
       if (attr === 'style') {
         var elementStyle = element.style;
-        var style = arg.style;
-        if (style.constructor !== String) {
-          for (var key in style) {
-            elementStyle[key] = style[key];
-          }
+        if (typeof value === 'string') {
+          element.setAttribute(attr, value);
         } else {
-          element.setAttribute(attr, arg[attr]);
+          for (var key in value) {
+            elementStyle[key] = value[key];
+          }
         }
       } else if (attr in element) {
         element[attr] = arg[attr];
@@ -57,7 +53,7 @@ el.extend = function (query) {
 }
 
 export function createElement (query, svg) {
-  if (query in cached) return cached[query];
+  if (query in cached) return cached[query].cloneNode(false);
 
   var tag, id, className;
 
@@ -67,15 +63,17 @@ export function createElement (query, svg) {
   for (var i = 0, len = query.length; i <= len; i++) {
     var cp = i === len ? 0 : query.charCodeAt(i);
 
+    //  cp === '#'     cp === '.'     nullterm
     if (cp === 0x23 || cp === 0x2E || cp === 0) {
-      var slice = query.substring(from, i);
-
       if (mode === 0) {
-        tag = i === 0 ? 'div' : slice;
-      } else if (mode === 1) {
-        id = slice;
+        tag = i  === 0 ? 'div'
+            : cp === 0 ? query
+            :            query.substring(from, i);
       } else {
-        if (className) {
+        var slice = query.substring(from, i)
+        if (mode === 1) {
+          id = slice;
+        } else if (className) {
           className += ' ' + slice;
         } else {
           className = slice;
@@ -87,14 +85,12 @@ export function createElement (query, svg) {
     }
   }
 
-  if (svg) {
-    var el = createSVG(tag);
-  } else {
-    var el = document.createElement(tag);
-  }
+  var el = svg ? createSVG(tag) : document.createElement(tag);
 
   id && (el.id = id);
   className && (el.className = className);
 
-  return cached[query] = el;
+  cached[query] = el;
+
+  return el.cloneNode(false);
 }
