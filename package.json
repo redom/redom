@@ -1,8 +1,9 @@
 {
   "name": "redom",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Tiny DOM library",
   "main": "dist/redom.js",
+  "jsnext:main": "src/index.js",
   "scripts": {
     "dev": "node watch",
     "dist": "gh-pages -d dist",
@@ -31,7 +32,7 @@
   },
   "homepage": "https://github.com/pakastin/redom#readme",
   "devDependencies": {
-    "chokidar-cli": "~1.2.0",
+    "chokidar": "~1.6.0",
     "gh-pages": "~0.11.0",
     "rollup": "~0.34.10",
     "uglifyjs": "~2.4.10"
