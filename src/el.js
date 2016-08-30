@@ -4,10 +4,18 @@ var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/
 
 export function el (query) {
   if (typeof query === 'function') {
-    var args = new Array(arguments.length - 1);
-    for (var i = 0; i < args.length; i++) {
+    var len = arguments.length - 1;
+
+    if (!len) {
+      return query();
+    }
+
+    var args = new Array(len);
+
+    for (var i = 0; i < len; i++) {
       args[i] = arguments[i + 1];
     }
+
     return query.apply(this, args);
   }
 
