@@ -59,9 +59,13 @@ function expand (templateElement) {
       arg = arg(element);
     }
 
-    if (empty && (typeof arg === 'string' || typeof arg === 'number')) {
-      element.textContent = arg;
-      empty = false;
+    if (typeof arg === 'string' || typeof arg === 'number') {
+      if (empty) {
+        element.textContent = arg;
+      } else {
+        element.appendChild(document.createTextNode(arg));
+        empty = false;
+      }
       continue;
     }
 
