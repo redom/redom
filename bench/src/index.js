@@ -1,43 +1,30 @@
 
 import { bench } from './bench.js';
-import { el, extend, mount, text, children, className } from '../../src/index.js';
+import { el } from '../../src/index.js';
 
-var b = el('b');
-var div = el('div');
-var h1 = el('h1');
-var p = el('p');
+var div = el.extend('div');
+var redomH1 = el.extend('h1.redom');
+var b = el.extend('b');
+var p = el.extend('p');
 
 bench('REDOM <div> with multiple child nodes', function() {
     div(
-        children([
-            h1(className('redom'), text('Hello '), children([
-                b(children([
-                    text('RE:DOM')
-                ]))
-
-            ]), text('!')),
-            p(
-                text('Bacon ipsum dolor amet meatloaf meatball shank porchetta \
-                    picanha bresaola short loin short ribs capicola fatback beef \
-                    ribs corned beef ham hock.')
-            )
-        ])
+        redomH1('Hello ', b('RE:DOM'), '!'),
+        p(
+            'Bacon ipsum dolor amet meatloaf meatball shank porchetta \
+             picanha bresaola short loin short ribs capicola fatback beef \
+             ribs corned beef ham hock.'
+        )
     )
 });
 
-
-console.log('REDOM', div(
-    children([
-        h1(className('redom'), text('Hello '), children([
-            b(children([
-                text('RE:DOM')
-            ]))
-
-        ]), text('!')),
+console.log('REDOM',
+    div(
+        redomH1('Hello ', b('RE:DOM'), '!'),
         p(
-            text('Bacon ipsum dolor amet meatloaf meatball shank porchetta \
-                picanha bresaola short loin short ribs capicola fatback beef \
-                ribs corned beef ham hock.')
+            'Bacon ipsum dolor amet meatloaf meatball shank porchetta \
+             picanha bresaola short loin short ribs capicola fatback beef \
+             ribs corned beef ham hock.'
         )
-    ])
-));
+    )
+);
