@@ -1,29 +1,53 @@
+
+import { mount } from './mount';
+
 var cached = {};
 var cachedSVG = {};
 
 var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
 
-export function el (query, a, b, c) {
+export function el (query, a, b, c, d, e, f) {
+  var len = arguments.length;
+  var args;
+
+  if (len === 0) throw new Error('Must pass a query or a component!');
+
+  if (len > 7) {
+    args = new Array(len);
+    for (var i = 0; i < len; i++) {
+      args[i] = arguments[i];
+    }
+  }
+
   if (typeof query === 'function') {
     if (query.constructor) {
-
-    }
-    var len = arguments.length;
-
-    switch (len) {
-      case 1: return new query();
-      case 2: return new query(a);
-      case 3: return new query(a, b);
-      case 4: return new query(a, b, c);
+      // ?
     }
 
-    var args = new Array(len);
-    while (len--) args[len] = arguments[len];
-
-    return new (query.bind.apply(query, args));
+    return len === 1 ? new query()
+         : len === 2 ? new query(a)
+         : len === 3 ? new query(a, b)
+         : len === 4 ? new query(a, b, c)
+         : len === 5 ? new query(a, b, c, d)
+         : len === 6 ? new query(a, b, c, d, e)
+         : len === 7 ? new query(a, b, c, d, e, f)
+         : new (query.bind.apply(query, args));
   }
 
   var element = createElement(query);
+
+  return len === 1 ? expand(element)
+       : len === 2 ? expand(element, a)
+       : len === 3 ? expand(element, a, b)
+       : len === 4 ? expand(element, a, b, c)
+       : len === 5 ? expand(element, a, b, c, d)
+       : len === 6 ? expand(element, a, b, c, d, e)
+       : len === 7 ? expand(element, a, b, c, d, e, f)
+       : (args[0] = element, expand.apply(this, args));
+}
+
+function expand (templateElement) {
+  var element = templateElement.cloneNode(false);
   var empty = true;
 
   for (var i = 1; i < arguments.length; i++) {
@@ -73,13 +97,13 @@ export function el (query, a, b, c) {
 }
 
 el.extend = function (query) {
-  return el.bind(this, query);
+  return expand.bind(this, createElement(query));
 }
 
 export function createElement (query, svg) {
   var cache = svg ? cachedSVG : cached;
 
-  if (query in cached) return cache[query].cloneNode(false);
+  if (query in cached) return cache[query];
 
   // query parsing magic by https://github.com/maciejhirsz
 
@@ -118,7 +142,5 @@ export function createElement (query, svg) {
   id && (el.id = id);
   className && (el.className = className);
 
-  cache[query] = el;
-
-  return el.cloneNode(false);
+  return cache[query] = el;
 }
