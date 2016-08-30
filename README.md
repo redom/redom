@@ -39,22 +39,16 @@ var mount = redom.mount;
 ```js
 import { el, view, on, mount } from 'redom';
 
-// Define element tags
-
-const form = el.extend('form');
-const input = el.extend('input');
-const button = el.extend('button');
-
 // Define component
 
 const login = view({
   init () {
-    this.el = form(
+    this.el = el('form',
       on({ submit: this.submit }),
 
-      this.email = input({ type: 'email' }),
-      this.pass = input({ type: 'pass' }),
-      this.submit = button({ text: 'Sign in' })
+      this.email = el('input', { type: 'email' }),
+      this.pass = el('input', { type: 'pass' }),
+      this.submit = el('button', { text: 'Sign in' })
     );
   },
   submit (e) {
@@ -72,18 +66,11 @@ mount(document.body, login());
 ```js
 import { el, list, mount } from 'redom';
 
-// Define element tags
-
-const table = el('table');
-const tbody = el('tbody');
-const tr = el('tr');
-const td = el('td');
-
 // Define components
 
 const Cell = view({
   init () {
-    this.el = td();
+    this.el = el('td');
   },
   update (data) {
     this.el.textContent = data;
@@ -92,7 +79,7 @@ const Cell = view({
 
 const Row = view({
   init () {
-    this.el = tr(
+    this.el = el('tr',
       this.cols = list(cell)
     );
   },
@@ -103,9 +90,9 @@ const Row = view({
 
 const Table = view({
   init () {
-    this.el = table(
-      tbody(
-        this.rows = list(row)
+    this.el = el('table',
+      el('tbody',
+        this.rows = list(Row)
       )
     );
   },
@@ -116,7 +103,7 @@ const Table = view({
 
 // Init the app
 
-const app = Table();
+const app = el(Table);
 
 // Mount to DOM
 
