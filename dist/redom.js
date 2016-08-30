@@ -14,6 +14,9 @@ function setChildren (parent, children) {
 
   for (var i = 0; i < children.length; i++) {
     var child = children[i];
+    if (!child) {
+      continue;
+    }
     var childEl = child.el || child;
 
     if (childEl === traverse) {
@@ -21,12 +24,12 @@ function setChildren (parent, children) {
       continue;
     }
 
-    mount(parent, child);
+    mount(parent, child, traverse);
   }
 
   while (traverse) {
     var next = traverse.nextSibling;
-    parentEl.removeChild(traverse);
+    unmount(parent, traverse.view || traverse);
     traverse = next;
   }
 }
@@ -42,18 +45,17 @@ function doMount (parent, child, before) {
 function mount (parent, child, before) {
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
+  var wasMounted = childEl.mounted;
 
   if (childEl.nodeType) {
     if (child !== childEl) {
       childEl.view = child;
     }
-    if (childEl.mounted) {
-      childEl.mounted = false;
-      child.unmount && child.unmount();
-      notifyUnmountDown(childEl);
+    if (wasMounted) {
+      child.remount && child.remount();
     }
     doMount(parentEl, childEl, before);
-    if (parentEl.mounted || document.contains(childEl)) {
+    if (!wasMounted && (parentEl.mounted || document.contains(childEl))) {
       childEl.mounted = true;
       child.mount && child.mount();
       notifyMountDown(childEl);
@@ -72,14 +74,14 @@ function mount (parent, child, before) {
   return false;
 }
 
-function unmount (parent, child) {
+function unmount$1 (parent, child) {
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
 
   parentEl.removeChild(childEl);
 
   childEl.mounted = false;
-  childEl.unmount && childEl.unmount();
+  child.unmount && child.unmount();
   notifyUnmountDown(childEl);
 }
 
@@ -280,6 +282,8 @@ List.prototype.update = function (data) {
       var id = typeof key === 'function' ? key(item) : item[key];
       var view = lookup[id] || (lookup[id] = new View(initData, item, i));
 
+      view.update && view.update(item);
+
       views[i] = view;
       lookup[id] = view;
     }
@@ -293,19 +297,11 @@ List.prototype.update = function (data) {
     for (var i = 0; i < data.length; i++) {
       var item = data[i];
       var view = views[i] || (views[i] = new View(initData, item, i));
-
-      views[i] = view;
+      view.update && view.update(item);
     }
     for (var i = data.length; i < views.length; i++) {
       views[i] = null;
     }
-  }
-
-  for (var i = 0; i < views.length; i++) {
-    var item = data[i];
-    var view = views[i];
-
-    view.update && view.update(item);
   }
 
   views.length = data.length;
@@ -381,7 +377,7 @@ exports.el = el;
 exports.list = list;
 exports.List = List;
 exports.mount = mount;
-exports.unmount = unmount;
+exports.unmount = unmount$1;
 exports.on = on;
 exports.text = text;
 exports.setChildren = setChildren;
