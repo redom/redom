@@ -1,55 +1,20 @@
-var cached = {};
-var clones = {};
 
-import { createElement } from './el';
+import { expand, createElement } from './expand';
 
-export function svg (query) {
-  var clone = clones[query] || (clones[query] = createElement(query, true));
-  var element = clone.cloneNode(false);
-  var empty = true;
+var svgContext = {
+  cache: {},
+  expand: expand,
+  createElement: createElement,
+  allowBareProps: false,
+  allowComponents: false,
 
-  for (var i = 1; i < arguments.length; i++) {
-    var arg = arguments[i];
-
-    if (arg == null) continue;
-
-    if (typeof arg === 'function') {
-      arg = arg(element);
-    }
-
-    if (empty && (arg === String || arg === Number)) {
-      element.textContent = arg;
-      empty = false;
-      continue;
-    }
-
-    if (arg == null) continue;
-
-    if (mount(element, arg)) {
-      empty = false;
-      continue;
-    }
-
-    for (var attr in arg) {
-      if (attr === 'style') {
-        var elementStyle = element.style;
-        var style = arg.style;
-        if (typeof style !== 'string') {
-          for (var key in style) {
-            elementStyle[key] = style[key];
-          }
-        } else {
-          element.setAttribute(attr, arg[attr]);
-        }
-      } else {
-        element.setAttribute(attr, arg[attr]);
-      }
-    }
+  createTag: function (tag) {
+    return document.createElementNS('http://www.w3.org/2000/svg', tag);
   }
+};
 
-  return element;
-}
+export var svg = expand.bind(svgContext);
 
 svg.extend = function (query) {
-  return svg.bind(this, query);
+  return expand.bind(this, svgContext.createElement(query));
 }
