@@ -11,11 +11,8 @@ var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/
 
 function el (query) {
   if (typeof query === 'function') {
-    // called with el(Component)
-
     var len = arguments.length - 1;
 
-    // call immediately when no arguments provided
     if (!len) {
       return query();
     }
@@ -28,63 +25,49 @@ function el (query) {
       args[i] = arguments[i + 1];
     }
 
-    // Component(...args)
     return query.apply(this, args);
   }
 
-  // create element with query provided (defaults to 'div')
   var element = createElement(query);
   var empty = true;
 
   for (var i = 1; i < arguments.length; i++) {
-    // loop through arguments starting from 1 (query is 0)
     var arg = arguments[i];
 
-    // skip null arguments
     if (arg == null) continue;
 
     if (typeof arg === 'function') {
-      // call function argument
       arg = arg(element);
     }
 
     if (empty && (typeof arg === 'string' || typeof arg === 'number')) {
-      // append first string or number as textContent
       element.textContent = arg;
       empty = false;
       continue;
     }
 
     if (mount(element, arg)) {
-      // argument was mountable
       empty = false;
       continue;
     }
 
     if (typeof arg === 'object') {
-      // argument is an object
       for (var attr in arg) {
-        // going though keys
         var value = arg[attr];
 
-        // parse style values differently
         if (attr === 'style') {
-          // if string, setAttribute instead of property
           if (typeof value === 'string') {
             element.setAttribute(attr, value);
           } else {
             var elementStyle = element.style;
 
-            // if object, go through style keys and set element.style[key] accordingly
             for (var key in value) {
               elementStyle[key] = value[key];
             }
           }
         } else if (attr in element) {
-          // set property
           element[attr] = arg[attr];
         } else {
-          // set attribute
           element.setAttribute(attr, arg[attr]);
         }
       }
@@ -99,10 +82,8 @@ el.extend = function (query) {
 }
 
 function createElement (query, svg) {
-  // choose cache to use
   var cache = svg ? cachedSVG : cached;
 
-  // if element already created with the query, use it:
   if (query in cached) return cache[query].cloneNode(false);
 
   // query parsing magic by https://github.com/maciejhirsz
@@ -137,17 +118,13 @@ function createElement (query, svg) {
     }
   }
 
-  // create SVG or HTML element
   var el = svg ? createSVG(tag) : document.createElement(tag);
 
-  // set id + classNames
   id && (el.id = id);
   className && (el.className = className);
 
-  // save to cache
   cache[query] = el;
 
-  // return cloned
   return el.cloneNode(false);
 }
 
