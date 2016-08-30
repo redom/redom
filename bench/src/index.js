@@ -2,14 +2,25 @@
 import { bench } from './bench.js';
 import { el } from '../../src/index.js';
 
+bench('REDOM <div> with el()', function() {
+    el('div',
+        el('h1.redom', 'Hello ', el('b', 'RE:DOM'), '!'),
+        el('p',
+            'Bacon ipsum dolor amet meatloaf meatball shank porchetta \
+             picanha bresaola short loin short ribs capicola fatback beef \
+             ribs corned beef ham hock.'
+        )
+    )
+});
+
 var div = el.extend('div');
-var redomH1 = el.extend('h1.redom');
+var header = el.extend('h1.redom');
 var b = el.extend('b');
 var p = el.extend('p');
 
-bench('REDOM <div> with multiple child nodes', function() {
+bench('REDOM <div> with precached elements', function() {
     div(
-        redomH1('Hello ', b('RE:DOM'), '!'),
+        header('Hello ', b('RE:DOM'), '!'),
         p(
             'Bacon ipsum dolor amet meatloaf meatball shank porchetta \
              picanha bresaola short loin short ribs capicola fatback beef \
@@ -20,7 +31,7 @@ bench('REDOM <div> with multiple child nodes', function() {
 
 console.log('REDOM',
     div(
-        redomH1('Hello ', b('RE:DOM'), '!'),
+        header('Hello ', b('RE:DOM'), '!'),
         p(
             'Bacon ipsum dolor amet meatloaf meatball shank porchetta \
              picanha bresaola short loin short ribs capicola fatback beef \
