@@ -1,53 +1,42 @@
-var cached = {};
-var clones = {};
 
-import { createElement } from './el';
+import { expand, createElement } from './expand';
 
-export function svg (query) {
-  var clone = clones[query] || (clones[query] = createElement(query, true));
-  var element = clone.cloneNode(false);
-  var empty = true;
+var svgContext = {
+  cache: {},
+  expand: expand,
+  createElement: createElement,
+  allowBareProps: false,
 
-  for (var i = 1; i < arguments.length; i++) {
-    var arg = arguments[i];
+  createTag: function (tag) {
+    return document.createElementNS('http://www.w3.org/2000/svg', tag);
+  }
+};
 
-    if (arg == null) continue;
+export function svg (query, a, b, c, d, e, f) {
+  var len = arguments.length;
+  var args;
 
-    if (typeof arg === 'function') {
-      arg = arg(element);
-    }
+  if (len === 0) throw new Error('Must pass a query!');
 
-    if (empty && (arg === String || arg === Number)) {
-      element.textContent = arg;
-      empty = false;
-      continue;
-    }
-
-    if (mount(element, arg)) {
-      empty = false;
-      continue;
-    }
-
-    for (var attr in arg) {
-      if (attr === 'style') {
-        var elementStyle = element.style;
-        var style = arg.style;
-        if (typeof style !== 'string') {
-          for (var key in style) {
-            elementStyle[key] = style[key];
-          }
-        } else {
-          element.setAttribute(attr, arg[attr]);
-        }
-      } else {
-        element.setAttribute(attr, arg[attr]);
-      }
+  if (len > 7) {
+    args = new Array(len);
+    for (var i = 0; i < len; i++) {
+      args[i] = arguments[i];
     }
   }
 
-  return element;
+  var element = svgContext.createElement(query);
+
+  return len === 1 ? svgContext.expand(element)
+       : len === 2 ? svgContext.expand(element, a)
+       : len === 3 ? svgContext.expand(element, a, b)
+       : len === 4 ? svgContext.expand(element, a, b, c)
+       : len === 5 ? svgContext.expand(element, a, b, c, d)
+       : len === 6 ? svgContext.expand(element, a, b, c, d, e)
+       : len === 7 ? svgContext.expand(element, a, b, c, d, e, f)
+       : (args[0] = element, expand.apply(this, args));
 }
 
 svg.extend = function (query) {
-  return svg.bind(this, query);
+  return expand.bind(this, svgContext.createElement(query));
 }
