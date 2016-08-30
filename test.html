@@ -25,6 +25,7 @@
 
       var circle = el(Circle, { a: 1, b: 2 });
 
+      mount(document.body, el('h1', 'Hello world!', { style: { color: 'red' }}));
       mount(document.body, svg('svg', circle));
 
       circle.update({

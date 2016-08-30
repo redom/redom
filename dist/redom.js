@@ -5,64 +5,86 @@
 }(this, (function (exports) { 'use strict';
 
 var cached = {};
+var cachedSVG = {};
 
 var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
 
 function el (query) {
+  // check if called with el(Component):
   if (typeof query === 'function') {
     var len = arguments.length - 1;
 
+    // call immediately when no arguments provided
     if (!len) {
       return query();
     }
 
+    // arguments' optimization
+    // (https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments)
     var args = new Array(len);
 
     for (var i = 0; i < len; i++) {
       args[i] = arguments[i + 1];
     }
 
+    // call Component(...args)
     return query.apply(this, args);
   }
 
+  // create element with query provided (defaults to 'div')
   var element = createElement(query);
   var empty = true;
 
+  // go through arguments
   for (var i = 1; i < arguments.length; i++) {
     var arg = arguments[i];
 
+    // skip null arguments
     if (arg == null) continue;
 
+    // call function arguments
     if (typeof arg === 'function') {
       arg = arg(element);
     }
 
-    if (empty && (typeof arg !== 'object')) {
+    // append strings and numbers as textContent
+    if (empty && (typeof arg === 'string' || typeof arg === 'number')) {
       element.textContent = arg;
       empty = false;
       continue;
     }
 
+    // try to mount argument
     if (mount(element, arg)) {
       empty = false;
       continue;
     }
 
-    for (var attr in arg) {
-      var value = arg[attr];
-      if (attr === 'style') {
-        var elementStyle = element.style;
-        if (typeof value === 'string') {
-          element.setAttribute(attr, value);
-        } else {
-          for (var key in value) {
-            elementStyle[key] = value[key];
+    // go through object argument
+    if (typeof arg === 'object') {
+      for (var attr in arg) {
+        var value = arg[attr];
+
+        // parse style values differently
+        if (attr === 'style') {
+          // if string, setAttribute instead of property
+          if (typeof value === 'string') {
+            element.setAttribute(attr, value);
+          } else {
+            var elementStyle = element.style;
+
+            // if object, go through style keys and set element.style[key] accordingly
+            for (var key in value) {
+              elementStyle[key] = value[key];
+            }
           }
+        } else if (attr in element) {
+          // set property
+          element[attr] = arg[attr];
+        } else {
+          // set attribute
+          element.setAttribute(attr, arg[attr]);
         }
-      } else if (attr in element) {
-        element[attr] = arg[attr];
-      } else {
-        element.setAttribute(attr, arg[attr]);
       }
     }
   }
@@ -75,7 +97,9 @@ el.extend = function (query) {
 }
 
 function createElement (query, svg) {
-  if (query in cached) return cached[query].cloneNode(false);
+  var cache = svg ? cachedSVG : cached;
+  // if element already created with the query, use it:
+  if (query in cached) return cache[query].cloneNode(false);
 
   var tag, id, className;
 
@@ -112,7 +136,7 @@ function createElement (query, svg) {
   id && (el.id = id);
   className && (el.className = className);
 
-  cached[query] = el;
+  cache[query] = el;
 
   return el.cloneNode(false);
 }
