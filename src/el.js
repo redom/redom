@@ -8,20 +8,17 @@ export function el (query, a, b, c) {
     if (query.constructor) {
 
     }
-    var len = arguments.length - 1;
+    var len = arguments.length;
 
     switch (len) {
-      case 0: return new query();
-      case 1: return new query(a);
-      case 2: return new query(a, b);
-      case 3: return new query(a, b, c);
+      case 1: return new query();
+      case 2: return new query(a);
+      case 3: return new query(a, b);
+      case 4: return new query(a, b, c);
     }
 
     var args = new Array(len);
-    var i = 0;
-    while (i < len) {
-      args[i] = arguments[++i];
-    }
+    while (len--) args[len] = arguments[len];
 
     return new (query.bind.apply(query, args));
   }
