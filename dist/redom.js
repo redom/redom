@@ -9,20 +9,21 @@ var cachedSVG = {};
 
 var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
 
-function el (query) {
+function el (query, a, b, c) {
   if (typeof query === 'function') {
     var len = arguments.length - 1;
 
-    if (!len) {
-      return query();
+    switch (len) {
+      case 0: return query();
+      case 1: return query(a);
+      case 2: return query(a, b);
+      case 3: return query(a, b, c);
     }
 
-    // arguments' optimization
-    // (https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments)
     var args = new Array(len);
-
-    for (var i = 0; i < len; i++) {
-      args[i] = arguments[i + 1];
+    var i = 0;
+    while (i < len) {
+      args[i] = arguments[++i];
     }
 
     return query.apply(this, args);
@@ -140,13 +141,18 @@ function doMount (parent, child, before) {
 
 function mount$1 (parent, child, before) {
   var parentEl = parent.el || parent;
-  var childEl = child.el || child;
-  var type = child && child.constructor;
 
-  if (type === String || type === Number) {
+  if (child == null) {
+    return;
+  }
+
+  var childEl = child.el || child;
+  var childType = typeof ChildEl;
+
+  if (childType === 'string' || childType === 'number') {
     doMount(parentEl, text(child), before);
     return true;
-  } else if (type === Array) {
+  } else if (child.length) {
     for (var i = 0; i < child.length; i++) {
       mount$1(parentEl, child[i], before);
     }
@@ -210,6 +216,17 @@ function notifyUnmountDown (child) {
   }
 }
 
+function on (eventHandlers) {
+  return function (el) {
+    for (var key in eventHandlers) {
+      el.addEventListener(key, function (e) {
+        eventHandlers[key].call(el.view, e);
+      });
+    }
+    return;
+  }
+}
+
 var clones = {};
 
 function svg (query) {
@@ -226,8 +243,6 @@ function svg (query) {
       arg = arg(element);
     }
 
-    var type = arg.constructor;
-
     if (empty && (arg === String || arg === Number)) {
       element.textContent = arg;
       empty = false;
@@ -243,7 +258,7 @@ function svg (query) {
       if (attr === 'style') {
         var elementStyle = element.style;
         var style = arg.style;
-        if (style.constructor !== String) {
+        if (typeof style !== 'string') {
           for (var key in style) {
             elementStyle[key] = style[key];
           }
@@ -264,20 +279,30 @@ svg.extend = function (query) {
 }
 
 function view (proto) {
-  return function () {
+  return function (a, b, c) {
     var view = Object.create(proto);
 
     var len = arguments.length;
 
-    if (!len) {
-      proto.init.call(view);
-      return view;
+    switch (len) {
+      case 0:
+        proto.init.call(view);
+        return view;
+      case 1:
+        proto.init.call(view, a);
+        return view;
+      case 2:
+        proto.init.call(view, a, b);
+        return view;
+      case 3:
+        proto.init.call(view, a, b, c);
+        return view;
     }
 
     var args = new Array(len);
-
-    for (var i = 0; i < len; i++) {
-      args[i] = arguments[i];
+    var i = 0;
+    while (i < len) {
+      args[i] = arguments[++i];
     }
 
     proto.init.apply(view, args);
@@ -290,6 +315,7 @@ exports.el = el;
 exports.createElement = createElement;
 exports.mount = mount$1;
 exports.unmount = unmount;
+exports.on = on;
 exports.text = text;
 exports.svg = svg;
 exports.view = view;
