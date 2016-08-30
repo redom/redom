@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <script src="dist/redom.min.js"></script>
+    <script src="dist/redom.js"></script>
     <script>
-      var { el, svg, mount, unmount, view } = redom;
+      var { el, svg, on, mount, unmount, view } = redom;
 
       var Circle = view({
         init (params) {
-          this.el = svg('circle');
+          this.el = svg('circle',
+            on({ click: this.click })
+          );
           console.log(params);
         },
         update ({ x, y, r }) {
@@ -20,6 +22,9 @@
         },
         unmount () {
           console.log('unmounted');
+        },
+        click (e) {
+          console.log(this, e);
         }
       });
 

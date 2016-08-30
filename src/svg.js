@@ -17,8 +17,6 @@ export function svg (query) {
       arg = arg(element);
     }
 
-    var type = arg.constructor;
-
     if (empty && (arg === String || arg === Number)) {
       element.textContent = arg;
       empty = false;
@@ -34,7 +32,7 @@ export function svg (query) {
       if (attr === 'style') {
         var elementStyle = element.style;
         var style = arg.style;
-        if (style.constructor !== String) {
+        if (typeof style !== 'string') {
           for (var key in style) {
             elementStyle[key] = style[key];
           }

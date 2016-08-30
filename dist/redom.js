@@ -141,13 +141,18 @@ function doMount (parent, child, before) {
 
 function mount$1 (parent, child, before) {
   var parentEl = parent.el || parent;
-  var childEl = child.el || child;
-  var type = child && child.constructor;
 
-  if (type === String || type === Number) {
+  if (child == null) {
+    return;
+  }
+
+  var childEl = child.el || child;
+  var childType = typeof ChildEl;
+
+  if (childType === 'string' || childType === 'number') {
     doMount(parentEl, text(child), before);
     return true;
-  } else if (type === Array) {
+  } else if (child.length) {
     for (var i = 0; i < child.length; i++) {
       mount$1(parentEl, child[i], before);
     }
@@ -211,6 +216,17 @@ function notifyUnmountDown (child) {
   }
 }
 
+function on (eventHandlers) {
+  return function (el) {
+    for (var key in eventHandlers) {
+      el.addEventListener(key, function (e) {
+        eventHandlers[key].call(el.view, e);
+      });
+    }
+    return;
+  }
+}
+
 var clones = {};
 
 function svg (query) {
@@ -227,8 +243,6 @@ function svg (query) {
       arg = arg(element);
     }
 
-    var type = arg.constructor;
-
     if (empty && (arg === String || arg === Number)) {
       element.textContent = arg;
       empty = false;
@@ -244,7 +258,7 @@ function svg (query) {
       if (attr === 'style') {
         var elementStyle = element.style;
         var style = arg.style;
-        if (style.constructor !== String) {
+        if (typeof style !== 'string') {
           for (var key in style) {
             elementStyle[key] = style[key];
           }
@@ -301,6 +315,7 @@ exports.el = el;
 exports.createElement = createElement;
 exports.mount = mount$1;
 exports.unmount = unmount;
+exports.on = on;
 exports.text = text;
 exports.svg = svg;
 exports.view = view;

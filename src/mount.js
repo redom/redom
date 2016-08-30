@@ -11,13 +11,18 @@ function doMount (parent, child, before) {
 
 export function mount (parent, child, before) {
   var parentEl = parent.el || parent;
-  var childEl = child.el || child;
-  var type = child && child.constructor;
 
-  if (type === String || type === Number) {
+  if (child == null) {
+    return;
+  }
+
+  var childEl = child.el || child;
+  var childType = typeof ChildEl;
+
+  if (childType === 'string' || childType === 'number') {
     doMount(parentEl, text(child), before);
     return true;
-  } else if (type === Array) {
+  } else if (child.length) {
     for (var i = 0; i < child.length; i++) {
       mount(parentEl, child[i], before);
     }
