@@ -11,13 +11,16 @@ var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/
 
 function el (query, a, b, c) {
   if (typeof query === 'function') {
+    if (query.constructor) {
+
+    }
     var len = arguments.length - 1;
 
     switch (len) {
-      case 0: return query();
-      case 1: return query(a);
-      case 2: return query(a, b);
-      case 3: return query(a, b, c);
+      case 0: return new query();
+      case 1: return new query(a);
+      case 2: return new query(a, b);
+      case 3: return new query(a, b, c);
     }
 
     var args = new Array(len);
@@ -26,7 +29,7 @@ function el (query, a, b, c) {
       args[i] = arguments[++i];
     }
 
-    return query.apply(this, args);
+    return new (query.bind.apply(query, args));
   }
 
   var element = createElement(query);
@@ -41,7 +44,7 @@ function el (query, a, b, c) {
       arg = arg(element);
     }
 
-    if (empty && (typeof arg === 'string' || typeof arg === 'number')) {
+    if (empty && (typeof arg === 'string' || typeof arg === 'number')) {
       element.textContent = arg;
       empty = false;
       continue;
@@ -133,7 +136,7 @@ var text = document.createTextNode.bind(document);
 
 function doMount (parent, child, before) {
   if (before) {
-    parent.insertBefore(child, before.el || before);
+    parent.insertBefore(child, before.el || before);
   } else {
     parent.appendChild(child);
   }
@@ -146,11 +149,15 @@ function mount$1 (parent, child, before) {
     return;
   }
 
-  var childEl = child.el || child;
+  var childEl = child.el || child;
   var childType = typeof ChildEl;
 
   if (childType === 'string' || childType === 'number') {
     doMount(parentEl, text(child), before);
+    return true;
+  } else if (child.views) {
+    child.parent = parent;
+    setChildren(parentEl, child.views);
     return true;
   } else if (child.length) {
     for (var i = 0; i < child.length; i++) {
@@ -178,8 +185,8 @@ function mount$1 (parent, child, before) {
 }
 
 function unmount (parent, child) {
-  var parentEl = parent.el || parent;
-  var childEl = child.el || child;
+  var parentEl = parent.el || parent;
+  var childEl = child.el || child;
 
   parentEl.removeChild(childEl);
 
@@ -216,15 +223,105 @@ function notifyUnmountDown (child) {
   }
 }
 
+function setChildren (parent, children) {
+  var parentEl = parent.el || parent;
+  var traverse = parentEl.firstChild;
+
+  for (var i = 0; i < children.length; i++) {
+    var child = children[i];
+    var childEl = child.el || child;
+
+    if (childEl === traverse) {
+      traverse = traverse.nextSibling;
+      continue;
+    }
+
+    mount$1(parent, child);
+  }
+
+  while (traverse) {
+    var next = traverse.nextSibling;
+    parentEl.removeChild(traverse);
+    traverse = next;
+  }
+}
+
+function list (View, key, initData) {
+  return new List(View, key, initData);
+}
+
+function List(View, key, initData) {
+  this.View = View;
+  this.key = key;
+  this.initData = initData;
+  this.views = [];
+
+  if (key) {
+    this.lookup = {};
+  }
+}
+
+List.prototype.update = function (data) {
+  var View = this.View;
+  var key = this.key;
+  var initData = this.initData;
+  var views = this.views;
+  var parent = this.parent;
+
+  if (key) {
+    var lookup = this.lookup;
+
+    for (var i = 0; i < data.length; i++) {
+      var item = data[i];
+      var id = typeof key === 'function' ? key(item) : item[key];
+      var view = lookup[id] || (lookup[id] = new View(initData, item, i));
+
+      views[i] = view;
+      lookup[id] = view;
+    }
+    for (var i = data.length; i < views.length; i++) {
+      var id = typeof key === 'function' ? key(item) : item[key];
+
+      lookup[id] = null;
+      views[i] = null;
+    }
+  } else {
+    for (var i = 0; i < data.length; i++) {
+      var item = data[i];
+      var view = views[i] || (views[i] = new View(initData, item, i));
+
+      views[i] = view;
+    }
+    for (var i = data.length; i < views.length; i++) {
+      views[i] = null;
+    }
+  }
+
+  for (var i = 0; i < views.length; i++) {
+    var item = data[i];
+    var view = views[i];
+
+    view.update && view.update(item);
+  }
+
+  views.length = data.length;
+
+  parent && setChildren(parent, views);
+}
+
 function on (eventHandlers) {
   return function (el) {
     for (var key in eventHandlers) {
-      el.addEventListener(key, function (e) {
-        eventHandlers[key].call(el.view, e);
-      });
+      addHandler(el, key, eventHandlers[key]);
     }
     return;
   }
+}
+
+function addHandler (el, key, handler) {
+  el.addEventListener(key, function (e) {
+    handler.call(el.view, e);
+  });
 }
 
 var clones = {};
@@ -279,33 +376,24 @@ svg.extend = function (query) {
 }
 
 function view (proto) {
-  return function (a, b, c) {
+  return function (a, b, c, d) {
     var view = Object.create(proto);
-
     var len = arguments.length;
 
     switch (len) {
-      case 0:
-        proto.init.call(view);
-        return view;
-      case 1:
-        proto.init.call(view, a);
-        return view;
-      case 2:
-        proto.init.call(view, a, b);
-        return view;
-      case 3:
-        proto.init.call(view, a, b, c);
-        return view;
+      case 0: proto.init.call(view); break;
+      case 1: proto.init.call(view, a); break;
+      case 2: proto.init.call(view, a, b); break;
+      case 3: proto.init.call(view, a, b, c); break;
+      
+      default:
+        var args = new Array(len);
+        var i = 0;
+        while (i < len) {
+          proto.init.apply(view, args);
+        }
+      break;
     }
-
-    var args = new Array(len);
-    var i = 0;
-    while (i < len) {
-      args[i] = arguments[++i];
-    }
-
-    proto.init.apply(view, args);
 
     return view;
   }
@@ -313,10 +401,13 @@ function view (proto) {
 
 exports.el = el;
 exports.createElement = createElement;
+exports.list = list;
+exports.List = List;
 exports.mount = mount$1;
 exports.unmount = unmount;
 exports.on = on;
 exports.text = text;
+exports.setChildren = setChildren;
 exports.svg = svg;
 exports.view = view;
 
