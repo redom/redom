@@ -1,10 +1,10 @@
 var cached = {};
 var clones = {};
 
-import { createClone } from './el';
+import { createElement } from './el';
 
 export function svg (query) {
-  var clone = clones[query] || (clones[query] = createClone(query, true));
+  var clone = clones[query] || (clones[query] = createElement(query, true));
   var element = clone.cloneNode(false);
   var empty = true;
 

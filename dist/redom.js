@@ -10,7 +10,7 @@ var clones = {};
 var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
 
 function el (query) {
-  var clone = clones[query] || (clones[query] = createClone(query));
+  var clone = clones[query] || (clones[query] = createElement(query));
   var element = clone.cloneNode(false);
   var empty = true;
 
@@ -62,7 +62,7 @@ el.extend = function (query) {
   return el.bind(this, query);
 }
 
-function createClone (query, svg) {
+function createElement (query, svg) {
   if (query in cached) return cached[query];
 
   var tag, id, className;
@@ -139,7 +139,7 @@ function mount$1 (parent, child, before) {
 var clones$1 = {};
 
 function svg (query) {
-  var clone = clones$1[query] || (clones$1[query] = createClone(query, true));
+  var clone = clones$1[query] || (clones$1[query] = createElement(query, true));
   var element = clone.cloneNode(false);
   var empty = true;
 
@@ -190,7 +190,7 @@ svg.extend = function (query) {
 }
 
 exports.el = el;
-exports.createClone = createClone;
+exports.createElement = createElement;
 exports.mount = mount$1;
 exports.text = text;
 exports.svg = svg;

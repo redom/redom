@@ -4,7 +4,7 @@ var clones = {};
 var createSVG = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
 
 export function el (query) {
-  var clone = clones[query] || (clones[query] = createClone(query));
+  var clone = clones[query] || (clones[query] = createElement(query));
   var element = clone.cloneNode(false);
   var empty = true;
 
@@ -56,7 +56,7 @@ el.extend = function (query) {
   return el.bind(this, query);
 }
 
-export function createClone (query, svg) {
+export function createElement (query, svg) {
   if (query in cached) return cached[query];
 
   var tag, id, className;
