@@ -43,7 +43,7 @@ export function el (query, a, b, c, d, e, f) {
        : len === 5 ? expand(element, a, b, c, d)
        : len === 6 ? expand(element, a, b, c, d, e)
        : len === 7 ? expand(element, a, b, c, d, e, f)
-       : args[0] = element, expand.apply(this, args);
+       : (args[0] = element, expand.apply(this, args));
 }
 
 function expand (templateElement) {
