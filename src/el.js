@@ -49,12 +49,6 @@ function expand (templateElement) {
   for (var i = 1; i < arguments.length; i++) {
     var arg = arguments[i];
 
-    if (arg == null) continue;
-
-    if (typeof arg === 'function') {
-      arg = arg(element);
-    }
-
     if (typeof arg === 'string' || typeof arg === 'number') {
       if (empty) {
         element.textContent = arg;
@@ -65,12 +59,16 @@ function expand (templateElement) {
       continue;
     }
 
-    if (mount(element, arg)) {
-      empty = false;
-      continue;
+    if (typeof arg === 'function') {
+      arg = arg(element);
     }
 
-    if (typeof arg === 'object') {
+    // null guard before we attempt to mount
+    if (arg == null) continue;
+
+    if (mount(element, arg)) {
+      empty = false;
+    } else {
       for (var attr in arg) {
         var value = arg[attr];
 

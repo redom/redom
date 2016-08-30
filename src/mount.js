@@ -12,11 +12,6 @@ function doMount (parent, child, before) {
 
 export function mount (parent, child, before) {
   var parentEl = parent.el || parent;
-
-  if (child == null) {
-    return;
-  }
-
   var childEl = child.el || child;
 
   if (childEl.nodeType) {
