@@ -1,1 +1,3 @@
-export var text = document.createTextNode.bind(document);
+export function text (content) {
+  return document.createTextNode(content);
+}
