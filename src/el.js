@@ -15,7 +15,7 @@ export function el (query) {
       arg = arg(element);
     }
 
-    if (empty && (typeof arg !== 'object') {
+    if (empty && (typeof arg !== 'object')) {
       element.textContent = arg;
       empty = false;
       continue;
