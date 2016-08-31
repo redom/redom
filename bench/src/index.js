@@ -30,6 +30,14 @@ bench('REDOM <div> with precached elements', function() {
 });
 
 console.log('REDOM',
+    el('div',
+        el('h1.redom', 'Hello ', el('b', 'RE:DOM'), '!'),
+        el('p',
+            'Bacon ipsum dolor amet meatloaf meatball shank porchetta \
+             picanha bresaola short loin short ribs capicola fatback beef \
+             ribs corned beef ham hock.'
+        )
+    ),
     div(
         header('Hello ', b('RE:DOM'), '!'),
         p(
