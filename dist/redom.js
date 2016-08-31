@@ -34,14 +34,6 @@ function setChildren (parent, children) {
   }
 }
 
-function doMount (parent, child, before) {
-  if (before) {
-    parent.insertBefore(child, before.el || before);
-  } else {
-    parent.appendChild(child);
-  }
-}
-
 function mount (parent, child, before) {
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
@@ -54,7 +46,11 @@ function mount (parent, child, before) {
     if (wasMounted) {
       child.remount && child.remount();
     }
-    doMount(parentEl, childEl, before);
+    if (before) {
+      parentEl.insertBefore(childEl, before.el || before);
+    } else {
+      parentEl.appendChild(childEl);
+    }
     if (!wasMounted && (parentEl.mounted || document.contains(childEl))) {
       childEl.mounted = true;
       child.mount && child.mount();
@@ -109,79 +105,46 @@ function notifyUnmountDown (child) {
   }
 }
 
-function expand (source, a, b, c) {
-  var element;
-
-  if (source.nodeType) {
-    element = source.cloneNode(false);
-  } else if (typeof source === 'string') {
-    element = this.createElement(source).cloneNode(false);
-  } else if (this.allowComponents) {
-    var len = arguments.length;
-
-    switch (len) {
-      case 1: return new source();
-      case 2: return new source(a);
-      case 3: return new source(a, b);
-      case 4: return new source(a, b, c);
+function expand (element, arg, empty) {
+  if (typeof arg === 'string') {
+    if (empty) {
+      element.textContent = arg;
+    } else {
+      element.appendChild(document.createTextNode(arg));
     }
-
-    var args = new Array(len);
-    while (len--) args[len] = arguments[len];
-
-    return new (query.bind.apply(query, args));
-  } else {
-    throw new Error('Must pass a valid query or component!');
+    return false;
   }
 
-  var empty = true;
+  if (typeof arg === 'function') {
+    arg = arg(element);
+  }
 
-  for (var i = 1; i < arguments.length; i++) {
-    var arg = arguments[i];
+  // null guard before we attempt to mount
+  if (arg == null) return empty;
 
-    if (typeof arg === 'string' || typeof arg === 'number') {
-      if (empty) {
-        element.textContent = arg;
-        empty = false;
+  if (mount(element, arg)) return false;
+
+  for (var attr in arg) {
+    var value = arg[attr];
+
+    if (attr === 'style') {
+      if (typeof value === 'string') {
+        element.setAttribute(attr, value);
       } else {
-        element.appendChild(document.createTextNode(arg));
-      }
-      continue;
-    }
+        var elementStyle = element.style;
 
-    if (typeof arg === 'function') {
-      arg = arg(element);
-    }
-
-    // null guard before we attempt to mount
-    if (arg == null) continue;
-
-    if (mount(element, arg)) {
-      empty = false;
-    } else {
-      for (var attr in arg) {
-        var value = arg[attr];
-
-        if (attr === 'style') {
-          if (typeof value === 'string') {
-            element.setAttribute(attr, value);
-          } else {
-            var elementStyle = element.style;
-
-            for (var key in value) {
-              elementStyle[key] = value[key];
-            }
-          }
-        } else if (this.allowBareProps && attr in element) {
-          element[attr] = arg[attr];
-        } else {
-          element.setAttribute(attr, arg[attr]);
+        for (var key in value) {
+          elementStyle[key] = value[key];
         }
       }
+    } else if (this.allowBareProps && attr in element) {
+      element[attr] = arg[attr];
+    } else {
+      element.setAttribute(attr, arg[attr]);
     }
   }
 
-  return element;
+  return empty;
 }
 
 
@@ -242,11 +205,53 @@ var domContext = {
   }
 };
 
-var el = expand.bind(domContext);
+function el (query, a, b, c) {
+  if (typeof query === 'function') {
+    var len = arguments.length;
+
+    switch (len) {
+      case 1: return new query();
+      case 2: return new query(a);
+      case 3: return new query(a, b);
+      case 4: return new query(a, b, c);
+    }
+
+    var args = new Array(len);
+    while (len--) args[len] = arguments[len];
+
+    return new (query.bind.apply(query, args));
+  }
+
+  var element = domContext.createElement(query).cloneNode(false);
+  var empty = true;
+
+  for (var i = 1; i < arguments.length; i++) {
+    empty = domContext.expand(element, arguments[i], empty);
+  }
+
+  return element;
+}
+
+// export var el = expand.bind(domContext);
 
 el.extend = function (query) {
-  return expand.bind(domContext, domContext.createElement(query));
+  var templateElement = domContext.createElement(query);
+
+  return function() {
+    var element = templateElement.cloneNode(false);
+    var empty = true;
+
+    for (var i = 0; i < arguments.length; i++) {
+      empty = domContext.expand(element, arguments[i], empty);
+    }
+
+    return element;
+  }
 }
+
+// el.extend = function (query) {
+//   return expand.bind(domContext, domContext.createElement(query));
+// }
 
 function list (parent, View, key, initData) {
   return new List(parent, View, key, initData);
@@ -340,10 +345,30 @@ var svgContext = {
   }
 };
 
-var svg = expand.bind(svgContext);
+function svg (query) {
+  var element = svgContext.createElement(query).cloneNode(false);
+  var empty = true;
+
+  for (var i = 1; i < arguments.length; i++) {
+    empty = svgContext.expand(element, arguments[i], empty);
+  }
+
+  return element;
+}
 
 svg.extend = function (query) {
-  return expand.bind(this, svgContext.createElement(query));
+  var templateElement = svgContext.createElement(query);
+
+  return function() {
+    var element = templateElement.cloneNode(false);
+    var empty = true;
+
+    for (var i = 0; i < arguments.length; i++) {
+      empty = svgContext.expand(element, arguments[i], empty);
+    }
+
+    return element;
+  }
 }
 
 function view (proto) {
