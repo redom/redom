@@ -61,10 +61,6 @@ function mount (parent, child, before) {
       notifyMountDown(childEl);
     }
     return true;
-  } else if (child.views) {
-    child.parent = parent;
-    setChildren(parentEl, child.views);
-    return true;
   } else if (child.length) {
     for (var i = 0; i < child.length; i++) {
       mount(parent, child[i], before);
@@ -252,15 +248,16 @@ el.extend = function (query) {
   return expand.bind(domContext, domContext.createElement(query));
 }
 
-function list (View, key, initData) {
-  return new List(View, key, initData);
+function list (parent, View, key, initData) {
+  return new List(parent, View, key, initData);
 }
 
-function List(View, key, initData) {
+function List(parent, View, key, initData) {
   this.View = View;
   this.key = key;
   this.initData = initData;
   this.views = [];
+  this.el = typeof parent === 'string' ? el(parent) : parent;
 
   if (key) {
     this.lookup = {};
@@ -272,7 +269,7 @@ List.prototype.update = function (data) {
   var key = this.key;
   var initData = this.initData;
   var views = this.views;
-  var parent = this.parent;
+  var parent = this.el;
 
   if (key) {
     var lookup = this.lookup;
