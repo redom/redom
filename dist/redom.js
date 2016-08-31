@@ -193,7 +193,7 @@ function createElement (query, svg) {
   return cache[query] = el;
 }
 
-var domContext = {
+var htmlContext = {
   cache: {},
   expand: expand,
   createElement: createElement,
@@ -222,27 +222,27 @@ function el (query, a, b, c) {
     return new (query.bind.apply(query, args));
   }
 
-  var element = domContext.createElement(query).cloneNode(false);
+  var element = htmlContext.createElement(query).cloneNode(false);
   var empty = true;
 
   for (var i = 1; i < arguments.length; i++) {
-    empty = domContext.expand(element, arguments[i], empty);
+    empty = htmlContext.expand(element, arguments[i], empty);
   }
 
   return element;
 }
 
-// export var el = expand.bind(domContext);
+// export var el = expand.bind(htmlContext);
 
 el.extend = function (query) {
-  var templateElement = domContext.createElement(query);
+  var templateElement = htmlContext.createElement(query);
 
   return function() {
     var element = templateElement.cloneNode(false);
     var empty = true;
 
     for (var i = 0; i < arguments.length; i++) {
-      empty = domContext.expand(element, arguments[i], empty);
+      empty = htmlContext.expand(element, arguments[i], empty);
     }
 
     return element;
@@ -250,7 +250,7 @@ el.extend = function (query) {
 }
 
 // el.extend = function (query) {
-//   return expand.bind(domContext, domContext.createElement(query));
+//   return expand.bind(htmlContext, htmlContext.createElement(query));
 // }
 
 function list (parent, View, key, initData) {

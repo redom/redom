@@ -13,8 +13,9 @@ const exec = (cmd, args) => {
 const build = exec('npm', ['run', 'build']);
 const uglify = exec('npm', ['run', 'uglify']);
 
+build();
+
 chokidar.watch('src/**/*.js')
-  .on('add', build)
   .on('change', build)
   .on('unlink', build);
 
