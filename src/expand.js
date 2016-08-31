@@ -1,79 +1,46 @@
 
 import { mount } from './mount';
 
-export function expand (source, a, b, c) {
-  var element;
-
-  if (source.nodeType) {
-    element = source.cloneNode(false);
-  } else if (typeof source === 'string') {
-    element = this.createElement(source).cloneNode(false);
-  } else if (this.allowComponents) {
-    var len = arguments.length;
-
-    switch (len) {
-      case 1: return new source();
-      case 2: return new source(a);
-      case 3: return new source(a, b);
-      case 4: return new source(a, b, c);
+export function expand (element, arg, empty) {
+  if (typeof arg === 'string') {
+    if (empty) {
+      element.textContent = arg;
+    } else {
+      element.appendChild(document.createTextNode(arg));
     }
-
-    var args = new Array(len);
-    while (len--) args[len] = arguments[len];
-
-    return new (query.bind.apply(query, args));
-  } else {
-    throw new Error('Must pass a valid query or component!');
+    return false;
   }
 
-  var empty = true;
+  if (typeof arg === 'function') {
+    arg = arg(element);
+  }
 
-  for (var i = 1; i < arguments.length; i++) {
-    var arg = arguments[i];
+  // null guard before we attempt to mount
+  if (arg == null) return empty;
 
-    if (typeof arg === 'string' || typeof arg === 'number') {
-      if (empty) {
-        element.textContent = arg;
-        empty = false;
+  if (mount(element, arg)) return false;
+
+  for (var attr in arg) {
+    var value = arg[attr];
+
+    if (attr === 'style') {
+      if (typeof value === 'string') {
+        element.setAttribute(attr, value);
       } else {
-        element.appendChild(document.createTextNode(arg));
-      }
-      continue;
-    }
+        var elementStyle = element.style;
 
-    if (typeof arg === 'function') {
-      arg = arg(element);
-    }
-
-    // null guard before we attempt to mount
-    if (arg == null) continue;
-
-    if (mount(element, arg)) {
-      empty = false;
-    } else {
-      for (var attr in arg) {
-        var value = arg[attr];
-
-        if (attr === 'style') {
-          if (typeof value === 'string') {
-            element.setAttribute(attr, value);
-          } else {
-            var elementStyle = element.style;
-
-            for (var key in value) {
-              elementStyle[key] = value[key];
-            }
-          }
-        } else if (this.allowBareProps && attr in element) {
-          element[attr] = arg[attr];
-        } else {
-          element.setAttribute(attr, arg[attr]);
+        for (var key in value) {
+          elementStyle[key] = value[key];
         }
       }
+    } else if (this.allowBareProps && attr in element) {
+      element[attr] = arg[attr];
+    } else {
+      element.setAttribute(attr, arg[attr]);
     }
   }
 
-  return element;
+  return empty;
 }
 
 

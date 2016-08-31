@@ -2,14 +2,6 @@
 import { text } from './text';
 import { setChildren } from './setchildren';
 
-function doMount (parent, child, before) {
-  if (before) {
-    parent.insertBefore(child, before.el || before);
-  } else {
-    parent.appendChild(child);
-  }
-}
-
 export function mount (parent, child, before) {
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
@@ -23,7 +15,11 @@ export function mount (parent, child, before) {
       child.unmount && child.unmount();
       notifyUnmountDown(childEl);
     }
-    doMount(parentEl, childEl, before);
+    if (before) {
+      parentEl.insertBefore(childEl, before.el || before);
+    } else {
+      parentEl.appendChild(childEl);
+    }
     if (parentEl.mounted || document.contains(childEl)) {
       childEl.mounted = true;
       child.mount && child.mount();

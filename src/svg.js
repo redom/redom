@@ -13,8 +13,28 @@ var svgContext = {
   }
 };
 
-export var svg = expand.bind(svgContext);
+export function svg (query) {
+  var element = svgContext.createElement(query).cloneNode(false);
+  var empty = true;
+
+  for (var i = 1; i < arguments.length; i++) {
+    empty = svgContext.expand(element, arguments[i], empty);
+  }
+
+  return element;
+}
 
 svg.extend = function (query) {
-  return expand.bind(this, svgContext.createElement(query));
+  var templateElement = svgContext.createElement(query);
+
+  return function() {
+    var element = templateElement.cloneNode(false);
+    var empty = true;
+
+    for (var i = 0; i < arguments.length; i++) {
+      empty = svgContext.expand(element, arguments[i], empty);
+    }
+
+    return element;
+  }
 }
