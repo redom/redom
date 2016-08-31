@@ -92,7 +92,6 @@ mount(document.body, app);</pre>
         <pre>import { el, list, mount } from 'redom';
 
 // Define components
-
 const Cell = view({
   init () {
     this.el = el('td')
@@ -102,29 +101,13 @@ const Cell = view({
   }
 });
 
-const Row = view({
-  init () {
-    this.el = el('tr',
-      this.cols = list(Cell)
-    );
-  },
-  update (data) {
-    this.cols.update(data);
-  }
-});
+function Row () {
+  return list('tr', Cell);
+}
 
-const Table = view({
-  init () {
-    this.el = el('table',
-      this.rows = list(Row)
-    )
-  },
-  update (data) {
-    this.rows.update(data.tbody);
-  }
-})
-
-// Init the app
+function Table () {
+  return list('table', Row);
+}
 
 const app = el(Table);
 
@@ -134,11 +117,9 @@ mount(document.body, app);
 
 // update app
 
-app.update({
-  tbody: [
-    [ 1, 2, 3 ]
-  ]
-});</pre>
+app.update([
+    [ 1, 2, 3 ],
+]);</pre>
       </code>
       <p>
         <a onclick="toggleCode()">Another example</a>
