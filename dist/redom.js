@@ -257,7 +257,7 @@ function List(parent, View, key, initData) {
   this.key = key;
   this.initData = initData;
   this.views = [];
-  this.el = el(parent);
+  this.el = typeof parent === 'string' ? el(parent) : parent;
 
   if (key) {
     this.lookup = {};
