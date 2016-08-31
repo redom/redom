@@ -1,15 +1,17 @@
 
+import { el } from './el';
 import { setChildren } from './setchildren';
 
-export function list (View, key, initData) {
-  return new List(View, key, initData);
+export function list (parent, View, key, initData) {
+  return new List(parent, View, key, initData);
 }
 
-export function List(View, key, initData) {
+export function List(parent, View, key, initData) {
   this.View = View;
   this.key = key;
   this.initData = initData;
   this.views = [];
+  this.el = el(parent);
 
   if (key) {
     this.lookup = {};
@@ -21,7 +23,7 @@ List.prototype.update = function (data) {
   var key = this.key;
   var initData = this.initData;
   var views = this.views;
-  var parent = this.parent;
+  var parent = this.el;
 
   if (key) {
     var lookup = this.lookup;

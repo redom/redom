@@ -29,10 +29,6 @@ export function mount (parent, child, before) {
       notifyMountDown(childEl);
     }
     return true;
-  } else if (child.views) {
-    child.parent = parent;
-    setChildren(parentEl, child.views);
-    return true;
   } else if (child.length) {
     for (var i = 0; i < child.length; i++) {
       mount(parent, child[i], before);

@@ -58,19 +58,7 @@
           console.log('unmount', this.data.id);
         }
       });
-
-      var List = view({
-        init () {
-          this.el = el('ul',
-            this.list = list(Item, 'id')
-          )
-        },
-        update (data) {
-          this.list.update(data);
-        }
-      });
-
-      var app = el(List);
+      var app = list('ul', Item, 'id');
 
       mount(document.body, app);
 
