@@ -31,6 +31,8 @@ List.prototype.update = function (data) {
       var id = typeof key === 'function' ? key(item) : item[key];
       var view = lookup[id] || (lookup[id] = new View(initData, item, i));
 
+      view.update && view.update(item);
+
       views[i] = view;
       lookup[id] = view;
     }
@@ -44,19 +46,11 @@ List.prototype.update = function (data) {
     for (var i = 0; i < data.length; i++) {
       var item = data[i];
       var view = views[i] || (views[i] = new View(initData, item, i));
-
-      views[i] = view;
+      view.update && view.update(item);
     }
     for (var i = data.length; i < views.length; i++) {
       views[i] = null;
     }
-  }
-
-  for (var i = 0; i < views.length; i++) {
-    var item = data[i];
-    var view = views[i];
-
-    view.update && view.update(item);
   }
 
   views.length = data.length;

@@ -5,22 +5,21 @@ import { setChildren } from './setchildren';
 export function mount (parent, child, before) {
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
+  var wasMounted = childEl.mounted;
 
   if (childEl.nodeType) {
     if (child !== childEl) {
       childEl.view = child;
     }
-    if (childEl.mounted) {
-      childEl.mounted = false;
-      child.unmount && child.unmount();
-      notifyUnmountDown(childEl);
+    if (wasMounted) {
+      child.remount && child.remount();
     }
     if (before) {
       parentEl.insertBefore(childEl, before.el || before);
     } else {
       parentEl.appendChild(childEl);
     }
-    if (parentEl.mounted || document.contains(childEl)) {
+    if (!wasMounted && (parentEl.mounted || document.contains(childEl))) {
       childEl.mounted = true;
       child.mount && child.mount();
       notifyMountDown(childEl);
@@ -46,7 +45,7 @@ export function unmount (parent, child) {
   parentEl.removeChild(childEl);
 
   childEl.mounted = false;
-  childEl.unmount && childEl.unmount();
+  child.unmount && child.unmount();
   notifyUnmountDown(childEl);
 }
 

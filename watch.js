@@ -1,18 +1,22 @@
 const cp = require('child_process');
+const chokidar = require('chokidar');
 
 const exec = (cmd, args) => {
-  var child = cp.spawn(cmd, args)
+  return () => {
+    var child = cp.spawn(cmd, args)
 
-  child.stdout.pipe(process.stdout);
-  child.stderr.pipe(process.stderr);
+    child.stdout.pipe(process.stdout);
+    child.stderr.pipe(process.stderr);
+  }
 }
 
-const watch = (path, cmd) => {
-  exec('chokidar', [path, '-c', 'npm run ' + cmd]);
-  exec('chokidar',  [path, '-c', 'npm run ' + cmd]);
-}
+const build = exec('npm', ['run', 'build']);
+const uglify = exec('npm', ['run', 'uglify']);
 
-exec('npm', ['run', 'build']);
+chokidar.watch('src/**/*.js')
+  .on('add', build)
+  .on('change', build)
+  .on('unlink', build);
 
-watch('src/**/*.js', 'build');
-watch('dist/redom.js', 'uglify');
+chokidar.watch('dist/redom.js')
+  .on('change', uglify);
