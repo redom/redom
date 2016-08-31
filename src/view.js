@@ -1,24 +1,22 @@
 
-export function view (proto) {
-  return function (a, b, c, d) {
-    var view = Object.create(proto);
-    var len = arguments.length;
+import { mount } from './mount';
 
-    switch (len) {
-      case 0: proto.init.call(view); break;
-      case 1: proto.init.call(view, a); break;
-      case 2: proto.init.call(view, a, b); break;
-      case 3: proto.init.call(view, a, b, c); break;
-      
-      default:
-        var args = new Array(len);
-        var i = 0;
-        while (i < len) {
-          proto.init.apply(view, args);
-        }
-      break;
-    }
+export function View () {}
 
-    return view;
-  }
+View.prototype.on = function (type, handler) {
+  this.el.addEventListener(type, function (e) {
+    handler(e.detail, e);
+  });
+}
+
+View.prototype.dispatch = function (type, data) {
+  this.el.dispatchEvent(new CustomEvent(type, {
+    bubbles: true,
+    cancelable: true,
+    detail: data
+  }));
+}
+
+View.prototype.mount = function (parent) {
+  mount(parent, this);
 }

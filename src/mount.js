@@ -5,24 +5,22 @@ import { setChildren } from './setchildren';
 export function mount (parent, child, before) {
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
-  var wasMounted = childEl.mounted;
+  var wasMounted = childEl.isMounted;
 
   if (childEl.nodeType) {
     if (child !== childEl) {
       childEl.view = child;
-    }
-    if (wasMounted) {
-      child.remount && child.remount();
     }
     if (before) {
       parentEl.insertBefore(childEl, before.el || before);
     } else {
       parentEl.appendChild(childEl);
     }
-    if (!wasMounted && (parentEl.mounted || document.contains(childEl))) {
-      childEl.mounted = true;
-      child.mount && child.mount();
-      notifyMountDown(childEl);
+    if (wasMounted) {
+      child.remounted && child.remounted();
+    } else {
+      childEl.isMounted = true;
+      child.mounted && child.mounted();
     }
     return true;
   } else if (child.length) {
@@ -40,35 +38,6 @@ export function unmount (parent, child) {
 
   parentEl.removeChild(childEl);
 
-  childEl.mounted = false;
-  child.unmount && child.unmount();
-  notifyUnmountDown(childEl);
-}
-
-function notifyMountDown (child) {
-  var traverse = child.firstChild;
-
-  while (traverse) {
-    if (traverse.mounted) {
-      return;
-    }
-    traverse.mounted = true;
-    traverse.view && traverse.view.mount && traverse.view.mount();
-    notifyMountDown(traverse);
-    traverse = traverse.nextSibling;
-  }
-}
-
-function notifyUnmountDown (child) {
-  var traverse = child.firstChild;
-
-  while (traverse) {
-    if (!traverse.mounted) {
-      return;
-    }
-    traverse.mounted = false;
-    traverse.view && traverse.view.unmount && traverse.view.unmount();
-    notifyUnmountDown(traverse);
-    traverse = traverse.nextSibling;
-  }
+  childEl.isMounted = false;
+  child.unmounted && child.unmounted();
 }

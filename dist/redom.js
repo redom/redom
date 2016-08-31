@@ -37,24 +37,22 @@ function setChildren (parent, children) {
 function mount (parent, child, before) {
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
-  var wasMounted = childEl.mounted;
+  var wasMounted = childEl.isMounted;
 
   if (childEl.nodeType) {
     if (child !== childEl) {
       childEl.view = child;
-    }
-    if (wasMounted) {
-      child.remount && child.remount();
     }
     if (before) {
       parentEl.insertBefore(childEl, before.el || before);
     } else {
       parentEl.appendChild(childEl);
     }
-    if (!wasMounted && (parentEl.mounted || document.contains(childEl))) {
-      childEl.mounted = true;
-      child.mount && child.mount();
-      notifyMountDown(childEl);
+    if (wasMounted) {
+      child.remounted && child.remounted();
+    } else {
+      childEl.isMounted = true;
+      child.mounted && child.mounted();
     }
     return true;
   } else if (child.length) {
@@ -72,37 +70,8 @@ function unmount$1 (parent, child) {
 
   parentEl.removeChild(childEl);
 
-  childEl.mounted = false;
-  child.unmount && child.unmount();
-  notifyUnmountDown(childEl);
-}
-
-function notifyMountDown (child) {
-  var traverse = child.firstChild;
-
-  while (traverse) {
-    if (traverse.mounted) {
-      return;
-    }
-    traverse.mounted = true;
-    traverse.view && traverse.view.mount && traverse.view.mount();
-    notifyMountDown(traverse);
-    traverse = traverse.nextSibling;
-  }
-}
-
-function notifyUnmountDown (child) {
-  var traverse = child.firstChild;
-
-  while (traverse) {
-    if (!traverse.mounted) {
-      return;
-    }
-    traverse.mounted = false;
-    traverse.view && traverse.view.unmount && traverse.view.unmount();
-    notifyUnmountDown(traverse);
-    traverse = traverse.nextSibling;
-  }
+  childEl.isMounted = false;
+  child.unmounted && child.unmounted();
 }
 
 function expand (element, arg, empty) {
@@ -371,28 +340,24 @@ svg.extend = function (query) {
   }
 }
 
-function view (proto) {
-  return function (a, b, c, d) {
-    var view = Object.create(proto);
-    var len = arguments.length;
+function View () {}
 
-    switch (len) {
-      case 0: proto.init.call(view); break;
-      case 1: proto.init.call(view, a); break;
-      case 2: proto.init.call(view, a, b); break;
-      case 3: proto.init.call(view, a, b, c); break;
-      
-      default:
-        var args = new Array(len);
-        var i = 0;
-        while (i < len) {
-          proto.init.apply(view, args);
-        }
-      break;
-    }
+View.prototype.on = function (type, handler) {
+  this.el.addEventListener(type, function (e) {
+    handler(e.detail, e);
+  });
+}
 
-    return view;
-  }
+View.prototype.dispatch = function (type, data) {
+  this.el.dispatchEvent(new CustomEvent(type, {
+    bubbles: true,
+    cancelable: true,
+    detail: data
+  }));
+}
+
+View.prototype.mount = function (parent) {
+  mount(parent, this);
 }
 
 exports.el = el;
@@ -404,7 +369,7 @@ exports.on = on;
 exports.text = text;
 exports.setChildren = setChildren;
 exports.svg = svg;
-exports.view = view;
+exports.View = View;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
