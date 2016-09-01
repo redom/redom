@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <script src="dist/redom.js"></script>
+    <script src="https://frzr.js.org/frzr.min.js"></script>
     <script>
-      const { el, list, mount } = redom;
+      const { el, list, mount } = frzr;
 
       const items = new Array(10000);
 
@@ -15,10 +15,12 @@
 
       class App {
         constructor () {
-          this.el = el('#app',
+          this.el = el('app', { id: 'app' },
             this.scriptingTime = el('p'),
-            this.reverse = el('button.reverse', 'Reverse'),
-            this.items = list('ul.items', Item, 'id')
+            this.reverse = el('button', { class: 'reverse' }, 'Reverse'),
+            el('div', { class: 'items' },
+              this.items = list(Item, 'id')
+            )
           )
         }
         update (data) {
@@ -34,7 +36,7 @@
 
       class Item {
         constructor () {
-          this.el = el('li.item')
+          this.el = el('li', { class: 'item' })
         }
         update (data) {
           this.el.textContent = data.title;
