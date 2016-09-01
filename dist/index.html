@@ -63,26 +63,24 @@
 
 // Define component
 
-const Login = view({
-  init () {
+class Login {
+  constructor () {
     this.el = el('form',
-      on({ submit: this.submit }),
-
       this.email = el('input', { type: 'email' }),
-      this.pass = el('input', { type: 'pass' }),
+      this.pass = el('input', { type: 'password' }),
       this.submit = el('button', 'Sign in')
     )
-  },
-  submit (e) {
-    e.preventDefault();
+    this.el.onsubmit = e => {
+      e.preventDefault();
 
-    console.log(this.email.value, this.pass.value);
+      console.log(this.email.value, this.pass.value);
+    }
   }
-})
+}
 
 // init "app"
 
-const app = el(Login);
+const app = new Login;
 
 // Mount to DOM
 
@@ -92,24 +90,21 @@ mount(document.body, app);</pre>
         <pre>import { el, list, mount } from 'redom';
 
 // Define components
-const Cell = view({
-  init () {
-    this.el = el('td')
-  },
+
+class Cell {
+  constructor () {
+    this.el = el('td');
+  }
   update (data) {
     this.el.textContent = data;
   }
-});
-
-function Row () {
-  return list('tr', Cell);
 }
 
-function Table () {
-  return list('table', Row);
-}
+const Row = list.extend('tr', Cell);
 
-const app = el(Table);
+const app = list('table',
+  Row
+);
 
 // Mount to DOM
 
@@ -118,7 +113,9 @@ mount(document.body, app);
 // update app
 
 app.update([
-    [ 1, 2, 3 ],
+  [ 1, 2, 3 ],
+  [ 4, 5, 6 ],
+  [ 7, 8, 9 ]
 ]);</pre>
       </code>
       <p>

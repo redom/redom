@@ -5,6 +5,8 @@ export function list (parent, View, key, initData) {
   return new List(parent, View, key, initData);
 }
 
+list.extend = List.extend;
+
 export function List(parent, View, key, initData) {
   this.View = View;
   this.key = key;
@@ -15,6 +17,10 @@ export function List(parent, View, key, initData) {
   if (key) {
     this.lookup = {};
   }
+}
+
+List.extend = function (parent, View, key, initData) {
+  return List.bind(List, parent, View, key, initData);
 }
 
 List.prototype.update = function (data) {
