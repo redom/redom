@@ -49,6 +49,8 @@ export function svg (query, a) {
           for (var cssKey in value) {
             element.style[cssKey] = value[cssKey];
           }
+        } else if (typeof value === 'function') {
+          element[key] = value;
         } else {
           element.setAttribute(key, value);
         }

@@ -67,7 +67,8 @@ export function el (query, a) {
               element.style[cssKey] = value[cssKey];
             }
           }
-        } else if (key in element) {
+          element[key] = value;
+        } else if (key in element || typeof value === 'function') {
           element[key] = value;
           if (key === 'autofocus') {
             element.focus();

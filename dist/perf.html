@@ -3,45 +3,48 @@
   <body>
     <script src="redom.min.js"></script>
     <script>
-      const { el, list, mount } = redom;
+      var el = redom.el;
+      var list = redom.list;
+      var mount = redom.mount;
 
-      const items = new Array(10000);
+      var items = new Array(10000);
 
-      for (let i = 0; i < items.length; i++) {
+      for (var i = 0; i < items.length; i++) {
         items[i] = { id: i, title: 'Item ' + i }
       }
 
-      const startTime = Date.now();
+      var startTime = Date.now();
 
-      class App {
-        constructor () {
-          this.el = el('#app',
-            this.scriptingTime = el('p'),
-            this.reverse = el('button.reverse', 'Reverse'),
-            this.items = list('ul.items', Item, 'id')
-          )
+      var liItem = el.extend('li.item');
+
+      function App () {
+        this.el = el('#app',
+          this.scriptingTime = el('p'),
+          this.reverse = el('button.reverse', 'Reverse'),
+          this.items = list('ul.items', Item, 'id')
+        )
+      }
+      App.prototype.update = function (data) {
+        var items = this.items;
+        var scriptingTime = this.scriptingTime;
+
+        this.reverse.onclick = function (e) {
+          data.reverse();
+          var startTime = Date.now();
+          items.update(data);
+          scriptingTime.textContent = 'Took: ' + (Date.now() - startTime) + 'ms';
         }
-        update (data) {
-          this.reverse.onclick = e => {
-            data.reverse();
-            const startTime = Date.now();
-            this.items.update(data);
-            this.scriptingTime.textContent = 'Took: ' + (Date.now() - startTime) + 'ms';
-          }
-          this.items.update(data);
-        }
+        this.items.update(data);
       }
 
-      class Item {
-        constructor () {
-          this.el = el('li.item')
-        }
-        update (data) {
-          this.el.textContent = data.title;
-        }
+      function Item () {
+        this.el = liItem()
+      }
+      Item.prototype.update = function (data) {
+        this.el.textContent = data.title;
       }
 
-      const app = new App;
+      var app = new App;
 
       mount(document.body, app);
 
