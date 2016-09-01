@@ -1,11 +1,13 @@
-
 import { text } from './text';
 import { setChildren } from './setchildren';
 
 export function mount (parent, child, before) {
+  if (child == null) {
+    return;
+  }
+
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
-  var wasMounted = childEl.isMounted;
 
   if (childEl.nodeType) {
     if (child !== childEl) {
@@ -16,16 +18,23 @@ export function mount (parent, child, before) {
     } else {
       parentEl.appendChild(childEl);
     }
-    if (wasMounted) {
+    if (child.isMounted) {
       child.remounted && child.remounted();
     } else {
-      childEl.isMounted = true;
+      child.isMounted = true;
       child.mounted && child.mounted();
     }
     return true;
   } else if (child.length) {
     for (var i = 0; i < child.length; i++) {
-      mount(parent, child[i], before);
+      var childEl = child.el || child;
+
+      if (child.isMounted) {
+        child.remounted && child.remounted();
+      } else {
+        child.isMounted = true;
+        child.mounted && child.mounted();
+      }
     }
     return true;
   }
@@ -38,6 +47,6 @@ export function unmount (parent, child) {
 
   parentEl.removeChild(childEl);
 
-  childEl.isMounted = false;
+  child.isMounted = false;
   child.unmounted && child.unmounted();
 }

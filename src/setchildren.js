@@ -1,5 +1,3 @@
-import { mount } from './mount';
-
 export function setChildren (parent, children) {
   var parentEl = parent.el || parent;
   var traverse = parentEl.firstChild;
@@ -16,12 +14,15 @@ export function setChildren (parent, children) {
       continue;
     }
 
-    mount(parent, child, traverse);
+    if (traverse) {
+      parentEl.insertBefore(childEl, traverse);
+    } else {
+      parentEl.appendChild(childEl);
+    }
   }
 
   while (traverse) {
     var next = traverse.nextSibling;
-    unmount(parent, traverse.view || traverse);
     traverse = next;
   }
 }

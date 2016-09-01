@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script src="dist/redom.js"></script>
+    <script>
+      const { el, list, mount } = redom;
+
+      const todo = new Array(20);
+
+      for (let i = 0; i < todo.length; i++) {
+        todo[i] = { id: i, title: 'Item ' + i, done: Math.random() > .5 }
+      }
+
+      class TodoApp {
+        constructor () {
+          this.el = el('.todo-app',
+            this.create = el(TodoCreate, { foo: 'bar' }, 'test'),
+            this.items = list('ul.todo-list', TodoItem, 'id'),
+            this.sortByName = el('button.sort', 'Sort by name'),
+            this.sortByTime = el('button.sort', 'Sort by time'),
+            this.clear = el('button.clear', 'Clear done'),
+            this.clearAll = el('button.clearall', 'Clear all')
+          )
+          this.clear.onclick = e => {
+            for (let i = 0; i < todo.length; i++) {
+              if (todo[i].done) todo.splice(i--, 1);
+            }
+            app.update({
+              items: todo
+            });
+          }
+          this.clearAll.onclick = e => {
+            todo.length = 0;
+            app.update({
+              items: todo
+            });
+          }
+          this.sortByName.onclick = e => {
+            todo.sort((a, b) => a.title.localeCompare(b.title));
+            app.update({ items: todo });
+          }
+          this.sortByTime.onclick = e => {
+            todo.sort((a, b) => a.id - b.id);
+            app.update({ items: todo });
+          }
+        }
+        update (data) {
+          this.items.update(data.items);
+        }
+      }
+
+      class TodoCreate {
+        constructor (a, b) {
+          this.el = el('form.todo-create',
+            this.title = el('input.title', { placeholder: 'Something to do..', autofocus: true }),
+            el('button', 'Will do this!')
+          );
+          this.el.onsubmit = e => {
+            e.preventDefault();
+            todo.push({
+              id: Date.now(),
+              title: this.title.value
+            });
+            app.update({
+              items: todo
+            });
+            this.title.value = '';
+            this.title.focus();
+          }
+        }
+      }
+
+      class TodoItem {
+        constructor () {
+          this.el = el('.todo-item',
+            this.done = el('input.done', { type: 'checkbox' }),
+            this.title = el('span')
+          )
+          this.done.onchange = e => {
+            this.data.done = this.done.checked;
+          }
+        }
+        update (data) {
+          this.data = data;
+          this.done.checked = data.done;
+          this.title.textContent = data.title;
+        }
+      }
+
+      const app = new TodoApp;
+
+      mount(document.body, app);
+
+      app.update({
+        items: todo
+      });
+    </script>
+  </body>
+</html>

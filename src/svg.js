@@ -1,40 +1,63 @@
+import { createElement } from './create-element';
 
-import { expand, createElement } from './expand';
+var cache = {};
 
-var svgContext = {
-  cache: {},
-  expand: expand,
-  createElement: createElement,
-  allowBareProps: false,
-  allowComponents: false,
-
-  createTag: function (tag) {
-    return document.createElementNS('http://www.w3.org/2000/svg', tag);
-  }
-};
-
-export function svg (query) {
-  var element = svgContext.createElement(query).cloneNode(false);
+export function svg (query, a) {
+  var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
   var empty = true;
 
   for (var i = 1; i < arguments.length; i++) {
-    empty = svgContext.expand(element, arguments[i], empty);
+    var arg = arguments[i];
+
+    while (typeof arg === 'function') {
+      arg = arg(element);
+    }
+
+    if (arg == null) {
+      continue;
+    }
+
+    if (arg.nodeType) {
+      element.appendChild(arg);
+    } else if (typeof arg === 'string' || typeof arg === 'number') {
+      if (empty) {
+        element.textContent = arg;
+      } else {
+        element.appendChild(document.createTextNode(arg));
+      }
+    } else if (arg.el && arg.el.nodeType) {
+      var child = arg;
+      var childEl = arg.el;
+
+      if (child !== childEl) {
+        child.el = childEl;
+      }
+
+      if (child.isMounted) {
+        child.remounted && child.remounted();
+      } else {
+        child.mounted && child.mounted();
+      }
+
+      element.appendChild(childEl);
+    } else {
+      for (var key in arg) {
+        var value = arg[key];
+
+        if (key === 'style' && typeof value !== 'string') {
+          for (var cssKey in value) {
+            element.style[cssKey] = value[cssKey];
+          }
+        } else {
+          element.setAttribute(key, value);
+        }
+      }
+    }
   }
 
   return element;
 }
 
 svg.extend = function (query) {
-  var templateElement = svgContext.createElement(query);
-
-  return function() {
-    var element = templateElement.cloneNode(false);
-    var empty = true;
-
-    for (var i = 0; i < arguments.length; i++) {
-      empty = svgContext.expand(element, arguments[i], empty);
-    }
-
-    return element;
-  }
+  return svg.bind(this, query);
 }

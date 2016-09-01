@@ -1,4 +1,3 @@
-
 import { el } from './el';
 import { setChildren } from './setchildren';
 
@@ -24,38 +23,58 @@ List.prototype.update = function (data) {
   var initData = this.initData;
   var views = this.views;
   var parent = this.el;
+  var traverse = parent.firstChild;
 
   if (key) {
     var lookup = this.lookup;
+  }
 
-    for (var i = 0; i < data.length; i++) {
-      var item = data[i];
+  for (var i = 0; i < data.length; i++) {
+    var item = data[i];
+    if (key) {
       var id = typeof key === 'function' ? key(item) : item[key];
-      var view = lookup[id] || (lookup[id] = new View(initData, item, i));
-
-      view.update && view.update(item);
-
-      views[i] = view;
-      lookup[id] = view;
-    }
-    for (var i = data.length; i < views.length; i++) {
-      var id = typeof key === 'function' ? key(item) : item[key];
-
-      lookup[id] = null;
-      views[i] = null;
-    }
-  } else {
-    for (var i = 0; i < data.length; i++) {
-      var item = data[i];
+      var view = views[i] = lookup[id] || (lookup[id] = new View(initData, item, i));
+      view.__id = id;
+    } else {
       var view = views[i] || (views[i] = new View(initData, item, i));
-      view.update && view.update(item);
     }
-    for (var i = data.length; i < views.length; i++) {
-      views[i] = null;
+    var el = view.el;
+    view.el = el;
+    el.__redom_view = view;
+    view.update && view.update(item);
+
+    if (traverse === el) {
+      traverse = traverse.nextSibling;
+      continue;
+    }
+    if (traverse) {
+      parent.insertBefore(el, traverse);
+    } else {
+      parent.appendChild(el);
+    }
+    if (view.isMounted) {
+      view.remounted && view.remounted();
+    } else {
+      view.isMounted = true;
+      view.mounted && view.mounted();
     }
   }
 
-  views.length = data.length;
+  while (traverse) {
+    var next = traverse.nextSibling;
 
-  parent && setChildren(parent, views);
+    if (key) {
+      var view = traverse.__redom_view;
+      if (view) {
+        var id = view.__id;
+        lookup[id] = null;
+      }
+    }
+    views[i++] = null;
+    parent.removeChild(traverse);
+
+    traverse = next;
+  }
+
+  views.length = data.length;
 }
