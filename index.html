@@ -63,26 +63,24 @@
 
 // Define component
 
-const Login = view({
-  init () {
+class Login {
+  constructor () {
     this.el = el('form',
-      on({ submit: this.submit }),
-
       this.email = el('input', { type: 'email' }),
-      this.pass = el('input', { type: 'pass' }),
+      this.pass = el('input', { type: 'password' }),
       this.submit = el('button', 'Sign in')
     )
-  },
-  submit (e) {
-    e.preventDefault();
+    this.el.onsubmit = e => {
+      e.preventDefault();
 
-    console.log(this.email.value, this.pass.value);
+      console.log(this.email.value, this.pass.value);
+    }
   }
-})
+}
 
 // init "app"
 
-const app = el(Login);
+const app = new Login;
 
 // Mount to DOM
 
@@ -93,40 +91,20 @@ mount(document.body, app);</pre>
 
 // Define components
 
-const Cell = view({
-  init () {
-    this.el = el('td')
-  },
+class Cell {
+  constructor () {
+    this.el = el('td');
+  }
   update (data) {
     this.el.textContent = data;
   }
-});
+}
 
-const Row = view({
-  init () {
-    this.el = el('tr',
-      this.cols = list(Cell)
-    );
-  },
-  update (data) {
-    this.cols.update(data);
-  }
-});
+const Row = list.extend('tr', Cell);
 
-const Table = view({
-  init () {
-    this.el = el('table',
-      this.rows = list(Row)
-    )
-  },
-  update (data) {
-    this.rows.update(data.tbody);
-  }
-})
-
-// Init the app
-
-const app = el(Table);
+const app = list('table',
+  Row
+);
 
 // Mount to DOM
 
@@ -134,11 +112,11 @@ mount(document.body, app);
 
 // update app
 
-app.update({
-  tbody: [
-    [ 1, 2, 3 ]
-  ]
-});</pre>
+app.update([
+  [ 1, 2, 3 ],
+  [ 4, 5, 6 ],
+  [ 7, 8, 9 ]
+]);</pre>
       </code>
       <p>
         <a onclick="toggleCode()">Another example</a>
