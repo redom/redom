@@ -1,3 +1,4 @@
+import { doc } from './globals';
 import { createElement } from './create-element';
 
 var cache = {};
@@ -23,7 +24,7 @@ export function svg (query, a) {
       if (empty) {
         element.textContent = arg;
       } else {
-        element.appendChild(document.createTextNode(arg));
+        element.appendChild(doc.createTextNode(arg));
       }
     } else if (arg.el && arg.el.nodeType) {
       var child = arg;

@@ -1,4 +1,5 @@
 import { createElement } from './create-element';
+import { doc } from './globals';
 
 var cache = {};
 
@@ -36,7 +37,7 @@ export function el (query, a) {
       if (empty) {
         element.textContent = arg;
       } else {
-        element.appendChild(document.createTextNode(arg));
+        element.appendChild(doc.createTextNode(arg));
       }
     } else if (arg.el && arg.el.nodeType) {
       var child = arg;

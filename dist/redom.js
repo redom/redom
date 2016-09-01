@@ -4,6 +4,8 @@
   (factory((global.redom = global.redom || {})));
 }(this, (function (exports) { 'use strict';
 
+var doc = document;
+
 function createElement (query, ns) {
   // query parsing magic by https://github.com/maciejhirsz
 
@@ -37,9 +39,9 @@ function createElement (query, ns) {
     }
   }
   if (ns) {
-    var element = document.createElementNS(ns, tag);
+    var element = doc.createElementNS(ns, tag);
   } else {
-    var element = document.createElement(tag);
+    var element = doc.createElement(tag);
   }
 
   if (id) element.id = id;
@@ -84,7 +86,7 @@ function el (query, a) {
       if (empty) {
         element.textContent = arg;
       } else {
-        element.appendChild(document.createTextNode(arg));
+        element.appendChild(doc.createTextNode(arg));
       }
     } else if (arg.el && arg.el.nodeType) {
       var child = arg;
@@ -247,7 +249,7 @@ List.prototype.update = function (data) {
 }
 
 function text (content) {
-  return document.createTextNode(content);
+  return doc.createTextNode(content);
 }
 
 function mount (parent, child, before) {
@@ -323,7 +325,7 @@ function svg (query, a) {
       if (empty) {
         element.textContent = arg;
       } else {
-        element.appendChild(document.createTextNode(arg));
+        element.appendChild(doc.createTextNode(arg));
       }
     } else if (arg.el && arg.el.nodeType) {
       var child = arg;

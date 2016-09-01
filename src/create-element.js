@@ -1,3 +1,5 @@
+import { doc } from './globals';
+
 export function createElement (query, ns) {
   // query parsing magic by https://github.com/maciejhirsz
 
@@ -31,9 +33,9 @@ export function createElement (query, ns) {
     }
   }
   if (ns) {
-    var element = document.createElementNS(ns, tag);
+    var element = doc.createElementNS(ns, tag);
   } else {
-    var element = document.createElement(tag);
+    var element = doc.createElement(tag);
   }
 
   if (id) element.id = id;
