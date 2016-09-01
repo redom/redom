@@ -18,7 +18,7 @@
           this.el = el('app', { id: 'app' },
             this.scriptingTime = el('p'),
             this.reverse = el('button', { class: 'reverse' }, 'Reverse'),
-            el('div', { class: 'items' },
+            el('ul', { class: 'items' },
               this.items = list(Item, 'id')
             )
           )
