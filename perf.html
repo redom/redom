@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script src="dist/redom.js"></script>
+    <script>
+      const { el, list, mount } = redom;
+
+      const items = new Array(10000);
+
+      for (let i = 0; i < items.length; i++) {
+        items[i] = { id: i, title: 'Item ' + i }
+      }
+
+      const startTime = Date.now();
+
+      class App {
+        constructor () {
+          this.el = el('#app',
+            this.scriptingTime = el('p'),
+            this.reverse = el('button.reverse', 'Reverse'),
+            this.items = list('ul.items', Item, 'id')
+          )
+        }
+        update (data) {
+          this.reverse.onclick = e => {
+            data.reverse();
+            const startTime = Date.now();
+            this.items.update(data);
+            this.scriptingTime.textContent = 'Took: ' + (Date.now() - startTime) + 'ms';
+          }
+          this.items.update(data);
+        }
+      }
+
+      class Item {
+        constructor () {
+          this.el = el('li.item')
+        }
+        update (data) {
+          this.el.textContent = data.title;
+        }
+      }
+
+      const app = new App;
+
+      mount(document.body, app);
+
+      app.update(items);
+      app.scriptingTime.textContent = 'Scripting took: ' + (Date.now() - startTime) + 'ms';
+    </script>
+  </body>
+</html>
