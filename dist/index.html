@@ -86,18 +86,16 @@
 
 // Define component
 
-class Login {
-  constructor () {
-    this.el = el('form',
-      this.email = el('input', { type: 'email' }),
-      this.pass = el('input', { type: 'password' }),
-      this.submit = el('button', 'Sign in')
-    )
-    this.el.onsubmit = e => {
-      e.preventDefault();
+function Login () {
+  this.el = el('form',
+    this.email = el('input', { type: 'email' }),
+    this.pass = el('input', { type: 'password' }),
+    this.submit = el('button', 'Sign in')
+  )
+  this.el.onsubmit = e => {
+    e.preventDefault();
 
-      console.log(this.email.value, this.pass.value);
-    }
+    console.log(this.email.value, this.pass.value);
   }
 }
 
