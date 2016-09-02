@@ -6,6 +6,12 @@ Make DOM great again!
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
 
+## Quick start
+```
+npm install -g redom-cli
+redom
+```
+
 ## Installation
 ```
 npm install redom
