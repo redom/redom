@@ -4,9 +4,11 @@ export function setChildren (parent, children) {
 
   for (var i = 0; i < children.length; i++) {
     var child = children[i];
+
     if (!child) {
       continue;
     }
+
     var childEl = child.el || child;
 
     if (childEl === traverse) {
@@ -23,6 +25,9 @@ export function setChildren (parent, children) {
 
   while (traverse) {
     var next = traverse.nextSibling;
+
+    parentEl.removeChild(traverse);
+
     traverse = next;
   }
 }

@@ -7,7 +7,7 @@
     <meta name="twitter:site" content="@pakastin">
     <meta name="twitter:creator" content="@pakastin">
     <meta name="twitter:title" content="RE:DOM">
-    <meta name="twitter:description" content="Make DOM create again!">
+    <meta name="twitter:description" content="Make DOM great again!">
     <meta name="twitter:image" content="https://redom.js.org/meme.jpg">
     <title>RE:DOM</title>
     <style>
@@ -48,8 +48,8 @@
         color: #444;
         text-align: left;
         display: block;
-        margin: 1rem;
-        padding: 1rem;
+        margin: 1.5rem;
+        padding: 1.5rem;
       }
       pre {
         font: inherit;
@@ -82,39 +82,19 @@
       <img src="logo.svg">
       <p>Make DOM great again!</p>
       <code>
-        <pre>import { el, on, mount, view } from 'redom';
+        <pre>import { el, mount } from 'redom';
 
-// Define component
+// create HTML element
+const hello = el('h1.hello', 'Hello world!');
 
-class Login {
-  constructor () {
-    this.el = el('form',
-      this.email = el('input', { type: 'email' }),
-      this.pass = el('input', { type: 'password' }),
-      this.submit = el('button', 'Sign in')
-    )
-    this.el.onsubmit = e => {
-      e.preventDefault();
-
-      console.log(this.email.value, this.pass.value);
-    }
-  }
-}
-
-// init "app"
-
-const app = new Login;
-
-// Mount to DOM
-
-mount(document.body, app);</pre>
+// mount to body
+mount(document.body, hello);</pre>
       </code>
       <code class="hidden">
         <pre>import { el, list, mount } from 'redom';
 
-// Define components
-
-class Cell {
+// define component
+class Td {
   constructor () {
     this.el = el('td');
   }
@@ -123,19 +103,18 @@ class Cell {
   }
 }
 
-const Row = list.extend('tr', Cell);
+// define list components
+const Tr = list.extend('tr', Td);
+const Table = list.extend('table', Tr);
 
-const app = list('table',
-  Row
-);
+// init app
+const table = new Table;
 
-// Mount to DOM
+// mount to DOM
+mount(document.body, table);
 
-mount(document.body, app);
-
-// update app
-
-app.update([
+// update the app
+table.update([
   [ 1, 2, 3 ],
   [ 4, 5, 6 ],
   [ 7, 8, 9 ]
