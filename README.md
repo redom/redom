@@ -9,8 +9,8 @@ http://codepen.io/pakastin/pen/RGwoRg
 ## Quick start
 Initialize RE:DOM projects easily with [redom-cli](https://github.com/pakastin/redom-cli)
 ```
-npm install -g redom-cli
-redom
+$ npm install -g redom-cli
+$ redom
 ```
 
 ## Installation
