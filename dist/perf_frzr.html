@@ -15,7 +15,9 @@
 
       var startTime = Date.now();
 
-      function app () {
+      console.log(el('h1'));
+
+      function App () {
         this.el = el('app', { id: 'app' },
           this.scriptingTime = el('p'),
           this.reverse = el('button', { class: 'reverse' }, 'Reverse'),
@@ -24,7 +26,8 @@
           )
         )
       }
-      app.prototype.update = function (data) {
+
+      App.prototype.update = function (data) {
         var items = this.items;
         var scriptingTime = this.scriptingTime;
 
@@ -40,7 +43,7 @@
       function Item () {
         this.el = el('li', { class: 'item' })
       }
-      Item.prototype.update (data) {
+      Item.prototype.update = function (data) {
         this.el.textContent = data.title;
       }
 

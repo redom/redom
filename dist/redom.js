@@ -50,90 +50,8 @@ function createElement (query, ns) {
   return element;
 }
 
-var cache = {};
-
-function el (query, a) {
-  if (typeof query === 'function') {
-    var len = arguments.length - 1;
-    if (len > 1) {
-      var args = new Array(len);
-      var i = 0;
-
-      while (i < len) args[++i] = arguments[i];
-
-      return new (query.bind.apply(query, args));
-    } else {
-      return new query(a);
-    }
-  }
-  var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
-  var empty = true;
-
-  for (var i = 1; i < arguments.length; i++) {
-    var arg = arguments[i];
-
-    while (typeof arg === 'function') {
-      arg = arg(element);
-    }
-
-    if (arg == null) {
-      continue;
-    }
-
-    if (arg.nodeType) {
-      element.appendChild(arg);
-    } else if (typeof arg === 'string' || typeof arg === 'number') {
-      if (empty) {
-        element.textContent = arg;
-      } else {
-        element.appendChild(doc.createTextNode(arg));
-      }
-    } else if (arg.el && arg.el.nodeType) {
-      var child = arg;
-      var childEl = arg.el;
-
-      if (child !== childEl) {
-        child.el = childEl;
-        childEl.__redom_view = child;
-      }
-
-      if (child.isMounted) {
-        child.remounted && child.remounted();
-      } else {
-        child.mounted && child.mounted();
-      }
-
-      element.appendChild(childEl);
-    } else {
-      for (var key in arg) {
-        var value = arg[key];
-
-        if (key === 'style') {
-          if (typeof value === 'string') {
-            element.setAttribute(key, value);
-          } else {
-            for (var cssKey in value) {
-              element.style[cssKey] = value[cssKey];
-            }
-          }
-          element[key] = value;
-        } else if (key in element || typeof value === 'function') {
-          element[key] = value;
-          if (key === 'autofocus') {
-            element.focus();
-          }
-        } else {
-          element.setAttribute(key, value);
-        }
-      }
-    }
-  }
-
-  return element;
-}
-
-el.extend = function (query) {
-  return el.bind(this, query);
+function text (content) {
+  return doc.createTextNode(content);
 }
 
 function setChildren (parent, children) {
@@ -154,19 +72,137 @@ function setChildren (parent, children) {
       continue;
     }
 
-    if (traverse) {
-      parentEl.insertBefore(childEl, traverse);
-    } else {
-      parentEl.appendChild(childEl);
-    }
+    mount(parent, child);
   }
 
   while (traverse) {
     var next = traverse.nextSibling;
 
-    parentEl.removeChild(traverse);
+    unmount(parent, traverse);
 
     traverse = next;
+  }
+}
+
+function mount (parent, child, before) {
+  if (child == null) {
+    return;
+  }
+
+  var parentEl = parent.el || parent;
+  var childEl = child.el || child;
+
+  if (child === childEl && childEl.__redom_view) {
+    // try to look up the view if not provided 
+    child = childEl.__redom_view;
+  }
+
+  if (childEl.nodeType) {
+    if (child !== childEl) {
+      childEl.__redom_view = child;
+    }
+    if (before) {
+      parentEl.insertBefore(childEl, before.el || before);
+    } else {
+      parentEl.appendChild(childEl);
+    }
+    if (child.isMounted) {
+      child.remounted && child.remounted();
+    } else {
+      child.isMounted = true;
+      child.mounted && child.mounted();
+    }
+    return true;
+  }
+  return false;
+}
+
+function unmount (parent, child) {
+  var parentEl = parent.el || parent;
+  var childEl = child.el || child;
+
+  if (child === childEl && childEl.__redom_view) {
+    // try to look up the view if not provided
+    child = childEl.__redom_view;
+  }
+
+  parentEl.removeChild(childEl);
+
+  child.isMounted = false;
+  child.unmounted && child.unmounted();
+}
+
+var cache = {};
+
+function el (query, a) {
+  if (typeof query === 'function') {
+    // support JSX <Myclass> -style – with RE:DOM you can just call "new Myclass" instead
+    var len = arguments.length - 1;
+
+    if (len < 2) {
+      // the most usual case
+      return new query(a);
+    } else {
+      var args = new Array(len);
+      var i = 0;
+
+      while (i < len) args[++i] = arguments[i];
+
+      return new (query.bind.apply(query, args));
+    }
+  }
+  var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
+  var empty = true;
+
+  for (var i = 1; i < arguments.length; i++) {
+    var arg = arguments[i];
+
+    parseArgument(element, empty, arg);
+  }
+
+  return element;
+}
+
+el.extend = function (query) {
+  return el.bind(this, query);
+}
+
+function parseArgument (element, empty, arg) {
+  // support middleware
+  while (typeof arg === 'function') {
+    arg = arg(element);
+  }
+
+  if (mount(element, arg)) {
+    return;
+  } else if (typeof arg === 'string' || typeof arg === 'number') {
+    if (empty) {
+      element.textContent = arg;
+    } else {
+      element.appendChild(text(arg));
+    }
+  } else {
+    for (var key in arg) {
+      var value = arg[key];
+
+      if (key === 'style') {
+        if (typeof value === 'string') {
+          element.setAttribute(key, value);
+        } else {
+          for (var cssKey in value) {
+            element.style[cssKey] = value[cssKey];
+          }
+        }
+        element[key] = value;
+      } else if (key in element || typeof value === 'function') {
+        element[key] = value;
+        if (key === 'autofocus') {
+          element.focus();
+        }
+      } else {
+        element.setAttribute(key, value);
+      }
+    }
   }
 }
 
@@ -222,17 +258,8 @@ List.prototype.update = function (data) {
       traverse = traverse.nextSibling;
       continue;
     }
-    if (traverse) {
-      parent.insertBefore(el, traverse);
-    } else {
-      parent.appendChild(el);
-    }
-    if (view.isMounted) {
-      view.remounted && view.remounted();
-    } else {
-      view.isMounted = true;
-      view.mounted && view.mounted();
-    }
+
+    mount(parent, view, traverse);
   }
 
   while (traverse) {
@@ -246,66 +273,12 @@ List.prototype.update = function (data) {
       }
     }
     views[i++] = null;
-    parent.removeChild(traverse);
+    unmount(parent, view || traverse);
 
     traverse = next;
   }
 
   views.length = data.length;
-}
-
-function text (content) {
-  return doc.createTextNode(content);
-}
-
-function mount (parent, child, before) {
-  if (child == null) {
-    return;
-  }
-
-  var parentEl = parent.el || parent;
-  var childEl = child.el || child;
-
-  if (childEl.nodeType) {
-    if (child !== childEl) {
-      childEl.view = child;
-    }
-    if (before) {
-      parentEl.insertBefore(childEl, before.el || before);
-    } else {
-      parentEl.appendChild(childEl);
-    }
-    if (child.isMounted) {
-      child.remounted && child.remounted();
-    } else {
-      child.isMounted = true;
-      child.mounted && child.mounted();
-    }
-    return true;
-  } else if (child.length) {
-    for (var i = 0; i < child.length; i++) {
-      var childEl = child.el || child;
-
-      if (child.isMounted) {
-        child.remounted && child.remounted();
-      } else {
-        child.isMounted = true;
-        child.mounted && child.mounted();
-      }
-    }
-    return true;
-  }
-  return false;
-}
-
-function unmount (parent, child) {
-  var parentEl = parent.el || parent;
-  var childEl = child.el || child;
-
-  parentEl.removeChild(childEl);
-
-  child.isMounted = false;
-  child.unmounted && child.unmounted();
 }
 
 var cache$1 = {};
@@ -317,52 +290,7 @@ function svg (query, a) {
   for (var i = 1; i < arguments.length; i++) {
     var arg = arguments[i];
 
-    while (typeof arg === 'function') {
-      arg = arg(element);
-    }
-
-    if (arg == null) {
-      continue;
-    }
-
-    if (arg.nodeType) {
-      element.appendChild(arg);
-    } else if (typeof arg === 'string' || typeof arg === 'number') {
-      if (empty) {
-        element.textContent = arg;
-      } else {
-        element.appendChild(doc.createTextNode(arg));
-      }
-    } else if (arg.el && arg.el.nodeType) {
-      var child = arg;
-      var childEl = arg.el;
-
-      if (child !== childEl) {
-        child.el = childEl;
-      }
-
-      if (child.isMounted) {
-        child.remounted && child.remounted();
-      } else {
-        child.mounted && child.mounted();
-      }
-
-      element.appendChild(childEl);
-    } else {
-      for (var key in arg) {
-        var value = arg[key];
-
-        if (key === 'style' && typeof value !== 'string') {
-          for (var cssKey in value) {
-            element.style[cssKey] = value[cssKey];
-          }
-        } else if (typeof value === 'function') {
-          element[key] = value;
-        } else {
-          element.setAttribute(key, value);
-        }
-      }
-    }
+    parseArgument$1(element, empty, arg);
   }
 
   return element;
@@ -370,6 +298,36 @@ function svg (query, a) {
 
 svg.extend = function (query) {
   return svg.bind(this, query);
+}
+
+function parseArgument$1 (element, empty, arg) {
+  while (typeof arg === 'function') {
+    arg = arg(element);
+  }
+
+  if (mount(element, arg)) {
+    return;
+  } else if (typeof arg === 'string' || typeof arg === 'number') {
+    if (empty) {
+      element.textContent = arg;
+    } else {
+      element.appendChild(text(arg));
+    }
+  } else {
+    for (var key in arg) {
+      var value = arg[key];
+
+      if (key === 'style' && typeof value !== 'string') {
+        for (var cssKey in value) {
+          element.style[cssKey] = value[cssKey];
+        }
+      } else if (typeof value === 'function') {
+        element[key] = value;
+      } else {
+        element.setAttribute(key, value);
+      }
+    }
+  }
 }
 
 exports.el = el;

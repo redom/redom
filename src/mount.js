@@ -9,9 +9,14 @@ export function mount (parent, child, before) {
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
 
+  if (child === childEl && childEl.__redom_view) {
+    // try to look up the view if not provided 
+    child = childEl.__redom_view;
+  }
+
   if (childEl.nodeType) {
     if (child !== childEl) {
-      childEl.view = child;
+      childEl.__redom_view = child;
     }
     if (before) {
       parentEl.insertBefore(childEl, before.el || before);
@@ -25,18 +30,6 @@ export function mount (parent, child, before) {
       child.mounted && child.mounted();
     }
     return true;
-  } else if (child.length) {
-    for (var i = 0; i < child.length; i++) {
-      var childEl = child.el || child;
-
-      if (child.isMounted) {
-        child.remounted && child.remounted();
-      } else {
-        child.isMounted = true;
-        child.mounted && child.mounted();
-      }
-    }
-    return true;
   }
   return false;
 }
@@ -44,6 +37,11 @@ export function mount (parent, child, before) {
 export function unmount (parent, child) {
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
+
+  if (child === childEl && childEl.__redom_view) {
+    // try to look up the view if not provided
+    child = childEl.__redom_view;
+  }
 
   parentEl.removeChild(childEl);
 
