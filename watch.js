@@ -11,12 +11,15 @@ const exec = (cmd, args) => {
 }
 
 const build = exec('npm', ['run', 'build']);
+const buildBench = exec('npm', ['run', 'build-bench']);
 const uglify = exec('npm', ['run', 'uglify']);
 
 build();
+buildBench();
 
 chokidar.watch('src/**/*.js')
   .on('change', build)
+  .on('change', buildBench)
   .on('unlink', build);
 
 chokidar.watch('dist/redom.js')

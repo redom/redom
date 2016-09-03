@@ -1,5 +1,5 @@
 import { el } from './el';
-import { setChildren } from './setchildren';
+import { mount, unmount } from './mount';
 
 export function list (parent, View, key, initData) {
   return new List(parent, View, key, initData);
@@ -53,17 +53,8 @@ List.prototype.update = function (data) {
       traverse = traverse.nextSibling;
       continue;
     }
-    if (traverse) {
-      parent.insertBefore(el, traverse);
-    } else {
-      parent.appendChild(el);
-    }
-    if (view.isMounted) {
-      view.remounted && view.remounted();
-    } else {
-      view.isMounted = true;
-      view.mounted && view.mounted();
-    }
+
+    mount(parent, view, traverse);
   }
 
   while (traverse) {
@@ -77,7 +68,7 @@ List.prototype.update = function (data) {
       }
     }
     views[i++] = null;
-    parent.removeChild(traverse);
+    unmount(parent, view || traverse);
 
     traverse = next;
   }
