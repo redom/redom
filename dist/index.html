@@ -93,6 +93,7 @@ mount(document.body, hello);</pre>
       <code class="hidden">
         <pre>import { el, list, mount } from 'redom';
 
+// define component
 class Td {
   constructor () {
     this.el = el('td');
@@ -102,13 +103,17 @@ class Td {
   }
 }
 
+// define list components
 const Tr = list.extend('tr', Td);
 const Table = list.extend('table', Tr);
 
+// init app
 const table = new Table;
 
+// mount to DOM
 mount(document.body, table);
 
+// update the app
 table.update([
   [ 1, 2, 3 ],
   [ 4, 5, 6 ],
