@@ -157,7 +157,7 @@ function el (query, a) {
   for (var i = 1; i < arguments.length; i++) {
     var arg = arguments[i];
 
-    parseArgument(element, empty, arg);
+    empty = parseArgument(element, empty, arg);
   }
 
   return element;
@@ -174,36 +174,42 @@ function parseArgument (element, empty, arg) {
   }
 
   if (mount(element, arg)) {
-    return;
-  } else if (typeof arg === 'string' || typeof arg === 'number') {
+    return false;
+  }
+
+  if (typeof arg === 'string' || typeof arg === 'number') {
     if (empty) {
       element.textContent = arg;
     } else {
       element.appendChild(text(arg));
     }
-  } else {
-    for (var key in arg) {
-      var value = arg[key];
 
-      if (key === 'style') {
-        if (typeof value === 'string') {
-          element.setAttribute(key, value);
-        } else {
-          for (var cssKey in value) {
-            element.style[cssKey] = value[cssKey];
-          }
-        }
-        element[key] = value;
-      } else if (key in element || typeof value === 'function') {
-        element[key] = value;
-        if (key === 'autofocus') {
-          element.focus();
-        }
-      } else {
+    return false;
+  }
+
+  for (var key in arg) {
+    var value = arg[key];
+
+    if (key === 'style') {
+      if (typeof value === 'string') {
         element.setAttribute(key, value);
+      } else {
+        for (var cssKey in value) {
+          element.style[cssKey] = value[cssKey];
+        }
       }
+      element[key] = value;
+    } else if (key in element || typeof value === 'function') {
+      element[key] = value;
+      if (key === 'autofocus') {
+        element.focus();
+      }
+    } else {
+      element.setAttribute(key, value);
     }
   }
+
+  return empty;
 }
 
 function list (parent, View, key, initData) {
@@ -250,7 +256,6 @@ List.prototype.update = function (data) {
       var view = views[i] || (views[i] = new View(initData, item, i));
     }
     var el = view.el;
-    view.el = el;
     el.__redom_view = view;
     view.update && view.update(item);
 
@@ -266,14 +271,14 @@ List.prototype.update = function (data) {
     var next = traverse.nextSibling;
 
     if (key) {
-      var view = traverse.__redom_view;
-      if (view) {
-        var id = view.__id;
+      var view2 = traverse.__redom_view;
+      if (view2) {
+        var id = view2.__id;
         lookup[id] = null;
       }
     }
     views[i++] = null;
-    unmount(parent, view || traverse);
+    unmount(parent, view2 || traverse);
 
     traverse = next;
   }
@@ -290,7 +295,7 @@ function svg (query, a) {
   for (var i = 1; i < arguments.length; i++) {
     var arg = arguments[i];
 
-    parseArgument$1(element, empty, arg);
+    empty = parseArgument$1(element, empty, arg);
   }
 
   return element;
@@ -306,28 +311,33 @@ function parseArgument$1 (element, empty, arg) {
   }
 
   if (mount(element, arg)) {
-    return;
-  } else if (typeof arg === 'string' || typeof arg === 'number') {
+    return false;
+  }
+
+  if (typeof arg === 'string' || typeof arg === 'number') {
     if (empty) {
       element.textContent = arg;
     } else {
       element.appendChild(text(arg));
     }
-  } else {
-    for (var key in arg) {
-      var value = arg[key];
+    return false;
+  }
 
-      if (key === 'style' && typeof value !== 'string') {
-        for (var cssKey in value) {
-          element.style[cssKey] = value[cssKey];
-        }
-      } else if (typeof value === 'function') {
-        element[key] = value;
-      } else {
-        element.setAttribute(key, value);
+  for (var key in arg) {
+    var value = arg[key];
+
+    if (key === 'style' && typeof value !== 'string') {
+      for (var cssKey in value) {
+        element.style[cssKey] = value[cssKey];
       }
+    } else if (typeof value === 'function') {
+      element[key] = value;
+    } else {
+      element.setAttribute(key, value);
     }
   }
+
+  return empty;
 }
 
 exports.el = el;

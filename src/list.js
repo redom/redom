@@ -60,14 +60,14 @@ List.prototype.update = function (data) {
     var next = traverse.nextSibling;
 
     if (key) {
-      var view = traverse.__redom_view;
-      if (view) {
-        var id = view.__id;
+      var view2 = traverse.__redom_view;
+      if (view2) {
+        var id = view2.__id;
         lookup[id] = null;
       }
     }
     views[i++] = null;
-    unmount(parent, view || traverse);
+    unmount(parent, view2 || traverse);
 
     traverse = next;
   }
