@@ -12,7 +12,7 @@ export function svg (query, a) {
   for (var i = 1; i < arguments.length; i++) {
     var arg = arguments[i];
 
-    parseArgument(element, empty, arg);
+    empty = parseArgument(element, empty, arg);
   }
 
   return element;
@@ -28,26 +28,31 @@ function parseArgument (element, empty, arg) {
   }
 
   if (mount(element, arg)) {
-    return;
-  } else if (typeof arg === 'string' || typeof arg === 'number') {
+    return false;
+  }
+
+  if (typeof arg === 'string' || typeof arg === 'number') {
     if (empty) {
       element.textContent = arg;
     } else {
       element.appendChild(text(arg));
     }
-  } else {
-    for (var key in arg) {
-      var value = arg[key];
+    return false;
+  }
 
-      if (key === 'style' && typeof value !== 'string') {
-        for (var cssKey in value) {
-          element.style[cssKey] = value[cssKey];
-        }
-      } else if (typeof value === 'function') {
-        element[key] = value;
-      } else {
-        element.setAttribute(key, value);
+  for (var key in arg) {
+    var value = arg[key];
+
+    if (key === 'style' && typeof value !== 'string') {
+      for (var cssKey in value) {
+        element.style[cssKey] = value[cssKey];
       }
+    } else if (typeof value === 'function') {
+      element[key] = value;
+    } else {
+      element.setAttribute(key, value);
     }
   }
+
+  return empty;
 }
