@@ -45,7 +45,6 @@ List.prototype.update = function (data) {
       var view = views[i] || (views[i] = new View(initData, item, i));
     }
     var el = view.el;
-    view.el = el;
     el.__redom_view = view;
     view.update && view.update(item);
 
