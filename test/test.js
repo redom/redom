@@ -176,7 +176,7 @@ module.exports = function (redom) {
       t.equals(items.el.outerHTML, "<ul><li>2</li><li>3</li><li>4</li></ul>");
     });
     t.test('with function key', function (t) {
-      t.plan(4);
+      t.plan(6);
 
       function Item() {
         this.el = el('li');
@@ -186,6 +186,9 @@ module.exports = function (redom) {
             t.equals(this.data.id, data.id);
           }
           this.data = data;
+        }
+        this.remounted = function () {
+          t.pass()
         }
       }
 
@@ -197,13 +200,19 @@ module.exports = function (redom) {
       t.equals(items.el.outerHTML, "<ul><li>2</li><li>3</li><li>4</li></ul>");
     });
     t.test('adding / removing', function (t) {
-      t.plan(3);
+      t.plan(6);
 
       function Item () {
         this.el = el('li');
         this.update = (data) => {
           this.el.textContent = data;
         }
+      }
+      Item.prototype.mounted = function () {
+        t.pass();
+      }
+      Item.prototype.unmounted = function () {
+        t.pass();
       }
 
       var items = list('ul', Item);
@@ -231,6 +240,30 @@ module.exports = function (redom) {
 
       table.update([[ 1, 2, 3 ], [ 4, 5, 6], [ 7, 8, 9 ]]);
       t.equals(table.el.outerHTML, '<table><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table>');
+    });
+    t.test('mount / unmount / remount', function (t) {
+      t.plan(7);
+      function Test () {
+        this.el = el('test');
+      }
+      Test.prototype.mounted = function () {
+        t.pass();
+      }
+      Test.prototype.remounted = function () {
+        t.pass();
+      }
+      Test.prototype.unmounted = function () {
+        t.pass();
+      }
+      var test = new Test;
+      setChildren(document.body, []);
+      mount(document.body, test);
+      t.equals(document.body.outerHTML, '<body><test></test></body>');
+      unmount(document.body, test.el);
+      mount(document.body, test.el);
+      mount(document.body, test.el);
+      unmount(document.body, test);
+      t.equals(document.body.outerHTML, '<body></body>');
     });
   });
 

@@ -53,21 +53,35 @@ List.prototype.update = function (data) {
       continue;
     }
 
-    mount(parent, view, traverse);
+    if (traverse) {
+      parent.insertBefore(el, traverse);
+    } else {
+      parent.appendChild(el);
+    }
+    if (view.isMounted) {
+      view.remounted && view.remounted();
+    } else {
+      view.isMounted = true;
+      view.mounted && view.mounted();
+    }
   }
 
   while (traverse) {
     var next = traverse.nextSibling;
+    var view = traverse.__redom_view;
 
     if (key) {
-      var view2 = traverse.__redom_view;
-      if (view2) {
-        var id = view2.__id;
+      if (view) {
+        var id = view.__id;
         lookup[id] = null;
       }
     }
     views[i++] = null;
-    unmount(parent, view2 || traverse);
+    parent.removeChild(traverse);
+
+    view.isMounted = false;
+    view.unmounted && view.unmounted();
+    traverse.__redom_view = null;
 
     traverse = next;
   }
