@@ -7,29 +7,26 @@
       var list = redom.list;
       var mount = redom.mount;
 
-      // Define components
-
-      function Cell () {
+      // define component
+      function Td () {
         this.el = el('td');
       }
-
-      Cell.prototype.update = function (data) {
+      Td.prototype.update = function (data) {
         this.el.textContent = data;
       }
 
-      var Row = list.extend('tr', Cell);
+      // define list components
+      var Tr = list.extend('tr', Td);
+      var Table = list.extend('table', Tr);
 
-      var app = list('table',
-        Row
-      );
+      // create main view
+      var table = new Table;
 
-      // Mount to DOM
+      // mount to DOM
+      mount(document.body, table);
 
-      mount(document.body, app);
-
-      // update app
-
-      app.update([
+      // update the app
+      table.update([
         [ 1, 2, 3 ],
         [ 4, 5, 6 ],
         [ 7, 8, 9 ]

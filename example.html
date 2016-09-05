@@ -4,35 +4,13 @@
     <script src="redom.min.js"></script>
     <script>
       var el = redom.el;
-      var on = redom.on;
       var mount = redom.mount;
-      var view = redom.view;
 
-      // Define component
+      // create HTML element
+      var hello = el('h1.hello', 'Hello world!');
 
-      function Login () {
-        this.el = el('form',
-          this.email = el('input', { type: 'email' }),
-          this.pass = el('input', { type: 'password' }),
-          this.submit = el('button', 'Sign in')
-        )
-        var email = this.email;
-        var pass = this.pass;
-
-        this.el.onsubmit = function (e) {
-          e.preventDefault();
-
-          console.log(email, pass);
-        }
-      }
-
-      // init "app"
-
-      var app = new Login;
-
-      // Mount to DOM
-
-      mount(document.body, app);
+      // mount to body
+      mount(document.body, hello);
     </script>
   </body>
 </html>
