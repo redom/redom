@@ -14,7 +14,7 @@
       class TodoApp {
         constructor () {
           this.el = el('.todo-app',
-            this.create = el(TodoCreate, { foo: 'bar' }, 'test'),
+            this.create = new TodoCreate,
             this.items = list('ul.todo-list', TodoItem, 'id'),
             this.sortByName = el('button.sort', 'Sort by name'),
             this.sortByTime = el('button.sort', 'Sort by time'),
