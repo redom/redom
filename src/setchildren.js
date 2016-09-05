@@ -18,7 +18,7 @@ export function setChildren (parent, children) {
       continue;
     }
 
-    mount(parent, child);
+    mount(parent, child, traverse);
   }
 
   while (traverse) {

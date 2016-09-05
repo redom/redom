@@ -1,29 +1,305 @@
 var test = require('tape');
 
 module.exports = function (redom) {
-  var { el, list } = redom;
+  var { el, list, svg, mount, unmount, setChildren } = redom;
 
   test('element creation', function (t) {
-    t.plan(1);
-    var hello = el('p.hello', 'Hello world!');
-    t.equals(hello.outerHTML, '<p class="hello">Hello world!</p>');
+    t.test('just tagName', function (t) {
+      t.plan(1);
+      var hello = el('p', 'Hello world!');
+      t.equals(hello.outerHTML, '<p>Hello world!</p>');
+    });
+    t.test('one class', function (t) {
+      t.plan(1);
+      var hello = el('p.hello', 'Hello world!');
+      t.equals(hello.outerHTML, '<p class="hello">Hello world!</p>');
+    });
+    t.test('multiple class', function (t) {
+      t.plan(1);
+      var hello = el('p.hello.world', 'Hello world!');
+      t.equals(hello.outerHTML, '<p class="hello world">Hello world!</p>');
+    });
+    t.test('append text', function (t) {
+      t.plan(1);
+      var hello = el('p', 'Hello', ' ', 'world!');
+      t.equals(hello.outerHTML, '<p>Hello world!</p>');
+    });
+    t.test('ID', function (t) {
+      t.plan(1);
+      var hello = el('p#hello', 'Hello world!');
+      t.equals(hello.outerHTML, '<p id="hello">Hello world!</p>');
+    });
+    t.test('styles with object', function (t) {
+      t.plan(1);
+      var hello = el('p', { style: { color: 'red' } });
+      t.equals(hello.outerHTML, '<p style="color: red;"></p>');
+    })
+    t.test('styles with String', function (t) {
+      t.plan(1);
+      var hello = el('p', { style: 'color: red;' });
+      t.equals(hello.outerHTML, '<p style="color: red;"></p>');
+    });
+    t.test('event handlers', function (t) {
+      t.plan(1);
+      var hello = el('p', { onclick: e => t.pass() }, 'Hello world!');
+      hello.click();
+    });
+    t.test('attributes', function (t) {
+      t.plan(1);
+      var hello = el('p', { foo: 'bar' }, 'Hello world!');
+      t.equals(hello.outerHTML, '<p foo="bar">Hello world!</p>');
+    });
+    t.test('children', function (t) {
+      t.plan(1);
+      var app = el('app',
+        el('h1', 'Hello world!')
+      );
+      t.equals(app.outerHTML, '<app><h1>Hello world!</h1></app>');
+    });
+    t.test('middleware', function (t) {
+      t.plan(1);
+      var app = el('app',
+        function (el) {
+          el.setAttribute('ok', '!');
+        },
+        el('h1', 'Hello world!')
+      );
+      t.equals(app.outerHTML, '<app ok="!"><h1>Hello world!</h1></app>');
+    });
+    t.test('extend cached', function (t) {
+      t.plan(1);
+
+      var H1 = el.extend('h1');
+      var h1 = H1('Hello world!');
+
+      t.equals(h1.outerHTML, '<h1>Hello world!</h1>');
+    });
+    t.test('extend', function (t) {
+      t.plan(1);
+
+      var H2 = el.extend('h2');
+      var h2 = H2('Hello world!');
+
+      t.equals(h2.outerHTML, '<h2>Hello world!</h2>');
+    });
+    t.test('lifecycle events', function (t) {
+      t.plan(1);
+      var eventsFired = {
+        mounted: false,
+        remounted: false,
+        unmounted: false
+      }
+      function Item () {
+        this.el = el('p');
+        this.mounted = function () {
+          eventsFired.mounted = true;
+        }
+        this.remounted = function () {
+          eventsFired.remounted = true;
+        }
+        this.unmounted = function () {
+          eventsFired.unmounted = true;
+        }
+      }
+      var item = new Item;
+      mount(document.body, item);
+      mount(document.body, item.el); // test view lookup (__redom_view)
+      unmount(document.body, item);
+      t.deepEqual(eventsFired, {
+        mounted: true,
+        remounted: true,
+        unmounted: true
+      });
+    });
+    t.test('setChildren', function (t) {
+      t.plan(2);
+      var h1 = el.extend('h1');
+      var a = h1('a');
+      var b = h1('b');
+      setChildren(document.body, [
+        a,
+        b
+      ]);
+      t.equals(document.body.innerHTML, '<h1>a</h1><h1>b</h1>')
+      setChildren(document.body, [
+        a
+      ]);
+      t.equals(document.body.innerHTML, '<h1>a</h1>')
+    })
   });
 
-  test('updating list twice', function (t) {
-    t.plan(2);
+  test('list', function (t) {
+    t.test('without key', function (t) {
+      t.plan(1);
 
-    function Item() {
-      this.el = el('li');
-      this.update = (data) => {
-        this.el.textContent = data;
+      function Item () {
+        this.el = el('li');
+        this.update = data => {
+          this.el.textContent = data;
+        }
       }
-    }
 
-    var items = list('ul', Item);
+      var items = list('ul', Item);
 
-    items.update([1, 2, 3]);
-    t.equals(items.el.outerHTML, "<ul><li>1</li><li>2</li><li>3</li></ul>");
-    items.update([1]);
-    t.equals(items.el.outerHTML, "<ul><li>1</li></ul>");
+      items.update([1, 2, 3]);
+      t.equals(items.el.outerHTML, "<ul><li>1</li><li>2</li><li>3</li></ul>");
+    });
+    t.test('with key', function (t) {
+      t.plan(4);
+
+      function Item () {
+        this.el = el('li');
+        this.update = function (data) {
+          this.el.textContent = data.id;
+          if (this.data) {
+            t.equals(this.data.id, data.id);
+          }
+          this.data = data;
+        }
+      }
+
+      var items = list('ul', Item, 'id');
+
+      items.update([{ id: 1 }, { id: 2 }, { id: 3 }]);
+      t.equals(items.el.outerHTML, "<ul><li>1</li><li>2</li><li>3</li></ul>");
+      items.update([{ id: 2 }, { id: 3 }, { id: 4 }]);
+      t.equals(items.el.outerHTML, "<ul><li>2</li><li>3</li><li>4</li></ul>");
+    });
+    t.test('with function key', function (t) {
+      t.plan(4);
+
+      function Item() {
+        this.el = el('li');
+        this.update = (data) => {
+          this.el.textContent = data.id;
+          if (this.data) {
+            t.equals(this.data.id, data.id);
+          }
+          this.data = data;
+        }
+      }
+
+      var items = list('ul', Item, item => item.id);
+
+      items.update([{ id: 1 }, { id: 2 }, { id: 3 }]);
+      t.equals(items.el.outerHTML, "<ul><li>1</li><li>2</li><li>3</li></ul>");
+      items.update([{ id: 2 }, { id: 3 }, { id: 4 }]);
+      t.equals(items.el.outerHTML, "<ul><li>2</li><li>3</li><li>4</li></ul>");
+    });
+    t.test('adding / removing', function (t) {
+      t.plan(3);
+
+      function Item () {
+        this.el = el('li');
+        this.update = (data) => {
+          this.el.textContent = data;
+        }
+      }
+
+      var items = list('ul', Item);
+
+      items.update([1]);
+      t.equals(items.el.outerHTML, "<ul><li>1</li></ul>");
+      items.update([1, 2]);
+      t.equals(items.el.outerHTML, "<ul><li>1</li><li>2</li></ul>");
+      items.update([2]);
+      t.equals(items.el.outerHTML, "<ul><li>2</li></ul>");
+    });
+    t.test('extend', function (t) {
+      t.plan(1);
+
+      function Td () {
+        this.el = el('td');
+        this.update = function (data) {
+          this.el.textContent = data;
+        }
+      }
+      var Tr = list.extend('tr', Td);
+      var Table = list.extend('table', Tr);
+
+      var table = new Table;
+
+      table.update([[ 1, 2, 3 ], [ 4, 5, 6], [ 7, 8, 9 ]]);
+      t.equals(table.el.outerHTML, '<table><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table>');
+    });
+  });
+
+  test('SVG', function (t) {
+    t.test('creation', function (t) {
+      t.plan(2);
+
+      var circle = svg('circle');
+      t.equals(circle instanceof SVGElement, true);
+      t.equals(circle.outerHTML, '<circle></circle>');
+    });
+    t.test('parameters', function (t) {
+      t.plan(1);
+
+      var circle = svg('circle', { cx: 1, cy: 2, r: 3 });
+      t.equals(circle.outerHTML, '<circle cx="1" cy="2" r="3"></circle>');
+    });
+    t.test('event handler', function (t) {
+      t.plan(1);
+
+      var circle = svg('circle', { onclick: e => t.pass() });
+      circle.dispatchEvent(new CustomEvent('click', {}));
+    });
+    t.test('CSS with String', function (t) {
+      t.plan(1);
+
+      var circle = svg('circle', { style: 'color: red;' });
+      t.equals(circle.outerHTML, '<circle style="color: red;"></circle>');
+    });
+    t.test('CSS with Object', function (t) {
+      t.plan(1);
+
+      var circle = svg('circle', { style: { color: 'red' }});
+      t.equals(circle.outerHTML, '<circle style="color: red;"></circle>');
+    });
+    t.test('with text', function (t) {
+      t.plan(1);
+
+      var text = svg('text', 'Hello!');
+      t.equals(text.outerHTML, '<text>Hello!</text>');
+    });
+    t.test('append text', function (t) {
+      t.plan(t);
+
+      var text = svg('text', 'Hello', ' ', 'world!');
+      t.equals(text.outerHTML, '<text>Hello world!</text>');
+    });
+    t.test('extend cached', function (t) {
+      t.plan(1);
+
+      var Circle = svg.extend('circle');
+      var circle = new Circle();
+      t.equals(circle.outerHTML, '<circle></circle>');
+    });
+    t.test('extend', function (t) {
+      t.plan(1);
+
+      var Line = svg.extend('line');
+      var line = new Line();
+      t.equals(line.outerHTML, '<line></line>');
+    });
+    t.test('children', function (t) {
+      t.plan(1);
+
+      var graphic = svg('svg',
+        svg('circle', { cx: 1, cy: 2, r: 3 })
+      );
+      t.equals(graphic.outerHTML, '<svg><circle cx="1" cy="2" r="3"></circle></svg>')
+    });
+    t.test('middleware', function (t) {
+      t.plan(1);
+
+      var graphic = svg('svg',
+        function (svg) {
+          svg.setAttribute('ok', '!');
+        },
+        svg('circle', { cx: 1, cy: 2, r: 3 })
+      );
+      t.equals(graphic.outerHTML, '<svg ok="!"><circle cx="1" cy="2" r="3"></circle></svg>')
+    });
   });
 };

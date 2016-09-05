@@ -72,7 +72,7 @@ function setChildren (parent, children) {
       continue;
     }
 
-    mount(parent, child);
+    mount(parent, child, traverse);
   }
 
   while (traverse) {
@@ -135,23 +135,12 @@ function unmount (parent, child) {
 var cache = {};
 
 function el (query, a) {
-  if (typeof query === 'function') {
-    // support JSX <Myclass> -style – with RE:DOM you can just call "new Myclass" instead
-    var len = arguments.length - 1;
-
-    if (len < 2) {
-      // the most usual case
-      return new query(a);
-    } else {
-      var args = new Array(len);
-      var i = 0;
-
-      while (i < len) args[++i] = arguments[i];
-
-      return new (query.bind.apply(query, args));
-    }
+  if (query && query.nodeType) {
+    var element = query.cloneNode(false);
+  } else {
+    var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
   }
-  var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
+
   var empty = true;
 
   for (var i = 1; i < arguments.length; i++) {
@@ -164,7 +153,8 @@ function el (query, a) {
 }
 
 el.extend = function (query) {
-  return el.bind(this, query);
+  var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
+  return el.bind(this, element);
 }
 
 function parseArgument (element, empty, arg) {
@@ -198,12 +188,8 @@ function parseArgument (element, empty, arg) {
           element.style[cssKey] = value[cssKey];
         }
       }
-      element[key] = value;
     } else if (key in element || typeof value === 'function') {
       element[key] = value;
-      if (key === 'autofocus') {
-        element.focus();
-      }
     } else {
       element.setAttribute(key, value);
     }
@@ -286,10 +272,16 @@ List.prototype.update = function (data) {
   views.length = data.length;
 }
 
+var SVG = 'http://www.w3.org/2000/svg';
+
 var cache$1 = {};
 
 function svg (query, a) {
-  var element = (cache$1[query] || (cache$1[query] = createElement(query))).cloneNode(false);
+  if (query.nodeType) {
+    var element = query.cloneNode(false);
+  } else {
+    var element = (cache$1[query] || (cache$1[query] = createElement(query, SVG))).cloneNode(false);
+  }
   var empty = true;
 
   for (var i = 1; i < arguments.length; i++) {
@@ -302,7 +294,8 @@ function svg (query, a) {
 }
 
 svg.extend = function (query) {
-  return svg.bind(this, query);
+  var element = (cache$1[query] || (cache$1[query] = createElement(query, SVG))).cloneNode(false);
+  return svg.bind(this, element);
 }
 
 function parseArgument$1 (element, empty, arg) {

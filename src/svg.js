@@ -3,10 +3,16 @@ import { createElement } from './create-element';
 import { mount } from './mount';
 import { text } from './text';
 
+var SVG = 'http://www.w3.org/2000/svg';
+
 var cache = {};
 
 export function svg (query, a) {
-  var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
+  if (query.nodeType) {
+    var element = query.cloneNode(false);
+  } else {
+    var element = (cache[query] || (cache[query] = createElement(query, SVG))).cloneNode(false);
+  }
   var empty = true;
 
   for (var i = 1; i < arguments.length; i++) {
@@ -19,7 +25,8 @@ export function svg (query, a) {
 }
 
 svg.extend = function (query) {
-  return svg.bind(this, query);
+  var element = (cache[query] || (cache[query] = createElement(query, SVG))).cloneNode(false);
+  return svg.bind(this, element);
 }
 
 function parseArgument (element, empty, arg) {

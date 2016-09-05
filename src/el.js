@@ -6,23 +6,12 @@ import { mount } from './mount';
 var cache = {};
 
 export function el (query, a) {
-  if (typeof query === 'function') {
-    // support JSX <Myclass> -style – with RE:DOM you can just call "new Myclass" instead
-    var len = arguments.length - 1;
-
-    if (len < 2) {
-      // the most usual case
-      return new query(a);
-    } else {
-      var args = new Array(len);
-      var i = 0;
-
-      while (i < len) args[++i] = arguments[i];
-
-      return new (query.bind.apply(query, args));
-    }
+  if (query && query.nodeType) {
+    var element = query.cloneNode(false);
+  } else {
+    var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
   }
-  var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
+
   var empty = true;
 
   for (var i = 1; i < arguments.length; i++) {
@@ -35,7 +24,8 @@ export function el (query, a) {
 }
 
 el.extend = function (query) {
-  return el.bind(this, query);
+  var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
+  return el.bind(this, element);
 }
 
 function parseArgument (element, empty, arg) {
@@ -69,12 +59,8 @@ function parseArgument (element, empty, arg) {
           element.style[cssKey] = value[cssKey];
         }
       }
-      element[key] = value;
     } else if (key in element || typeof value === 'function') {
       element[key] = value;
-      if (key === 'autofocus') {
-        element.focus();
-      }
     } else {
       element.setAttribute(key, value);
     }

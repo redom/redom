@@ -10,9 +10,9 @@
     "build": "rollup -n redom -f umd -i src/index.js -o dist/redom.js",
     "build-bench": "rollup -n bench -f iife bench/src/index.js -o bench/build.js",
     "uglify": "uglifyjs dist/redom.js -cmo dist/redom.min.js",
-    "preversion": "npm run build && npm run uglify",
+    "preversion": "npm run build && npm run uglify && npm run test",
     "postversion": "git push --tags",
-    "prepublish": "npm run build && npm run uglify",
+    "prepublish": "npm run build && npm run uglify && npm run test",
     "postpublish": "npm run dist",
     "test": "rollup -n redom -f cjs src/index.js -o test/redom.js && browserify -t coverify test/index.js | tape-run | coverify",
     "justtest": "browserify -t coverify test/index.js | tape-run | coverify"
