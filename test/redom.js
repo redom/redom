@@ -91,24 +91,20 @@ function mount (parent, child, before) {
     child = childEl.__redom_view;
   }
 
-  if (childEl.nodeType) {
-    if (child !== childEl) {
-      childEl.__redom_view = child;
-    }
-    if (before) {
-      parentEl.insertBefore(childEl, before.el || before);
-    } else {
-      parentEl.appendChild(childEl);
-    }
-    if (child.isMounted) {
-      child.remounted && child.remounted();
-    } else {
-      child.isMounted = true;
-      child.mounted && child.mounted();
-    }
-    return true;
+  if (child !== childEl) {
+    childEl.__redom_view = child;
   }
-  return false;
+  if (before) {
+    parentEl.insertBefore(childEl, before.el || before);
+  } else {
+    parentEl.appendChild(childEl);
+  }
+  if (child.isMounted) {
+    child.remounted && child.remounted();
+  } else {
+    child.isMounted = true;
+    child.mounted && child.mounted();
+  }
 }
 
 function unmount (parent, child) {
@@ -128,11 +124,11 @@ function unmount (parent, child) {
 
 var cache = {};
 
-function el (query, a) {
-  if (query && query.nodeType) {
-    var element = query.cloneNode(false);
-  } else {
+function el (query) {
+  if (typeof query === 'string') {
     var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
+  } else {
+    var element = query.cloneNode(false);
   }
 
   var empty = true;
@@ -140,57 +136,47 @@ function el (query, a) {
   for (var i = 1; i < arguments.length; i++) {
     var arg = arguments[i];
 
-    empty = parseArgument(element, empty, arg);
+    // support middleware
+    if (typeof arg === 'function') {
+      arg(element);
+    } else if (typeof arg === 'string' || typeof arg === 'number') {
+      if (empty) {
+        empty = false;
+        element.textContent = arg;
+      } else {
+        element.appendChild(text(arg));
+      }
+    } else if (arg.nodeType || (arg.el && arg.el.nodeType)) {
+      empty = false;
+      mount(element, arg);
+    } else if (typeof arg === 'object') {
+      for (var key in arg) {
+        var value = arg[key];
+
+        if (key === 'style') {
+          if (typeof value === 'string') {
+            element.setAttribute(key, value);
+          } else {
+            for (var cssKey in value) {
+              element.style[cssKey] = value[cssKey];
+            }
+          }
+        } else if (key in element || typeof value === 'function') {
+          element[key] = value;
+        } else {
+          element.setAttribute(key, value);
+        }
+      }
+    }
   }
 
   return element;
 }
 
 el.extend = function (query) {
-  var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
-  return el.bind(this, element);
-}
+  var clone = (cache[query] || (cache[query] = createElement(query)));
 
-function parseArgument (element, empty, arg) {
-  // support middleware
-  if (typeof arg === 'function') {
-    arg(element);
-    return;
-  }
-
-  if (mount(element, arg)) {
-    return false;
-  }
-
-  if (typeof arg === 'string' || typeof arg === 'number') {
-    if (empty) {
-      element.textContent = arg;
-    } else {
-      element.appendChild(text(arg));
-    }
-
-    return false;
-  }
-
-  for (var key in arg) {
-    var value = arg[key];
-
-    if (key === 'style') {
-      if (typeof value === 'string') {
-        element.setAttribute(key, value);
-      } else {
-        for (var cssKey in value) {
-          element.style[cssKey] = value[cssKey];
-        }
-      }
-    } else if (key in element || typeof value === 'function') {
-      element[key] = value;
-    } else {
-      element.setAttribute(key, value);
-    }
-  }
-
-  return empty;
+  return el.bind(this, clone);
 }
 
 function list (parent, View, key, initData) {
@@ -272,61 +258,55 @@ var SVG = 'http://www.w3.org/2000/svg';
 var cache$1 = {};
 
 function svg (query, a) {
-  if (query.nodeType) {
-    var element = query.cloneNode(false);
-  } else {
+  if (typeof query === 'string') {
     var element = (cache$1[query] || (cache$1[query] = createElement(query, SVG))).cloneNode(false);
+  } else {
+    var element = query.cloneNode(false);
   }
+
   var empty = true;
 
   for (var i = 1; i < arguments.length; i++) {
     var arg = arguments[i];
 
-    empty = parseArgument$1(element, empty, arg);
+    if (!arg) {
+      continue;
+    } else if (typeof arg === 'function') {
+      arg = arg(element);
+    } else if (typeof arg === 'string' || typeof arg === 'number') {
+      if (empty) {
+        empty = false;
+        element.textContent = arg;
+      } else {
+        element.appendChild(text(arg));
+      }
+    } else if (arg.nodeType || (arg.el && arg.el.nodeType)) {
+      empty = false;
+      mount(element, arg);
+    } else if (typeof arg === 'object') {
+      for (var key in arg) {
+        var value = arg[key];
+
+        if (key === 'style' && typeof value !== 'string') {
+          for (var cssKey in value) {
+            element.style[cssKey] = value[cssKey];
+          }
+        } else if (typeof value === 'function') {
+          element[key] = value;
+        } else {
+          element.setAttribute(key, value);
+        }
+      }
+    }
   }
 
   return element;
 }
 
 svg.extend = function (query) {
-  var element = (cache$1[query] || (cache$1[query] = createElement(query, SVG))).cloneNode(false);
-  return svg.bind(this, element);
-}
+  var clone = (cache$1[query] || (cache$1[query] = createElement(query, SVG)));
 
-function parseArgument$1 (element, empty, arg) {
-  if (typeof arg === 'function') {
-    arg = arg(element);
-    return;
-  }
-
-  if (mount(element, arg)) {
-    return false;
-  }
-
-  if (typeof arg === 'string' || typeof arg === 'number') {
-    if (empty) {
-      element.textContent = arg;
-    } else {
-      element.appendChild(text(arg));
-    }
-    return false;
-  }
-
-  for (var key in arg) {
-    var value = arg[key];
-
-    if (key === 'style' && typeof value !== 'string') {
-      for (var cssKey in value) {
-        element.style[cssKey] = value[cssKey];
-      }
-    } else if (typeof value === 'function') {
-      element[key] = value;
-    } else {
-      element.setAttribute(key, value);
-    }
-  }
-
-  return empty;
+  return svg.bind(this, clone);
 }
 
 exports.el = el;
