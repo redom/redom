@@ -3,7 +3,7 @@
   <body>
     <script src="https://frzr.js.org/frzr.min.js"></script>
     <script>
-      var el = frzr.list;
+      var el = frzr.el;
       var list = frzr.list;
       var mount = frzr.mount;
 
@@ -15,10 +15,8 @@
 
       var startTime = Date.now();
 
-      console.log(el('h1'));
-
       function App () {
-        this.el = el('app', { id: 'app' },
+        this.el = el('div', { id: 'app' },
           this.scriptingTime = el('p'),
           this.reverse = el('button', { class: 'reverse' }, 'Reverse'),
           el('ul', { class: 'items' },
@@ -48,6 +46,8 @@
       }
 
       var app = new App;
+
+      console.log(app.el);
 
       mount(document.body, app);
 
