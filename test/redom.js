@@ -65,8 +65,6 @@ function setChildren (parent, children) {
 
     var childEl = child.el || child;
 
-    console.log(childEl, traverse);
-
     if (childEl === traverse) {
       traverse = traverse.nextSibling;
       continue;

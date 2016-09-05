@@ -2,15 +2,11 @@ import { text } from './text';
 import { setChildren } from './setchildren';
 
 export function mount (parent, child, before) {
-  if (child == null) {
-    return;
-  }
-
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
 
   if (child === childEl && childEl.__redom_view) {
-    // try to look up the view if not provided 
+    // try to look up the view if not provided
     child = childEl.__redom_view;
   }
 
