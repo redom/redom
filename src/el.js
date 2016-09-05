@@ -30,8 +30,9 @@ el.extend = function (query) {
 
 function parseArgument (element, empty, arg) {
   // support middleware
-  while (typeof arg === 'function') {
-    arg = arg(element);
+  if (typeof arg === 'function') {
+    arg(element);
+    return;
   }
 
   if (mount(element, arg)) {

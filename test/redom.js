@@ -83,15 +83,11 @@ function setChildren (parent, children) {
 }
 
 function mount (parent, child, before) {
-  if (child == null) {
-    return;
-  }
-
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
 
   if (child === childEl && childEl.__redom_view) {
-    // try to look up the view if not provided 
+    // try to look up the view if not provided
     child = childEl.__redom_view;
   }
 
@@ -157,8 +153,9 @@ el.extend = function (query) {
 
 function parseArgument (element, empty, arg) {
   // support middleware
-  while (typeof arg === 'function') {
-    arg = arg(element);
+  if (typeof arg === 'function') {
+    arg(element);
+    return;
   }
 
   if (mount(element, arg)) {
@@ -297,8 +294,9 @@ svg.extend = function (query) {
 }
 
 function parseArgument$1 (element, empty, arg) {
-  while (typeof arg === 'function') {
+  if (typeof arg === 'function') {
     arg = arg(element);
+    return;
   }
 
   if (mount(element, arg)) {

@@ -30,8 +30,9 @@ svg.extend = function (query) {
 }
 
 function parseArgument (element, empty, arg) {
-  while (typeof arg === 'function') {
+  if (typeof arg === 'function') {
     arg = arg(element);
+    return;
   }
 
   if (mount(element, arg)) {
