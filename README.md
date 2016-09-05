@@ -1,6 +1,6 @@
-[![npm](https://img.shields.io/npm/v/redom.svg?maxAge=2592000)](https://www.npmjs.com/package/frzr)
-[![Build Status](https://img.shields.io/travis/pakastin/redom.svg?maxAge=2592000)](https://travis-ci.org/pakastin/frzr)
-[![npm](https://img.shields.io/npm/l/redom.svg?maxAge=2592000)](https://github.com/pakastin/frzr/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/v/redom.svg?maxAge=2592000)](https://www.npmjs.com/package/redom)
+[![Build Status](https://img.shields.io/travis/pakastin/redom.svg?maxAge=2592000)](https://travis-ci.org/pakastin/redom)
+[![npm](https://img.shields.io/npm/l/redom.svg?maxAge=2592000)](https://github.com/pakastin/redom/blob/master/LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=2592000)](https://twitter.com/pakastin)
 
 # RE:DOM
