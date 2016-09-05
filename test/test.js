@@ -56,6 +56,16 @@ module.exports = function (redom) {
       );
       t.equals(app.outerHTML, '<app><h1>Hello world!</h1></app>');
     });
+    t.test('child views', function (t) {
+      t.plan(1);
+      function Test () {
+        this.el = el('test');
+      }
+      var app = el('app',
+        new Test
+      );
+      t.equals(app.outerHTML, '<app><test></test></app>');
+    })
     t.test('middleware', function (t) {
       t.plan(1);
       var app = el('app',
@@ -287,6 +297,18 @@ module.exports = function (redom) {
 
       var graphic = svg('svg',
         svg('circle', { cx: 1, cy: 2, r: 3 })
+      );
+      t.equals(graphic.outerHTML, '<svg><circle cx="1" cy="2" r="3"></circle></svg>')
+    });
+    t.test('child view', function (t) {
+      t.plan(1);
+
+      function Circle () {
+        this.el = svg('circle', { cx: 1, cy: 2, r: 3 });
+      }
+
+      var graphic = svg('svg',
+        new Circle
       );
       t.equals(graphic.outerHTML, '<svg><circle cx="1" cy="2" r="3"></circle></svg>')
     });

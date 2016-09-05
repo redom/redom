@@ -10,24 +10,20 @@ export function mount (parent, child, before) {
     child = childEl.__redom_view;
   }
 
-  if (childEl.nodeType) {
-    if (child !== childEl) {
-      childEl.__redom_view = child;
-    }
-    if (before) {
-      parentEl.insertBefore(childEl, before.el || before);
-    } else {
-      parentEl.appendChild(childEl);
-    }
-    if (child.isMounted) {
-      child.remounted && child.remounted();
-    } else {
-      child.isMounted = true;
-      child.mounted && child.mounted();
-    }
-    return true;
+  if (child !== childEl) {
+    childEl.__redom_view = child;
   }
-  return false;
+  if (before) {
+    parentEl.insertBefore(childEl, before.el || before);
+  } else {
+    parentEl.appendChild(childEl);
+  }
+  if (child.isMounted) {
+    child.remounted && child.remounted();
+  } else {
+    child.isMounted = true;
+    child.mounted && child.mounted();
+  }
 }
 
 export function unmount (parent, child) {

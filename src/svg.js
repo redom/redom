@@ -8,59 +8,53 @@ var SVG = 'http://www.w3.org/2000/svg';
 var cache = {};
 
 export function svg (query, a) {
-  if (query.nodeType) {
-    var element = query.cloneNode(false);
-  } else {
+  if (typeof query === 'string') {
     var element = (cache[query] || (cache[query] = createElement(query, SVG))).cloneNode(false);
+  } else {
+    var element = query.cloneNode(false);
   }
+
   var empty = true;
 
   for (var i = 1; i < arguments.length; i++) {
     var arg = arguments[i];
 
-    empty = parseArgument(element, empty, arg);
+    if (!arg) {
+      continue;
+    } else if (typeof arg === 'function') {
+      arg = arg(element);
+    } else if (typeof arg === 'string' || typeof arg === 'number') {
+      if (empty) {
+        empty = false;
+        element.textContent = arg;
+      } else {
+        element.appendChild(text(arg));
+      }
+    } else if (arg.nodeType || (arg.el && arg.el.nodeType)) {
+      empty = false;
+      mount(element, arg);
+    } else if (typeof arg === 'object') {
+      for (var key in arg) {
+        var value = arg[key];
+
+        if (key === 'style' && typeof value !== 'string') {
+          for (var cssKey in value) {
+            element.style[cssKey] = value[cssKey];
+          }
+        } else if (typeof value === 'function') {
+          element[key] = value;
+        } else {
+          element.setAttribute(key, value);
+        }
+      }
+    }
   }
 
   return element;
 }
 
 svg.extend = function (query) {
-  var element = (cache[query] || (cache[query] = createElement(query, SVG))).cloneNode(false);
-  return svg.bind(this, element);
-}
+  var clone = (cache[query] || (cache[query] = createElement(query, SVG)));
 
-function parseArgument (element, empty, arg) {
-  if (typeof arg === 'function') {
-    arg = arg(element);
-    return;
-  }
-
-  if (mount(element, arg)) {
-    return false;
-  }
-
-  if (typeof arg === 'string' || typeof arg === 'number') {
-    if (empty) {
-      element.textContent = arg;
-    } else {
-      element.appendChild(text(arg));
-    }
-    return false;
-  }
-
-  for (var key in arg) {
-    var value = arg[key];
-
-    if (key === 'style' && typeof value !== 'string') {
-      for (var cssKey in value) {
-        element.style[cssKey] = value[cssKey];
-      }
-    } else if (typeof value === 'function') {
-      element[key] = value;
-    } else {
-      element.setAttribute(key, value);
-    }
-  }
-
-  return empty;
+  return svg.bind(this, clone);
 }

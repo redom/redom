@@ -3,34 +3,34 @@
   <body>
     <script src="redom.min.js"></script>
     <script>
-    var el = redom.el;
-    var list = redom.list;
-    var mount = redom.mount;
+      var el = redom.el;
+      var list = redom.list;
+      var mount = redom.mount;
 
-    // define component
-    function Td () {
-      this.el = el('td');
-    }
-    Td.prototype.update = function (data) {
-      this.el.textContent = data;
-    }
+      // define component
+      function Td () {
+        this.el = el('td');
+      }
+      Td.prototype.update = function (data) {
+        this.el.textContent = data;
+      }
 
-    // define list components
-    var Tr = list.extend('tr', Td);
-    var Table = list.extend('table', Tr);
+      // define list components
+      var Tr = list.extend('tr', Td);
+      var Table = list.extend('table', Tr);
 
-    // create main view
-    var table = new Table;
+      // create main view
+      var table = new Table;
 
-    // mount to DOM
-    mount(document.body, table);
+      // mount to DOM
+      mount(document.body, table);
 
-    // update the app
-    table.update([
-      [ 1, 2, 3 ],
-      [ 4, 5, 6 ],
-      [ 7, 8, 9 ]
-    ]);
+      // update the app
+      table.update([
+        [ 1, 2, 3 ],
+        [ 4, 5, 6 ],
+        [ 7, 8, 9 ]
+      ]);
     </script>
   </body>
 </html>
