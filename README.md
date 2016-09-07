@@ -1,3 +1,4 @@
+[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![npm](https://img.shields.io/npm/v/redom.svg?maxAge=3600)](https://www.npmjs.com/package/redom)
 [![Build Status](https://img.shields.io/travis/pakastin/redom.svg?maxAge=3600)](https://travis-ci.org/pakastin/redom)
 [![npm](https://img.shields.io/npm/l/redom.svg?maxAge=3600)](https://github.com/pakastin/redom/blob/master/LICENSE)
