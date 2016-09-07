@@ -1,1 +1,1 @@
-require('./test')(require('./redom'));
+require('./test')(require('./redom'))

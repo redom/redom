@@ -1,5 +1,5 @@
-import { doc } from './globals';
+import { doc } from './globals'
 
 export function text (content) {
-  return doc.createTextNode(content);
+  return doc.createTextNode(content)
 }

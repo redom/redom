@@ -1,90 +1,91 @@
-import { el } from './el';
-import { mount, unmount } from './mount';
+import { el } from './el'
 
 export function list (parent, View, key, initData) {
-  return new List(parent, View, key, initData);
+  return new List(parent, View, key, initData)
 }
 
-export function List(parent, View, key, initData) {
-  this.View = View;
-  this.key = key;
-  this.initData = initData;
-  this.views = [];
-  this.el = typeof parent === 'string' ? el(parent) : parent;
+export function List (parent, View, key, initData) {
+  this.View = View
+  this.key = key
+  this.initData = initData
+  this.views = []
+  this.el = typeof parent === 'string' ? el(parent) : parent
 
   if (key) {
-    this.lookup = {};
+    this.lookup = {}
   }
 }
 
 List.extend = function (parent, View, key, initData) {
-  return List.bind(List, parent, View, key, initData);
+  return List.bind(List, parent, View, key, initData)
 }
 
-list.extend = List.extend;
+list.extend = List.extend
 
 List.prototype.update = function (data) {
-  var View = this.View;
-  var key = this.key;
-  var initData = this.initData;
-  var views = this.views;
-  var parent = this.el;
-  var traverse = parent.firstChild;
+  var View = this.View
+  var key = this.key
+  var initData = this.initData
+  var views = this.views
+  var parent = this.el
+  var traverse = parent.firstChild
 
   if (key) {
-    var lookup = this.lookup;
+    var lookup = this.lookup
   }
 
   for (var i = 0; i < data.length; i++) {
-    var item = data[i];
+    var item = data[i]
+    var view
+
     if (key) {
-      var id = typeof key === 'function' ? key(item) : item[key];
-      var view = views[i] = lookup[id] || (lookup[id] = new View(initData, item, i));
-      view.__id = id;
+      var id = typeof key === 'function' ? key(item) : item[key]
+      view = views[i] = lookup[id] || (lookup[id] = new View(initData, item, i))
+      view.__id = id
     } else {
-      var view = views[i] || (views[i] = new View(initData, item, i));
+      view = views[i] || (views[i] = new View(initData, item, i))
     }
-    var el = view.el;
-    el.__redom_view = view;
-    view.update && view.update(item);
+    var el = view.el
+    el.__redom_view = view
+    view.update && view.update(item)
 
     if (traverse === el) {
-      traverse = traverse.nextSibling;
-      continue;
+      traverse = traverse.nextSibling
+      continue
     }
 
     if (traverse) {
-      parent.insertBefore(el, traverse);
+      parent.insertBefore(el, traverse)
     } else {
-      parent.appendChild(el);
+      parent.appendChild(el)
     }
     if (view.isMounted) {
-      view.remounted && view.remounted();
+      view.remounted && view.remounted()
     } else {
-      view.isMounted = true;
-      view.mounted && view.mounted();
+      view.isMounted = true
+      view.mounted && view.mounted()
     }
   }
 
   while (traverse) {
-    var next = traverse.nextSibling;
-    var view = traverse.__redom_view;
+    var next = traverse.nextSibling
+    var _view = traverse.__redom_view
 
     if (key) {
-      if (view) {
-        var id = view.__id;
-        lookup[id] = null;
+      if (_view) {
+        id = _view.__id
+        lookup[id] = null
       }
     }
-    views[i++] = null;
-    parent.removeChild(traverse);
+    views[i++] = null
+    parent.removeChild(traverse)
 
-    view.isMounted = false;
-    view.unmounted && view.unmounted();
-    traverse.__redom_view = null;
+    _view.isMounted = false
+    _view.unmounted && _view.unmounted()
+    traverse.__redom_view = null
 
-    traverse = next;
+    traverse = next
   }
 
-  views.length = data.length;
+  views.length = data.length
 }
