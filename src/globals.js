@@ -1,1 +1,1 @@
-export var doc = document;
+export var doc = document

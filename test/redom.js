@@ -2,325 +2,334 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var doc = document;
+var doc = document
 
 function createElement (query, ns) {
   // query parsing magic by https://github.com/maciejhirsz
 
-  var tag, id, className;
+  var tag, id, className
 
-  var mode = 0;
-  var start = 0;
+  var mode = 0
+  var start = 0
 
   for (var i = 0, len = query.length; i <= len; i++) {
-    var cp = i === len ? 0 : query.charCodeAt(i);
+    var cp = i === len ? 0 : query.charCodeAt(i)
 
     //  cp === '#'     cp === '.'     nullterm
     if (cp === 0x23 || cp === 0x2E || cp === 0) {
       if (mode === 0) {
-        tag = i  === 0 ? 'div'
-            : cp === 0 ? query
-            :            query.substring(start, i);
+        tag = (i === 0) ? 'div' : (cp === 0) ? query : query.substring(start, i)
       } else {
         var slice = query.substring(start, i)
+
         if (mode === 1) {
-          id = slice;
+          id = slice
         } else if (className) {
-          className += ' ' + slice;
+          className += ' ' + slice
         } else {
-          className = slice;
+          className = slice
         }
       }
 
-      start = i + 1;
-      mode = cp === 0x23 ? 1 : 2;
+      start = i + 1
+      mode = cp === 0x23 ? 1 : 2
     }
   }
-  if (ns) {
-    var element = doc.createElementNS(ns, tag);
-  } else {
-    var element = doc.createElement(tag);
-  }
+  var element = ns ? doc.createElementNS(ns, tag) : doc.createElement(tag)
 
-  if (id) element.id = id;
-  if (className) element.className = className;
+  if (id) element.id = id
+  if (className) element.className = className
 
-  return element;
+  return element
 }
 
 function text (content) {
-  return doc.createTextNode(content);
-}
-
-function setChildren (parent, children) {
-  var parentEl = parent.el || parent;
-  var traverse = parentEl.firstChild;
-
-  for (var i = 0; i < children.length; i++) {
-    var child = children[i];
-
-    if (!child) {
-      continue;
-    }
-
-    var childEl = child.el || child;
-
-    if (childEl === traverse) {
-      traverse = traverse.nextSibling;
-      continue;
-    }
-
-    mount(parent, child, traverse);
-  }
-
-  while (traverse) {
-    var next = traverse.nextSibling;
-
-    unmount(parent, traverse);
-
-    traverse = next;
-  }
+  return doc.createTextNode(content)
 }
 
 function mount (parent, child, before) {
-  var parentEl = parent.el || parent;
-  var childEl = child.el || child;
+  var parentEl = parent.el || parent
+  var childEl = child.el || child
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided
-    child = childEl.__redom_view;
+    child = childEl.__redom_view
   }
 
   if (child !== childEl) {
-    childEl.__redom_view = child;
+    childEl.__redom_view = child
   }
   if (before) {
-    parentEl.insertBefore(childEl, before.el || before);
+    parentEl.insertBefore(childEl, before.el || before)
   } else {
-    parentEl.appendChild(childEl);
+    parentEl.appendChild(childEl)
   }
   if (child.isMounted) {
-    child.remounted && child.remounted();
+    child.remounted && child.remounted()
   } else {
-    child.isMounted = true;
-    child.mounted && child.mounted();
+    child.isMounted = true
+    child.mounted && child.mounted()
   }
 }
 
 function unmount (parent, child) {
-  var parentEl = parent.el || parent;
-  var childEl = child.el || child;
+  var parentEl = parent.el || parent
+  var childEl = child.el || child
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided
-    child = childEl.__redom_view;
+    child = childEl.__redom_view
   }
 
-  parentEl.removeChild(childEl);
+  parentEl.removeChild(childEl)
 
-  child.isMounted = false;
-  child.unmounted && child.unmounted();
+  child.isMounted = false
+  child.unmounted && child.unmounted()
 }
 
-var cache = {};
+var cache = {}
 
 function el (query) {
+  var element
+
   if (typeof query === 'string') {
-    var element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
+    element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false)
+  } else if (query && query.nodeType) {
+    element = query.cloneNode(false)
   } else {
-    var element = query.cloneNode(false);
+    throw new Error('At least one argument required')
   }
 
-  var empty = true;
+  var empty = true
 
   for (var i = 1; i < arguments.length; i++) {
-    var arg = arguments[i];
+    var arg = arguments[i]
+
+    if (!arg) {
+      continue
+    }
 
     // support middleware
     if (typeof arg === 'function') {
-      arg(element);
+      arg(element)
     } else if (typeof arg === 'string' || typeof arg === 'number') {
       if (empty) {
-        empty = false;
-        element.textContent = arg;
+        empty = false
+        element.textContent = arg
       } else {
-        element.appendChild(text(arg));
+        element.appendChild(text(arg))
       }
     } else if (arg.nodeType || (arg.el && arg.el.nodeType)) {
-      empty = false;
-      mount(element, arg);
+      empty = false
+      mount(element, arg)
     } else if (typeof arg === 'object') {
       for (var key in arg) {
-        var value = arg[key];
+        var value = arg[key]
 
         if (key === 'style') {
           if (typeof value === 'string') {
-            element.setAttribute(key, value);
+            element.setAttribute(key, value)
           } else {
             for (var cssKey in value) {
-              element.style[cssKey] = value[cssKey];
+              element.style[cssKey] = value[cssKey]
             }
           }
         } else if (key in element || typeof value === 'function') {
-          element[key] = value;
+          element[key] = value
         } else {
-          element.setAttribute(key, value);
+          element.setAttribute(key, value)
         }
       }
     }
   }
 
-  return element;
+  return element
 }
 
 el.extend = function (query) {
-  var clone = (cache[query] || (cache[query] = createElement(query)));
+  var clone = (cache[query] || (cache[query] = createElement(query)))
 
-  return el.bind(this, clone);
+  return el.bind(this, clone)
 }
 
 function list (parent, View, key, initData) {
-  return new List(parent, View, key, initData);
+  return new List(parent, View, key, initData)
 }
 
-function List(parent, View, key, initData) {
-  this.View = View;
-  this.key = key;
-  this.initData = initData;
-  this.views = [];
-  this.el = typeof parent === 'string' ? el(parent) : parent;
+function List (parent, View, key, initData) {
+  this.View = View
+  this.key = key
+  this.initData = initData
+  this.views = []
+  this.el = typeof parent === 'string' ? el(parent) : parent
 
   if (key) {
-    this.lookup = {};
+    this.lookup = {}
   }
 }
 
 List.extend = function (parent, View, key, initData) {
-  return List.bind(List, parent, View, key, initData);
+  return List.bind(List, parent, View, key, initData)
 }
 
-list.extend = List.extend;
+list.extend = List.extend
 
 List.prototype.update = function (data) {
-  var View = this.View;
-  var key = this.key;
-  var initData = this.initData;
-  var views = this.views;
-  var parent = this.el;
-  var traverse = parent.firstChild;
+  var View = this.View
+  var key = this.key
+  var initData = this.initData
+  var views = this.views
+  var parent = this.el
+  var traverse = parent.firstChild
 
   if (key) {
-    var lookup = this.lookup;
+    var lookup = this.lookup
   }
 
   for (var i = 0; i < data.length; i++) {
-    var item = data[i];
+    var item = data[i]
+    var view
+
     if (key) {
-      var id = typeof key === 'function' ? key(item) : item[key];
-      var view = views[i] = lookup[id] || (lookup[id] = new View(initData, item, i));
-      view.__id = id;
+      var id = typeof key === 'function' ? key(item) : item[key]
+      view = views[i] = lookup[id] || (lookup[id] = new View(initData, item, i))
+      view.__id = id
     } else {
-      var view = views[i] || (views[i] = new View(initData, item, i));
+      view = views[i] || (views[i] = new View(initData, item, i))
     }
-    var el = view.el;
-    el.__redom_view = view;
-    view.update && view.update(item);
+    var el = view.el
+    el.__redom_view = view
+    view.update && view.update(item)
 
     if (traverse === el) {
-      traverse = traverse.nextSibling;
-      continue;
+      traverse = traverse.nextSibling
+      continue
     }
 
     if (traverse) {
-      parent.insertBefore(el, traverse);
+      parent.insertBefore(el, traverse)
     } else {
-      parent.appendChild(el);
+      parent.appendChild(el)
     }
     if (view.isMounted) {
-      view.remounted && view.remounted();
+      view.remounted && view.remounted()
     } else {
-      view.isMounted = true;
-      view.mounted && view.mounted();
+      view.isMounted = true
+      view.mounted && view.mounted()
     }
   }
 
   while (traverse) {
-    var next = traverse.nextSibling;
-    var view = traverse.__redom_view;
+    var next = traverse.nextSibling
+    var _view = traverse.__redom_view
 
     if (key) {
-      if (view) {
-        var id = view.__id;
-        lookup[id] = null;
+      if (_view) {
+        id = _view.__id
+        lookup[id] = null
       }
     }
-    views[i++] = null;
-    parent.removeChild(traverse);
+    views[i++] = null
+    parent.removeChild(traverse)
 
-    view.isMounted = false;
-    view.unmounted && view.unmounted();
-    traverse.__redom_view = null;
+    _view.isMounted = false
+    _view.unmounted && _view.unmounted()
+    traverse.__redom_view = null
 
-    traverse = next;
+    traverse = next
   }
 
-  views.length = data.length;
+  views.length = data.length
 }
 
-var SVG = 'http://www.w3.org/2000/svg';
+function setChildren (parent, children) {
+  var parentEl = parent.el || parent
+  var traverse = parentEl.firstChild
 
-var cache$1 = {};
+  for (var i = 0; i < children.length; i++) {
+    var child = children[i]
 
-function svg (query, a) {
-  if (typeof query === 'string') {
-    var element = (cache$1[query] || (cache$1[query] = createElement(query, SVG))).cloneNode(false);
-  } else {
-    var element = query.cloneNode(false);
+    if (!child) {
+      continue
+    }
+
+    var childEl = child.el || child
+
+    if (childEl === traverse) {
+      traverse = traverse.nextSibling
+      continue
+    }
+
+    mount(parent, child, traverse)
   }
 
-  var empty = true;
+  while (traverse) {
+    var next = traverse.nextSibling
+
+    unmount(parent, traverse)
+
+    traverse = next
+  }
+}
+
+var SVG = 'http://www.w3.org/2000/svg'
+
+var cache$1 = {}
+
+function svg (query, a) {
+  var element
+
+  if (typeof query === 'string') {
+    element = (cache$1[query] || (cache$1[query] = createElement(query, SVG))).cloneNode(false)
+  } else if (query && query.nodeType) {
+    element = query.cloneNode(false)
+  } else {
+    throw new Error('At least one argument required')
+  }
+
+  var empty = true
 
   for (var i = 1; i < arguments.length; i++) {
-    var arg = arguments[i];
+    var arg = arguments[i]
 
     if (!arg) {
-      continue;
+      continue
     } else if (typeof arg === 'function') {
-      arg = arg(element);
+      arg = arg(element)
     } else if (typeof arg === 'string' || typeof arg === 'number') {
       if (empty) {
-        empty = false;
-        element.textContent = arg;
+        empty = false
+        element.textContent = arg
       } else {
-        element.appendChild(text(arg));
+        element.appendChild(text(arg))
       }
     } else if (arg.nodeType || (arg.el && arg.el.nodeType)) {
-      empty = false;
-      mount(element, arg);
+      empty = false
+      mount(element, arg)
     } else if (typeof arg === 'object') {
       for (var key in arg) {
-        var value = arg[key];
+        var value = arg[key]
 
         if (key === 'style' && typeof value !== 'string') {
           for (var cssKey in value) {
-            element.style[cssKey] = value[cssKey];
+            element.style[cssKey] = value[cssKey]
           }
         } else if (typeof value === 'function') {
-          element[key] = value;
+          element[key] = value
         } else {
-          element.setAttribute(key, value);
+          element.setAttribute(key, value)
         }
       }
     }
   }
 
-  return element;
+  return element
 }
 
 svg.extend = function (query) {
-  var clone = (cache$1[query] || (cache$1[query] = createElement(query, SVG)));
+  var clone = (cache$1[query] || (cache$1[query] = createElement(query, SVG)))
 
-  return svg.bind(this, clone);
+  return svg.bind(this, clone)
 }
 
 exports.el = el;
