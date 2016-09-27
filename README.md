@@ -9,6 +9,12 @@ Make DOM great again!
 
 ![RE:DOM!](https://redom.js.org/meme.jpg)
 
+## Table of contents
+- [Quick start](https://github.com/pakastin/redom/blob/master/README.md#quick-start)
+- [Installing](https://github.com/pakastin/redom/blob/master/README.md#installing)
+- [Examples](https://github.com/pakastin/redom/blob/master/README.md#examples)
+- [API](https://github.com/pakastin/redom/blob/master/README.md#api)
+
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
 
@@ -23,7 +29,7 @@ $ redom
 ```
 Next learn how to use RE:DOM by reading the [API](https://github.com/pakastin/redom/blob/master/README.md#api).
 
-## Installation
+## Installing
 ```
 npm install redom
 ```
