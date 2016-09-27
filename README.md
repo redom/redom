@@ -12,6 +12,9 @@ Make DOM great again!
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
 
+### ES2015-version with some extra magic
+http://codepen.io/pakastin/pen/gwWBEx
+
 ## Quick start
 Initialize RE:DOM projects easily with [RE:DOM project generator](https://github.com/pakastin/redom-cli)
 ```
