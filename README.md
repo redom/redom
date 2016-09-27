@@ -15,6 +15,7 @@ Make DOM great again!
 - [Installing](https://github.com/pakastin/redom/blob/master/README.md#installing)
 - [Examples](https://github.com/pakastin/redom/blob/master/README.md#examples)
 - [API](https://github.com/pakastin/redom/blob/master/README.md#api)
+- [License](https://github.com/pakastin/redom/blob/master/README.md#license)
 
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
