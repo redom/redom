@@ -52,10 +52,92 @@ var mount = redom.mount;
 ## Examples
 Check out some examples on https://redom.js.org
 
-## What else can you do with RE:DOM?
-Documentation is a bit lacking yet, please check out the source for now: https://github.com/pakastin/redom/tree/master/src
+## API
+### el(query, ...properties/attributes/children/text)
+You can create HTML elements just by providing query + as many properties/attributes objects, children and text as you want in any order. Examples:
+```js
+el('h1', 'Hello world!')
+el('h1', { class: 'hello' }, 'Hello world!')
+el('h1', 'Hello ', { class: 'hello' }, 'world!')
+el('h1', { onclick: onclick }, 'Hello world, click me!')
+el('h1.hello', 'Hello world!')
+```
+### el.extend(query)
+You can predefine elements by extending them:
+```js
+var h1 = el.extend('h1.heading1')
+h1('Hello world!')
+```
+### svg(query, ...properties/attributes/children/text)
+Just like el, but with SVG elements.
+### svg.extend(query)
+Just like el.extend, but with SVG elements.
+### text(text)
+Create text node. Useful for updating parts of the text:
+```js
+// define view
+class HelloView {
+  constructor () {
+    this.el = el('h1', 'Hello ', this.target = text('world'), '!')
+  }
+  update (data) {
+    this.target.textContent = data
+  }
+}
+// create view
+const hello = new HelloView()
 
-You can also check out FRZR's documentation, which is quite like the old version of RE:DOM now and will probably be deprecated soon.. https://frzr.js.org
+// mount to DOM
+mount(document.body, hello)
 
+// update the view
+hello.update('you')
+```
+### list(parentQuery, childView, key, initData)
+List element is a powerful helper, which keeps it's child views updated with the data.
+```js
+class Li {
+  constructor () {
+    this.el = el('li')
+  }
+  update (data) {
+    this.el.textContent = data
+  }
+}
+var ul = list('ul', Li)
+mount(document.body, ul)
+ul.update([ 1, 2, 3 ].map(i => 'Item ' + i)
+```
+When you provide a key, list will synchronize elements by their keys.
+```js
+class Li {
+  constructor () {
+    this.el = el('li')
+  }
+  update (data) {
+    this.el.textContent = data.title
+  }
+}
+var ul = list('ul', Li, 'id')
+mount(document.body, ul)
+ul.update([ 1, 2, 3 ].map(i => {
+  return {
+    id: i,
+    title: 'Item ' + i)
+  }
+})
+```
+### setChildren(parent, children)
+Little helper to update element's/view's children:
+```js
+var ul = el('ul')
+var li = el('li', 'Item 1')
+var li2 = el('li', 'Item 2')
+var li3 = el('li', 'Item 3')
+
+setChildren(ul, [ li, li2, li3 ])
+
+mount(document.body, ul)
+```
 ## License
 [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
