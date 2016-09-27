@@ -128,6 +128,36 @@ ul.update([ 1, 2, 3 ].map(i => {
   }
 })
 ```
+### list.extend(parentQuery, childView, key, initData)
+You can also extend lists, which can be useful i.e. with tables:
+```js
+// define component
+class Td {
+  constructor () {
+    this.el = el('td')
+  }
+  update (data) {
+    this.el.textContent = data
+  }
+}
+
+// define list components
+const Tr = list.extend('tr', Td)
+const Table = list.extend('table', Tr)
+
+// create main view
+const table = new Table
+
+// mount to DOM
+mount(document.body, table)
+
+// update the app
+table.update([
+  [ 1, 2, 3 ],
+  [ 4, 5, 6 ],
+  [ 7, 8, 9 ]
+])
+```
 ### setChildren(parent, children)
 Little helper to update element's/view's children:
 ```js
