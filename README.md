@@ -9,7 +9,7 @@ Make DOM great again!
 
 ![RE:DOM!](https://redom.js.org/meme.jpg)
 
-## Table of contents
+## Quickjump
 - [Quick start](https://github.com/pakastin/redom/blob/master/README.md#quick-start)
 - [Hello RE:DOM](https://github.com/pakastin/redom/blob/master/README.md#hello-redom)
 - [Installing](https://github.com/pakastin/redom/blob/master/README.md#installing)
