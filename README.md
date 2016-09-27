@@ -11,6 +11,7 @@ Make DOM great again!
 
 ## Table of contents
 - [Quick start](https://github.com/pakastin/redom/blob/master/README.md#quick-start)
+- [Hello RE:DOM](https://github.com/pakastin/redom/blob/master/README.md#hello-redom)
 - [Installing](https://github.com/pakastin/redom/blob/master/README.md#installing)
 - [Examples](https://github.com/pakastin/redom/blob/master/README.md#examples)
 - [API](https://github.com/pakastin/redom/blob/master/README.md#api)
