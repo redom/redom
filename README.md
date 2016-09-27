@@ -53,11 +53,22 @@ var mount = redom.mount;
 
 ## Oldskool
 ```html
-<script src="https://redom.js.org/redom.min.js"></script>
-```
-```js
-var el = redom.el;
-var mount = redom.mount;
+<!DOCTYPE html>
+<html>
+  <body>
+    <script src="https://redom.js.org/redom.min.js"></script>
+    <script>
+      var el = redom.el
+      var mount = redom.mount
+
+      // create HTML element
+      var hello = el('h1', 'Hello world!')
+
+      // mount to DOM
+      mount(document.body, hello)
+    </script>
+  </body>
+</html>
 ```
 
 ## Examples
