@@ -82,43 +82,58 @@
       <img src="logo.svg">
       <p>Make DOM great again!</p>
       <code>
-        <pre>import { el, mount } from 'redom';
+        <pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;script src=&quot;https://redom.js.org/redom.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+      var el = redom.el
+      var mount = redom.mount
 
-// create HTML element
-const hello = el('h1.hello', 'Hello world!');
+      var hello = el(&#39;h1&#39;, &#39;Hello world!&#39;)
 
-// mount to body
-mount(document.body, hello);</pre>
+      mount(document.body, hello)
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
       </code>
       <code class="hidden">
-        <pre>import { el, list, mount } from 'redom';
+        <pre>import { el, mount } from redom
+
+const hello = el(&#39;h1&#39;, &#39;Hello world!&#39;)
+
+mount(document.body, hello)
+</pre>
+      </code>
+      <code class="hidden">
+        <pre>import { el, list, mount } from 'redom'
 
 // define component
 class Td {
   constructor () {
-    this.el = el('td');
+    this.el = el('td')
   }
   update (data) {
-    this.el.textContent = data;
+    this.el.textContent = data
   }
 }
 
 // define list components
-const Tr = list.extend('tr', Td);
-const Table = list.extend('table', Tr);
+const Tr = list.extend('tr', Td)
+const Table = list.extend('table', Tr)
 
 // create main view
-const table = new Table;
+const table = new Table
 
 // mount to DOM
-mount(document.body, table);
+mount(document.body, table)
 
 // update the app
 table.update([
   [ 1, 2, 3 ],
   [ 4, 5, 6 ],
   [ 7, 8, 9 ]
-]);</pre>
+])</pre>
       </code>
       <p>
         <a onclick="toggleCode()">Another example</a>
@@ -131,11 +146,19 @@ table.update([
     </div>
     <script>
       function toggleCode () {
-        var visibleCode = document.querySelector('code:not(.hidden)');
-        var hiddenCode = document.querySelector('code.hidden');
+        var visibleCode = document.querySelector('code:not(.hidden)')
+        var allCode = document.querySelectorAll('code')
 
-        visibleCode.classList.add('hidden');
-        hiddenCode.classList.remove('hidden');
+        for (var i = 0; i < allCode.length; i++) {
+          if (allCode[i] === visibleCode) {
+            visibleCode.classList.add('hidden')
+            if (i < allCode.length - 1) {
+              allCode[i + 1].classList.remove('hidden')
+            } else {
+              allCode[0].classList.remove('hidden')
+            }
+          }
+        }
       }
     </script>
   </body>
