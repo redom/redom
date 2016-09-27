@@ -18,6 +18,7 @@ Initialize RE:DOM projects easily with [RE:DOM project generator](https://github
 $ npm install -g redom-cli
 $ redom
 ```
+Learn how to use RE:DOM by reading the [API](https://github.com/pakastin/redom/blob/master/README.md#api).
 
 ## Installation
 ```
