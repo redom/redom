@@ -90,8 +90,10 @@
       var el = redom.el
       var mount = redom.mount
 
+      // create HTML element
       var hello = el(&#39;h1&#39;, &#39;Hello world!&#39;)
 
+      // mount to DOM
       mount(document.body, hello)
     &lt;/script&gt;
   &lt;/body&gt;
@@ -100,8 +102,10 @@
       <code class="hidden">
         <pre>import { el, mount } from redom
 
+// create HTML element
 const hello = el(&#39;h1&#39;, &#39;Hello world!&#39;)
 
+// mount to DOM
 mount(document.body, hello)
 </pre>
       </code>
