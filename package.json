@@ -1,6 +1,6 @@
 {
   "name": "redom",
-  "version": "0.4.6",
+  "version": "1.0.0",
   "description": "Tiny DOM library",
   "main": "dist/redom.js",
   "jsnext:main": "src/index.js",
