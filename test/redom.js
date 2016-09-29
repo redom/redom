@@ -4,8 +4,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var doc = document
 
+var HASH = '#'.charCodeAt(0)
+var DOT = '.'.charCodeAt(0)
+
 function createElement (query, ns) {
-  // query parsing magic by https://github.com/maciejhirsz
+  // query parsing magic, thank you @maciejhirsz
 
   var tag, id, className
 
@@ -13,10 +16,9 @@ function createElement (query, ns) {
   var start = 0
 
   for (var i = 0, len = query.length; i <= len; i++) {
-    var cp = i === len ? 0 : query.charCodeAt(i)
+    var cp = (i === len) ? 0 : query.charCodeAt(i)
 
-    //  cp === '#'     cp === '.'     nullterm
-    if (cp === 0x23 || cp === 0x2E || cp === 0) {
+    if (cp === HASH || cp === DOT || cp === 0) {
       if (mode === 0) {
         tag = (i === 0) ? 'div' : (cp === 0) ? query : query.substring(start, i)
       } else {
@@ -32,7 +34,7 @@ function createElement (query, ns) {
       }
 
       start = i + 1
-      mode = cp === 0x23 ? 1 : 2
+      mode = (cp === HASH) ? 1 : 2
     }
   }
   var element = ns ? doc.createElementNS(ns, tag) : doc.createElement(tag)
