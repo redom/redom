@@ -82,6 +82,16 @@
       <img src="logo.svg">
       <p>Make DOM great again!</p>
       <code>
+        <pre>import { el, mount } from redom
+
+// create HTML element
+const hello = el(&#39;h1&#39;, &#39;Hello world!&#39;)
+
+// mount to DOM
+mount(document.body, hello)
+</pre>
+      </code>
+      <code class="hidden">
         <pre>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;body&gt;
@@ -98,16 +108,6 @@
     &lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</pre>
-      </code>
-      <code class="hidden">
-        <pre>import { el, mount } from redom
-
-// create HTML element
-const hello = el(&#39;h1&#39;, &#39;Hello world!&#39;)
-
-// mount to DOM
-mount(document.body, hello)
-</pre>
       </code>
       <code class="hidden">
         <pre>import { el, list, mount } from 'redom'
