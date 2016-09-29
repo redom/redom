@@ -37,18 +37,16 @@ npm install redom
 
 ## Usage (ES2015 import)
 ```js
-import { el, mount } from 'redom';
+import { el, mount } from 'redom'
 
-const hello = el('h1', 'Hello world!');
+const hello = el('h1', 'Hello world!')
 
-mount(document.body, hello);
+mount(document.body, hello)
 ```
 
 ## Using with commonjs
 ```js
-var redom = require('redom');
-var el = redom.el;
-var mount = redom.mount;
+const { el, mount } = require('redom')
 ```
 
 ## Oldskool
