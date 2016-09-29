@@ -100,7 +100,11 @@ Create text node. Useful for updating parts of the text:
 // define view
 class HelloView {
   constructor () {
-    this.el = el('h1', 'Hello ', this.target = text('world'), '!')
+    this.el = el('h1',
+      'Hello ', 
+      this.target = text('world'), 
+      '!'
+    )
   }
   update (data) {
     this.target.textContent = data
