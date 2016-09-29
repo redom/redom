@@ -16,6 +16,7 @@ Make DOM great again!
 - [Examples](https://github.com/pakastin/redom/blob/master/README.md#examples)
 - [API](https://github.com/pakastin/redom/blob/master/README.md#api)
 - [Server-side rendering](https://github.com/pakastin/nodom)
+
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
 
