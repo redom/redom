@@ -7,6 +7,8 @@
 # RE:DOM
 Make DOM great again!
 
+Update: [RE:DOM is now 1.0!](https://medium.com/@pakastin/re-dom-is-now-1-0-58ec0328a59d)
+
 ![RE:DOM!](https://redom.js.org/meme.jpg)
 
 ## Documentation
