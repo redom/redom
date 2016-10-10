@@ -273,6 +273,32 @@ module.exports = function (redom) {
       unmount(document.body, test)
       t.equals(document.body.outerHTML, '<body></body>')
     })
+    t.test('special cases', function (t) {
+      t.plan(1)
+      function Td () {
+        this.el = el('td')
+      }
+      Td.prototype.update = function (data) {
+        this.el.textContent = data
+      }
+      function Tr () {
+        this.el = list('tr', Td)
+      }
+      Tr.prototype.update = function (data) {
+        this.el.update(data)
+      }
+      function Table () {
+        this.el = list('table', Tr)
+      }
+      Table.prototype.update = function (data) {
+        this.el.update(data)
+      }
+      var table = new Table()
+      table.update([[1, 2, 3]])
+      setChildren(document.body, [])
+      mount(document.body, table)
+      t.equals(document.body.innerHTML, '<table><tr><td>1</td><td>2</td><td>3</td></tr></table>')
+    })
   })
 
   test('SVG', function (t) {

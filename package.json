@@ -14,6 +14,7 @@
     "prepublish": "npm run build && npm run uglify && npm run test",
     "postpublish": "npm run dist",
     "test": "standard src/index.js && rollup -n redom -f cjs src/index.js -o test/redom.js && browserify -t coverify test/index.js | tape-run | coverify",
+    "nocoverage": "standard src/index.js && rollup -n redom -f cjs src/index.js -o test/redom.js && browserify test/index.js | tape-run",
     "justtest": "browserify -t coverify test/index.js | tape-run | coverify"
   },
   "repository": {
