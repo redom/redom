@@ -37,9 +37,9 @@
     "chokidar": "~1.6.0",
     "coverify": "^1.4.1",
     "gh-pages": "~0.11.0",
-    "rollup": "~0.34.10",
-    "standard": "~8.0.0",
-    "tape": "^4.6.0",
+    "rollup": "~0.36.3",
+    "standard": "~8.3.0",
+    "tape": "^4.6.2",
     "tape-run": "^2.1.4",
     "uglifyjs": "~2.4.10"
   }

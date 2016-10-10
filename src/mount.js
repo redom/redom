@@ -2,6 +2,10 @@ export function mount (parent, child, before) {
   var parentEl = parent.el || parent
   var childEl = child.el || child
 
+  if (childEl.__redom_list) {
+    childEl = childEl.el
+  }
+
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided
     child = childEl.__redom_view

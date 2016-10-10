@@ -5,6 +5,7 @@ export function list (parent, View, key, initData) {
 }
 
 export function List (parent, View, key, initData) {
+  this.__redom_list = true
   this.View = View
   this.key = key
   this.initData = initData
@@ -25,6 +26,7 @@ list.extend = List.extend
 List.prototype.update = function (data) {
   var View = this.View
   var key = this.key
+  var functionKey = typeof key === 'function'
   var initData = this.initData
   var views = this.views
   var parent = this.el
@@ -39,15 +41,18 @@ List.prototype.update = function (data) {
     var view
 
     if (key) {
-      var id = typeof key === 'function' ? key(item) : item[key]
+      var id = functionKey ? key(item) : item[key]
       view = views[i] = lookup[id] || (lookup[id] = new View(initData, item, i))
       view.__id = id
     } else {
       view = views[i] || (views[i] = new View(initData, item, i))
     }
     var el = view.el
+    if (el.__redom_list) {
+      el = el.el
+    }
     el.__redom_view = view
-    view.update && view.update(item)
+    view.update && view.update(item, i)
 
     if (traverse === el) {
       traverse = traverse.nextSibling
