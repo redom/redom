@@ -4,6 +4,37 @@
   (factory((global.redom = global.redom || {})));
 }(this, (function (exports) { 'use strict';
 
+/* global CustomEvent */
+function dispatch (el, type, data) {
+  var event = new CustomEvent('redom-event', {
+    bubbles: true,
+    detail: {
+      type: type,
+      data: data
+    }
+  });
+  el.dispatchEvent(event);
+}
+
+function dispatchDown (el, type, data) {
+  if (el.__redom_view) {
+    var event = new CustomEvent('redom-event', {
+      bubbles: false,
+      detail: {
+        type: type,
+        data: data
+      }
+    });
+    el.dispatchEvent(event);
+  }
+  var traverse = el.firstChild;
+
+  while (traverse) {
+    dispatchDown(traverse, type, data);
+    traverse = traverse.nextSibling;
+  }
+}
+
 var doc = document;
 
 var HASH = '#'.charCodeAt(0);

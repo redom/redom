@@ -1,3 +1,4 @@
+export * from './dispatcher'
 export * from './el'
 export * from './list'
 export * from './mount'
