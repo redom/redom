@@ -5,11 +5,9 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=3600)](https://twitter.com/pakastin)
 
 # RE:DOM
-Make DOM great again!
+Tiny UI library
 
-Update: [RE:DOM is now 1.0!](https://medium.com/@pakastin/re-dom-is-now-1-0-58ec0328a59d)
-
-![RE:DOM!](https://redom.js.org/meme.jpg)
+![RE:DOM!](https://redom.js.org/img/twitter.jpg)
 
 ## Documentation
 - [Quick start](https://github.com/pakastin/redom/blob/master/README.md#quick-start)
