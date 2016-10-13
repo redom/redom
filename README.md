@@ -7,7 +7,7 @@
 # RE:DOM
 Tiny UI library
 
-![RE:DOM!](https://redom.js.org/img/twitter.jpg)
+![RE:DOM](https://redom.js.org/img/twitter.jpg)
 
 ## Documentation
 - [Quick start](https://github.com/pakastin/redom/blob/master/README.md#quick-start)
