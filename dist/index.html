@@ -21,8 +21,8 @@
         background-color: #fff;
         color: #333;
         padding-bottom: 3rem;
-        -webkit-text-size-adjust: 100%;
         text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
       }
       header {
         background-color: #fff;
@@ -71,6 +71,7 @@
         margin: 0 auto;
         padding: 2rem;
         white-space: pre-wrap;
+        word-wrap: break-word;
       }
       a:not(:hover) {
         text-decoration: none;
@@ -195,11 +196,11 @@ table.update([
 ])
 
 // mount to DOM
-mount(document.body, ul)
+mount(document.body, table)
 
 // schedule another update
 setTimeout(() => {
-  ul.update([2, 3, 4, 5])
+  table.update([2, 3, 4, 5])
 }, 1000)</code></pre>
 <pre><code class="language-markup">&lt;body&gt;
   &lt;table&gt;
@@ -294,6 +295,9 @@ setTimeout(() => {
     id: 1,
     target: 'RE:DOM'
   }]
+
+  // reuses DOM elements and only reorders in this case!
+  list.update (data)
 }, 1000)
 </code></pre>
       <pre><code class="language-markup">&lt;body&gt;
@@ -341,6 +345,9 @@ class B extends Dispatcher {
     this.dispatch('test2', 'ok2')
   }
 }
+
+const a = new A()
+const b = new B()
 
 mount(a, b)
 mount(document.body, a)
