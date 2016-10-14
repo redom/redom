@@ -9,14 +9,6 @@ Tiny UI library
 
 ![RE:DOM](https://redom.js.org/img/twitter.jpg)
 
-## Documentation
-- [Quick start](https://github.com/pakastin/redom/blob/master/README.md#quick-start)
-- [Hello RE:DOM](https://github.com/pakastin/redom/blob/master/README.md#hello-redom)
-- [Installing](https://github.com/pakastin/redom/blob/master/README.md#installing)
-- [Examples](https://github.com/pakastin/redom/blob/master/README.md#examples)
-- [API](https://github.com/pakastin/redom/blob/master/README.md#api)
-- [Server-side rendering](https://github.com/pakastin/nodom)
-
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
 
@@ -25,11 +17,6 @@ http://codepen.io/pakastin/pen/gwWBEx
 
 ## Quick start
 Initialize RE:DOM projects easily with [RE:DOM project generator](https://github.com/pakastin/redom-cli)
-```
-$ npm install -g redom-cli
-$ redom
-```
-Next learn how to use RE:DOM by reading the [API](https://github.com/pakastin/redom/blob/master/README.md#api).
 
 ## Installing
 ```
