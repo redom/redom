@@ -72,6 +72,7 @@
         padding: 2rem;
         white-space: pre-wrap;
         word-wrap: break-word;
+        overflow-x: hidden;
       }
       a:not(:hover) {
         text-decoration: none;
@@ -352,6 +353,19 @@ const b = new B()
 mount(a, b)
 mount(document.body, a)
 </code></pre>
+      <h2>Works on server-side as well!</h2>
+      <pre><code class="language-javascript">const { Document, render } = require('nodom')
+
+// create a fake DOM before requiring RE:DOM
+const document = new Document()
+
+const { el, mount } = require('redom')
+
+mount(document.body, el('h1', 'Hello world!'))
+
+const html = render(document.body)
+
+console.log(html) // &lt;body&gt;&lt;h1&gt;Hello world!&lt;/h1&gt;&lt;/body&gt;</code></pre>
       <h2>Looks fun!</h2>
       <p>
         <a href="https://github.com/pakastin/redom">See more on Github</a>
