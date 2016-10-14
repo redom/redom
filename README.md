@@ -4,10 +4,8 @@
 [![npm](https://img.shields.io/npm/l/redom.svg?maxAge=3600)](https://github.com/pakastin/redom/blob/master/LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=3600)](https://twitter.com/pakastin)
 
-# RE:DOM
-Tiny UI library
-
 ![RE:DOM](https://redom.js.org/img/logo.svg)
+Tiny UI library
 
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
