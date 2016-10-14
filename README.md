@@ -7,7 +7,7 @@
 # RE:DOM
 Tiny UI library
 
-![RE:DOM](https://redom.js.org/img/twitter.jpg)
+![RE:DOM](https://redom.js.org/img/logo.svg)
 
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
