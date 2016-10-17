@@ -9,6 +9,9 @@ Tiny UI library
 
 ![RE:DOM](https://redom.js.org/img/logo.svg)
 
+## Share the love with Stickermule stickers! ❤️
+https://www.stickermule.com/marketplace/15681-re-dom
+
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
 
