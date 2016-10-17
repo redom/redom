@@ -183,7 +183,8 @@ mount(document.body, ul)
 ```
 
 ## Browser support
-IE 9 and up + all modern browsers
+Short answer: IE 9 and up + all modern browsers
+Long answer: If you don't use `el.extend`, `svg.extend` or `list.extend` it'll work with <IE9 as well.
 
 ## License
 [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
