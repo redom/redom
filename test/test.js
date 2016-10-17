@@ -395,48 +395,4 @@ module.exports = function (redom) {
       t.throws(svg, new Error('At least one argument required'))
     })
   })
-  test('dispatcher', function (t) {
-    var listener
-    var listener2
-    var listener3
-
-    t.plan(4)
-    function A () {
-      this.el = el('a')
-      listener = this.listen('*', (type, data) => {
-        if (type === 'test') {
-          t.equals(data, 'ok')
-        } else if (type === 'test2') {
-          t.equals(data, 'ok2')
-        }
-      })
-      listener2 = this.listen('test', (data) => {
-        t.equals(data, 'ok')
-      })
-    }
-    A.prototype = Object.create(redom.Dispatcher.prototype)
-    A.prototype.mounted = function () {
-      this.dispatchDown('test', 'ok')
-    }
-    function B () {
-      this.el = el('b')
-      listener3 = this.listen('test2', (data) => {
-        t.equals(data, 'ok2')
-      })
-    }
-    B.prototype = Object.create(redom.Dispatcher.prototype)
-    B.prototype.mounted = function () {
-      this.dispatch('test2', 'ok2')
-    }
-
-    var a = new A()
-    var b = new B()
-
-    redom.mount(a, b)
-    redom.mount(document.body, a)
-
-    listener.cancel()
-    listener2.cancel()
-    listener3.cancel()
-  })
 }
