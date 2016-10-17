@@ -181,5 +181,9 @@ setChildren(ul, [ li, li2, li3 ])
 
 mount(document.body, ul)
 ```
+
+## Browser support
+IE 9 and up + all modern browsers
+
 ## License
 [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
