@@ -339,51 +339,6 @@ setTimeout(() => {
   &lt;/section&gt;
 &lt;/body&gt;</code></pre>
 
-      <h2>Dispatch events up &amp; down </h2>
-      <pre><code class="language-javascript">import { el, mount, Dispatcher }
-
-// define component
-class A extends Dispatcher {
-  // ..how to create it
-  constructor () {
-    super()
-    this.el = el('a')
-
-    // listen to dispatch (up &amp; down)
-    this.listen('test2', (msg) => {
-      console.log(msg) // 'ok2'
-    })
-  }
-  // ..and what to do when mounted to it's parent
-  mounted () {
-    this.dispatchDown('test', 'ok')
-  }
-}
-
-// define another component
-class B extends Dispatcher {
-  // ..how to create it
-  constructor () {
-    super()
-    this.el = el('b')
-
-    // listen to dispatch (up &amp; down)
-    this.listen('test', (msg) => {
-      console.log(msg) // 'ok'
-    })
-  }
-  // ..and what to do when mounted to it's parent
-  mounted () {
-    this.dispatch('test2', 'ok2')
-  }
-}
-
-const a = new A()
-const b = new B()
-
-mount(a, b)
-mount(document.body, a)
-</code></pre>
       <h2>Works on server-side as well!</h2>
       <pre><code class="language-javascript">const { Document, render } = require('nodom')
 
