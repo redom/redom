@@ -9,7 +9,7 @@ Tiny UI library
 
 ![RE:DOM](https://redom.js.org/img/logo.svg)
 
-## Share the love with Stickermule stickers! ❤️
+## NEW! Share the love with Stickermule stickers! ❤️
 https://www.stickermule.com/marketplace/15681-re-dom
 
 You can get $10 off from your order with [this link](https://www.stickermule.com/unlock?ref_id=7457070701)
