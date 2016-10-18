@@ -192,9 +192,7 @@ class Login {
       const email = this.email.value
       const pass = this.pass.value
 
-      this.el.dispatchEvent(new CustomEvent('login', {
-        detail: { email, pass }
-      }))
+      console.log(email, pass)
     }
   }
 }
