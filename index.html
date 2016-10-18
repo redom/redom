@@ -173,6 +173,45 @@ mount(document.body, logo)</code></pre>
   &lt;img id="redom-logo" class="logo" src="img/logo.svg"&gt;
 &lt;/body&gt;</code></pre>
 
+      <h2>Listen to events</h2>
+      <pre><code class="language-js">import { el, mount } from 'redom'
+
+// define Login component
+class Login {
+  constructor () {
+    this.el = el('form#login',
+      this.email = el('input.email', { type: 'email' }),
+      this.pass = el('input.pass', { type: 'password' }),
+      this.submit = el('button', { type: 'submit' },
+        'Sign in'
+      )
+    )
+    this.el.onsubmit = e => {
+      e.preventDefault()
+
+      const email = this.email.value
+      const pass = this.pass.value
+
+      this.el.dispatchEvent(new CustomEvent('login', {
+        detail: { email, pass }
+      }))
+    }
+  }
+}
+
+// create login
+const login = new Login()
+
+// mount to DOM
+mount(document.body, login)</code></pre>
+      <pre><code class="language-markup">&lt;body&gt;
+  &lt;form id="login"&gt;
+    &lt;input class="email" type="email"&gt;
+    &lt;input class="pass" type="password"&gt;
+    &lt;button type="submit"&gt;Sign in&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/body&gt;</code></pre>
+
       <h2>Sync lists</h2>
       <pre><code class="language-js">import { el, list, mount } from 'redom'
 
