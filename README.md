@@ -9,11 +9,6 @@ Tiny UI library
 
 ![RE:DOM](https://redom.js.org/img/logo.svg)
 
-## NEW! Share the love with Stickermule stickers! ❤️
-https://www.stickermule.com/marketplace/15681-re-dom
-
-You can get $10 off from your order with [this link](https://www.stickermule.com/unlock?ref_id=7457070701)
-
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
 
@@ -192,6 +187,11 @@ mount(document.body, ul)
 IE 9 and up + all modern browsers
 ### Long answer
 If you don't use `el.extend`, `svg.extend` or `list.extend` it'll work with <IE9 as well.
+
+## Share the love with Stickermule stickers! ❤️
+https://www.stickermule.com/marketplace/15681-re-dom
+
+You can get $10 off from your order with [this link](https://www.stickermule.com/unlock?ref_id=7457070701)
 
 ## License
 [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
