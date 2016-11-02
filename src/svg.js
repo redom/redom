@@ -1,4 +1,3 @@
-import { doc } from './globals'
 import { createElement } from './create-element'
 import { mount } from './mount'
 import { text } from './text'

@@ -2,8 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var doc = document;
-
 var HASH = '#'.charCodeAt(0);
 var DOT = '.'.charCodeAt(0);
 
@@ -37,7 +35,7 @@ function createElement (query, ns) {
       mode = (cp === HASH) ? 1 : 2;
     }
   }
-  var element = ns ? doc.createElementNS(ns, tag) : doc.createElement(tag);
+  var element = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
 
   if (id) element.id = id;
   if (className) element.className = className;
@@ -46,7 +44,7 @@ function createElement (query, ns) {
 }
 
 function text (content) {
-  return doc.createTextNode(content)
+  return document.createTextNode(content)
 }
 
 function mount (parent, child, before) {

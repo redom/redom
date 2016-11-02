@@ -1,5 +1,3 @@
-import { doc } from './globals'
-
 var HASH = '#'.charCodeAt(0)
 var DOT = '.'.charCodeAt(0)
 
@@ -33,7 +31,7 @@ export function createElement (query, ns) {
       mode = (cp === HASH) ? 1 : 2
     }
   }
-  var element = ns ? doc.createElementNS(ns, tag) : doc.createElement(tag)
+  var element = ns ? document.createElementNS(ns, tag) : document.createElement(tag)
 
   if (id) element.id = id
   if (className) element.className = className
