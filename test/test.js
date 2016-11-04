@@ -70,6 +70,15 @@ module.exports = function (redom) {
       )
       t.equals(app.outerHTML, '<app><test></test></app>')
     })
+    t.test('array', function (t) {
+      t.plan(1)
+      var ul = el('ul',
+        [1, 2, 3].map(function (i) {
+          return el('li', i)
+        })
+      )
+      t.equals(ul.outerHTML, '<ul><li>1</li><li>2</li><li>3</li></ul>')
+    })
     t.test('middleware', function (t) {
       t.plan(1)
       var app = el('app',

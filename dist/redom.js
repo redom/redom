@@ -128,6 +128,11 @@ function el (query) {
     } else if (arg.nodeType || (arg.el && arg.el.nodeType)) {
       empty = false;
       mount(element, arg);
+    } else if (arg.length) {
+      for (var j = 0; j < arg.length; j++) {
+        empty = false;
+        mount(element, arg[j]);
+      }
     } else if (typeof arg === 'object') {
       for (var key in arg) {
         var value = arg[key];
