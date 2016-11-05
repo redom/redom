@@ -41,7 +41,7 @@ List.prototype.update = function (data) {
     var view
 
     if (key) {
-      var id = functionKey ? key(item) : item[key]
+      var id = functionKey ? key(item, i, data) : item[key]
       view = views[i] = lookup[id] || (lookup[id] = new View(initData, item, i))
       view.__id = id
     } else {
