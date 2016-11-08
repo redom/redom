@@ -42,17 +42,17 @@ List.prototype.update = function (data) {
 
     if (key) {
       var id = functionKey ? key(item) : item[key]
-      view = views[i] = lookup[id] || (lookup[id] = new View(initData, item, i))
+      view = views[i] = lookup[id] || (lookup[id] = new View(initData, item, i, data))
       view.__id = id
     } else {
-      view = views[i] || (views[i] = new View(initData, item, i))
+      view = views[i] || (views[i] = new View(initData, item, i, data))
     }
     var el = view.el
     if (el.__redom_list) {
       el = el.el
     }
     el.__redom_view = view
-    view.update && view.update(item, i)
+    view.update && view.update(item, i, data)
 
     if (traverse === el) {
       traverse = traverse.nextSibling
