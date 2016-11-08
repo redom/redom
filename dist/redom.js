@@ -129,8 +129,8 @@ function el (query) {
       empty = false;
       mount(element, arg);
     } else if (arg.length) {
+      empty = false;
       for (var j = 0; j < arg.length; j++) {
-        empty = false;
         mount(element, arg[j]);
       }
     } else if (typeof arg === 'object') {
