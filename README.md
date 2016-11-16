@@ -117,6 +117,7 @@ class Li {
     this.el.textContent = data;
   }
 }
+
 const ul = list('ul', Li);
 
 mount(document.body, ul)
