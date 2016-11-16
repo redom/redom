@@ -25,16 +25,16 @@ npm install redom
 
 ## Usage (ES2015 import)
 ```js
-import { el, mount } from 'redom'
+import { el, mount } from 'redom';
 
-const hello = el('h1', 'Hello world!')
+const hello = el('h1', 'Hello world!');
 
-mount(document.body, hello)
+mount(document.body, hello);
 ```
 
 ## Using with commonjs
 ```js
-const { el, mount } = require('redom')
+const { el, mount } = require('redom');
 ```
 
 ## Oldskool
@@ -44,14 +44,14 @@ const { el, mount } = require('redom')
   <body>
     <script src="https://redom.js.org/redom.min.js"></script>
     <script>
-      var el = redom.el
-      var mount = redom.mount
+      var el = redom.el;
+      var mount = redom.mount;
 
       // create HTML element
-      var hello = el('h1', 'Hello world!')
+      var hello = el('h1', 'Hello world!');
 
       // mount to DOM
-      mount(document.body, hello)
+      mount(document.body, hello);
     </script>
   </body>
 </html>
@@ -64,17 +64,18 @@ Check out some examples on https://redom.js.org
 ### el(query, ...properties/attributes/children/text)
 You can create HTML elements just by providing query + as many properties/attributes objects, children and text as you want in any order. Examples:
 ```js
-el('h1', 'Hello world!')
-el('h1', { class: 'hello' }, 'Hello world!')
-el('h1', 'Hello ', { class: 'hello' }, 'world!')
-el('h1', { onclick: onclick }, 'Hello world, click me!')
-el('h1.hello', 'Hello world!')
+el('h1', 'Hello world!');
+el('h1', { class: 'hello' }, 'Hello world!');
+el('h1', 'Hello ', { class: 'hello' }, 'world!');
+el('h1', { onclick: onclick }, 'Hello world, click me!');
+el('h1.hello', 'Hello world!');
 ```
 ### el.extend(query)
 You can predefine elements by extending them:
 ```js
-var h1 = el.extend('h1.heading1')
-h1('Hello world!')
+const h1 = el.extend('h1.heading1');
+
+h1('Hello world!');
 ```
 ### svg(query, ...properties/attributes/children/text)
 Just like el, but with SVG elements.
@@ -90,54 +91,59 @@ class HelloView {
       'Hello ', 
       this.target = text('world'), 
       '!'
-    )
+    );
   }
   update (data) {
-    this.target.textContent = data
+    this.target.textContent = data;
   }
 }
 // create view
-const hello = new HelloView()
+const hello = new HelloView();
 
 // mount to DOM
-mount(document.body, hello)
+mount(document.body, hello);
 
 // update the view
-hello.update('you')
+hello.update('you');
 ```
 ### list(parentQuery, childView, key, initData)
 List element is a powerful helper, which keeps it's child views updated with the data.
 ```js
 class Li {
   constructor () {
-    this.el = el('li')
+    this.el = el('li');
   }
   update (data) {
-    this.el.textContent = data
+    this.el.textContent = data;
   }
 }
-var ul = list('ul', Li)
+const ul = list('ul', Li);
+
 mount(document.body, ul)
-ul.update([ 1, 2, 3 ].map(i => 'Item ' + i)
+
+ul.update([ 1, 2, 3 ].map(i => 'Item ' + i);
 ```
 When you provide a key, list will synchronize elements by their keys.
 ```js
 class Li {
   constructor () {
-    this.el = el('li')
+    this.el = el('li');
   }
   update (data) {
-    this.el.textContent = data.title
+    this.el.textContent = data.title;
   }
 }
-var ul = list('ul', Li, 'id')
-mount(document.body, ul)
+
+const ul = list('ul', Li, 'id');
+
+mount(document.body, ul);
+
 ul.update([ 1, 2, 3 ].map(i => {
   return {
     id: i,
     title: 'Item ' + i)
-  }
-})
+  };
+});
 ```
 ### list.extend(parentQuery, childView, key, initData)
 You can also extend lists, which can be useful i.e. with tables:
@@ -145,41 +151,41 @@ You can also extend lists, which can be useful i.e. with tables:
 // define component
 class Td {
   constructor () {
-    this.el = el('td')
+    this.el = el('td');
   }
   update (data) {
-    this.el.textContent = data
+    this.el.textContent = data;
   }
 }
 
 // define list components
-const Tr = list.extend('tr', Td)
-const Table = list.extend('table', Tr)
+const Tr = list.extend('tr', Td);
+const Table = list.extend('table', Tr);
 
 // create main view
-const table = new Table
+const table = new Table;
 
 // mount to DOM
-mount(document.body, table)
+mount(document.body, table);
 
 // update the app
 table.update([
   [ 1, 2, 3 ],
   [ 4, 5, 6 ],
   [ 7, 8, 9 ]
-])
+]);
 ```
 ### setChildren(parent, children)
 Little helper to update element's/view's children:
 ```js
-var ul = el('ul')
-var li = el('li', 'Item 1')
-var li2 = el('li', 'Item 2')
-var li3 = el('li', 'Item 3')
+const ul = el('ul');
+const li = el('li', 'Item 1');
+const li2 = el('li', 'Item 2');
+const li3 = el('li', 'Item 3');
 
-setChildren(ul, [ li, li2, li3 ])
+setChildren(ul, [ li, li2, li3 ]);
 
-mount(document.body, ul)
+mount(document.body, ul);
 ```
 
 ## Browser support
