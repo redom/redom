@@ -13,7 +13,9 @@
     "postversion": "git push --tags",
     "prepublish": "npm run build && npm run uglify && npm run test",
     "postpublish": "npm run dist",
-    "test": "standard src/index.js && rollup -n redom -f cjs src/index.js -o test/redom.js && browserify -t coverify test/index.js | tape-run | coverify",
+    "fixlint": "semistandard 'src/**/*.js' 'test/**/*.js' --fix",
+    "lint": "semistandard 'src/**/*.js' 'test/**/*.js'",
+    "test": "npm run lint && rollup -n redom -f cjs src/index.js -o test/redom.js && browserify -t coverify test/index.js | tape-run | coverify",
     "nocoverage": "standard src/index.js && rollup -n redom -f cjs src/index.js -o test/redom.js && browserify test/index.js | tape-run",
     "justtest": "browserify -t coverify test/index.js | tape-run | coverify"
   },
@@ -39,7 +41,7 @@
     "coverify": "^1.4.1",
     "gh-pages": "~0.11.0",
     "rollup": "~0.36.3",
-    "standard": "~8.3.0",
+    "semistandard": "~9.1.0",
     "tape": "^4.6.2",
     "tape-run": "^2.1.4",
     "uglifyjs": "~2.4.10"

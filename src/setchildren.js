@@ -1,31 +1,31 @@
-import { mount, unmount } from './mount'
+import { mount, unmount } from './mount';
 
 export function setChildren (parent, children) {
-  var parentEl = parent.el || parent
-  var traverse = parentEl.firstChild
+  var parentEl = parent.el || parent;
+  var traverse = parentEl.firstChild;
 
   for (var i = 0; i < children.length; i++) {
-    var child = children[i]
+    var child = children[i];
 
     if (!child) {
-      continue
+      continue;
     }
 
-    var childEl = child.el || child
+    var childEl = child.el || child;
 
     if (childEl === traverse) {
-      traverse = traverse.nextSibling
-      continue
+      traverse = traverse.nextSibling;
+      continue;
     }
 
-    mount(parent, child, traverse)
+    mount(parent, child, traverse);
   }
 
   while (traverse) {
-    var next = traverse.nextSibling
+    var next = traverse.nextSibling;
 
-    unmount(parent, traverse)
+    unmount(parent, traverse);
 
-    traverse = next
+    traverse = next;
   }
 }

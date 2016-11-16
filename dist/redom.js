@@ -42,11 +42,11 @@ function createElement (query, ns) {
   if (id) element.id = id;
   if (className) element.className = className;
 
-  return element
+  return element;
 }
 
 function text (content) {
-  return document.createTextNode(content)
+  return document.createTextNode(content);
 }
 
 function mount (parent, child, before) {
@@ -103,7 +103,7 @@ function el (query) {
   } else if (query && query.nodeType) {
     element = query.cloneNode(false);
   } else {
-    throw new Error('At least one argument required')
+    throw new Error('At least one argument required');
   }
 
   var empty = true;
@@ -112,7 +112,7 @@ function el (query) {
     var arg = arguments[i];
 
     if (!arg) {
-      continue
+      continue;
     }
 
     // support middleware
@@ -154,17 +154,17 @@ function el (query) {
     }
   }
 
-  return element
+  return element;
 }
 
 el.extend = function (query) {
   var clone = (cache[query] || (cache[query] = createElement(query)));
 
-  return el.bind(this, clone)
+  return el.bind(this, clone);
 };
 
 function list (parent, View, key, initData) {
-  return new List(parent, View, key, initData)
+  return new List(parent, View, key, initData);
 }
 
 function List (parent, View, key, initData) {
@@ -181,7 +181,7 @@ function List (parent, View, key, initData) {
 }
 
 List.extend = function (parent, View, key, initData) {
-  return List.bind(List, parent, View, key, initData)
+  return List.bind(List, parent, View, key, initData);
 };
 
 list.extend = List.extend;
@@ -219,7 +219,7 @@ List.prototype.update = function (data) {
 
     if (traverse === el$$1) {
       traverse = traverse.nextSibling;
-      continue
+      continue;
     }
 
     if (traverse) {
@@ -266,14 +266,14 @@ function setChildren (parent, children) {
     var child = children[i];
 
     if (!child) {
-      continue
+      continue;
     }
 
     var childEl = child.el || child;
 
     if (childEl === traverse) {
       traverse = traverse.nextSibling;
-      continue
+      continue;
     }
 
     mount(parent, child, traverse);
@@ -300,7 +300,7 @@ function svg (query, a) {
   } else if (query && query.nodeType) {
     element = query.cloneNode(false);
   } else {
-    throw new Error('At least one argument required')
+    throw new Error('At least one argument required');
   }
 
   var empty = true;
@@ -309,7 +309,7 @@ function svg (query, a) {
     var arg = arguments[i];
 
     if (!arg) {
-      continue
+      continue;
     } else if (typeof arg === 'function') {
       arg = arg(element);
     } else if (typeof arg === 'string' || typeof arg === 'number') {
@@ -339,13 +339,13 @@ function svg (query, a) {
     }
   }
 
-  return element
+  return element;
 }
 
 svg.extend = function (query) {
   var clone = (cache$1[query] || (cache$1[query] = createElement(query, SVG)));
 
-  return svg.bind(this, clone)
+  return svg.bind(this, clone);
 };
 
 exports.el = el;
