@@ -131,13 +131,13 @@
         <a href="https://github.com/pakastin/redom">See more on Github!</a>
       </p>
       <h2>Create HTML elements</h2>
-      <pre><code class="language-js">import { el, mount } from 'redom'
+      <pre><code class="language-js">import { el, mount } from 'redom';
 
 // create HTML element
-const hello = el('h1', 'Hello world!')
+const hello = el('h1', 'Hello world!');
 
 // mount to DOM
-mount(document.body, hello)</code></pre>
+mount(document.body, hello);</code></pre>
       <pre><code class="language-markup">&lt;body&gt;
   &lt;h1&gt;Hello world!&lt;/h1&gt;
 &lt;/body&gt;</code></pre>
@@ -148,33 +148,33 @@ mount(document.body, hello)</code></pre>
   &lt;body&gt;
     &lt;script src="https://redom.js.org/redom.min.js"&gt;&lt;/script&gt;
     &lt;script&gt;
-      var el = redom.el
-      var mount = redom.mount
+      var el = redom.el;
+      var mount = redom.mount;
 
-      var hello = el('h1', 'Hello world!')
+      var hello = el('h1', 'Hello world!');
 
-      mount(document.body, hello)
+      mount(document.body, hello);
     &lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;
         </code></pre>
 
       <h2>Add attributes</h2>
-      <pre><code class="language-js">import { el, mount } from 'redom'
+      <pre><code class="language-js">import { el, mount } from 'redom';
 
 // create HTML element
 const logo = el('img#redom-logo.logo', {
   src: 'img/logo.svg'
-})
+});
 
 // mount to DOM
-mount(document.body, logo)</code></pre>
+mount(document.body, logo);</code></pre>
       <pre><code class="language-markup">&lt;body&gt;
   &lt;img id="redom-logo" class="logo" src="img/logo.svg"&gt;
 &lt;/body&gt;</code></pre>
 
       <h2>Listen to events</h2>
-      <pre><code class="language-js">import { el, mount } from 'redom'
+      <pre><code class="language-js">import { el, mount } from 'redom';
 
 // define Login component
 class Login {
@@ -185,23 +185,23 @@ class Login {
       this.submit = el('button', { type: 'submit' },
         'Sign in'
       )
-    )
+    );
     this.el.onsubmit = e => {
-      e.preventDefault()
+      e.preventDefault();
 
-      const email = this.email.value
-      const pass = this.pass.value
+      const email = this.email.value;
+      const pass = this.pass.value;
 
-      console.log(email, pass)
-    }
+      console.log(email, pass);
+    };
   }
 }
 
 // create login
-const login = new Login()
+const login = new Login();
 
 // mount to DOM
-mount(document.body, login)</code></pre>
+mount(document.body, login);</code></pre>
       <pre><code class="language-markup">&lt;body&gt;
   &lt;form id="login"&gt;
     &lt;input class="email" type="email"&gt;
@@ -211,31 +211,31 @@ mount(document.body, login)</code></pre>
 &lt;/body&gt;</code></pre>
 
       <h2>Sync lists</h2>
-      <pre><code class="language-js">import { el, list, mount } from 'redom'
+      <pre><code class="language-js">import { el, list, mount } from 'redom';
 
 // define &lt;li&gt; component
 class Li {
   constructor () {
-    this.el = el('li')
+    this.el = el('li');
   }
   update (i) {
-    this.el.textContent = `Item ${i}`
+    this.el.textContent = `Item ${i}`;
   }
 }
 
 // create list
-const ul = list('ul', Li)
+const ul = list('ul', Li);
 
 // update with data
-ul.update([1, 2, 3])
+ul.update([1, 2, 3]);
 
 // mount to DOM
-mount(document.body, ul)
+mount(document.body, ul);
 
 // schedule another update
 setTimeout(() => {
-  ul.update([2, 3, 4, 5])
-}, 1000)</code></pre>
+  ul.update([2, 3, 4, 5]);
+}, 1000);</code></pre>
     <pre><code class="language-markup">&lt;body&gt;
   &lt;ul&gt;
     &lt;li&gt;1&lt;/li&gt;
@@ -245,38 +245,38 @@ setTimeout(() => {
 &lt;/body&gt;</code></pre>
 
     <h2>Sync tables</h2>
-    <pre><code class="language-js">import { el, list, mount } from 'redom'
+    <pre><code class="language-js">import { el, list, mount } from 'redom';
 
 // define &lt;td&gt; component
 class Td {
   constructor () {
-    this.el = el('td')
+    this.el = el('td');
   }
   update (i) {
-    this.el.textContent = i
+    this.el.textContent = i;
   }
 }
 
 // define &lt;tr&gt; component by extending list
-const Tr = list.extend('tr', Td)
+const Tr = list.extend('tr', Td);
 
 // create table
-const table = list('table', Tr)
+const table = list('table', Tr);
 
 // update with data
 table.update([
   [ 1, 2, 3 ],
   [ 4, 5, 6 ],
   [ 7, 8, 9 ]
-])
+]);
 
 // mount to DOM
-mount(document.body, table)
+mount(document.body, table);
 
 // schedule another update
 setTimeout(() => {
-  table.update([2, 3, 4, 5])
-}, 1000)</code></pre>
+  table.update([2, 3, 4, 5]);
+}, 1000);</code></pre>
 <pre><code class="language-markup">&lt;body&gt;
   &lt;table&gt;
     &lt;tr&gt;
@@ -292,7 +292,7 @@ setTimeout(() => {
 &lt;/body&gt;</code></pre>
 
     <h2>Create and update components</h2>
-    <pre><code class="language-javascript">import { el, mount } from 'redom'
+    <pre><code class="language-javascript">import { el, mount } from 'redom';
 
 // define component
 class Hello {
@@ -302,25 +302,25 @@ class Hello {
       'Hello ',
       this.target = text('world'),
       '!'
-    )
+    );
   }
   // ..and how to update it
   update (target) {
-    this.target.textContent = target
+    this.target.textContent = target;
   }
 }
 
-const hello = new Hello()
+const hello = new Hello();
 
-hello.update('RE:DOM')
+hello.update('RE:DOM');
 
-mount(document.body, hello)</code></pre>
+mount(document.body, hello);</code></pre>
       <pre><code class="language-markup">&lt;body&gt;
   &lt;h1&gt;Hello RE:DOM!&lt;/h1&gt;
 &lt;/body&gt;</code></pre>
 
       <h2>Combine list + component</h2>
-      <pre><code class="language-javascript">import { el, list, mount } from 'redom'
+      <pre><code class="language-javascript">import { el, list, mount } from 'redom';
 
 // define component
 class Hello {
@@ -330,16 +330,16 @@ class Hello {
       'Hello ',
       this.target = text(''),
       '!'
-    )
+    );
   }
   // ..and how to update it
   update ({ id, target }) {
-    this.target.textContent = target
+    this.target.textContent = target;
   }
 }
 
 // create list of Hello's
-const list = list('section', Hello, 'id')
+const list = list('section', Hello, 'id');
 
 // init with some data
 const data = [{
@@ -348,12 +348,12 @@ const data = [{
 }, {
   id: 2,
   target: 'world'
-}]
+}];
 
-list.update(data)
+list.update(data);
 
 // mount to DOM
-mount(document.body, list)
+mount(document.body, list);
 
 // schedule an update
 setTimeout(() => {
@@ -363,11 +363,11 @@ setTimeout(() => {
   }, {
     id: 1,
     target: 'RE:DOM'
-  }]
+  }];
 
   // reuses DOM elements and only reorders in this case!
-  list.update (data)
-}, 1000)
+  list.update (data);
+}, 1000);
 </code></pre>
       <pre><code class="language-markup">&lt;body&gt;
   &lt;section&gt;
@@ -377,18 +377,18 @@ setTimeout(() => {
 &lt;/body&gt;</code></pre>
 
       <h2>Works on server-side as well!</h2>
-      <pre><code class="language-javascript">const { Document, render } = require('nodom')
+      <pre><code class="language-javascript">const { Document, render } = require('nodom');
 
 // create a fake DOM before requiring RE:DOM
-const document = new Document()
+const document = new Document();
 
-const { el, mount } = require('redom')
+const { el, mount } = require('redom');
 
-mount(document.body, el('h1', 'Hello world!'))
+mount(document.body, el('h1', 'Hello world!'));
 
-const html = render(document.body)
+const html = render(document.body);
 
-console.log(html) // &lt;body&gt;&lt;h1&gt;Hello world!&lt;/h1&gt;&lt;/body&gt;</code></pre>
+console.log(html); // &lt;body&gt;&lt;h1&gt;Hello world!&lt;/h1&gt;&lt;/body&gt;</code></pre>
       <h2>Looks fun!</h2>
       <p class="violator">
         <a href="https://github.com/pakastin/redom">See more on Github!</a>
