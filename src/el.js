@@ -4,7 +4,7 @@ import { mount } from './mount';
 
 const elcache = {};
 
-export function el (query, ...args) {
+export function el (query) {
   let element;
 
   if (typeof query === 'string') {
@@ -17,8 +17,8 @@ export function el (query, ...args) {
 
   let empty = true;
 
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
+  for (let i = 1; i < arguments.length; i++) {
+    const arg = arguments[i];
 
     if (!arg) {
       continue;

@@ -114,8 +114,7 @@ function unmount (parent, child) {
 var elcache = {};
 
 function el (query) {
-  var args = [], len = arguments.length - 1;
-  while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+  var arguments$1 = arguments;
 
   var element;
 
@@ -129,8 +128,8 @@ function el (query) {
 
   var empty = true;
 
-  for (var i = 0; i < args.length; i++) {
-    var arg = args[i];
+  for (var i = 1; i < arguments.length; i++) {
+    var arg = arguments$1[i];
 
     if (!arg) {
       continue;
