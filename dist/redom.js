@@ -111,7 +111,7 @@ function unmount (parent, child) {
   child.unmounted && child.unmounted();
 }
 
-var cache = {};
+var elcache = {};
 
 function el (query) {
   var args = [], len = arguments.length - 1;
@@ -120,7 +120,7 @@ function el (query) {
   var element;
 
   if (typeof query === 'string') {
-    element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
+    element = (elcache[query] || (elcache[query] = createElement(query))).cloneNode(false);
   } else if (query && query.nodeType) {
     element = query.cloneNode(false);
   } else {
@@ -179,7 +179,7 @@ function el (query) {
 }
 
 el.extend = function (query) {
-  var clone = (cache[query] || (cache[query] = createElement(query)));
+  var clone = (elcache[query] || (elcache[query] = createElement(query)));
 
   return el.bind(this, clone);
 };
@@ -275,9 +275,30 @@ List.prototype.update = function (data) {
   }
 };
 
+function router (parent, Views) {
+  return new Router(parent, Views);
+}
+
+var Router = function Router (parent, Views) {
+  this.el = typeof parent === 'string' ? el(parent) : parent;
+  this.Views = Views;
+};
+Router.prototype.update = function update (route, data) {
+  if (route !== this.route) {
+    var Views = this.Views;
+    var View = Views[route];
+
+    this.view = View && new View();
+    this.route = route;
+
+    setChildren(this.el, [ this.view ]);
+  }
+  this.view && this.view.update && this.view.update(data);
+};
+
 var SVG = 'http://www.w3.org/2000/svg';
 
-var cache$1 = {};
+var svgcache = {};
 
 function svg (query, a) {
   var arguments$1 = arguments;
@@ -285,7 +306,7 @@ function svg (query, a) {
   var element;
 
   if (typeof query === 'string') {
-    element = (cache$1[query] || (cache$1[query] = createElement(query, SVG))).cloneNode(false);
+    element = (svgcache[query] || (svgcache[query] = createElement(query, SVG))).cloneNode(false);
   } else if (query && query.nodeType) {
     element = query.cloneNode(false);
   } else {
@@ -332,7 +353,7 @@ function svg (query, a) {
 }
 
 svg.extend = function (query) {
-  var clone = (cache$1[query] || (cache$1[query] = createElement(query, SVG)));
+  var clone = (svgcache[query] || (svgcache[query] = createElement(query, SVG)));
 
   return svg.bind(this, clone);
 };
@@ -342,6 +363,8 @@ exports.list = list;
 exports.List = List;
 exports.mount = mount;
 exports.unmount = unmount;
+exports.router = router;
+exports.Router = Router;
 exports.setChildren = setChildren;
 exports.svg = svg;
 exports.text = text;
