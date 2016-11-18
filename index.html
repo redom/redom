@@ -339,7 +339,7 @@ class Hello {
 }
 
 // create list of Hello's
-const list = list('section', Hello, 'id');
+const hellos = list('section', Hello, 'id');
 
 // init with some data
 const data = [{
@@ -350,10 +350,10 @@ const data = [{
   target: 'world'
 }];
 
-list.update(data);
+hellos.update(data);
 
 // mount to DOM
-mount(document.body, list);
+mount(document.body, hellos);
 
 // schedule an update
 setTimeout(() => {
@@ -366,7 +366,7 @@ setTimeout(() => {
   }];
 
   // reuses DOM elements and only reorders in this case!
-  list.update (data);
+  hellos.update (data);
 }, 1000);
 </code></pre>
       <pre><code class="language-markup">&lt;body&gt;
@@ -374,6 +374,75 @@ setTimeout(() => {
     &lt;h1&gt;Hello RE:DOM!&lt;/h1&gt;
     &lt;h1&gt;Hello world!&lt;/h1&gt;
   &lt;/section&gt;
+&lt;/body&gt;</code></pre>
+      <h2>Switch sections</h2>
+      <pre><code class="language-javascript">const { el, router, mount } = require('redom');
+
+// define A component
+class A {
+  constructor () {
+    this.el = el('.a')
+  }
+  update ({ val }) {
+    this.el.textContent = val;
+  }
+}
+
+// define B component
+class B {
+  constructor () {
+    this.el = el('.b')
+  }
+  update ({ val }) {
+    this.el.textContent = val;
+  }
+}
+
+// define main app component
+class App {
+  constructor () {
+    this.el = el('.app',
+      this.sections = router('.content', { a: A, b: B })
+    );
+  }
+  update ({ section, data }) {
+    this.sections.update(section, data[section]);
+  }
+}
+
+// create app
+const app = new App();
+
+// init app
+app.update({
+  section: 'a',
+  data: {
+    a: 1,
+    b: 2
+  }
+});
+
+// mount to DOM
+mount(document.body, app);
+
+// update app after 1 second
+setTimeout(() => {
+  app.update({
+    section: 'b',
+    data: {
+      a: 1,
+      b: 2
+    }
+  });
+}, 1000);
+</code></pre>
+
+<pre><code class="language-markup">&lt;body&gt;
+  &lt;div class="app"&gt;
+    &lt;div class="content"&gt;
+      &lt;div class="a"&gt;1&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
 &lt;/body&gt;</code></pre>
 
       <h2>Works on server-side as well!</h2>
