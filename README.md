@@ -176,6 +176,47 @@ table.update([
   [ 7, 8, 9 ]
 ]);
 ```
+### router(parent, Views)
+Switch between views easily.
+```
+class A {
+  constructor () {
+    this.el = el('.a');
+  }
+  update (data) {
+    this.el.textContent = data.val;
+  }
+}
+class B {
+  constructor () {
+    this.el = el('.b');
+  }
+  update (data) {
+    this.el.textContent = data.val;
+  }
+}
+const contentViews = {
+  a: A,
+  b: B
+}
+class App {
+  constructor () {
+    this.el = el('.app',
+      this.content = router('.content', contentViews)
+    );
+  }
+  update ({ section, data }) {
+    this.content.update(section, data);
+  }
+}
+const app = new App();
+
+app.update('a', { val: 1 });
+
+setTimeout(() => {
+  app.update('b', { val: 2 });
+}, 1000);
+```
 ### setChildren(parent, children)
 Little helper to update element's/view's children:
 ```js
