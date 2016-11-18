@@ -1,6 +1,6 @@
 export function mount (parent, child, before) {
-  var parentEl = parent.el || parent;
-  var childEl = child.el || child;
+  const parentEl = parent.el || parent;
+  let childEl = child.el || child;
 
   if (childEl.__redom_list) {
     childEl = childEl.el;
@@ -28,8 +28,8 @@ export function mount (parent, child, before) {
 }
 
 export function unmount (parent, child) {
-  var parentEl = parent.el || parent;
-  var childEl = child.el || child;
+  const parentEl = parent.el || parent;
+  const childEl = child.el || child;
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided

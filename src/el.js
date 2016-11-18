@@ -2,23 +2,23 @@ import { createElement } from './create-element';
 import { text } from './text';
 import { mount } from './mount';
 
-var cache = {};
+const elcache = {};
 
-export function el (query) {
-  var element;
+export function el (query, ...args) {
+  let element;
 
   if (typeof query === 'string') {
-    element = (cache[query] || (cache[query] = createElement(query))).cloneNode(false);
+    element = (elcache[query] || (elcache[query] = createElement(query))).cloneNode(false);
   } else if (query && query.nodeType) {
     element = query.cloneNode(false);
   } else {
     throw new Error('At least one argument required');
   }
 
-  var empty = true;
+  let empty = true;
 
-  for (var i = 1; i < arguments.length; i++) {
-    var arg = arguments[i];
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
 
     if (!arg) {
       continue;
@@ -39,18 +39,18 @@ export function el (query) {
       mount(element, arg);
     } else if (arg.length) {
       empty = false;
-      for (var j = 0; j < arg.length; j++) {
+      for (let j = 0; j < arg.length; j++) {
         mount(element, arg[j]);
       }
     } else if (typeof arg === 'object') {
-      for (var key in arg) {
-        var value = arg[key];
+      for (const key in arg) {
+        const value = arg[key];
 
         if (key === 'style') {
           if (typeof value === 'string') {
             element.setAttribute(key, value);
           } else {
-            for (var cssKey in value) {
+            for (const cssKey in value) {
               element.style[cssKey] = value[cssKey];
             }
           }
@@ -67,7 +67,7 @@ export function el (query) {
 }
 
 el.extend = function (query) {
-  var clone = (cache[query] || (cache[query] = createElement(query)));
+  const clone = (elcache[query] || (elcache[query] = createElement(query)));
 
   return el.bind(this, clone);
 };

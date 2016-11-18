@@ -1,9 +1,3 @@
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.redom = global.redom || {})));
-}(this, (function (exports) { 'use strict';
-
 var HASH = '#';
 var DOT = '.';
 
@@ -337,15 +331,4 @@ svg.extend = function (query) {
   return svg.bind(this, clone);
 };
 
-exports.el = el;
-exports.list = list;
-exports.List = List;
-exports.mount = mount;
-exports.unmount = unmount;
-exports.setChildren = setChildren;
-exports.svg = svg;
-exports.text = text;
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
+export { el, list, List, mount, unmount, setChildren, svg, text };

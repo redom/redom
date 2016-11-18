@@ -5,9 +5,14 @@ var SVGElement = window.SVGElement;
 var CustomEvent = window.CustomEvent;
 
 module.exports = function (redom) {
-  var { el, list, svg, mount, unmount, setChildren } = redom;
+  var { el, list, router, svg, mount, unmount, setChildren } = redom;
 
   test('element creation', function (t) {
+    t.test('without tagName', function (t) {
+      t.plan(1);
+      var div = el('');
+      t.equals(div.outerHTML, '<div></div>');
+    });
     t.test('just tagName', function (t) {
       t.plan(1);
       var hello = el('p', 'Hello world!');
@@ -403,5 +408,31 @@ module.exports = function (redom) {
       t.plan(1);
       t.throws(svg, new Error('At least one argument required'));
     });
+  });
+  test('router', function (t) {
+    t.plan(2);
+    function A () {
+      this.el = el('a');
+    }
+    A.prototype.update = function (val) {
+      this.el.textContent = val;
+    };
+
+    function B () {
+      this.el = el('b');
+    }
+
+    B.prototype.update = function (val) {
+      this.el.textContent = val;
+    };
+
+    var _router = router('.test', {
+      a: A,
+      b: B
+    });
+    _router.update('a', 1);
+    t.equals(_router.el.outerHTML, '<div class="test"><a>1</a></div>');
+    _router.update('b', 2);
+    t.equals(_router.el.outerHTML, '<div class="test"><b>2</b></div>');
   });
 };

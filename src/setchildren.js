@@ -1,17 +1,17 @@
 import { mount, unmount } from './mount';
 
 export function setChildren (parent, children) {
-  var parentEl = parent.el || parent;
-  var traverse = parentEl.firstChild;
+  const parentEl = parent.el || parent;
+  let traverse = parentEl.firstChild;
 
-  for (var i = 0; i < children.length; i++) {
-    var child = children[i];
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
 
     if (!child) {
       continue;
     }
 
-    var childEl = child.el || child;
+    const childEl = child.el || child;
 
     if (childEl === traverse) {
       traverse = traverse.nextSibling;
@@ -22,7 +22,7 @@ export function setChildren (parent, children) {
   }
 
   while (traverse) {
-    var next = traverse.nextSibling;
+    const next = traverse.nextSibling;
 
     unmount(parent, traverse);
 

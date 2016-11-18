@@ -1,22 +1,29 @@
-var HASH = '#'.charCodeAt(0);
-var DOT = '.'.charCodeAt(0);
+const HASH = '#';
+const DOT = '.';
 
 export function createElement (query, ns) {
-  // query parsing magic, thank you @maciejhirsz
+  let tag;
+  let id;
+  let className;
 
-  var tag, id, className;
+  let mode = 0;
+  let start = 0;
+  const len = query.length;
 
-  var mode = 0;
-  var start = 0;
+  for (let i = 0; i <= len; i++) {
+    const char = query[i];
 
-  for (var i = 0, len = query.length; i <= len; i++) {
-    var cp = (i === len) ? 0 : query.charCodeAt(i);
-
-    if (cp === HASH || cp === DOT || cp === 0) {
+    if (char === HASH || char === DOT || char == null) {
       if (mode === 0) {
-        tag = (i === 0) ? 'div' : (cp === 0) ? query : query.substring(start, i);
+        if (i === 0) {
+          tag = 'div';
+        } else if (char == null) {
+          tag = query;
+        } else {
+          tag = query.substring(start, i);
+        }
       } else {
-        var slice = query.substring(start, i);
+        const slice = query.substring(start, i);
 
         if (mode === 1) {
           id = slice;
@@ -28,13 +35,24 @@ export function createElement (query, ns) {
       }
 
       start = i + 1;
-      mode = (cp === HASH) ? 1 : 2;
+
+      if (char === HASH) {
+        mode = 1;
+      } else {
+        mode = 2;
+      }
     }
   }
-  var element = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
 
-  if (id) element.id = id;
-  if (className) element.className = className;
+  const element = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
+
+  if (id) {
+    element.id = id;
+  }
+
+  if (className) {
+    element.className = className;
+  }
 
   return element;
 }

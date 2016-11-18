@@ -2,25 +2,25 @@ import { createElement } from './create-element';
 import { mount } from './mount';
 import { text } from './text';
 
-var SVG = 'http://www.w3.org/2000/svg';
+const SVG = 'http://www.w3.org/2000/svg';
 
-var cache = {};
+const svgcache = {};
 
 export function svg (query, a) {
-  var element;
+  let element;
 
   if (typeof query === 'string') {
-    element = (cache[query] || (cache[query] = createElement(query, SVG))).cloneNode(false);
+    element = (svgcache[query] || (svgcache[query] = createElement(query, SVG))).cloneNode(false);
   } else if (query && query.nodeType) {
     element = query.cloneNode(false);
   } else {
     throw new Error('At least one argument required');
   }
 
-  var empty = true;
+  let empty = true;
 
-  for (var i = 1; i < arguments.length; i++) {
-    var arg = arguments[i];
+  for (let i = 1; i < arguments.length; i++) {
+    let arg = arguments[i];
 
     if (!arg) {
       continue;
@@ -37,11 +37,11 @@ export function svg (query, a) {
       empty = false;
       mount(element, arg);
     } else if (typeof arg === 'object') {
-      for (var key in arg) {
-        var value = arg[key];
+      for (const key in arg) {
+        const value = arg[key];
 
         if (key === 'style' && typeof value !== 'string') {
-          for (var cssKey in value) {
+          for (const cssKey in value) {
             element.style[cssKey] = value[cssKey];
           }
         } else if (typeof value === 'function') {
@@ -57,7 +57,7 @@ export function svg (query, a) {
 }
 
 svg.extend = function (query) {
-  var clone = (cache[query] || (cache[query] = createElement(query, SVG)));
+  const clone = (svgcache[query] || (svgcache[query] = createElement(query, SVG)));
 
   return svg.bind(this, clone);
 };
