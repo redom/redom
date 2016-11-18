@@ -29,7 +29,8 @@ List.prototype.update = function (data) {
   const key = this.key;
   const functionKey = typeof key === 'function';
   const initData = this.initData;
-  const views = this.views;
+  const newViews = new Array(data.length);
+  const oldViews = this.views;
   const newLookup = key && {};
   const oldLookup = key && this.lookup;
 
@@ -39,11 +40,11 @@ List.prototype.update = function (data) {
 
     if (key) {
       const id = functionKey ? key(item) : item[key];
-      view = views[i] = oldLookup[id] || new View(initData, item, i, data);
+      view = newViews[i] = oldLookup[id] || new View(initData, item, i, data);
       newLookup[id] = view;
       view.__id = id;
     } else {
-      view = views[i] || (views[i] = new View(initData, item, i, data));
+      view = newViews[i] = oldViews[i] || new View(initData, item, i, data);
     }
     let el = view.el;
     if (el.__redom_list) {
@@ -53,11 +54,10 @@ List.prototype.update = function (data) {
     view.update && view.update(item, i, data);
   }
 
-  views.length = data.length;
-
-  setChildren(this.el, views);
+  setChildren(this, newViews);
 
   if (key) {
     this.lookup = newLookup;
   }
+  this.views = newViews;
 };

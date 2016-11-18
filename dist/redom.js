@@ -241,7 +241,8 @@ List.prototype.update = function (data) {
   var key = this.key;
   var functionKey = typeof key === 'function';
   var initData = this.initData;
-  var views = this.views;
+  var newViews = new Array(data.length);
+  var oldViews = this.views;
   var newLookup = key && {};
   var oldLookup = key && this.lookup;
 
@@ -251,11 +252,11 @@ List.prototype.update = function (data) {
 
     if (key) {
       var id = functionKey ? key(item) : item[key];
-      view = views[i] = oldLookup[id] || new View(initData, item, i, data);
+      view = newViews[i] = oldLookup[id] || new View(initData, item, i, data);
       newLookup[id] = view;
       view.__id = id;
     } else {
-      view = views[i] || (views[i] = new View(initData, item, i, data));
+      view = newViews[i] = oldViews[i] || new View(initData, item, i, data);
     }
     var el$$1 = view.el;
     if (el$$1.__redom_list) {
@@ -265,13 +266,12 @@ List.prototype.update = function (data) {
     view.update && view.update(item, i, data);
   }
 
-  views.length = data.length;
-
-  setChildren(this.el, views);
+  setChildren(this, newViews);
 
   if (key) {
     this.lookup = newLookup;
   }
+  this.views = newViews;
 };
 
 function router (parent, Views) {
