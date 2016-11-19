@@ -15,6 +15,9 @@ http://codepen.io/pakastin/pen/RGwoRg
 ### ES2015-version with some extra magic
 http://codepen.io/pakastin/pen/gwWBEx
 
+## Performance
+http://mathieuancelin.github.io/js-repaint-perfs/
+
 ## Quick start
 Initialize RE:DOM projects easily with [RE:DOM project generator](https://github.com/pakastin/redom-cli)
 
