@@ -175,7 +175,7 @@ table.update([
   [ 4, 5, 6 ],
   [ 7, 8, 9 ]
 ]);
-```
+```js
 ### router(parent, Views)
 Switch between views easily.
 ```
