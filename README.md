@@ -12,9 +12,6 @@ Tiny turboboosted JavaScript library for creating user interfaces
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
 
-### ES2015-version with some extra magic
-http://codepen.io/pakastin/pen/gwWBEx
-
 ## Performance
 http://mathieuancelin.github.io/js-repaint-perfs/
 
