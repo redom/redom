@@ -5,7 +5,7 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=3600)](https://twitter.com/pakastin)
 
 # RE:DOM
-Tiny turboboosted JavaScript library for creating user interfaces
+Develop web apps with 100 % JavaScript and web standards.
 
 ![RE:DOM](https://redom.js.org/img/logo.svg)
 
