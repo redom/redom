@@ -1,4 +1,4 @@
-[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
+[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?maxAge=3600&style=flat-square)](https://github.com/Flet/semistandard)
 [![Build Status](https://img.shields.io/travis/pakastin/redom.svg?maxAge=3600&style=flat-square)](https://travis-ci.org/pakastin/redom)
 [![npm](https://img.shields.io/npm/v/redom.svg?maxAge=3600&style=flat-square)](https://www.npmjs.com/package/redom)
 [![npm](https://img.shields.io/npm/l/redom.svg?maxAge=3600&style=flat-square)](https://github.com/pakastin/redom/blob/master/LICENSE)
