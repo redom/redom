@@ -37,14 +37,14 @@
   },
   "homepage": "https://github.com/pakastin/redom#readme",
   "devDependencies": {
-    "browserify": "^13.1.0",
-    "chokidar": "~1.6.0",
+    "browserify": "^13.1.1",
+    "chokidar": "~1.6.1",
     "coverify": "^1.4.1",
-    "gh-pages": "~0.11.0",
-    "rollup": "~0.36.3",
+    "gh-pages": "~0.12.0",
+    "rollup": "~0.36.4",
     "rollup-plugin-buble": "~0.14.0",
     "semistandard": "~9.1.0",
-    "tape": "^4.6.2",
+    "tape": "^4.6.3",
     "tape-run": "^2.1.4",
     "uglifyjs": "~2.4.10"
   }
