@@ -113,17 +113,29 @@ module.exports = function (redom) {
     t.test('lifecycle events', function (t) {
       t.plan(1);
       var eventsFired = {
+        mount: false,
         mounted: false,
+        remount: false,
         remounted: false,
+        unmount: false,
         unmounted: false
       };
       function Item () {
         this.el = el('p');
+        this.mount = function () {
+          eventsFired.mount = true;
+        };
         this.mounted = function () {
           eventsFired.mounted = true;
         };
+        this.remount = function () {
+          eventsFired.remount = true;
+        };
         this.remounted = function () {
           eventsFired.remounted = true;
+        };
+        this.unmount = function () {
+          eventsFired.unmount = true;
         };
         this.unmounted = function () {
           eventsFired.unmounted = true;
@@ -134,8 +146,11 @@ module.exports = function (redom) {
       mount(document.body, item.el); // test view lookup (__redom_view)
       unmount(document.body, item);
       t.deepEqual(eventsFired, {
+        mount: true,
         mounted: true,
+        remount: true,
         remounted: true,
+        unmount: true,
         unmounted: true
       });
     });
