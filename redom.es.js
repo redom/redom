@@ -77,6 +77,11 @@ function mount (parent, child, before) {
   if (child !== childEl) {
     childEl.__redom_view = child;
   }
+  if (child.isMounted) {
+    child.remount && child.remount();
+  } else {
+    child.mount && child.mount();
+  }
   if (before) {
     parentEl.insertBefore(childEl, before.el || before);
   } else {
@@ -98,6 +103,8 @@ function unmount (parent, child) {
     // try to look up the view if not provided
     child = childEl.__redom_view;
   }
+
+  child.unmount && child.unmount();
 
   parentEl.removeChild(childEl);
 
