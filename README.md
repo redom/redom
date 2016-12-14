@@ -60,6 +60,9 @@ const { el, mount } = require('redom');
 ## Examples
 Check out some examples on https://redom.js.org
 
+## State handling example
+pakastin.github.io/redom-state
+
 ## API
 ### el(query, ...properties/attributes/children/text)
 You can create HTML elements just by providing query + as many properties/attributes objects, children and text as you want in any order. Examples:
