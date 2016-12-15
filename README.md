@@ -61,7 +61,7 @@ const { el, mount } = require('redom');
 Check out some examples on https://redom.js.org
 
 ## State handling example
-pakastin.github.io/redom-state
+https://pakastin.github.io/redom-state
 
 ## API
 ### el(query, ...properties/attributes/children/text)
