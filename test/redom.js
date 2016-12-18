@@ -2,8 +2,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var HASH = '#';
-var DOT = '.';
+var HASH = '#'.charCodeAt(0);
+var DOT = '.'.charCodeAt(0);
 
 function createElement (query, ns) {
   var tag;
@@ -12,16 +12,15 @@ function createElement (query, ns) {
 
   var mode = 0;
   var start = 0;
-  var len = query.length;
 
-  for (var i = 0; i <= len; i++) {
-    var char = query[i];
+  for (var i = 0; i <= query.length; i++) {
+    var char = query.charCodeAt(i);
 
-    if (char === HASH || char === DOT || char == null) {
+    if (char === HASH || char === DOT || !char) {
       if (mode === 0) {
         if (i === 0) {
           tag = 'div';
-        } else if (char == null) {
+        } else if (!char) {
           tag = query;
         } else {
           tag = query.substring(start, i);
@@ -242,6 +241,8 @@ List.extend = function (parent, View, key, initData) {
 list.extend = List.extend;
 
 List.prototype.update = function (data) {
+  if ( data === void 0 ) data = [];
+
   var View = this.View;
   var key = this.key;
   var functionKey = typeof key === 'function';

@@ -24,7 +24,7 @@ List.extend = function (parent, View, key, initData) {
 
 list.extend = List.extend;
 
-List.prototype.update = function (data) {
+List.prototype.update = function (data = []) {
   const View = this.View;
   const key = this.key;
   const functionKey = typeof key === 'function';

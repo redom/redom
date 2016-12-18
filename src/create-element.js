@@ -1,5 +1,5 @@
-const HASH = '#';
-const DOT = '.';
+const HASH = '#'.charCodeAt(0);
+const DOT = '.'.charCodeAt(0);
 
 export function createElement (query, ns) {
   let tag;
@@ -8,16 +8,15 @@ export function createElement (query, ns) {
 
   let mode = 0;
   let start = 0;
-  const len = query.length;
 
-  for (let i = 0; i <= len; i++) {
-    const char = query[i];
+  for (let i = 0; i <= query.length; i++) {
+    const char = query.charCodeAt(i);
 
-    if (char === HASH || char === DOT || char == null) {
+    if (char === HASH || char === DOT || !char) {
       if (mode === 0) {
         if (i === 0) {
           tag = 'div';
-        } else if (char == null) {
+        } else if (!char) {
           tag = query;
         } else {
           tag = query.substring(start, i);

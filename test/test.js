@@ -187,7 +187,7 @@ module.exports = function (redom) {
       }
 
       var items = list('ul', Item);
-
+      items.update(); // empty list
       items.update([1, 2, 3]);
       t.equals(items.el.outerHTML, '<ul><li>1</li><li>2</li><li>3</li></ul>');
     });
