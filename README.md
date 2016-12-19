@@ -9,6 +9,9 @@ Develop web apps with 100 % JavaScript and web standards.
 
 ![RE:DOM](https://redom.js.org/img/logo.svg)
 
+## [Introduction](https://github.com/pakastin/redom/wiki/1.-Introduction)
+## [API](https://github.com/pakastin/redom/wiki/2.-API)
+
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
 
@@ -62,9 +65,6 @@ Check out some examples on https://redom.js.org
 
 ## State handling example
 https://pakastin.github.io/redom-state
-
-## [Introduction](https://github.com/pakastin/redom/wiki/1.-Introduction)
-## [API](https://github.com/pakastin/redom/wiki/2.-API)
 
 ## Browser support
 ### Short answer
