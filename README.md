@@ -11,7 +11,7 @@ Develop web apps with 100 % JavaScript and web standards.
 
 ## [Introduction](https://github.com/pakastin/redom/wiki/1.-Introduction)
 ## [API](https://github.com/pakastin/redom/wiki/2.-API)
-## [Slack](https://github.com/pakastin/redom/wiki/3.-Slack)
+## [Slack](https://github.com/pakastin/redom/wiki/3.-Join-the-Slack-channel)
 
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
