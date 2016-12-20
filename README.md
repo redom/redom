@@ -5,7 +5,7 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=3600)](https://twitter.com/pakastin)
 
 # RE:DOM
-Develop web apps with 100 % JavaScript and web standards. Weights < 2 KB gzipped.
+Develop web apps with 100 % JavaScript and web standards. Size < 2 KB gzipped.
 
 ![RE:DOM](https://redom.js.org/img/logo.svg)
 
