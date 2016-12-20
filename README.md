@@ -17,8 +17,8 @@ Develop web apps with 100 % JavaScript and web standards.
 http://codepen.io/pakastin/pen/RGwoRg
 
 ## Performance
-https://pakastin.fi/perf
-http://mathieuancelin.github.io/js-repaint-perfs/
+- https://pakastin.fi/perf
+- http://mathieuancelin.github.io/js-repaint-perfs/
 
 ## Quick start
 Initialize RE:DOM projects easily with [RE:DOM project generator](https://github.com/pakastin/redom-cli)
