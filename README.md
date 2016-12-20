@@ -17,6 +17,7 @@ Develop web apps with 100 % JavaScript and web standards.
 http://codepen.io/pakastin/pen/RGwoRg
 
 ## Performance
+https://pakastin.fi/perf
 http://mathieuancelin.github.io/js-repaint-perfs/
 
 ## Quick start
