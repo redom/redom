@@ -92,6 +92,8 @@ function mount (parent, child, before) {
     child.isMounted = true;
     child.mounted && child.mounted();
   }
+
+  return child;
 }
 
 function unmount (parent, child) {
@@ -109,6 +111,8 @@ function unmount (parent, child) {
 
   child.isMounted = false;
   child.unmounted && child.unmounted();
+
+  return child;
 }
 
 var elcache = {};
