@@ -15,6 +15,9 @@ https://redom.js.org
 ## [API](https://github.com/pakastin/redom/wiki/2.-API)
 ## [Slack](https://github.com/pakastin/redom/wiki/3.-Join-the-Slack-channel)
 
+## Release history
+https://github.com/pakastin/redom/releases
+
 ## Hello RE:DOM
 http://codepen.io/pakastin/pen/RGwoRg
 
