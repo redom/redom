@@ -58,7 +58,8 @@ el.extend = function (query) {
   return el.bind(this, clone);
 };
 
-export function setAttr (el, arg1, arg2) {
+export function setAttr (view, arg1, arg2) {
+  const el = view.el || view;
   let isSVG = el instanceof SVGElement;
 
   if (arguments.length > 2) {
@@ -78,7 +79,9 @@ export function setAttr (el, arg1, arg2) {
   }
 }
 
-export function setStyle (el, arg1, arg2) {
+export function setStyle (view, arg1, arg2) {
+  const el = view.el || view;
+
   if (arguments.length > 2) {
     el.style[arg1] = arg2;
   } else if (typeof arg1 === 'string') {
