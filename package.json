@@ -1,6 +1,6 @@
 {
   "name": "redom",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "description": "Tiny DOM library",
   "main": "dist/redom.js",
   "jsnext:main": "dist/redom.es.js",
