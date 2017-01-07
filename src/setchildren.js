@@ -1,6 +1,10 @@
 import { mount, unmount } from './mount';
 
 export function setChildren (parent, children) {
+  if (children.length == null) {
+    return setChildren(parent, [children]);
+  }
+
   const parentEl = parent.el || parent;
   let traverse = parentEl.firstChild;
 

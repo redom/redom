@@ -1,3 +1,5 @@
+/* global SVGElement */
+
 import { createElement } from './create-element';
 import { text } from './text';
 import { mount } from './mount';
@@ -43,23 +45,7 @@ export function el (query) {
         mount(element, arg[j]);
       }
     } else if (typeof arg === 'object') {
-      for (const key in arg) {
-        const value = arg[key];
-
-        if (key === 'style') {
-          if (typeof value === 'string') {
-            element.setAttribute(key, value);
-          } else {
-            for (const cssKey in value) {
-              element.style[cssKey] = value[cssKey];
-            }
-          }
-        } else if (key in element || typeof value === 'function') {
-          element[key] = value;
-        } else {
-          element.setAttribute(key, value);
-        }
-      }
+      setAttr(element, arg);
     }
   }
 
@@ -71,3 +57,35 @@ el.extend = function (query) {
 
   return el.bind(this, clone);
 };
+
+export function setAttr (el, arg1, arg2) {
+  let isSVG = el instanceof SVGElement;
+
+  if (arguments.length > 2) {
+    if (arg1 === 'style') {
+      setStyle(el, arg2);
+    } else if (isSVG && typeof arg2 === 'function') {
+      el[arg1] = arg2;
+    } else if (!isSVG && (arg1 in el || typeof arg2 === 'function')) {
+      el[arg1] = arg2;
+    } else {
+      el.setAttribute(arg1, arg2);
+    }
+  } else {
+    for (const key in arg1) {
+      setAttr(el, key, arg1[key]);
+    }
+  }
+}
+
+export function setStyle (el, arg1, arg2) {
+  if (arguments.length > 2) {
+    el.style[arg1] = arg2;
+  } else if (typeof arg1 === 'string') {
+    el.setAttribute('style', arg1);
+  } else {
+    for (const key in arg1) {
+      setStyle(el, key, arg1[key]);
+    }
+  }
+}

@@ -164,9 +164,7 @@ module.exports = function (redom) {
         b
       ]);
       t.equals(document.body.innerHTML, '<h1>a</h1><h1>b</h1>');
-      setChildren(document.body, [
-        a
-      ]);
+      setChildren(document.body, a);
       t.equals(document.body.innerHTML, '<h1>a</h1>');
     });
     t.test('throw error when no arguments', function (t) {

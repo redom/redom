@@ -115,6 +115,8 @@ function unmount (parent, child) {
   return child;
 }
 
+/* global SVGElement */
+
 var elcache = {};
 
 function el (query) {
@@ -158,23 +160,7 @@ function el (query) {
         mount(element, arg[j]);
       }
     } else if (typeof arg === 'object') {
-      for (var key in arg) {
-        var value = arg[key];
-
-        if (key === 'style') {
-          if (typeof value === 'string') {
-            element.setAttribute(key, value);
-          } else {
-            for (var cssKey in value) {
-              element.style[cssKey] = value[cssKey];
-            }
-          }
-        } else if (key in element || typeof value === 'function') {
-          element[key] = value;
-        } else {
-          element.setAttribute(key, value);
-        }
-      }
+      setAttr(element, arg);
     }
   }
 
@@ -187,7 +173,43 @@ el.extend = function (query) {
   return el.bind(this, clone);
 };
 
+function setAttr (el, arg1, arg2) {
+  var isSVG = el instanceof SVGElement;
+
+  if (arguments.length > 2) {
+    if (arg1 === 'style') {
+      setStyle(el, arg2);
+    } else if (isSVG && typeof arg2 === 'function') {
+      el[arg1] = arg2;
+    } else if (!isSVG && (arg1 in el || typeof arg2 === 'function')) {
+      el[arg1] = arg2;
+    } else {
+      el.setAttribute(arg1, arg2);
+    }
+  } else {
+    for (var key in arg1) {
+      setAttr(el, key, arg1[key]);
+    }
+  }
+}
+
+function setStyle (el, arg1, arg2) {
+  if (arguments.length > 2) {
+    el.style[arg1] = arg2;
+  } else if (typeof arg1 === 'string') {
+    el.setAttribute('style', arg1);
+  } else {
+    for (var key in arg1) {
+      setStyle(el, key, arg1[key]);
+    }
+  }
+}
+
 function setChildren (parent, children) {
+  if (children.length == null) {
+    return setChildren(parent, [children]);
+  }
+
   var parentEl = parent.el || parent;
   var traverse = parentEl.firstChild;
 
@@ -338,19 +360,7 @@ function svg (query, a) {
       empty = false;
       mount(element, arg);
     } else if (typeof arg === 'object') {
-      for (var key in arg) {
-        var value = arg[key];
-
-        if (key === 'style' && typeof value !== 'string') {
-          for (var cssKey in value) {
-            element.style[cssKey] = value[cssKey];
-          }
-        } else if (typeof value === 'function') {
-          element[key] = value;
-        } else {
-          element.setAttribute(key, value);
-        }
-      }
+      setAttr(element, arg);
     }
   }
 
@@ -363,4 +373,4 @@ svg.extend = function (query) {
   return svg.bind(this, clone);
 };
 
-export { el, list, List, mount, unmount, router, Router, setChildren, svg, text };
+export { el, setAttr, setStyle, list, List, mount, unmount, router, Router, setChildren, svg, text };

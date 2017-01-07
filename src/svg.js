@@ -1,6 +1,7 @@
 import { createElement } from './create-element';
 import { mount } from './mount';
 import { text } from './text';
+import { setAttr } from './el';
 
 const SVG = 'http://www.w3.org/2000/svg';
 
@@ -37,19 +38,7 @@ export function svg (query, a) {
       empty = false;
       mount(element, arg);
     } else if (typeof arg === 'object') {
-      for (const key in arg) {
-        const value = arg[key];
-
-        if (key === 'style' && typeof value !== 'string') {
-          for (const cssKey in value) {
-            element.style[cssKey] = value[cssKey];
-          }
-        } else if (typeof value === 'function') {
-          element[key] = value;
-        } else {
-          element.setAttribute(key, value);
-        }
-      }
+      setAttr(element, arg);
     }
   }
 
