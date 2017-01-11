@@ -179,6 +179,8 @@ el.extend = function (query) {
   return el.bind(this, clone);
 };
 
+var html = el;
+
 function setAttr (view, arg1, arg2) {
   var el = view.el || view;
   var isSVG = el instanceof SVGElement;
@@ -383,6 +385,7 @@ svg.extend = function (query) {
 };
 
 exports.el = el;
+exports.html = html;
 exports.setAttr = setAttr;
 exports.setStyle = setStyle;
 exports.list = list;

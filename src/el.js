@@ -58,6 +58,8 @@ el.extend = function (query) {
   return el.bind(this, clone);
 };
 
+export const html = el;
+
 export function setAttr (view, arg1, arg2) {
   const el = view.el || view;
   let isSVG = el instanceof SVGElement;
