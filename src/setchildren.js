@@ -15,7 +15,11 @@ export function setChildren (parent, children) {
       continue;
     }
 
-    const childEl = child.el || child;
+    let childEl = child.el || child;
+
+    if (childEl.__redom_list) {
+      childEl = childEl.el;
+    }
 
     if (childEl === traverse) {
       traverse = traverse.nextSibling;
