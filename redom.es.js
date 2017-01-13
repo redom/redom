@@ -227,6 +227,10 @@ function setChildren (parent, children) {
 
     var childEl = child.el || child;
 
+    if (childEl.__redom_list) {
+      childEl = childEl.el;
+    }
+
     if (childEl === traverse) {
       traverse = traverse.nextSibling;
       continue;
