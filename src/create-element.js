@@ -51,7 +51,7 @@ export function createElement (query, ns) {
 
   if (className) {
     if (ns) {
-      element.setAttribute('class', className)
+      element.setAttribute('class', className);
     } else {
       element.className = className;
     }
