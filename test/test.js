@@ -336,6 +336,24 @@ module.exports = function (redom) {
       t.equals(circle instanceof SVGElement, true);
       t.equals(circle.outerHTML, '<circle></circle>');
     });
+    t.test('one class', function (t) {
+      t.plan(2);
+      var circle = svg('circle.giraffe');
+      t.equals(circle instanceof SVGElement, true);
+      t.equals(circle.outerHTML, '<circle class="giraffe"></circle>');
+    });
+    t.test('multiple class', function (t) {
+      t.plan(2);
+      var circle = svg('circle.giraffe.dog');
+      t.equals(circle instanceof SVGElement, true);
+      t.equals(circle.outerHTML, '<circle class="giraffe dog"></circle>');
+    });
+    t.test('ID', function (t) {
+      t.plan(2);
+      var circle = svg('circle#monkey');
+      t.equals(circle instanceof SVGElement, true);
+      t.equals(circle.outerHTML, '<circle id="monkey"></circle>');
+    });
     t.test('parameters', function (t) {
       t.plan(1);
 
