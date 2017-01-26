@@ -1,7 +1,7 @@
 import { mount, unmount } from './mount';
 
 export function setChildren (parent, children) {
-  if (children.length == null) {
+  if (children.length === undefined) {
     return setChildren(parent, [children]);
   }
 

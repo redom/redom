@@ -219,7 +219,7 @@ function setStyle (view, arg1, arg2) {
 }
 
 function setChildren (parent, children) {
-  if (children.length == null) {
+  if (children.length === undefined) {
     return setChildren(parent, [children]);
   }
 
