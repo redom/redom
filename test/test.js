@@ -5,7 +5,13 @@ var SVGElement = window.SVGElement;
 var CustomEvent = window.CustomEvent;
 
 module.exports = function (redom) {
-  var { el, list, router, svg, mount, unmount, setChildren } = redom;
+  var { el, list, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
+
+  test('exports utils', function (t) {
+    t.plan(2);
+    t.ok(setAttr != null);
+    t.ok(setStyle != null);
+  });
 
   test('element creation', function (t) {
     t.test('without tagName', function (t) {

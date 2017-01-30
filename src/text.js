@@ -1,3 +1,3 @@
-export function text (content) {
-  return document.createTextNode(content);
-}
+import { doc } from './util';
+
+export const text = str => doc.createTextNode(str);

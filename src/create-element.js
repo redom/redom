@@ -1,3 +1,5 @@
+import { doc } from './util';
+
 const HASH = '#'.charCodeAt(0);
 const DOT = '.'.charCodeAt(0);
 
@@ -43,7 +45,7 @@ export function createElement (query, ns) {
     }
   }
 
-  const element = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
+  const element = ns ? doc.createElementNS(ns, tag) : doc.createElement(tag);
 
   if (id) {
     element.id = id;

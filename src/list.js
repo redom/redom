@@ -1,5 +1,6 @@
 import { el } from './el';
 import { setChildren } from './setchildren';
+import { isString, isFunction } from './util';
 
 export function list (parent, View, key, initData) {
   return new List(parent, View, key, initData);
@@ -11,7 +12,7 @@ export function List (parent, View, key, initData) {
   this.key = key;
   this.initData = initData;
   this.views = [];
-  this.el = typeof parent === 'string' ? el(parent) : parent;
+  this.el = isString(parent) ? el(parent) : parent;
 
   if (key) {
     this.lookup = {};
@@ -27,7 +28,7 @@ list.extend = List.extend;
 List.prototype.update = function (data = []) {
   const View = this.View;
   const key = this.key;
-  const functionKey = typeof key === 'function';
+  const functionKey = isFunction(key);
   const initData = this.initData;
   const newViews = new Array(data.length);
   const oldViews = this.views;

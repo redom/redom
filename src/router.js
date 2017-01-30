@@ -1,5 +1,6 @@
 import { el } from './el';
 import { setChildren } from './setchildren';
+import { isString } from './util';
 
 export function router (parent, Views) {
   return new Router(parent, Views);
@@ -7,7 +8,7 @@ export function router (parent, Views) {
 
 export class Router {
   constructor (parent, Views) {
-    this.el = typeof parent === 'string' ? el(parent) : parent;
+    this.el = isString(parent) ? el(parent) : parent;
     this.Views = Views;
   }
   update (route, data) {
