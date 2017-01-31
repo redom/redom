@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/pakastin/redom#readme",
   "devDependencies": {
-    "browserify": "^13.3.0",
+    "browserify": "^14.0.0",
     "chokidar": "~1.6.1",
     "coverify": "^1.4.1",
     "gh-pages": "~0.12.0",
