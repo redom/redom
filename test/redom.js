@@ -8,7 +8,7 @@ function mount (parent, child, before) {
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
 
-  if (childEl.__redom_list) {
+  if (isList(childEl)) {
     childEl = childEl.el;
   }
 
@@ -107,7 +107,7 @@ function parseArguments (element, args) {
       arg(element);
     } else if (isString(arg) || isNumber(arg)) {
       element.appendChild(text(arg));
-    } else if (isNode(arg) || isNode(arg.el)) {
+    } else if (isNode(arg) || isNode(arg.el) || isList(arg.el)) {
       mount(element, arg);
     } else if (arg.length) {
       parseArguments(element, arg);
@@ -124,6 +124,7 @@ var isNumber = is('number');
 var isFunction = is('function');
 
 var isNode = function (a) { return a && a.nodeType; };
+var isList = function (a) { return a && a.__redom_list; };
 
 var doc = document;
 
@@ -237,7 +238,7 @@ function setChildren (parent, children) {
 
     var childEl = child.el || child;
 
-    if (childEl.__redom_list) {
+    if (isList(childEl)) {
       childEl = childEl.el;
     }
 
