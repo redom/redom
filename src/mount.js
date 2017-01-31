@@ -1,8 +1,10 @@
+import { isList } from './util';
+
 export function mount (parent, child, before) {
   const parentEl = parent.el || parent;
   let childEl = child.el || child;
 
-  if (childEl.__redom_list) {
+  if (isList(childEl)) {
     childEl = childEl.el;
   }
 

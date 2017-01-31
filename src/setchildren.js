@@ -1,4 +1,5 @@
 import { mount, unmount } from './mount';
+import { isList } from './util';
 
 export function setChildren (parent, children) {
   if (children.length === undefined) {
@@ -17,7 +18,7 @@ export function setChildren (parent, children) {
 
     let childEl = child.el || child;
 
-    if (childEl.__redom_list) {
+    if (isList(childEl)) {
       childEl = childEl.el;
     }
 

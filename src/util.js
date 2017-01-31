@@ -15,7 +15,7 @@ export function parseArguments (element, args) {
       arg(element);
     } else if (isString(arg) || isNumber(arg)) {
       element.appendChild(text(arg));
-    } else if (isNode(arg) || isNode(arg.el)) {
+    } else if (isNode(arg) || isNode(arg.el) || isList(arg.el)) {
       mount(element, arg);
     } else if (arg.length) {
       parseArguments(element, arg);
@@ -32,5 +32,6 @@ export const isNumber = is('number');
 export const isFunction = is('function');
 
 export const isNode = a => a && a.nodeType;
+export const isList = a => a && a.__redom_list;
 
 export const doc = document;
