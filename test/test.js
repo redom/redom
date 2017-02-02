@@ -195,6 +195,21 @@ module.exports = function (redom) {
       items.update([1, 2, 3]);
       t.equals(items.el.outerHTML, '<ul><li>1</li><li>2</li><li>3</li></ul>');
     });
+    t.test('element parent', function (t) {
+      t.plan(1);
+
+      function Item () {
+        this.el = el('li');
+        this.update = data => {
+          this.el.textContent = data;
+        };
+      }
+
+      var items = list(el('ul'), Item);
+      items.update(); // empty list
+      items.update([1, 2, 3]);
+      t.equals(items.el.outerHTML, '<ul><li>1</li><li>2</li><li>3</li></ul>');
+    });
     t.test('component parent', function (t) {
       t.plan(1);
 

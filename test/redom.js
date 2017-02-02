@@ -269,7 +269,7 @@ function List (parent, View, key, initData) {
   this.key = key;
   this.initData = initData;
   this.views = [];
-  this.el = isString(parent) ? el(parent) : isNode(parent.el) ? parent.el : parent;
+  this.el = getParentEl(parent);
 
   if (key) {
     this.lookup = {};
@@ -321,6 +321,16 @@ List.prototype.update = function (data) {
   }
   this.views = newViews;
 };
+
+function getParentEl (parent) {
+  if (isString(parent)) {
+    return el(parent);
+  } else if (isNode(parent.el)) {
+    return parent.el;
+  } else {
+    return parent;
+  }
+}
 
 function router (parent, Views) {
   return new Router(parent, Views);
