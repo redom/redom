@@ -1,6 +1,6 @@
 import { el } from './el';
 import { setChildren } from './setchildren';
-import { isString, isFunction } from './util';
+import { isString, isFunction, isNode } from './util';
 
 export function list (parent, View, key, initData) {
   return new List(parent, View, key, initData);
@@ -12,7 +12,7 @@ export function List (parent, View, key, initData) {
   this.key = key;
   this.initData = initData;
   this.views = [];
-  this.el = isString(parent) ? el(parent) : parent;
+  this.el = isString(parent) ? el(parent) : isNode(parent.el) ? parent.el : parent;
 
   if (key) {
     this.lookup = {};

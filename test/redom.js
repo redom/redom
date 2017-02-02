@@ -269,7 +269,7 @@ function List (parent, View, key, initData) {
   this.key = key;
   this.initData = initData;
   this.views = [];
-  this.el = isString(parent) ? el(parent) : parent;
+  this.el = isString(parent) ? el(parent) : isNode(parent.el) ? parent.el : parent;
 
   if (key) {
     this.lookup = {};
