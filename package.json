@@ -3,6 +3,7 @@
   "version": "1.14.1",
   "description": "Tiny DOM library",
   "main": "dist/redom.js",
+  "module": "dist/redom.es.js",
   "jsnext:main": "dist/redom.es.js",
   "scripts": {
     "dev": "node watch",
