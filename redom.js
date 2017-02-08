@@ -1,7 +1,7 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.redom = global.redom || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.redom = global.redom || {})));
 }(this, (function (exports) { 'use strict';
 
 var text = function (str) { return doc.createTextNode(str); };
@@ -334,25 +334,26 @@ function getParentEl (parent) {
   }
 }
 
-function router (parent, Views) {
-  return new Router(parent, Views);
+function router (parent, Views, initData) {
+  return new Router(parent, Views, initData);
 }
 
-var Router = function Router (parent, Views) {
+var Router = function Router (parent, Views, initData) {
   this.el = isString(parent) ? el(parent) : parent;
   this.Views = Views;
+  this.initData = initData;
 };
 Router.prototype.update = function update (route, data) {
   if (route !== this.route) {
     var Views = this.Views;
     var View = Views[route];
 
-    this.view = View && new View();
+    this.view = View && new View(this.initData, data);
     this.route = route;
 
     setChildren(this.el, [ this.view ]);
   }
-  this.view && this.view.update && this.view.update(data);
+  this.view && this.view.update && this.view.update(data, route);
 };
 
 var SVG = 'http://www.w3.org/2000/svg';
