@@ -11,6 +11,9 @@ Develop web apps with 100 % JavaScript and web standards. Size less than 2 KB gz
 
 https://redom.js.org
 
+## NEW! Screencasts
+- [How to build a \<select\> component](https://scrimba.com/pakastin/cast-1018)
+
 ## [Introduction](https://github.com/pakastin/redom/wiki/1.-Introduction)
 ## [API](https://github.com/pakastin/redom/wiki/2.-API)
 ## [Slack](https://github.com/pakastin/redom/wiki/3.-Join-the-Slack-channel)
