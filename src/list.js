@@ -1,4 +1,4 @@
-import { el } from './el';
+import { html } from './html';
 import { setChildren } from './setchildren';
 import { isString, isFunction, isNode } from './util';
 
@@ -63,9 +63,9 @@ List.prototype.update = function (data = []) {
   this.views = newViews;
 };
 
-function getParentEl (parent) {
+export function getParentEl (parent) {
   if (isString(parent)) {
-    return el(parent);
+    return html(parent);
   } else if (isNode(parent.el)) {
     return parent.el;
   } else {

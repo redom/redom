@@ -3,9 +3,9 @@ import { parseArguments, isString, isNode } from './util';
 
 const SVG = 'http://www.w3.org/2000/svg';
 
-const svgcache = {};
+const svgCache = {};
 
-const memoizeSVG = query => svgcache[query] || createElement(query, SVG);
+const memoizeSVG = query => svgCache[query] || createElement(query, SVG);
 
 export function svg (query, ...args) {
   let element;

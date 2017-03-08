@@ -22,16 +22,19 @@ function mount (parent, child, before) {
   if (child !== childEl) {
     childEl.__redom_view = child;
   }
+
   if (child.isMounted) {
     child.remount && child.remount();
   } else {
     child.mount && child.mount();
   }
+
   if (before) {
     parentEl.insertBefore(childEl, before.el || before);
   } else {
     parentEl.appendChild(childEl);
   }
+
   if (child.isMounted) {
     child.remounted && child.remounted();
   } else {
@@ -192,18 +195,18 @@ function createElement (query, ns) {
   return element;
 }
 
-var elcache = {};
+var htmlCache = {};
 
-var memoizeEl = function (query) { return elcache[query] || createElement(query); };
+var memoizeHTML = function (query) { return htmlCache[query] || createElement(query); };
 
-function el (query) {
+function html (query) {
   var args = [], len = arguments.length - 1;
   while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
   var element;
 
   if (isString(query)) {
-    element = memoizeEl(query).cloneNode(false);
+    element = memoizeHTML(query).cloneNode(false);
   } else if (isNode(query)) {
     element = query.cloneNode(false);
   } else {
@@ -215,13 +218,13 @@ function el (query) {
   return element;
 }
 
-el.extend = function (query) {
-  var clone = memoizeEl(query);
+html.extend = function (query) {
+  var clone = memoizeHTML(query);
 
-  return el.bind(this, clone);
+  return html.bind(this, clone);
 };
 
-var html = el;
+var el = html;
 
 function setChildren (parent, children) {
   if (children.length === undefined) {
@@ -326,7 +329,7 @@ List.prototype.update = function (data) {
 
 function getParentEl (parent) {
   if (isString(parent)) {
-    return el(parent);
+    return html(parent);
   } else if (isNode(parent.el)) {
     return parent.el;
   } else {
@@ -339,7 +342,7 @@ function router (parent, Views, initData) {
 }
 
 var Router = function Router (parent, Views, initData) {
-  this.el = isString(parent) ? el(parent) : parent;
+  this.el = getParentEl(parent);
   this.Views = Views;
   this.initData = initData;
 };
@@ -358,9 +361,9 @@ Router.prototype.update = function update (route, data) {
 
 var SVG = 'http://www.w3.org/2000/svg';
 
-var svgcache = {};
+var svgCache = {};
 
-var memoizeSVG = function (query) { return svgcache[query] || createElement(query, SVG); };
+var memoizeSVG = function (query) { return svgCache[query] || createElement(query, SVG); };
 
 function svg (query) {
   var args = [], len = arguments.length - 1;
@@ -387,8 +390,8 @@ svg.extend = function (query) {
   return svg.bind(this, clone);
 };
 
-exports.el = el;
 exports.html = html;
+exports.el = el;
 exports.list = list;
 exports.List = List;
 exports.mount = mount;

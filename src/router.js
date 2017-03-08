@@ -1,6 +1,5 @@
-import { el } from './el';
+import { getParentEl } from './list';
 import { setChildren } from './setchildren';
-import { isString } from './util';
 
 export function router (parent, Views, initData) {
   return new Router(parent, Views, initData);
@@ -8,7 +7,7 @@ export function router (parent, Views, initData) {
 
 export class Router {
   constructor (parent, Views, initData) {
-    this.el = isString(parent) ? el(parent) : parent;
+    this.el = getParentEl(parent);
     this.Views = Views;
     this.initData = initData;
   }
