@@ -120,11 +120,9 @@ function parseArguments (element, args) {
   }
 }
 
-var is = function (type) { return function (a) { return typeof a === type; }; };
-
-var isString = is('string');
-var isNumber = is('number');
-var isFunction = is('function');
+var isString = function (a) { return typeof a === 'string'; };
+var isNumber = function (a) { return typeof a === 'number'; };
+var isFunction = function (a) { return typeof a === 'function'; };
 
 var isNode = function (a) { return a && a.nodeType; };
 var isList = function (a) { return a && a.__redom_list; };

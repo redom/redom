@@ -25,11 +25,9 @@ export function parseArguments (element, args) {
   }
 }
 
-export const is = type => a => typeof a === type;
-
-export const isString = is('string');
-export const isNumber = is('number');
-export const isFunction = is('function');
+export const isString = a => typeof a === 'string';
+export const isNumber = a => typeof a === 'number';
+export const isFunction = a => typeof a === 'function';
 
 export const isNode = a => a && a.nodeType;
 export const isList = a => a && a.__redom_list;
