@@ -1,4 +1,4 @@
-import { isList } from './util';
+import { isFunction, isList } from './util';
 
 export function mount (parent, child, before) {
   const parentEl = parent.el || parent;
@@ -29,11 +29,13 @@ export function mount (parent, child, before) {
     parentEl.appendChild(childEl);
   }
 
-  if (child.isMounted) {
-    child.remounted && child.remounted();
+  if (child.isMounted && isFunction(child.remounted)) {
+    setTimeout(() => child.remounted(), 0);
   } else {
     child.isMounted = true;
-    child.mounted && child.mounted();
+    if (isFunction(child.mounted)) {
+      setTimeout(() => child.mounted(), 0);
+    }
   }
 
   return child;
