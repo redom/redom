@@ -105,7 +105,7 @@ function prepareMount (child, childEl, parentEl) {
       hooks[hook] += handlers[hook];
     }
 
-    if (traverse === document || traverse.__redom_mounted) {
+    if (traverse === document) {
       trigger(traverse, 'mount');
     }
 
