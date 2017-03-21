@@ -21,7 +21,9 @@ function mount (parent, child, before) {
     childEl.__redom_view = child;
   }
 
-  if (child.__redom_mounted) {
+  var wasMounted = childEl.__redom_mounted;
+
+  if (wasMounted) {
     prepareUnmount(child, childEl, parentEl);
   }
 
@@ -31,7 +33,7 @@ function mount (parent, child, before) {
     parentEl.appendChild(childEl);
   }
 
-  if (!child.__redom_mounted) {
+  if (!wasMounted) {
     prepareMount(child, childEl, parentEl);
   }
 
@@ -99,6 +101,12 @@ function prepareMount (child, childEl, parentEl) {
   }
 
   var traverse = parentEl;
+  var triggered = false;
+
+  if (childEl.__redom_mounted) {
+    trigger(childEl, 'mount');
+    triggered = true;
+  }
 
   while (traverse) {
     var hooks$1 = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
@@ -108,8 +116,9 @@ function prepareMount (child, childEl, parentEl) {
       hooks$1[hook$1] += handlers[hook$1];
     }
 
-    if (traverse === document) {
+    if (!triggered && (traverse === document || traverse.__redom_mounted)) {
       trigger(traverse, 'mount');
+      triggered = true;
     }
 
     traverse = traverse.parentNode;
@@ -119,6 +128,10 @@ function prepareMount (child, childEl, parentEl) {
 function prepareUnmount (child, childEl, parentEl) {
   var handlers = {};
   var hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
+
+  if (!hooks) {
+    return;
+  }
 
   for (var hook in hooks) {
     handlers[hook] || (handlers[hook] = 0);
@@ -137,6 +150,12 @@ function prepareUnmount (child, childEl, parentEl) {
   }
 
   var traverse = parentEl;
+  var triggered = false;
+
+  if (childEl.__redom_mounted) {
+    trigger(childEl, 'unmount');
+    triggered = true;
+  }
 
   while (traverse) {
     var hooks$1 = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
@@ -146,8 +165,9 @@ function prepareUnmount (child, childEl, parentEl) {
       hooks$1[hook$1] -= handlers[hook$1];
     }
 
-    if (traverse === document) {
+    if (!triggered && (traverse === document || (traverse.__redom_mounted))) {
       trigger(traverse, 'unmount');
+      triggered = true;
     }
 
     traverse = traverse.parentNode;

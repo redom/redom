@@ -17,7 +17,9 @@ function mount (parent, child, before) {
     childEl.__redom_view = child;
   }
 
-  if (child.__redom_mounted) {
+  var wasMounted = childEl.__redom_mounted;
+
+  if (wasMounted) {
     prepareUnmount(child, childEl, parentEl);
   }
 
@@ -27,7 +29,7 @@ function mount (parent, child, before) {
     parentEl.appendChild(childEl);
   }
 
-  if (!child.__redom_mounted) {
+  if (!wasMounted) {
     prepareMount(child, childEl, parentEl);
   }
 
@@ -36,20 +38,20 @@ function mount (parent, child, before) {
 
 var handlerNames = ['mount', 'remount', 'unmount'];
 
-function trigger (child, eventName) {
+function trigger (childEl, eventName) {
   if (eventName === 'mount') {
-    child.__redom_mounted = true;
+    childEl.__redom_mounted = true;
   } else if (eventName === 'unmount') {
-    child.__redom_mounted = false;
+    childEl.__redom_mounted = false;
   }
 
-  var hooks = child.__redom_lifecycle;
+  var hooks = childEl.__redom_lifecycle;
 
   if (!hooks) {
     return;
   }
 
-  var view = child.__redom_view;
+  var view = childEl.__redom_view;
   var hookCount = 0;
 
   view && view[eventName] && view[eventName]();
@@ -60,7 +62,7 @@ function trigger (child, eventName) {
     }
   }
 
-  var children = child.childNodes;
+  var children = childEl.childNodes;
 
   if (!children || !hookCount) {
     return;
@@ -95,6 +97,7 @@ function prepareMount (child, childEl, parentEl) {
   }
 
   var traverse = parentEl;
+  var triggered = false;
 
   while (traverse) {
     var hooks$1 = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
@@ -104,8 +107,9 @@ function prepareMount (child, childEl, parentEl) {
       hooks$1[hook$1] += handlers[hook$1];
     }
 
-    if (traverse === document) {
-      trigger(traverse, 'mount');
+    if (!triggered && (traverse === document || traverse.__redom_mounted)) {
+      trigger(childEl, 'mount');
+      triggered = true;
     }
 
     traverse = traverse.parentNode;
@@ -115,6 +119,10 @@ function prepareMount (child, childEl, parentEl) {
 function prepareUnmount (child, childEl, parentEl) {
   var handlers = {};
   var hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
+
+  if (!hooks) {
+    return;
+  }
 
   for (var hook in hooks) {
     handlers[hook] || (handlers[hook] = 0);
@@ -134,16 +142,16 @@ function prepareUnmount (child, childEl, parentEl) {
 
   var traverse = parentEl;
 
+  if (childEl.__redom_mounted) {
+    trigger(childEl, 'unmount');
+  }
+
   while (traverse) {
     var hooks$1 = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
 
     for (var hook$1 in handlers) {
       hooks$1[hook$1] || (hooks$1[hook$1] = 0);
       hooks$1[hook$1] -= handlers[hook$1];
-    }
-
-    if (traverse === document) {
-      trigger(traverse, 'unmount');
     }
 
     traverse = traverse.parentNode;

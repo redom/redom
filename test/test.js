@@ -290,18 +290,21 @@ module.exports = function (redom) {
       t.equals(table.el.outerHTML, '<table><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table>');
     });
     t.test('mount / unmount / remount', function (t) {
-      t.plan(7);
+      t.plan(8);
       function Test () {
         this.el = el('test');
       }
       Test.prototype.mount = function () {
+        console.log('mount');
         t.pass();
       };
       Test.prototype.unmount = function () {
+        console.log('unmount');
         t.pass();
       };
       var test = new Test();
       setChildren(document.body, []);
+      mount(document.body, test);
       mount(document.body, test);
       t.equals(document.body.outerHTML, '<body><test></test></body>');
       unmount(document.body, test.el);

@@ -20,7 +20,7 @@
       class Hello {
         constructor () {
           this.el = el('hello',
-            new H1()
+            this.hello = new H1()
           );
         }
         mount () {
@@ -36,7 +36,7 @@
       );
 
       mount(document.body, app);
-      unmount(document.body, app);
+      mount(document.body, app);
     </script>
   </body>
 </html>
