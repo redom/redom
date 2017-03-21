@@ -42,7 +42,7 @@ function mount (parent, child, before) {
   return child;
 }
 
-var handlerNames = ['mount', 'remount', 'unmount'];
+var handlerNames = ['mount', 'unmount'];
 
 function trigger (childEl, eventName) {
   if (eventName === 'mount') {
@@ -82,10 +82,12 @@ function trigger (childEl, eventName) {
 function prepareMount (child, childEl, parentEl) {
   var handlers = {};
   var hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
+  var hooksFound = false;
 
   for (var hook in hooks) {
     handlers[hook] || (handlers[hook] = 0);
     handlers[hook] += hooks[hook];
+    hooksFound = true;
   }
 
   if (child !== childEl) {
@@ -98,8 +100,13 @@ function prepareMount (child, childEl, parentEl) {
 
         handlers[handlerName] || (handlers[handlerName] = 0);
         handlers[handlerName]++;
+        hooksFound = true;
       }
     }
+  }
+
+  if (!hooksFound) {
+    return;
   }
 
   var traverse = parentEl;
@@ -125,6 +132,7 @@ function prepareMount (child, childEl, parentEl) {
 function prepareUnmount (child, childEl, parentEl) {
   var handlers = {};
   var hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
+  var hooksFound = false;
 
   if (!hooks) {
     return;
@@ -133,6 +141,7 @@ function prepareUnmount (child, childEl, parentEl) {
   for (var hook in hooks) {
     handlers[hook] || (handlers[hook] = 0);
     handlers[hook] += hooks[hook];
+    hooksFound = true;
   }
 
   if (child !== childEl) {
@@ -142,8 +151,13 @@ function prepareUnmount (child, childEl, parentEl) {
       if (handlerName in child) {
         hooks[handlerName] || (hooks[handlerName] = 0);
         hooks[handlerName]--;
+        hooksFound = true;
       }
     }
+  }
+
+  if (!hooksFound) {
+    return;
   }
 
   var traverse = parentEl;
