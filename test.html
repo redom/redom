@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script src="dist/redom.js"></script>
+    <script>
+      const { el, mount, unmount } = redom;
+
+      class H1 {
+        constructor () {
+          this.el = el('h1', 'Hello world');
+        }
+        mount () {
+          console.log('mounted h1');
+        }
+        unmount () {
+          console.log('unmounted h1');
+        }
+      }
+
+      class Hello {
+        constructor () {
+          this.el = el('hello',
+            new H1()
+          );
+        }
+        mount () {
+          console.log('mounted hello');
+        }
+        unmount () {
+          console.log('unmounted hello');
+        }
+      }
+
+      const app = el('app',
+        new Hello()
+      );
+
+      mount(document.body, app);
+      unmount(document.body, app);
+    </script>
+  </body>
+</html>

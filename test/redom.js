@@ -19,6 +19,7 @@ function mount (parent, child, before) {
 
   if (child !== childEl) {
     childEl.__redom_view = child;
+    addCounters(child);
   }
 
   if (child.isMounted) {
@@ -41,6 +42,37 @@ function mount (parent, child, before) {
   }
 
   return child;
+}
+
+var handlerNames = ['mount', 'mounted', 'remount', 'remounted', 'unmount', 'unmounted'];
+
+function addCounters (child) {
+  var handlers = [];
+
+  for (var handlerName in handlerNames) {
+    if (handlerName in child) {
+      handlers.push(handlerName);
+    }
+  }
+
+  if (!handlers.length) {
+    return;
+  }
+
+  var traverse = child.parentNode;
+
+  while (traverse) {
+    var hooks = traverse.__redom_lifecycle;
+
+    for (var i = 0; i < handlers.length; i++) {
+      var handler = handlers[i];
+
+      hooks[handler] || (hooks[handler] = 0);
+      hooks[handler]++;
+    }
+
+    traverse = traverse.parentNode;
+  }
 }
 
 function unmount (parent, child) {
