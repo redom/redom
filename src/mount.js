@@ -17,7 +17,7 @@ export function mount (parent, child, before) {
     childEl.__redom_view = child;
   }
 
-  if (child.isMounted) {
+  if (child.__redom_mounted) {
     prepareUnmount(child, childEl, parentEl);
   }
 
@@ -27,8 +27,7 @@ export function mount (parent, child, before) {
     parentEl.appendChild(childEl);
   }
 
-  if (!child.isMounted) {
-    child.isMounted = true;
+  if (!child.__redom_mounted) {
     prepareMount(child, childEl, parentEl);
   }
 
@@ -41,7 +40,7 @@ function trigger (child, eventName) {
   if (eventName === 'mount') {
     child.__redom_mounted = true;
   } else if (eventName === 'unmount') {
-    child.__redom_mounted = true;
+    child.__redom_mounted = false;
   }
 
   const hooks = child.__redom_lifecycle;
