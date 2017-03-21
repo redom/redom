@@ -106,7 +106,12 @@ function prepareMount (child, childEl, parentEl) {
   let traverse = parentEl;
   let triggered = false;
 
+  if (!triggered && (traverse && traverse.__redom_mounted)) {
+    trigger(childEl, 'mount');
+  }
+
   while (traverse) {
+    const parent = traverse.parentNode;
     const hooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
 
     for (const hook in handlers) {
@@ -114,12 +119,12 @@ function prepareMount (child, childEl, parentEl) {
       hooks[hook] += handlers[hook];
     }
 
-    if (!triggered && (traverse === document || traverse.__redom_mounted)) {
-      trigger(childEl, 'mount');
+    if (!triggered && (traverse === document || (parent && parent.__redom_mounted))) {
+      trigger(traverse, 'mount');
       triggered = true;
     }
 
-    traverse = traverse.parentNode;
+    traverse = parent;
   }
 }
 
