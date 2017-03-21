@@ -233,7 +233,7 @@ module.exports = function (redom) {
       t.equals(items.el.outerHTML, '<ul><li>2</li><li>3</li><li>4</li></ul>');
     });
     t.test('with function key', function (t) {
-      t.plan(6);
+      t.plan(4);
 
       function Item () {
         this.el = el('li');
@@ -243,9 +243,6 @@ module.exports = function (redom) {
             t.equals(this.data.id, data.id);
           }
           this.data = data;
-        };
-        this.remounted = function () {
-          t.pass();
         };
       }
 
@@ -257,7 +254,7 @@ module.exports = function (redom) {
       t.equals(items.el.outerHTML, '<ul><li>2</li><li>3</li><li>4</li></ul>');
     });
     t.test('adding / removing', function (t) {
-      t.plan(6);
+      t.plan(3);
 
       function Item () {
         this.el = el('li');
@@ -265,12 +262,6 @@ module.exports = function (redom) {
           this.el.textContent = data;
         };
       }
-      Item.prototype.mounted = function () {
-        t.pass();
-      };
-      Item.prototype.unmounted = function () {
-        t.pass();
-      };
 
       var items = list('ul', Item);
 
@@ -303,13 +294,10 @@ module.exports = function (redom) {
       function Test () {
         this.el = el('test');
       }
-      Test.prototype.mounted = function () {
+      Test.prototype.mount = function () {
         t.pass();
       };
-      Test.prototype.remounted = function () {
-        t.pass();
-      };
-      Test.prototype.unmounted = function () {
+      Test.prototype.unmount = function () {
         t.pass();
       };
       var test = new Test();
