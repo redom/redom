@@ -120,31 +120,15 @@ module.exports = function (redom) {
       t.plan(1);
       var eventsFired = {
         mount: false,
-        mounted: false,
-        remount: false,
-        remounted: false,
-        unmount: false,
-        unmounted: false
+        unmount: false
       };
       function Item () {
         this.el = el('p');
         this.mount = function () {
           eventsFired.mount = true;
         };
-        this.mounted = function () {
-          eventsFired.mounted = true;
-        };
-        this.remount = function () {
-          eventsFired.remount = true;
-        };
-        this.remounted = function () {
-          eventsFired.remounted = true;
-        };
         this.unmount = function () {
           eventsFired.unmount = true;
-        };
-        this.unmounted = function () {
-          eventsFired.unmounted = true;
         };
       }
       var item = new Item();
@@ -153,11 +137,7 @@ module.exports = function (redom) {
       unmount(document.body, item);
       t.deepEqual(eventsFired, {
         mount: true,
-        mounted: true,
-        remount: true,
-        remounted: true,
-        unmount: true,
-        unmounted: true
+        unmount: true
       });
     });
     t.test('setChildren', function (t) {
