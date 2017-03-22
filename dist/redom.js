@@ -67,8 +67,7 @@ function doMount (child, childEl, parentEl) {
       var hookName = hookNames[i];
 
       if (hookName in child) {
-        hooks[hookName] || (hooks[hookName] = 0);
-        hooks[hookName]++;
+        hooks[hookName] = (hooks[hookName] || 0) + 1;
       }
       if (hooks[hookName]) {
         hooksFound = true;
@@ -93,8 +92,7 @@ function doMount (child, childEl, parentEl) {
     var parentHooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
 
     for (var hook in hooks) {
-      parentHooks[hook] || (parentHooks[hook] = 0);
-      parentHooks[hook] += hooks[hook];
+      parentHooks[hook] = (parentHooks[hook] || 0) + hooks[hook];
     }
 
     if (!triggered && (traverse === document || (parent && parent.__redom_mounted))) {
