@@ -1,7 +1,7 @@
 # RE:DOM documentation
 
 ## Introduction
-RE:DOM is a tiny DOM library, which adds some useful helpers to create DOM elements and keeping them in sync with the data.
+RE:DOM is a tiny DOM library by [Juha Lindstedt](https://pakastin.fi) and [contributors](https://github.com/pakastin/redom/graphs/contributors), which adds some useful helpers to create DOM elements and keeping them in sync with the data.
 
 Because RE:DOM is so close to the metal and __doesn't use virtual dom__, it's actually __faster__ and uses __less memory__ than most of virtual dom based libraries.
 
@@ -195,8 +195,80 @@ mount(document.body, drawing);
 </body>
 ```
 
+## Mounting
+Please use `mount`/`unmount`/`setChildren` everytime you need to mount/unmount elements inside RE:DOM app. That will trigger lifecycle events, add references to components etc.
+
+### Mount
+You can mount elements/components with `mount(parent, child, [before])`. If you define the third parameter, it works like `insertBefore` and otherwise it's like `appendChild`.
+
+Mount will trigger `mount` [lifecycle event](#component-lifecycle) the first time you mount a child. If you mount the same child again to the same parent, `remount` gets called. If you mount it to another place, `unmount` + `mount` gets called. Read more about lifecycle events [here](#component-lifecycle).
+
+```js
+import { el, mount } from 'redom';
+
+const hello = el('h1', 'Hello RE:DOM!');
+
+// append element:
+mount(document.body, hello);
+
+// insert before the first element:
+mount(document.body, hello, document.body.firstChild);
+```
+
+### Unmount
+If you need to remove elements/components, you use `unmount(parent, child)`. That will trigger `unmount` [lifecycle event](#component-lifecycle):
+
+```js
+unmount(document.body, hello);
+```
+
+### Set children
+RE:DOM uses `setChildren(parent, children)` under the hood for [lists](#lists). When you call `setChildren`, RE:DOM will add/reorder/remove elements/components automatically by reference:
+```js
+import { el, setChildren } from 'redom';
+
+const a = el('a');
+const b = el('b');
+const c = el('c');
+
+setChildren(document.body, [a, b, c]);
+setChildren(document.body, [c, b]);
+```
+–>
+```html
+<body>
+  <c></c>
+  <b></b>
+</body>
+```
+
+If you need to clear a body for example, you can also use `setChildren(document.body, []);`.
+
+There's also a shortcut replacing children with a single component / element: `setChildren(document.body, app);`.
+
+## Update elements
+### setAttr
+There's a helper for updating attributes / properties. It will auto-detect attributes / properties:
+```js
+import { el, setAttr } from 'redom';
+
+const hello = el('h1', 'Hello RE:DOM!');
+
+setAttr(hello, {
+  style: { color: 'red' },
+  className: 'hello' // You could also just use 'class'
+});
+```
+### setStyle
+There's also a shortcut for updating style attribute:
+```js
+import { setStyle } from 'redom';
+
+setStyle(hello, { color: 'green' });
+```
+
 ## Components
-It's really easy to create components with RE:DOM. You just define a class or function, which returns an object with at least `el` property and with [list](#lists) also `update` property:
+It's really easy to create components with RE:DOM. You just define a class or function, which returns an object with at least `el` property and in case of [list](#lists) also the `update` property:
 ```js
 import { el, mount } from 'redom';
 
@@ -217,7 +289,7 @@ mount(document.body, hello);
 ```
 
 ### Diffing
-You don't have to diff properties / attributes __except when you're dealing with URL's__. If you change `img`, `iframe` or `video` element `src`, even if it's the same, the browser will reload the asset/website. For example:
+You don't have to diff class names / properties / attributes __except when dealing with URL's__. If you change `img`, `iframe` or `video` element `src`, even if it's the same, the browser will __reload__ the asset/website. One way to diff would be:
 ```js
 import { el, mount } from 'redom';
 
@@ -239,7 +311,10 @@ class Image {
 ```
 
 ### Component lifecycle
-RE:DOM v2.0.0 supports true lifecycle events. Let's see how they work:
+RE:DOM v2.0.0 supports true lifecycle events. There's three events `mount`, `remount` and `unmount`.
+
+First time you mount the element, `mount` gets called. If you mount the same element again to the same parent, `remount` will get called. If you move element from a parent to another parent, `unmount` gets called.
+
 ```js
 import { el, mount } from 'redom';
 
@@ -279,7 +354,8 @@ const app = new App();
 
 mount(document.body, app);
 mount(document.body, app);
-unmount(document.body, app);
+mount(document.head, app);
+unmount(document.head, app);
 ```
 –>
 ```
@@ -287,6 +363,10 @@ mounted App
 mounted Hello
 remounted App
 remounted Hello
+unmounted App
+unmounted Hello
+mounted App
+mounted Hello
 unmounted App
 unmounted Hello
 ```
@@ -429,3 +509,37 @@ or the other way around:
 this.list = list('tr', Tr);
 this.el = this.list.el;
 ```
+
+## Router
+Router is a component router, which will create/update/remove component by the current route.
+
+```js
+import { router } from 'redom';
+
+import { Home, About, Contact } from './sections/index'
+
+const app = router({
+  home: Home,
+  about: About,
+  contact: Contact
+});
+
+mount(document.body, app);
+
+app.update('home', data);
+app.update('about', data);
+```
+
+The example will:
+- create a `Home` component
+- update it with `data`
+- remove it
+- create a `About` component
+- update it with `data`
+- call all defined [lifecycle events](#component-lifecycle)
+
+## Support / feedback
+If you have any feedback about RE:DOM, you can join [#redom](https://koodiklinikka.slack.com/messages/redom/) at [koodiklinikka.slack.com](koodiklinikka.slack.com) or raise an issue on [Github](https://github.com/pakastin/redom).
+
+## License
+[MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
