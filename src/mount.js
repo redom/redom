@@ -35,35 +35,49 @@ export function mount (parent, child, before) {
 }
 
 function trigger (childEl, eventName) {
-  if (eventName === 'mount') {
-    childEl.__redom_mounted = true;
-  } else if (eventName === 'unmount') {
-    childEl.__redom_mounted = false;
-  }
+  let children = [childEl];
 
-  const hooks = childEl.__redom_lifecycle;
+  while (children && children.length) {
+    const newChildren = [];
 
-  if (!hooks) {
-    return;
-  }
-
-  const view = childEl.__redom_view;
-  let hookCount = 0;
-
-  view && view[eventName] && view[eventName]();
-
-  for (const hook in hooks) {
-    if (hook) {
-      hookCount++;
-    }
-  }
-
-  const children = childEl.childNodes;
-
-  if (children && hookCount) {
     for (let i = 0; i < children.length; i++) {
-      trigger(children[i], eventName);
+      const childEl = children[i];
+
+      if (eventName === 'mount') {
+        childEl.__redom_mounted = true;
+      } else if (eventName === 'unmount') {
+        childEl.__redom_mounted = false;
+      }
+
+      const hooks = childEl.__redom_lifecycle;
+
+      if (!hooks) {
+        continue;
+      }
+
+      const view = childEl.__redom_view;
+      let hookCount = 0;
+
+      view && view[eventName] && view[eventName]();
+
+      for (const hook in hooks) {
+        if (hook) {
+          hookCount++;
+        }
+      }
+
+      if (!hookCount) {
+        continue;
+      }
+
+      const _children = childEl.childNodes;
+
+      for (let i = 0; i < _children.length; i++) {
+        newChildren.push(_children[i]);
+      }
     }
+
+    children = newChildren;
   }
 }
 

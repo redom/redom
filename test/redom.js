@@ -39,35 +39,49 @@ function mount (parent, child, before) {
 }
 
 function trigger (childEl, eventName) {
-  if (eventName === 'mount') {
-    childEl.__redom_mounted = true;
-  } else if (eventName === 'unmount') {
-    childEl.__redom_mounted = false;
-  }
+  var children = [childEl];
 
-  var hooks = childEl.__redom_lifecycle;
+  while (children && children.length) {
+    var newChildren = [];
 
-  if (!hooks) {
-    return;
-  }
-
-  var view = childEl.__redom_view;
-  var hookCount = 0;
-
-  view && view[eventName] && view[eventName]();
-
-  for (var hook in hooks) {
-    if (hook) {
-      hookCount++;
-    }
-  }
-
-  var children = childEl.childNodes;
-
-  if (children && hookCount) {
     for (var i = 0; i < children.length; i++) {
-      trigger(children[i], eventName);
+      var childEl$1 = children[i];
+
+      if (eventName === 'mount') {
+        childEl$1.__redom_mounted = true;
+      } else if (eventName === 'unmount') {
+        childEl$1.__redom_mounted = false;
+      }
+
+      var hooks = childEl$1.__redom_lifecycle;
+
+      if (!hooks) {
+        continue;
+      }
+
+      var view = childEl$1.__redom_view;
+      var hookCount = 0;
+
+      view && view[eventName] && view[eventName]();
+
+      for (var hook in hooks) {
+        if (hook) {
+          hookCount++;
+        }
+      }
+
+      if (!hookCount) {
+        continue;
+      }
+
+      var _children = childEl$1.childNodes;
+
+      for (var i$1 = 0; i$1 < _children.length; i$1++) {
+        newChildren.push(_children[i$1]);
+      }
     }
+
+    children = newChildren;
   }
 }
 
