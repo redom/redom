@@ -349,7 +349,7 @@ html.extend = function (query) {
 
 var el = html;
 
-function setChildren(parent, children) {
+function setChildren (parent, children) {
   if (children.length === undefined) {
     return setChildren(parent, [children]);
   }
@@ -383,11 +383,11 @@ function setChildren(parent, children) {
   }
 }
 
-function list(parent, View, key, initData) {
+function list (parent, View, key, initData) {
   return new List(parent, View, key, initData);
 }
 
-function List(parent, View, key, initData) {
+function List (parent, View, key, initData) {
   this.__redom_list = true;
   this.View = View;
   this.key = key;

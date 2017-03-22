@@ -73,7 +73,7 @@ module.exports = function (redom) {
     });
     t.test('child views', function (t) {
       t.plan(1);
-      function Test() {
+      function Test () {
         this.el = el('test');
       }
       var app = el('app',
@@ -83,7 +83,7 @@ module.exports = function (redom) {
     });
     t.test('child view composition', function (t) {
       t.plan(1);
-      function Test() {
+      function Test () {
         this.el = (new function () {
           this.el = el('test');
         }());
@@ -131,7 +131,7 @@ module.exports = function (redom) {
     t.test('lifecycle events', function (t) {
       t.plan(1);
       var eventsFired = {};
-      function Item() {
+      function Item () {
         this.el = el('p');
         this.onmount = function () {
           eventsFired.onmount = true;
@@ -179,7 +179,7 @@ module.exports = function (redom) {
     t.test('without key', function (t) {
       t.plan(1);
 
-      function Item() {
+      function Item () {
         this.el = el('li');
         this.update = data => {
           this.el.textContent = data;
@@ -194,7 +194,7 @@ module.exports = function (redom) {
     t.test('element parent', function (t) {
       t.plan(1);
 
-      function Item() {
+      function Item () {
         this.el = el('li');
         this.update = data => {
           this.el.textContent = data;
@@ -209,11 +209,11 @@ module.exports = function (redom) {
     t.test('component parent', function (t) {
       t.plan(1);
 
-      function Ul() {
+      function Ul () {
         this.el = el('ul');
       }
 
-      function Item() {
+      function Item () {
         this.el = el('li');
         this.update = data => {
           this.el.textContent = data;
@@ -230,13 +230,13 @@ module.exports = function (redom) {
     t.test('component parent composition', function (t) {
       t.plan(1);
 
-      function Ul() {
+      function Ul () {
         this.el = (new function () {
           this.el = el('ul');
         }());
       }
 
-      function Item() {
+      function Item () {
         this.el = el('li');
         this.update = data => {
           this.el.textContent = data;
@@ -253,7 +253,7 @@ module.exports = function (redom) {
     t.test('with key', function (t) {
       t.plan(4);
 
-      function Item() {
+      function Item () {
         this.el = el('li');
         this.update = function (data) {
           this.el.textContent = data.id;
@@ -274,7 +274,7 @@ module.exports = function (redom) {
     t.test('with function key', function (t) {
       t.plan(4);
 
-      function Item() {
+      function Item () {
         this.el = el('li');
         this.update = (data) => {
           this.el.textContent = data.id;
@@ -295,7 +295,7 @@ module.exports = function (redom) {
     t.test('adding / removing', function (t) {
       t.plan(3);
 
-      function Item() {
+      function Item () {
         this.el = el('li');
         this.update = (data) => {
           this.el.textContent = data;
@@ -314,7 +314,7 @@ module.exports = function (redom) {
     t.test('extend', function (t) {
       t.plan(1);
 
-      function Td() {
+      function Td () {
         this.el = el('td');
         this.update = function (data) {
           this.el.textContent = data;
@@ -330,7 +330,7 @@ module.exports = function (redom) {
     });
     t.test('mount / unmount / remount', function (t) {
       t.plan(8);
-      function Test() {
+      function Test () {
         this.el = el('test');
       }
       Test.prototype.onmount = function () {
@@ -355,19 +355,19 @@ module.exports = function (redom) {
     });
     t.test('special cases', function (t) {
       t.plan(1);
-      function Td() {
+      function Td () {
         this.el = el('td');
       }
       Td.prototype.update = function (data) {
         this.el.textContent = data;
       };
-      function Tr() {
+      function Tr () {
         this.el = list('tr', Td);
       }
       Tr.prototype.update = function (data) {
         this.el.update(data);
       };
-      function Table() {
+      function Table () {
         this.el = list('table', Tr);
       }
       Table.prototype.update = function (data) {
@@ -468,7 +468,7 @@ module.exports = function (redom) {
     t.test('child view', function (t) {
       t.plan(1);
 
-      function Circle() {
+      function Circle () {
         this.el = svg('circle', { cx: 1, cy: 2, r: 3 });
       }
 
@@ -495,14 +495,14 @@ module.exports = function (redom) {
   });
   test('router', function (t) {
     t.plan(2);
-    function A() {
+    function A () {
       this.el = el('a');
     }
     A.prototype.update = function (val) {
       this.el.textContent = val;
     };
 
-    function B() {
+    function B () {
       this.el = el('b');
     }
 

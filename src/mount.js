@@ -1,4 +1,4 @@
-import { isList, getParentElRecursive } from './util';
+import { getParentElRecursive } from './util';
 
 const hookNames = ['onmount', 'onunmount'];
 

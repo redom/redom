@@ -1,7 +1,7 @@
 import { mount, unmount } from './mount';
-import { isList, getParentElRecursive } from './util';
+import { getParentElRecursive } from './util';
 
-export function setChildren(parent, children) {
+export function setChildren (parent, children) {
   if (children.length === undefined) {
     return setChildren(parent, [children]);
   }
