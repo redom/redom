@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 body {
   font-family: 'Work Sans', sans-serif;
   color: #222;
@@ -58,12 +61,12 @@ pre > code {
 #doc {
   position: absolute;
   top: 0;
-  left: 14rem;
+  left: 15rem;
 
-  width: calc(100% - 14rem);
+  width: calc(100% - 15rem);
 
   padding: .5rem;
-  padding-bottom: 50%;
+  padding-bottom: 3rem;
 }
 
 #menu {
@@ -72,8 +75,10 @@ pre > code {
   left: 0;
 
   width: 14rem;
+  height: 100%;
 
   padding: .5rem;
+  padding-bottom: 4.5rem;
 
   overflow: auto;
   overflow-x: hidden;

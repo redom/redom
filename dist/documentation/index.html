@@ -12,10 +12,20 @@
       <h1 id="re-dom-documentation">RE:DOM documentation</h1>
     <h2 id="introduction">Introduction</h2>
     <p>RE:DOM is a tiny DOM library by <a href="https://pakastin.fi">Juha Lindstedt</a> and <a href="https://github.com/pakastin/redom/graphs/contributors">contributors</a>, which adds some useful helpers to create DOM elements and keeping them in sync with the data.</p>
-    <p>Because RE:DOM is so close to the metal and <strong>doesn&#39;t use virtual dom</strong>, it&#39;s actually <strong>faster</strong> and uses <strong>less memory</strong> than most of virtual dom based libraries.</p>
-    <p>It&#39;s also easy to create reusable components with RE:DOM.</p>
-    <h2 id="browser-support">Browser support</h2>
-    <p>To use <code>el.extend</code>, <code>svg.extend</code> or <code>list.extend</code>, you&#39;ll need at least IE9. So basically almost every browser out there is supported.</p>
+    <p>Because RE:DOM is so close to the metal and <strong>doesn&#39;t use virtual dom</strong>, it&#39;s actually <strong>faster</strong> and uses <strong>less memory</strong> than almost all of virtual dom based libraries, including React.</p>
+    <p>It&#39;s also easy to create <strong>reusable components</strong> with RE:DOM.</p>
+    <h3 id="browser-support">Browser support</h3>
+    <p>Only if you use <code>el.extend</code>, <code>svg.extend</code> or <code>list.extend</code>, you&#39;ll need at least IE9. All other features should work even in IE6. So for the most parts basically almost every browser out there is supported.</p>
+    <h2 id="installing">Installing</h2>
+    <p>You can install RE:DOM from npm by calling:</p>
+    <pre><code>npm i redom
+    </code></pre><p>RE:DOM also supports <a href="https://github.com/umdjs/umd">UMD</a>:</p>
+    <pre><code class="lang-html">&lt;script src=&quot;https://redom.js.org/redom.min.js&quot;&gt;&lt;/script&gt;
+    </code></pre>
+    <h3 id="project-generator">Project generator</h3>
+    <p>You can also use the project generator, which will also install file watcher and bundler. You can find it <a href="https://github.com/pakastin/redom-cli">here</a>.</p>
+    <h3 id="server-side-use">Server-side use</h3>
+    <p>RE:DOM also works on server side, by using <a href="https://github.com/pakastin/nodom">NO:DOM</a>.</p>
     <h2 id="elements">Elements</h2>
     <p><code>el</code> (<a href="#alias">alias</a>: <code>html</code>) is a helper for <code>document.createElement</code> with couple of differences.</p>
     <p>The basic idea is to just create elements with <code>el</code> and mount them with <code>mount</code>, almost like you would do with plain JavaScript:</p>
@@ -466,8 +476,18 @@ app.update(&#39;about&#39;, data);
     <li>update it with <code>data</code></li>
     <li>call all defined <a href="#component-lifecycle">lifecycle events</a></li>
     </ul>
+    <h2 id="more-examples">More examples</h2>
+    <p>You can find more examples on <a href="https://redom.js.org">RE:DOM website</a>!</p>
     <h2 id="support-feedback">Support / feedback</h2>
-    <p>If you have any feedback about RE:DOM, you can join <a href="https://koodiklinikka.slack.com/messages/redom/">#redom</a> at <a href="koodiklinikka.slack.com">koodiklinikka.slack.com</a> or raise an issue on <a href="https://github.com/pakastin/redom">Github</a>.</p>
+    <p>If you have any feedback about RE:DOM, you can join <a href="https://koodiklinikka.slack.com/messages/redom/">#redom</a> at <a href="koodiklinikka.slack.com">koodiklinikka.slack.com</a> (get invitation by entering your email at <a href="https://koodiklinikka.fi">koodiklinikka.fi</a>) or raise an issue on <a href="https://github.com/pakastin/redom">Github</a>.</p>
+    <h2 id="developing">Developing</h2>
+    <p>RE:DOM is on <a href="https://github.com/pakastin/redom">Github</a>, source is <a href="https://github.com/pakastin/redom/tree/master/src">here</a>. To start developing:</p>
+    <ul>
+    <li>Clone repository</li>
+    <li><code>npm i</code></li>
+    <li><code>npm run dev</code></li>
+    </ul>
+    <p>Pull requests are more than welcome!</p>
     <h2 id="license">License</h2>
     <p><a href="https://github.com/pakastin/redom/blob/master/LICENSE">MIT</a></p>
 

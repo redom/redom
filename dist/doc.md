@@ -3,12 +3,28 @@
 ## Introduction
 RE:DOM is a tiny DOM library by [Juha Lindstedt](https://pakastin.fi) and [contributors](https://github.com/pakastin/redom/graphs/contributors), which adds some useful helpers to create DOM elements and keeping them in sync with the data.
 
-Because RE:DOM is so close to the metal and __doesn't use virtual dom__, it's actually __faster__ and uses __less memory__ than most of virtual dom based libraries.
+Because RE:DOM is so close to the metal and __doesn't use virtual dom__, it's actually __faster__ and uses __less memory__ than almost all of virtual dom based libraries, including React.
 
 It's also easy to create __reusable components__ with RE:DOM.
 
-## Browser support
-Only if you use `el.extend`, `svg.extend` or `list.extend`, you'll need at least IE9. So for the most parts basically almost every browser out there is supported.
+### Browser support
+Only if you use `el.extend`, `svg.extend` or `list.extend`, you'll need at least IE9. All other features should work even in IE6. So for the most parts basically almost every browser out there is supported.
+
+## Installing
+You can install RE:DOM from npm by calling:
+```
+npm i redom
+```
+
+RE:DOM also supports [UMD](https://github.com/umdjs/umd):
+```html
+<script src="https://redom.js.org/redom.min.js"></script>
+```
+### Project generator
+You can also use the project generator, which will also install file watcher and bundler. You can find it [here](https://github.com/pakastin/redom-cli).
+
+### Server-side use
+RE:DOM also works on server side, by using [NO:DOM](https://github.com/pakastin/nodom).
 
 ## Elements
 
@@ -538,8 +554,19 @@ The example will:
 - update it with `data`
 - call all defined [lifecycle events](#component-lifecycle)
 
+## More examples
+You can find more examples on [RE:DOM website](https://redom.js.org)!
+
 ## Support / feedback
-If you have any feedback about RE:DOM, you can join [#redom](https://koodiklinikka.slack.com/messages/redom/) at [koodiklinikka.slack.com](koodiklinikka.slack.com) or raise an issue on [Github](https://github.com/pakastin/redom).
+If you have any feedback about RE:DOM, you can join [#redom](https://koodiklinikka.slack.com/messages/redom/) at [koodiklinikka.slack.com](koodiklinikka.slack.com) (get invitation by entering your email at [koodiklinikka.fi](https://koodiklinikka.fi)) or raise an issue on [Github](https://github.com/pakastin/redom).
+
+## Developing
+RE:DOM is on [Github](https://github.com/pakastin/redom), source is [here](https://github.com/pakastin/redom/tree/master/src). To start developing:
+- Clone repository
+- `npm i`
+- `npm run dev`
+
+Pull requests are more than welcome!
 
 ## License
 [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
