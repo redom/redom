@@ -5,10 +5,10 @@ RE:DOM is a tiny DOM library by [Juha Lindstedt](https://pakastin.fi) and [contr
 
 Because RE:DOM is so close to the metal and __doesn't use virtual dom__, it's actually __faster__ and uses __less memory__ than most of virtual dom based libraries.
 
-It's also easy to create reusable components with RE:DOM.
+It's also easy to create __reusable components__ with RE:DOM.
 
 ## Browser support
-To use `el.extend`, `svg.extend` or `list.extend`, you'll need at least IE9. So basically almost every browser out there is supported.
+Only if you use `el.extend`, `svg.extend` or `list.extend`, you'll need at least IE9. So for the most parts basically almost every browser out there is supported.
 
 ## Elements
 
