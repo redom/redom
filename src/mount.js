@@ -91,9 +91,11 @@ function prepareMount (child, childEl, parentEl) {
     for (let i = 0; i < hookNames.length; i++) {
       const hookName = hookNames[i];
 
-      hooks[hookName] || (hooks[hookName] = 0);
-      hooks[hookName]++;
-      hooksFound = true;
+      if (hookName in child) {
+        hooks[hookName] || (hooks[hookName] = 0);
+        hooks[hookName]++;
+        hooksFound = true;
+      }
     }
   }
 
