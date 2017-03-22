@@ -119,25 +119,27 @@ module.exports = function (redom) {
     t.test('lifecycle events', function (t) {
       t.plan(1);
       var eventsFired = {
-        mount: false,
-        unmount: false
+        onmount: false,
+        onunmount: false
       };
       function Item () {
         this.el = el('p');
-        this.mount = function () {
-          eventsFired.mount = true;
+        this.onmount = function () {
+          eventsFired.onmount = true;
         };
-        this.unmount = function () {
-          eventsFired.unmount = true;
+        this.onunmount = function () {
+          eventsFired.onunmount = true;
         };
       }
       var item = new Item();
+      var item2 = new Item();
       mount(document.body, item);
+      mount(document.body, item2);
       mount(document.body, item.el); // test view lookup (__redom_view)
       unmount(document.body, item);
       t.deepEqual(eventsFired, {
-        mount: true,
-        unmount: true
+        onmount: true,
+        onunmount: true
       });
     });
     t.test('setChildren', function (t) {
@@ -294,10 +296,10 @@ module.exports = function (redom) {
       function Test () {
         this.el = el('test');
       }
-      Test.prototype.mount = function () {
+      Test.prototype.onmount = function () {
         t.pass();
       };
-      Test.prototype.unmount = function () {
+      Test.prototype.onunmount = function () {
         t.pass();
       };
       var test = new Test();

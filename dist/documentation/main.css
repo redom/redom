@@ -1,0 +1,54 @@
+body {
+  font-family: 'Work Sans', sans-serif;
+  color: #222;
+}
+code {
+  display: inline-block;
+  padding: .125rem .25rem;
+  margin: -.125rem 0;
+
+  font-family: 'Inconsolata', monospace;
+  font-size: .875rem;
+  line-height: 1.5;
+
+  background-color: #eee;
+}
+
+pre > code {
+  padding: 1.5rem;
+}
+
+#doc {
+  position: absolute;
+  top: 0;
+  left: 14rem;
+
+  width: calc(100% - 14rem);
+  height: 100%;
+
+  padding: .5rem;
+
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+#menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 14rem;
+
+  padding: .5rem;
+
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+a {
+  color: #d31b33;
+}
+
+a:not(:hover) {
+  text-decoration: none;
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Work+Sans:400,500,600,700">
+  </head>
+  <body>
+    <div id="doc">
+      <h1 id="re-dom-documentation">RE:DOM documentation</h1>
+    <h2 id="creating-elements">Creating elements</h2>
+    <p><code>el</code> (alias <code>html</code>) is a helper for <code>document.createElement</code> with couple of differences:</p>
+    <h3 id="alias">Alias</h3>
+    <p>You can use <code>el</code> or <code>html</code>:</p>
+    <pre><code class="lang-js">import { el, html } from &#39;redom&#39;;
+
+el(&#39;div&#39;)
+html(&#39;div&#39;)
+    </code></pre>
+    <p>–&gt;</p>
+    <pre><code class="lang-html">&lt;div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;
+    </code></pre>
+    <h3 id="query-format">Query format</h3>
+    <p>You can use <code>#</code> and <code>.</code> as shortcuts for defining id and class names. <code>div</code> is the default tag name:</p>
+    <pre><code class="lang-js">el(&#39;&#39;)
+el(&#39;#hello&#39;)
+el(&#39;.hello&#39;)
+el(&#39;span.hello&#39;)
+    </code></pre>
+    <p>–&gt;</p>
+    <pre><code class="lang-html">&lt;div&gt;&lt;/div&gt;
+&lt;div id=&quot;hello&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;hello&quot;&gt;&lt;/div&gt;
+&lt;span class=&quot;hello&quot;&gt;&lt;/span&gt;
+    </code></pre>
+    <h3 id="style-object">Style object</h3>
+    <p>You can define styles with string or object:</p>
+    <pre><code class="lang-js">el(&#39;div&#39;, { style: &#39;color: red;&#39; })
+el(&#39;div&#39;, { style: { color: &#39;red&#39; } })
+    </code></pre>
+    <p>–&gt;</p>
+    <pre><code class="lang-html">&lt;div style=&quot;color: red;&quot;&gt;&lt;/div&gt;
+&lt;div style=&quot;color: red;&quot;&gt;&lt;/div&gt;
+    </code></pre>
+    <h3 id="auto-detection-of-attributes-and-properties">Auto-detection of attributes and properties</h3>
+    <p>Properties and attributes are auto-detected:</p>
+    <pre><code class="lang-js">el(&#39;input&#39;, { type=&quot;email&quot;, autofocus: true, value: &#39;foo&#39; })
+    </code></pre>
+    <p>–&gt;</p>
+    <pre><code class="lang-html">&lt;input type=&quot;email&quot; autofocus&gt; // $0.value === &#39;foo&#39;
+    </code></pre>
+    <h3 id="define-children">Define children</h3>
+    <p>You can also define children while creating elements:</p>
+    <pre><code class="lang-js">el(&#39;a&#39;,
+  el(&#39;b&#39;,
+    el(&#39;c&#39;)
+  )
+)
+    </code></pre>
+    <p>–&gt;</p>
+    <pre><code class="lang-html">&lt;a&gt;
+  &lt;b&gt;
+    &lt;c&gt;&lt;/c&gt;
+  &lt;/b&gt;
+&lt;/a&gt;
+    </code></pre>
+    <h3 id="array-of-children">Array of children</h3>
+    <p>Array of children also works:</p>
+    <pre><code class="lang-js">el(&#39;a&#39;, [
+  el(&#39;b&#39;),
+  el(&#39;c&#39;)
+]);
+    </code></pre>
+    <p>–&gt;</p>
+    <pre><code class="lang-html">&lt;a&gt;
+  &lt;b&gt;&lt;/b&gt;
+  &lt;c&gt;&lt;/c&gt;
+&lt;/a&gt;
+    </code></pre>
+    <h3 id="component-support">Component support</h3>
+    <pre><code class="lang-js">class B {
+  constructor () {
+    this.el = el(&#39;b&#39;);
+  }
+}
+el(&#39;a&#39;,
+  new B()
+)
+    </code></pre>
+    <p>–&gt;</p>
+    <pre><code class="lang-html">&lt;a&gt;
+  &lt;b&gt;&lt;/b&gt;
+&lt;/a&gt;
+    </code></pre>
+    <h3 id="svg">SVG</h3>
+    <pre><code class="lang-js">import { svg } from &#39;redom&#39;;
+
+svg(&#39;svg&#39;,
+  svg(&#39;circle&#39;, { r: 50, cx: 25, cy: 25 })
+);
+    </code></pre>
+    <p>–&gt;</p>
+    <pre><code class="lang-html">&lt;svg&gt;
+  &lt;circle r=&quot;50&quot; cx=&quot;25&quot; cy=&quot;25&quot;&gt;&lt;/circle&gt;
+&lt;/svg&gt;
+    </code></pre>
+
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>

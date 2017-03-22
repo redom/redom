@@ -9,10 +9,10 @@
         constructor () {
           this.el = el('h1', 'Hello');
         }
-        mount () {
+        onmount () {
           console.log('mounted hello');
         }
-        unmount () {
+        onunmount () {
           console.log('unmounted hello');
         }
       }
@@ -21,10 +21,10 @@
         constructor () {
           this.el = el('app', new Hello());
         }
-        mount () {
+        onmount () {
           console.log('mounted app');
         }
-        unmount () {
+        onunmount () {
           console.log('unmounted app');
         }
       }
@@ -32,6 +32,7 @@
       const app = new App();
 
       mount(document.body, app);
+      unmount(document.body, app);
     </script>
   </body>
 </html>
