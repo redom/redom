@@ -20,16 +20,19 @@ function mount (parent, child, before) {
   if (child !== childEl) {
     childEl.__redom_view = child;
   }
+
   if (child.isMounted) {
     child.remount && child.remount();
   } else {
     child.mount && child.mount();
   }
+
   if (before) {
     parentEl.insertBefore(childEl, before.el || before);
   } else {
     parentEl.appendChild(childEl);
   }
+
   if (child.isMounted) {
     child.remounted && child.remounted();
   } else {
@@ -117,11 +120,9 @@ function parseArguments (element, args) {
   }
 }
 
-var is = function (type) { return function (a) { return typeof a === type; }; };
-
-var isString = is('string');
-var isNumber = is('number');
-var isFunction = is('function');
+var isString = function (a) { return typeof a === 'string'; };
+var isNumber = function (a) { return typeof a === 'number'; };
+var isFunction = function (a) { return typeof a === 'function'; };
 
 var isNode = function (a) { return a && a.nodeType; };
 var isList = function (a) { return a && a.__redom_list; };
@@ -190,18 +191,18 @@ function createElement (query, ns) {
   return element;
 }
 
-var elcache = {};
+var htmlCache = {};
 
-var memoizeEl = function (query) { return elcache[query] || createElement(query); };
+var memoizeHTML = function (query) { return htmlCache[query] || createElement(query); };
 
-function el (query) {
+function html (query) {
   var args = [], len = arguments.length - 1;
   while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
   var element;
 
   if (isString(query)) {
-    element = memoizeEl(query).cloneNode(false);
+    element = memoizeHTML(query).cloneNode(false);
   } else if (isNode(query)) {
     element = query.cloneNode(false);
   } else {
@@ -213,13 +214,13 @@ function el (query) {
   return element;
 }
 
-el.extend = function (query) {
-  var clone = memoizeEl(query);
+html.extend = function (query) {
+  var clone = memoizeHTML(query);
 
-  return el.bind(this, clone);
+  return html.bind(this, clone);
 };
 
-var html = el;
+var el = html;
 
 function setChildren (parent, children) {
   if (children.length === undefined) {
@@ -269,7 +270,7 @@ function List (parent, View, key, initData) {
   this.key = key;
   this.initData = initData;
   this.views = [];
-  this.el = isString(parent) ? el(parent) : isNode(parent.el) ? parent.el : parent;
+  this.el = getParentEl(parent);
 
   if (key) {
     this.lookup = {};
@@ -322,32 +323,43 @@ List.prototype.update = function (data) {
   this.views = newViews;
 };
 
-function router (parent, Views) {
-  return new Router(parent, Views);
+function getParentEl (parent) {
+  if (isString(parent)) {
+    return html(parent);
+  } else if (isNode(parent.el)) {
+    return parent.el;
+  } else {
+    return parent;
+  }
 }
 
-var Router = function Router (parent, Views) {
-  this.el = isString(parent) ? el(parent) : parent;
+function router (parent, Views, initData) {
+  return new Router(parent, Views, initData);
+}
+
+var Router = function Router (parent, Views, initData) {
+  this.el = getParentEl(parent);
   this.Views = Views;
+  this.initData = initData;
 };
 Router.prototype.update = function update (route, data) {
   if (route !== this.route) {
     var Views = this.Views;
     var View = Views[route];
 
-    this.view = View && new View();
+    this.view = View && new View(this.initData, data);
     this.route = route;
 
     setChildren(this.el, [ this.view ]);
   }
-  this.view && this.view.update && this.view.update(data);
+  this.view && this.view.update && this.view.update(data, route);
 };
 
 var SVG = 'http://www.w3.org/2000/svg';
 
-var svgcache = {};
+var svgCache = {};
 
-var memoizeSVG = function (query) { return svgcache[query] || createElement(query, SVG); };
+var memoizeSVG = function (query) { return svgCache[query] || createElement(query, SVG); };
 
 function svg (query) {
   var args = [], len = arguments.length - 1;
@@ -374,8 +386,8 @@ svg.extend = function (query) {
   return svg.bind(this, clone);
 };
 
-exports.el = el;
 exports.html = html;
+exports.el = el;
 exports.list = list;
 exports.List = List;
 exports.mount = mount;

@@ -1,15 +1,15 @@
 import { createElement } from './create-element';
 import { parseArguments, isString, isNode } from './util';
 
-const elcache = {};
+const htmlCache = {};
 
-const memoizeEl = query => elcache[query] || createElement(query);
+const memoizeHTML = query => htmlCache[query] || createElement(query);
 
-export function el (query, ...args) {
+export function html (query, ...args) {
   let element;
 
   if (isString(query)) {
-    element = memoizeEl(query).cloneNode(false);
+    element = memoizeHTML(query).cloneNode(false);
   } else if (isNode(query)) {
     element = query.cloneNode(false);
   } else {
@@ -21,10 +21,10 @@ export function el (query, ...args) {
   return element;
 }
 
-el.extend = function (query) {
-  const clone = memoizeEl(query);
+html.extend = function (query) {
+  const clone = memoizeHTML(query);
 
-  return el.bind(this, clone);
+  return html.bind(this, clone);
 };
 
-export const html = el;
+export const el = html;

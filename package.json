@@ -1,8 +1,9 @@
 {
   "name": "redom",
-  "version": "1.13.3",
+  "version": "1.17.0",
   "description": "Tiny DOM library",
   "main": "dist/redom.js",
+  "module": "dist/redom.es.js",
   "jsnext:main": "dist/redom.es.js",
   "scripts": {
     "dev": "node watch",
@@ -37,15 +38,15 @@
   },
   "homepage": "https://github.com/pakastin/redom#readme",
   "devDependencies": {
-    "browserify": "^14.0.0",
+    "browserify": "^14.1.0",
     "chokidar": "~1.6.1",
     "coverify": "^1.4.1",
     "gh-pages": "~0.12.0",
-    "rollup": "~0.41.4",
+    "rollup": "~0.41.6",
     "rollup-plugin-buble": "~0.15.0",
-    "semistandard": "~9.2.1",
+    "semistandard": "~10.0.0",
     "tape": "^4.6.3",
-    "tape-run": "^2.1.5",
+    "tape-run": "^3.0.0",
     "uglifyjs": "~2.4.10"
   }
 }

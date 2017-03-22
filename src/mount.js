@@ -16,16 +16,19 @@ export function mount (parent, child, before) {
   if (child !== childEl) {
     childEl.__redom_view = child;
   }
+
   if (child.isMounted) {
     child.remount && child.remount();
   } else {
     child.mount && child.mount();
   }
+
   if (before) {
     parentEl.insertBefore(childEl, before.el || before);
   } else {
     parentEl.appendChild(childEl);
   }
+
   if (child.isMounted) {
     child.remounted && child.remounted();
   } else {
