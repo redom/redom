@@ -62,12 +62,10 @@ function trigger (childEl, eventName) {
 
   const children = childEl.childNodes;
 
-  if (!children || !hookCount) {
-    return;
-  }
-
-  for (let i = 0; i < children.length; i++) {
-    trigger(children[i], eventName);
+  if (children && hookCount) {
+    for (let i = 0; i < children.length; i++) {
+      trigger(children[i], eventName);
+    }
   }
 }
 
@@ -153,11 +151,14 @@ function prepareUnmount (child, childEl, parentEl) {
   }
 
   while (traverse) {
-    const hooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
+    const hooks = traverse.__redom_lifecycle;
 
-    for (const hook in handlers) {
-      hooks[hook] || (hooks[hook] = 0);
-      hooks[hook] -= handlers[hook];
+    if (hooks) {
+      for (const hook in handlers) {
+        if (hooks[hook]) {
+          hooks[hook] -= handlers[hook];
+        }
+      }
     }
 
     traverse = traverse.parentNode;
