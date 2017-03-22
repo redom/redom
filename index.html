@@ -90,10 +90,6 @@
         color: #ba152b;
         cursor: pointer;
       }
-      .violator.solid {
-        background-color: #ba152b;
-        color: #fff;
-      }
       .violator a {
         display: inline-block;
         color: inherit;
@@ -102,7 +98,10 @@
         font-weight: 600;
         text-transform: uppercase;
         text-decoration: none;
-        cursor: inherit;
+      }
+      .violator:hover {
+        background-color: #ba152b;
+        color: #fff;
       }
       @media (min-width: 1280px) {
         html {
@@ -134,12 +133,20 @@
 
       <p>Develop web apps with 100 % JavaScript and web standards.</p>
 
-      <p class="violator solid">
-        <a href="documentation">Get started!</a>
+      <p class="violator">
+        <a href="https://github.com/pakastin/redom/wiki/1.-Introduction" target="_blank">Introduction</a>
       </p>
 
       <p class="violator">
-        <a href="https://github.com/pakastin/redom" target="_blank">Github</a>
+        <a href="https://github.com/pakastin/redom/wiki/2.-API" target="_blank">API</a>
+      </p>
+
+      <p class="violator">
+        <a href="https://github.com/pakastin/redom" target="_blank">Source</a>
+      </p>
+
+      <p class="violator">
+        <a href="https://github.com/pakastin/redom/wiki/3.-Join-the-Slack-channel" target="_blank">Slack</a>
       </p>
 
       <h2>Create HTML elements easily</h2>
@@ -471,12 +478,8 @@ const html = render(document.body);
 
 console.log(html); // &lt;body&gt;&lt;h1&gt;Hello world!&lt;/h1&gt;&lt;/body&gt;</code></pre>
       <h2>Looks fun!</h2>
-      <p class="violator solid">
-        <a href="documentation">Get started!</a>
-      </p>
-
       <p class="violator">
-        <a href="https://github.com/pakastin/redom" target="_blank">Github</a>
+        <a href="https://github.com/pakastin/redom">Learn more on Github!</a>
       </p>
     </section>
     <script src="prism.js"></script>

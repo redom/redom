@@ -1,7 +1,5 @@
 var text = function (str) { return doc.createTextNode(str); };
 
-var hookNames = ['onmount', 'onunmount'];
-
 function mount (parent, child, before) {
   var parentEl = parent.el || parent;
   var childEl = child.el || child;
@@ -19,11 +17,10 @@ function mount (parent, child, before) {
     childEl.__redom_view = child;
   }
 
-  var wasMounted = childEl.__redom_mounted;
-  var oldParent = childEl.parentNode;
-
-  if (wasMounted && (oldParent !== parentEl)) {
-    doUnmount(child, childEl, oldParent);
+  if (child.isMounted) {
+    child.remount && child.remount();
+  } else {
+    child.mount && child.mount();
   }
 
   if (before) {
@@ -32,7 +29,12 @@ function mount (parent, child, before) {
     parentEl.appendChild(childEl);
   }
 
-  doMount(child, childEl, parentEl, oldParent);
+  if (child.isMounted) {
+    child.remounted && child.remounted();
+  } else {
+    child.isMounted = true;
+    child.mounted && child.mounted();
+  }
 
   return child;
 }
@@ -46,145 +48,14 @@ function unmount (parent, child) {
     child = childEl.__redom_view;
   }
 
-  doUnmount(child, childEl, parentEl);
+  child.unmount && child.unmount();
 
   parentEl.removeChild(childEl);
 
+  child.isMounted = false;
+  child.unmounted && child.unmounted();
+
   return child;
-}
-
-function doMount (child, childEl, parentEl, oldParent) {
-  var hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
-  var remount = (parentEl === oldParent);
-  var hooksFound = false;
-
-  if (child !== childEl) {
-    for (var i = 0; i < hookNames.length; i++) {
-      var hookName = hookNames[i];
-
-      if (!remount && (hookName in child)) {
-        hooks[hookName] = (hooks[hookName] || 0) + 1;
-      }
-      if (hooks[hookName]) {
-        hooksFound = true;
-      }
-    }
-  }
-
-  if (!hooksFound) {
-    return;
-  }
-
-  var traverse = parentEl;
-  var triggered = false;
-
-  if (remount || (!triggered && (traverse && traverse.__redom_mounted))) {
-    trigger(childEl, remount ? 'onremount' : 'onmount');
-    triggered = true;
-  }
-
-  if (remount) {
-    return;
-  }
-
-  while (traverse) {
-    var parent = traverse.parentNode;
-    var parentHooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
-
-    for (var hook in hooks) {
-      parentHooks[hook] = (parentHooks[hook] || 0) + hooks[hook];
-    }
-
-    if (!triggered && (traverse === document || (parent && parent.__redom_mounted))) {
-      trigger(traverse, remount ? 'onremount' : 'onmount');
-      triggered = true;
-    }
-
-    traverse = parent;
-  }
-}
-
-function doUnmount (child, childEl, parentEl) {
-  var hooks = childEl.__redom_lifecycle;
-
-  if (!hooks) {
-    return;
-  }
-
-  var traverse = parentEl;
-
-  if (childEl.__redom_mounted) {
-    trigger(childEl, 'onunmount');
-  }
-
-  while (traverse) {
-    var parentHooks = traverse.__redom_lifecycle;
-    var hooksFound = false;
-
-    if (hooks) {
-      for (var hook in hooks) {
-        if (parentHooks[hook]) {
-          parentHooks[hook] -= hooks[hook];
-        }
-        if (parentHooks[hook]) {
-          hooksFound = true;
-        }
-      }
-    }
-
-    if (!hooksFound) {
-      traverse.__redom_lifecycle = null;
-    }
-
-    traverse = traverse.parentNode;
-  }
-}
-
-function trigger (childEl, eventName) {
-  var children = [childEl];
-
-  while (children && children.length) {
-    var newChildren = [];
-
-    for (var i = 0; i < children.length; i++) {
-      var childEl$1 = children[i];
-
-      if (eventName === 'onmount') {
-        childEl$1.__redom_mounted = true;
-      } else if (eventName === 'onunmount') {
-        childEl$1.__redom_mounted = false;
-      }
-
-      var hooks = childEl$1.__redom_lifecycle;
-
-      if (!hooks) {
-        continue;
-      }
-
-      var view = childEl$1.__redom_view;
-      var hookCount = 0;
-
-      view && view[eventName] && view[eventName]();
-
-      for (var hook in hooks) {
-        if (hook) {
-          hookCount++;
-        }
-      }
-
-      if (!hookCount) {
-        continue;
-      }
-
-      var grandChildren = childEl$1.childNodes;
-
-      for (var i$1 = 0; i$1 < grandChildren.length; i$1++) {
-        newChildren.push(grandChildren[i$1]);
-      }
-    }
-
-    children = newChildren;
-  }
 }
 
 function setStyle (view, arg1, arg2) {
