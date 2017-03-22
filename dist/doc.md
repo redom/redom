@@ -1,9 +1,49 @@
 # RE:DOM documentation
 
-## Creating elements
+## Introduction
+RE:DOM is a tiny DOM library, which adds some useful helpers to create DOM elements and keeping them in sync with the data.
 
-`el` ([alias](#alias): `html`) is a helper for `document.createElement` with couple of differences:
+Because RE:DOM is so close to the metal and __doesn't use virtual dom__, it's actually __faster__ and uses __less memory__ than most of virtual dom based libraries.
 
+It's also easy to create reusable components with RE:DOM.
+
+## Browser support
+To use `el.extend`, `svg.extend` or `list.extend`, you'll need at least IE9. So basically almost every browser out there is supported.
+
+## Elements
+
+`el` ([alias](#alias): `html`) is a helper for `document.createElement` with couple of differences.
+
+The basic idea is to just create elements with `el` and mount them with `mount`, almost like you would do with plain JavaScript:
+```js
+import { el, mount } from 'redom';
+
+const hello = el('h1', 'Hello RE:DOM!');
+
+mount(document.body, hello);
+```
+–>
+```html
+<body>
+  <h1>Hello RE:DOM!</h1>
+</body>
+```
+
+### Text reference
+String and Number arguments (after the query) generate text nodes. You can also use `text`-helper, which will return a reference to the text node:
+```js
+import { text, mount } from 'redom';
+
+const hello = text('hello');
+
+mount(document.body, hello);
+
+hello.textContent = 'hi!';
+```
+–>
+```html
+<body>hi!</body>
+```
 ### ID and class names
 
 You can use `#` and `.` as shortcuts for defining id and class names. `div` is the default tag name:
@@ -79,7 +119,30 @@ el('a', [
 </a>
 ```
 
+### Conditional children
+It's possible to add children conditionally, by using boolean:
+```js
+el('form',
+  el('input', { type: 'email' }),
+  !forgot && el('input', { type: 'password' })
+);
+```
+
+### Middleware
+You can add middleware by defining a function:
+```js
+el('h1', middleware, 'Hello RE:DOM!');
+
+function middleware (el) {
+  el.className = 'hello';
+}
+```
+–>
+```html
+<h1 class="hello">Hello RE:DOM!</h1>
+```
 ### Component support
+You can read more about components [here](#components), but here's how you attach them:
 ```js
 class B {
   constructor () {
@@ -115,15 +178,254 @@ html('div')
 ### SVG
 `el` and `html` only creates HTML elements. If you want to create an SVG element, you must use `svg`:
 ```js
-import { svg } from 'redom';
+import { svg, mount } from 'redom';
 
-svg('svg',
+const drawing = svg('svg',
   svg('circle', { r: 50, cx: 25, cy: 25 })
 );
+
+mount(document.body, drawing);
 ```
 –>
 ```html
-<svg>
-  <circle r="50" cx="25" cy="25"></circle>
-</svg>
+<body>
+  <svg>
+    <circle r="50" cx="25" cy="25"></circle>
+  </svg>
+</body>
+```
+
+## Components
+It's really easy to create components with RE:DOM. You just define a class or function, which returns an object with at least `el` property and with [list](#lists) also `update` property:
+```js
+import { el, mount } from 'redom';
+
+class Hello {
+  constructor () {
+    this.el = el('h1');
+  }
+  update (data) {
+    this.el.textContent = 'Hello ' + data + '!';
+  }
+}
+
+const hello = new Hello();
+
+hello.update('RE:DOM!');
+
+mount(document.body, hello);
+```
+
+### Diffing
+You don't have to diff properties / attributes __except when you're dealing with URL's__. If you change `img`, `iframe` or `video` element `src`, even if it's the same, the browser will reload the asset/website. For example:
+```js
+import { el, mount } from 'redom';
+
+class Image {
+  constructor () {
+    this.el = el('img');
+    this.data = {};
+  }
+  update (data) {
+    const { url } = data;
+
+    if (url !== this.data.url) {
+      this.el.src = url;
+    }
+
+    this.data = data;
+  }
+}
+```
+
+### Component lifecycle
+RE:DOM v2.0.0 supports true lifecycle events. Let's see how they work:
+```js
+import { el, mount } from 'redom';
+
+class Hello {
+  constructor () {
+    this.el = el('h1', 'Hello RE:DOM!');
+  }
+  onmount () {
+    console.log('mounted Hello');
+  }
+  onremount () {
+    console.log('remounted Hello');
+  }
+  onunmount () {
+    console.log('unmounted Hello');
+  }
+}
+
+class App {
+  constructor () {
+    this.el = el('app',
+      this.hello = new Hello()
+    );
+  }
+  onmount () {
+    console.log('mounted App');
+  }
+  remount () {
+    console.log('remounted App');
+  }
+  unmount () {
+    console.log('unmounted App');
+  }
+}
+
+const app = new App();
+
+mount(document.body, app);
+mount(document.body, app);
+unmount(document.body, app);
+```
+–>
+```
+mounted App
+mounted Hello
+remounted App
+remounted Hello
+unmounted App
+unmounted Hello
+```
+## Lists
+When you have dynamic data, it's not that easy to keep the elements and the data in sync. That's when `list` comes to rescue.
+
+To use `list`, just define a parent node and component:
+```js
+import { el, list, mount } from 'redom';
+
+class Li {
+  constructor () {
+    this.el = el('li');
+  }
+  update (data) {
+    this.el.textContent = 'Item ' + data;
+  }
+}
+
+const list = list('ul', Li);
+
+mount(document.body, list);
+
+list.update([1, 2, 3]);
+list.update([2, 2, 4]);
+```
+
+### List lifecycle
+When you call `List.update`, list will automatically:
+- Create new components for new items
+- Mount new components in the right place
+- Reorder moved items (remount)
+- Remove deleted items
+- Trigger any [lifecycle](#component-lifecycle) events
+- Call `.update` for all components, except removed ones
+
+### Keyed list
+Normally `list` will update by index, so it only adds/removes last items.
+
+If you want to define a key, you can do that by adding a third parameter to the `list`. With key, the list will automatically insert/reorder/remove elements by that key.
+```js
+import { el, list, mount } from 'redom';
+
+class Li {
+  constructor () {
+    this.el = el('li');
+  }
+  update (data) {
+    this.el.textContent = data.name;
+  }
+}
+
+const list = list('ul', Li, '_id');
+
+mount(document.body, list);
+
+list.update([
+  { _id: 1, name: 'Item 1' },
+  { _id: 2, name: 'Item 2' },
+  { _id: 3, name: 'Item 3' }
+]);
+
+setTimeout(() => {
+  list.update([
+    { _id: 3, name: 'Item 3' },
+    { _id: 2, name: 'Item 2' }
+  ]);
+}, 1000);
+```
+
+### List component
+There's couple of ways to do a list component
+
+#### list.extend
+```js
+class Td {
+  constructor () {
+    this.el = el('td');
+  }
+  update (data) {
+    this.el.textContent = data;
+  }
+}
+
+const Tr = list.extend('tr', Td);
+
+const table = el('table');
+
+mount(document.body, table);
+```
+
+#### regular component
+```js
+class Td {
+  constructor () {
+    this.el = el('td');
+  }
+  update (data) {
+    this.el.textContent = data;
+  }
+}
+class Tr {
+  constructor () {
+    this.el = list('tr', Tr);
+  }
+  update (data) {
+    this.el.update(data);
+  }
+}
+
+const table = el('table', Tr);
+
+mount(document.body, table);
+```
+That works, but in case you need to access `this.el.el` (`<tr>`) in `Tr`, I'd recommend to use the following:
+```js
+class Td {
+  constructor () {
+    this.el = el('td');
+  }
+  update (data) {
+    this.el.textContent = data;
+  }
+}
+class Tr {
+  constructor () {
+    this.el = el('tr');
+    this.list = list(this.el, Tr);
+  }
+  update (data) {
+    this.list.update(data);
+  }
+}
+const table = el('table', Tr);
+
+mount(document.body, table);
+```
+or the other way around:
+```js
+this.list = list('tr', Tr);
+this.el = this.list.el;
 ```

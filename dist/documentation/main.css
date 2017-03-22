@@ -1,14 +1,45 @@
 body {
   font-family: 'Work Sans', sans-serif;
   color: #222;
+  overflow: auto;
+  overflow-x: hidden;
 }
+
+h1, h2 {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+h3, h4 {
+  margin-top: 1.5em;
+  font-weight: 600;
+}
+
+h1 {
+  margin: 1.5rem 0;
+}
+
+h2, h3, h4 {
+  margin-top: 1.5em;
+  padding-top: 1.5em;
+}
+
+p {
+  line-height: 1.5;
+  max-width: 35rem;
+  margin: 1.5em 0;
+}
+
+strong {
+  font-weight: 600;
+}
+
 code {
   display: inline-block;
-  padding: .125rem .25rem;
-  margin: -.125rem 0;
+  padding: 0 0.25rem;
 
+  font: inherit;
   font-family: 'Inconsolata', monospace;
-  font-size: .875rem;
   line-height: 1.5;
 
   background-color: #eee;
@@ -17,6 +48,8 @@ code {
 pre > code {
   background-color: #161616;
   color: #eee;
+  font-size: .875rem;
+  line-height: 1.25;
   padding: 1.5rem;
   padding-bottom: 0;
 }
@@ -27,16 +60,12 @@ pre > code {
   left: 14rem;
 
   width: calc(100% - 14rem);
-  height: 100%;
 
   padding: .5rem;
-
-  overflow: auto;
-  overflow-x: hidden;
 }
 
 #menu {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
 
@@ -46,6 +75,15 @@ pre > code {
 
   overflow: auto;
   overflow-x: hidden;
+}
+
+#menu .menu-item {
+  margin: 0;
+  padding: .125rem 0;
+}
+
+#menu .menu-item a {
+  display: block;
 }
 
 #logo {

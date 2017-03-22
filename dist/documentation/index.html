@@ -5,13 +5,44 @@
     <title>RE:DOM documentation</title>
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="../prism.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Work+Sans:400,500,600,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Work+Sans:400,600,700">
   </head>
   <body>
     <div id="doc">
       <h1 id="re-dom-documentation">RE:DOM documentation</h1>
-    <h2 id="creating-elements">Creating elements</h2>
-    <p><code>el</code> (<a href="#alias">alias</a>: <code>html</code>) is a helper for <code>document.createElement</code> with couple of differences:</p>
+    <h2 id="introduction">Introduction</h2>
+    <p>RE:DOM is a tiny DOM library, which adds some useful helpers to create DOM elements and keeping them in sync with the data.</p>
+    <p>Because RE:DOM is so close to the metal and <strong>doesn&#39;t use virtual dom</strong>, it&#39;s actually <strong>faster</strong> and uses <strong>less memory</strong> than most of virtual dom based libraries.</p>
+    <p>It&#39;s also easy to create reusable components with RE:DOM.</p>
+    <h2 id="browser-support">Browser support</h2>
+    <p>To use <code>el.extend</code>, <code>svg.extend</code> or <code>list.extend</code>, you&#39;ll need at least IE9. So basically almost every browser out there is supported.</p>
+    <h2 id="elements">Elements</h2>
+    <p><code>el</code> (<a href="#alias">alias</a>: <code>html</code>) is a helper for <code>document.createElement</code> with couple of differences.</p>
+    <p>The basic idea is to just create elements with <code>el</code> and mount them with <code>mount</code>, almost like you would do with plain JavaScript:</p>
+    <pre><code class="lang-js">import { el, mount } from &#39;redom&#39;;
+
+const hello = el(&#39;h1&#39;, &#39;Hello RE:DOM!&#39;);
+
+mount(document.body, hello);
+    </code></pre>
+    <p>–&gt;</p>
+    <pre><code class="lang-html">&lt;body&gt;
+  &lt;h1&gt;Hello RE:DOM!&lt;/h1&gt;
+&lt;/body&gt;
+    </code></pre>
+    <h3 id="text-reference">Text reference</h3>
+    <p>String and Number arguments (after the query) generate text nodes. You can also use <code>text</code>-helper, which will return a reference to the text node:</p>
+    <pre><code class="lang-js">import { text, mount } from &#39;redom&#39;;
+
+const hello = text(&#39;hello&#39;);
+
+mount(document.body, hello);
+
+hello.textContent = &#39;hi!&#39;;
+    </code></pre>
+    <p>–&gt;</p>
+    <pre><code class="lang-html">&lt;body&gt;hi!&lt;/body&gt;
+    </code></pre>
     <h3 id="id-and-class-names">ID and class names</h3>
     <p>You can use <code>#</code> and <code>.</code> as shortcuts for defining id and class names. <code>div</code> is the default tag name:</p>
     <pre><code class="lang-js">el(&#39;&#39;)
@@ -69,7 +100,26 @@ el(&#39;div&#39;, { style: { color: &#39;red&#39; } })
   &lt;c&gt;&lt;/c&gt;
 &lt;/a&gt;
     </code></pre>
+    <h3 id="conditional-children">Conditional children</h3>
+    <p>It&#39;s possible to add children conditionally, by using boolean:</p>
+    <pre><code class="lang-js">el(&#39;form&#39;,
+  el(&#39;input&#39;, { type: &#39;email&#39; }),
+  !forgot &amp;&amp; el(&#39;input&#39;, { type: &#39;password&#39; })
+);
+    </code></pre>
+    <h3 id="middleware">Middleware</h3>
+    <p>You can add middleware by defining a function:</p>
+    <pre><code class="lang-js">el(&#39;h1&#39;, middleware, &#39;Hello RE:DOM!&#39;);
+
+function middleware (el) {
+  el.className = &#39;hello&#39;;
+}
+    </code></pre>
+    <p>–&gt;</p>
+    <pre><code class="lang-html">&lt;h1 class=&quot;hello&quot;&gt;Hello RE:DOM!&lt;/h1&gt;
+    </code></pre>
     <h3 id="component-support">Component support</h3>
+    <p>You can read more about components <a href="#components">here</a>, but here&#39;s how you attach them:</p>
     <pre><code class="lang-js">class B {
   constructor () {
     this.el = el(&#39;b&#39;);
@@ -97,16 +147,236 @@ html(&#39;div&#39;)
     </code></pre>
     <h3 id="svg">SVG</h3>
     <p><code>el</code> and <code>html</code> only creates HTML elements. If you want to create an SVG element, you must use <code>svg</code>:</p>
-    <pre><code class="lang-js">import { svg } from &#39;redom&#39;;
+    <pre><code class="lang-js">import { svg, mount } from &#39;redom&#39;;
 
-svg(&#39;svg&#39;,
+const drawing = svg(&#39;svg&#39;,
   svg(&#39;circle&#39;, { r: 50, cx: 25, cy: 25 })
 );
+
+mount(document.body, drawing);
     </code></pre>
     <p>–&gt;</p>
-    <pre><code class="lang-html">&lt;svg&gt;
-  &lt;circle r=&quot;50&quot; cx=&quot;25&quot; cy=&quot;25&quot;&gt;&lt;/circle&gt;
-&lt;/svg&gt;
+    <pre><code class="lang-html">&lt;body&gt;
+  &lt;svg&gt;
+    &lt;circle r=&quot;50&quot; cx=&quot;25&quot; cy=&quot;25&quot;&gt;&lt;/circle&gt;
+  &lt;/svg&gt;
+&lt;/body&gt;
+    </code></pre>
+    <h2 id="components">Components</h2>
+    <p>It&#39;s really easy to create components with RE:DOM. You just define a class or function, which returns an object with at least <code>el</code> property and with <a href="#lists">list</a> also <code>update</code> property:</p>
+    <pre><code class="lang-js">import { el, mount } from &#39;redom&#39;;
+
+class Hello {
+  constructor () {
+    this.el = el(&#39;h1&#39;);
+  }
+  update (data) {
+    this.el.textContent = &#39;Hello &#39; + data + &#39;!&#39;;
+  }
+}
+
+const hello = new Hello();
+
+hello.update(&#39;RE:DOM!&#39;);
+
+mount(document.body, hello);
+    </code></pre>
+    <h3 id="diffing">Diffing</h3>
+    <p>You don&#39;t have to diff properties / attributes <strong>except when you&#39;re dealing with URL&#39;s</strong>. If you change <code>img</code>, <code>iframe</code> or <code>video</code> element <code>src</code>, even if it&#39;s the same, the browser will reload the asset/website. For example:</p>
+    <pre><code class="lang-js">import { el, mount } from &#39;redom&#39;;
+
+class Image {
+  constructor () {
+    this.el = el(&#39;img&#39;);
+    this.data = {};
+  }
+  update (data) {
+    const { url } = data;
+
+    if (url !== this.data.url) {
+      this.el.src = url;
+    }
+
+    this.data = data;
+  }
+}
+    </code></pre>
+    <h3 id="component-lifecycle">Component lifecycle</h3>
+    <p>RE:DOM v2.0.0 supports true lifecycle events. Let&#39;s see how they work:</p>
+    <pre><code class="lang-js">import { el, mount } from &#39;redom&#39;;
+
+class Hello {
+  constructor () {
+    this.el = el(&#39;h1&#39;, &#39;Hello RE:DOM!&#39;);
+  }
+  onmount () {
+    console.log(&#39;mounted Hello&#39;);
+  }
+  onremount () {
+    console.log(&#39;remounted Hello&#39;);
+  }
+  onunmount () {
+    console.log(&#39;unmounted Hello&#39;);
+  }
+}
+
+class App {
+  constructor () {
+    this.el = el(&#39;app&#39;,
+      this.hello = new Hello()
+    );
+  }
+  onmount () {
+    console.log(&#39;mounted App&#39;);
+  }
+  remount () {
+    console.log(&#39;remounted App&#39;);
+  }
+  unmount () {
+    console.log(&#39;unmounted App&#39;);
+  }
+}
+
+const app = new App();
+
+mount(document.body, app);
+mount(document.body, app);
+unmount(document.body, app);
+    </code></pre>
+    <p>–&gt;</p>
+    <pre><code>mounted App
+mounted Hello
+remounted App
+remounted Hello
+unmounted App
+unmounted Hello
+    </code></pre><h2 id="lists">Lists</h2>
+    <p>When you have dynamic data, it&#39;s not that easy to keep the elements and the data in sync. That&#39;s when <code>list</code> comes to rescue.</p>
+    <p>To use <code>list</code>, just define a parent node and component:</p>
+    <pre><code class="lang-js">import { el, list, mount } from &#39;redom&#39;;
+
+class Li {
+  constructor () {
+    this.el = el(&#39;li&#39;);
+  }
+  update (data) {
+    this.el.textContent = &#39;Item &#39; + data;
+  }
+}
+
+const list = list(&#39;ul&#39;, Li);
+
+mount(document.body, list);
+
+list.update([1, 2, 3]);
+list.update([2, 2, 4]);
+    </code></pre>
+    <h3 id="list-lifecycle">List lifecycle</h3>
+    <p>When you call <code>List.update</code>, list will automatically:</p>
+    <ul>
+    <li>Create new components for new items</li>
+    <li>Mount new components in the right place</li>
+    <li>Reorder moved items (remount)</li>
+    <li>Remove deleted items</li>
+    <li>Trigger any <a href="#component-lifecycle">lifecycle</a> events</li>
+    <li>Call <code>.update</code> for all components, except removed ones</li>
+    </ul>
+    <h3 id="keyed-list">Keyed list</h3>
+    <p>Normally <code>list</code> will update by index, so it only adds/removes last items.</p>
+    <p>If you want to define a key, you can do that by adding a third parameter to the <code>list</code>. With key, the list will automatically insert/reorder/remove elements by that key.</p>
+    <pre><code class="lang-js">import { el, list, mount } from &#39;redom&#39;;
+
+class Li {
+  constructor () {
+    this.el = el(&#39;li&#39;);
+  }
+  update (data) {
+    this.el.textContent = data.name;
+  }
+}
+
+const list = list(&#39;ul&#39;, Li, &#39;_id&#39;);
+
+mount(document.body, list);
+
+list.update([
+  { _id: 1, name: &#39;Item 1&#39; },
+  { _id: 2, name: &#39;Item 2&#39; },
+  { _id: 3, name: &#39;Item 3&#39; }
+]);
+
+setTimeout(() =&gt; {
+  list.update([
+    { _id: 3, name: &#39;Item 3&#39; },
+    { _id: 2, name: &#39;Item 2&#39; }
+  ]);
+}, 1000);
+    </code></pre>
+    <h3 id="list-component">List component</h3>
+    <p>There&#39;s couple of ways to do a list component</p>
+    <h4 id="list-extend">list.extend</h4>
+    <pre><code class="lang-js">class Td {
+  constructor () {
+    this.el = el(&#39;td&#39;);
+  }
+  update (data) {
+    this.el.textContent = data;
+  }
+}
+
+const Tr = list.extend(&#39;tr&#39;, Td);
+
+const table = el(&#39;table&#39;);
+
+mount(document.body, table);
+    </code></pre>
+    <h4 id="regular-component">regular component</h4>
+    <pre><code class="lang-js">class Td {
+  constructor () {
+    this.el = el(&#39;td&#39;);
+  }
+  update (data) {
+    this.el.textContent = data;
+  }
+}
+class Tr {
+  constructor () {
+    this.el = list(&#39;tr&#39;, Tr);
+  }
+  update (data) {
+    this.el.update(data);
+  }
+}
+
+const table = el(&#39;table&#39;, Tr);
+
+mount(document.body, table);
+    </code></pre>
+    <p>That works, but in case you need to access <code>this.el.el</code> (<code>&lt;tr&gt;</code>) in <code>Tr</code>, I&#39;d recommend to use the following:</p>
+    <pre><code class="lang-js">class Td {
+  constructor () {
+    this.el = el(&#39;td&#39;);
+  }
+  update (data) {
+    this.el.textContent = data;
+  }
+}
+class Tr {
+  constructor () {
+    this.el = el(&#39;tr&#39;);
+    this.list = list(this.el, Tr);
+  }
+  update (data) {
+    this.list.update(data);
+  }
+}
+const table = el(&#39;table&#39;, Tr);
+
+mount(document.body, table);
+    </code></pre>
+    <p>or the other way around:</p>
+    <pre><code class="lang-js">this.list = list(&#39;tr&#39;, Tr);
+this.el = this.list.el;
     </code></pre>
 
     </div>
