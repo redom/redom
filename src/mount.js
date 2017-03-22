@@ -34,8 +34,6 @@ export function mount (parent, child, before) {
   return child;
 }
 
-const handlerNames = ['mount', 'unmount'];
-
 function trigger (childEl, eventName) {
   if (eventName === 'mount') {
     childEl.__redom_mounted = true;
@@ -69,29 +67,19 @@ function trigger (childEl, eventName) {
   }
 }
 
+const hookNames = ['mount', 'unmount'];
+
 function prepareMount (child, childEl, parentEl) {
-  const handlers = {};
   const hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
   let hooksFound = false;
 
-  for (const hook in hooks) {
-    handlers[hook] || (handlers[hook] = 0);
-    handlers[hook] += hooks[hook];
-    hooksFound = true;
-  }
-
   if (child !== childEl) {
-    for (let i = 0; i < handlerNames.length; i++) {
-      const handlerName = handlerNames[i];
+    for (let i = 0; i < hookNames.length; i++) {
+      const hookName = hookNames[i];
 
-      if (handlerName in child) {
-        hooks[handlerName] || (hooks[handlerName] = 0);
-        hooks[handlerName]++;
-
-        handlers[handlerName] || (handlers[handlerName] = 0);
-        handlers[handlerName]++;
-        hooksFound = true;
-      }
+      hooks[hookName] || (hooks[hookName] = 0);
+      hooks[hookName]++;
+      hooksFound = true;
     }
   }
 
@@ -109,11 +97,11 @@ function prepareMount (child, childEl, parentEl) {
 
   while (traverse) {
     const parent = traverse.parentNode;
-    const hooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
+    const parentHooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
 
-    for (const hook in handlers) {
-      hooks[hook] || (hooks[hook] = 0);
-      hooks[hook] += handlers[hook];
+    for (const hook in hooks) {
+      parentHooks[hook] || (parentHooks[hook] = 0);
+      parentHooks[hook] += hooks[hook];
     }
 
     if (!triggered && (traverse === document || (parent && parent.__redom_mounted))) {
@@ -126,21 +114,9 @@ function prepareMount (child, childEl, parentEl) {
 }
 
 function prepareUnmount (child, childEl, parentEl) {
-  const handlers = {};
   const hooks = childEl.__redom_lifecycle;
-  let hooksFound = false;
 
   if (!hooks) {
-    return;
-  }
-
-  for (const hook in hooks) {
-    handlers[hook] || (handlers[hook] = 0);
-    handlers[hook] += hooks[hook];
-    hooksFound = true;
-  }
-
-  if (!hooksFound) {
     return;
   }
 
@@ -151,12 +127,12 @@ function prepareUnmount (child, childEl, parentEl) {
   }
 
   while (traverse) {
-    const hooks = traverse.__redom_lifecycle;
+    const parentHooks = traverse.__redom_lifecycle;
 
     if (hooks) {
-      for (const hook in handlers) {
-        if (hooks[hook]) {
-          hooks[hook] -= handlers[hook];
+      for (const hook in hooks) {
+        if (parentHooks[hook]) {
+          parentHooks[hook] -= hooks[hook];
         }
       }
     }
