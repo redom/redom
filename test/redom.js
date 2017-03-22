@@ -74,10 +74,10 @@ function trigger (childEl, eventName) {
         continue;
       }
 
-      var _children = childEl$1.childNodes;
+      var grandChildren = childEl$1.childNodes;
 
-      for (var i$1 = 0; i$1 < _children.length; i$1++) {
-        newChildren.push(_children[i$1]);
+      for (var i$1 = 0; i$1 < grandChildren.length; i$1++) {
+        newChildren.push(grandChildren[i$1]);
       }
     }
 
@@ -95,9 +95,11 @@ function prepareMount (child, childEl, parentEl) {
     for (var i = 0; i < hookNames.length; i++) {
       var hookName = hookNames[i];
 
-      hooks[hookName] || (hooks[hookName] = 0);
-      hooks[hookName]++;
-      hooksFound = true;
+      if (hookName in child) {
+        hooks[hookName] || (hooks[hookName] = 0);
+        hooks[hookName]++;
+        hooksFound = true;
+      }
     }
   }
 
