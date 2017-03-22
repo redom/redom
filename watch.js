@@ -3,7 +3,7 @@ const chokidar = require('chokidar');
 
 const exec = (cmd, args) => {
   return () => {
-    var child = cp.spawn(cmd, args);
+    var child = cp.spawn(cmd, args, { shell: true });
 
     child.stdout.pipe(process.stdout);
     child.stderr.pipe(process.stderr);
