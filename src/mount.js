@@ -70,10 +70,10 @@ function trigger (childEl, eventName) {
         continue;
       }
 
-      const _children = childEl.childNodes;
+      const grandChildren = childEl.childNodes;
 
-      for (let i = 0; i < _children.length; i++) {
-        newChildren.push(_children[i]);
+      for (let i = 0; i < grandChildren.length; i++) {
+        newChildren.push(grandChildren[i]);
       }
     }
 
