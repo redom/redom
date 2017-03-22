@@ -20,9 +20,10 @@ export function mount (parent, child, before) {
   }
 
   const wasMounted = childEl.__redom_mounted;
+  const oldParent = childEl.parentNode;
 
-  if (wasMounted) {
-    doUnmount(child, childEl, parentEl);
+  if (wasMounted && (oldParent !== parentEl)) {
+    doUnmount(child, childEl, oldParent);
   }
 
   if (before) {
@@ -31,7 +32,7 @@ export function mount (parent, child, before) {
     parentEl.appendChild(childEl);
   }
 
-  doMount(child, childEl, parentEl);
+  doMount(child, childEl, parentEl, oldParent);
 
   return child;
 }
@@ -52,15 +53,16 @@ export function unmount (parent, child) {
   return child;
 }
 
-function doMount (child, childEl, parentEl) {
+function doMount (child, childEl, parentEl, oldParent) {
   const hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
+  const remount = (parentEl === oldParent);
   let hooksFound = false;
 
   if (child !== childEl) {
     for (let i = 0; i < hookNames.length; i++) {
       const hookName = hookNames[i];
 
-      if (hookName in child) {
+      if (!remount && (hookName in child)) {
         hooks[hookName] = (hooks[hookName] || 0) + 1;
       }
       if (hooks[hookName]) {
@@ -76,9 +78,13 @@ function doMount (child, childEl, parentEl) {
   let traverse = parentEl;
   let triggered = false;
 
-  if (!triggered && (traverse && traverse.__redom_mounted)) {
-    trigger(childEl, 'onmount');
+  if (remount || (!triggered && (traverse && traverse.__redom_mounted))) {
+    trigger(childEl, remount ? 'onremount' : 'onmount');
     triggered = true;
+  }
+
+  if (remount) {
+    return;
   }
 
   while (traverse) {
@@ -90,7 +96,7 @@ function doMount (child, childEl, parentEl) {
     }
 
     if (!triggered && (traverse === document || (parent && parent.__redom_mounted))) {
-      trigger(traverse, 'onmount');
+      trigger(traverse, remount ? 'onremount' : 'onmount');
       triggered = true;
     }
 

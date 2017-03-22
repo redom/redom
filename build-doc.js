@@ -10,6 +10,7 @@ fs.writeFileSync('dist/documentation/index.html',
 <html>
   <head>
     <meta charset="utf-8">
+    <title>RE:DOM documentation</title>
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Work+Sans:400,500,600,700">
   </head>
@@ -22,4 +23,4 @@ fs.writeFileSync('dist/documentation/index.html',
 </html>`
 );
 
-console.log('done');
+console.log('Built documentation');

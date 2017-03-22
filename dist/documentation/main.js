@@ -1,7 +1,13 @@
 var doc = document.getElementById('doc');
 var menu = document.createElement('div');
+var logo = document.createElement('img');
 
 menu.id = 'menu';
+
+logo.id = 'logo';
+logo.src = '../img/logo.svg';
+
+menu.appendChild(logo);
 
 for (var i = 0; i < doc.children.length; i++) {
   var child = doc.children[i];

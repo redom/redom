@@ -118,14 +118,14 @@ module.exports = function (redom) {
     });
     t.test('lifecycle events', function (t) {
       t.plan(1);
-      var eventsFired = {
-        onmount: false,
-        onunmount: false
-      };
+      var eventsFired = {};
       function Item () {
         this.el = el('p');
         this.onmount = function () {
           eventsFired.onmount = true;
+        };
+        this.onremount = function () {
+          eventsFired.onremount = true;
         };
         this.onunmount = function () {
           eventsFired.onunmount = true;
@@ -134,11 +134,13 @@ module.exports = function (redom) {
       var item = new Item();
       var item2 = new Item();
       mount(document.body, item);
+      mount(document.head, item2);
       mount(document.body, item2);
       mount(document.body, item.el); // test view lookup (__redom_view)
       unmount(document.body, item);
       t.deepEqual(eventsFired, {
         onmount: true,
+        onremount: true,
         onunmount: true
       });
     });
@@ -292,11 +294,14 @@ module.exports = function (redom) {
       t.equals(table.el.outerHTML, '<table><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table>');
     });
     t.test('mount / unmount / remount', function (t) {
-      t.plan(10);
+      t.plan(8);
       function Test () {
         this.el = el('test');
       }
       Test.prototype.onmount = function () {
+        t.pass();
+      };
+      Test.prototype.onremount = function () {
         t.pass();
       };
       Test.prototype.onunmount = function () {

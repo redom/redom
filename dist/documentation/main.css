@@ -45,6 +45,11 @@ pre > code {
   overflow-x: hidden;
 }
 
+#logo {
+  display: block;
+  width: 5rem;
+}
+
 a {
   color: #d31b33;
 }
