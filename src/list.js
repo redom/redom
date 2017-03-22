@@ -1,12 +1,12 @@
 import { html } from './html';
 import { setChildren } from './setchildren';
-import { isString, isFunction, isNode } from './util';
+import { isString, isFunction, isNode, getParentElRecursive } from './util';
 
-export function list (parent, View, key, initData) {
+export function list(parent, View, key, initData) {
   return new List(parent, View, key, initData);
 }
 
-export function List (parent, View, key, initData) {
+export function List(parent, View, key, initData) {
   this.__redom_list = true;
   this.View = View;
   this.key = key;
@@ -63,12 +63,4 @@ List.prototype.update = function (data = []) {
   this.views = newViews;
 };
 
-export function getParentEl (parent) {
-  if (isString(parent)) {
-    return html(parent);
-  } else if (isNode(parent.el)) {
-    return parent.el;
-  } else {
-    return parent;
-  }
-}
+export const getParentEl = parent => isString(parent) ? html(parent) : getParentElRecursive(parent);

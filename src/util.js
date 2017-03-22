@@ -15,7 +15,7 @@ export function parseArguments (element, args) {
       arg(element);
     } else if (isString(arg) || isNumber(arg)) {
       element.appendChild(text(arg));
-    } else if (isNode(arg) || isNode(arg.el) || isList(arg.el)) {
+    } else if (isNode(getParentElRecursive(arg))) {
       mount(element, arg);
     } else if (arg.length) {
       parseArguments(element, arg);
@@ -24,6 +24,8 @@ export function parseArguments (element, args) {
     }
   }
 }
+
+export const getParentElRecursive = parent => (!parent.el && parent) || getParentElRecursive(parent.el);
 
 export const isString = a => typeof a === 'string';
 export const isNumber = a => typeof a === 'number';
