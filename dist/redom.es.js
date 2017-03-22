@@ -29,9 +29,7 @@ function mount (parent, child, before) {
     parentEl.appendChild(childEl);
   }
 
-  if (!wasMounted) {
-    prepareMount(child, childEl, parentEl);
-  }
+  prepareMount(child, childEl, parentEl);
 
   return child;
 }
@@ -108,6 +106,7 @@ function prepareMount (child, childEl, parentEl) {
 
   if (!triggered && (traverse && traverse.__redom_mounted)) {
     trigger(childEl, 'mount');
+    triggered = true;
   }
 
   while (traverse) {
@@ -130,7 +129,7 @@ function prepareMount (child, childEl, parentEl) {
 
 function prepareUnmount (child, childEl, parentEl) {
   var handlers = {};
-  var hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
+  var hooks = childEl.__redom_lifecycle;
   var hooksFound = false;
 
   if (!hooks) {
@@ -141,18 +140,6 @@ function prepareUnmount (child, childEl, parentEl) {
     handlers[hook] || (handlers[hook] = 0);
     handlers[hook] += hooks[hook];
     hooksFound = true;
-  }
-
-  if (child !== childEl) {
-    for (var i = 0; i < handlerNames.length; i++) {
-      var handlerName = handlerNames[i];
-
-      if (handlerName in child) {
-        hooks[handlerName] || (hooks[handlerName] = 0);
-        hooks[handlerName]--;
-        hooksFound = true;
-      }
-    }
   }
 
   if (!hooksFound) {
