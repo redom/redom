@@ -15,7 +15,10 @@ code {
 }
 
 pre > code {
+  background-color: #161616;
+  color: #eee;
   padding: 1.5rem;
+  padding-bottom: 0;
 }
 
 #doc {
@@ -48,6 +51,7 @@ pre > code {
 #logo {
   display: block;
   width: 5rem;
+  margin: 2rem 0;
 }
 
 a {

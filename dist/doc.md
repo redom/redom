@@ -2,23 +2,9 @@
 
 ## Creating elements
 
-`el` (alias `html`) is a helper for `document.createElement` with couple of differences:
+`el` ([alias](#alias): `html`) is a helper for `document.createElement` with couple of differences:
 
-### Alias
-You can use `el` or `html`:
-
-```js
-import { el, html } from 'redom';
-
-el('div')
-html('div')
-```
-–>
-```html
-<div></div>
-<div></div>
-```
-### Query format
+### ID and class names
 
 You can use `#` and `.` as shortcuts for defining id and class names. `div` is the default tag name:
 ```js
@@ -35,7 +21,7 @@ el('span.hello')
 <span class="hello"></span>
 ```
 
-### Style object
+### Style
 You can define styles with string or object:
 ```js
 el('div', { style: 'color: red;' })
@@ -47,7 +33,7 @@ el('div', { style: { color: 'red' } })
 <div style="color: red;"></div>
  ```
 
-### Auto-detection of attributes and properties
+### Attributes and properties
 Properties and attributes are auto-detected:
 ```js
 el('input', { type="email", autofocus: true, value: 'foo' })
@@ -57,7 +43,7 @@ el('input', { type="email", autofocus: true, value: 'foo' })
 <input type="email" autofocus> // $0.value === 'foo'
 ```
 
-### Define children
+### Children
 You can also define children while creating elements:
 
 ```js
@@ -111,7 +97,23 @@ el('a',
 </a>
 ```
 
+### Alias
+You can use `el` or `html`:
+
+```js
+import { el, html } from 'redom';
+
+el('div')
+html('div')
+```
+–>
+```html
+<div></div>
+<div></div>
+```
+
 ### SVG
+`el` and `html` only creates HTML elements. If you want to create an SVG element, you must use `svg`:
 ```js
 import { svg } from 'redom';
 

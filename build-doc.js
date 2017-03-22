@@ -12,6 +12,7 @@ fs.writeFileSync('dist/documentation/index.html',
     <meta charset="utf-8">
     <title>RE:DOM documentation</title>
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="../prism.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Work+Sans:400,500,600,700">
   </head>
   <body>
@@ -19,6 +20,7 @@ fs.writeFileSync('dist/documentation/index.html',
       ${html.split('\n<').join('\n    <')}
     </div>
     <script src="main.js"></script>
+    <script src="../prism.js"></script>
   </body>
 </html>`
 );
