@@ -118,46 +118,30 @@ module.exports = function (redom) {
     });
     t.test('lifecycle events', function (t) {
       t.plan(1);
-      var eventsFired = {
-        mount: false,
-        mounted: false,
-        remount: false,
-        remounted: false,
-        unmount: false,
-        unmounted: false
-      };
+      var eventsFired = {};
       function Item () {
         this.el = el('p');
-        this.mount = function () {
-          eventsFired.mount = true;
+        this.onmount = function () {
+          eventsFired.onmount = true;
         };
-        this.mounted = function () {
-          eventsFired.mounted = true;
+        this.onremount = function () {
+          eventsFired.onremount = true;
         };
-        this.remount = function () {
-          eventsFired.remount = true;
-        };
-        this.remounted = function () {
-          eventsFired.remounted = true;
-        };
-        this.unmount = function () {
-          eventsFired.unmount = true;
-        };
-        this.unmounted = function () {
-          eventsFired.unmounted = true;
+        this.onunmount = function () {
+          eventsFired.onunmount = true;
         };
       }
       var item = new Item();
+      var item2 = new Item();
       mount(document.body, item);
+      mount(document.head, item2);
+      mount(document.body, item2);
       mount(document.body, item.el); // test view lookup (__redom_view)
       unmount(document.body, item);
       t.deepEqual(eventsFired, {
-        mount: true,
-        mounted: true,
-        remount: true,
-        remounted: true,
-        unmount: true,
-        unmounted: true
+        onmount: true,
+        onremount: true,
+        onunmount: true
       });
     });
     t.test('setChildren', function (t) {
@@ -253,7 +237,7 @@ module.exports = function (redom) {
       t.equals(items.el.outerHTML, '<ul><li>2</li><li>3</li><li>4</li></ul>');
     });
     t.test('with function key', function (t) {
-      t.plan(6);
+      t.plan(4);
 
       function Item () {
         this.el = el('li');
@@ -263,9 +247,6 @@ module.exports = function (redom) {
             t.equals(this.data.id, data.id);
           }
           this.data = data;
-        };
-        this.remounted = function () {
-          t.pass();
         };
       }
 
@@ -277,7 +258,7 @@ module.exports = function (redom) {
       t.equals(items.el.outerHTML, '<ul><li>2</li><li>3</li><li>4</li></ul>');
     });
     t.test('adding / removing', function (t) {
-      t.plan(6);
+      t.plan(3);
 
       function Item () {
         this.el = el('li');
@@ -285,12 +266,6 @@ module.exports = function (redom) {
           this.el.textContent = data;
         };
       }
-      Item.prototype.mounted = function () {
-        t.pass();
-      };
-      Item.prototype.unmounted = function () {
-        t.pass();
-      };
 
       var items = list('ul', Item);
 
@@ -319,21 +294,22 @@ module.exports = function (redom) {
       t.equals(table.el.outerHTML, '<table><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table>');
     });
     t.test('mount / unmount / remount', function (t) {
-      t.plan(7);
+      t.plan(8);
       function Test () {
         this.el = el('test');
       }
-      Test.prototype.mounted = function () {
+      Test.prototype.onmount = function () {
         t.pass();
       };
-      Test.prototype.remounted = function () {
+      Test.prototype.onremount = function () {
         t.pass();
       };
-      Test.prototype.unmounted = function () {
+      Test.prototype.onunmount = function () {
         t.pass();
       };
       var test = new Test();
       setChildren(document.body, []);
+      mount(document.body, test);
       mount(document.body, test);
       t.equals(document.body.outerHTML, '<body><test></test></body>');
       unmount(document.body, test.el);
