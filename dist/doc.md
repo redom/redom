@@ -21,7 +21,7 @@ RE:DOM also supports [UMD](https://github.com/umdjs/umd):
 <script src="https://redom.js.org/redom.min.js"></script>
 ```
 ### Project generator
-You can also use the project generator, which will also install file watcher and bundler. You can find it [here](https://github.com/pakastin/redom-cli).
+You can also use the project generator, which will also install a file watcher and bundler. You can find it [here](https://github.com/pakastin/redom-cli).
 
 ### Server-side use
 RE:DOM also works on server side, by using [NO:DOM](https://github.com/pakastin/nodom).
@@ -30,7 +30,7 @@ RE:DOM also works on server side, by using [NO:DOM](https://github.com/pakastin/
 
 `el` ([alias](#alias): `html`) is a helper for `document.createElement` with couple of differences.
 
-The basic idea is to just create elements with `el` and mount them with `mount`, almost like you would do with plain JavaScript:
+The basic idea is to simply create elements with `el` and mount them with `mount`, almost like you would do with plain JavaScript:
 ```js
 import { el, mount } from 'redom';
 
@@ -46,7 +46,7 @@ mount(document.body, hello);
 ```
 
 ### Text reference
-String and Number arguments (after the query) generate text nodes. You can also use `text`-helper, which will return a reference to the text node:
+String and Number arguments (after the query) generate text nodes. You can also use the `text` helper, which will return a reference to the text node:
 ```js
 import { text, mount } from 'redom';
 
@@ -62,7 +62,7 @@ hello.textContent = 'hi!';
 ```
 ### ID and class names
 
-You can use `#` and `.` as shortcuts for defining id and class names. `div` is the default tag name:
+You can use `#` and `.` as shortcuts for defining element IDs and class names. `div` is the default tag name:
 ```js
 el('')
 el('#hello')
@@ -78,7 +78,7 @@ el('span.hello')
 ```
 
 ### Style
-You can define styles with string or object:
+You can define styles with strings or objects:
 ```js
 el('div', { style: 'color: red;' })
 el('div', { style: { color: 'red' } })
@@ -119,7 +119,7 @@ el('a',
 ```
 
 ### Array of children
-Array of children also works:
+Passing an array of children also works:
 
 ```js
 el('a', [
@@ -192,7 +192,7 @@ html('div')
 ```
 
 ### SVG
-`el` and `html` only creates HTML elements. If you want to create an SVG element, you must use `svg`:
+`el` and `html` only create HTML elements. If you want to create an SVG element, you must use `svg`:
 ```js
 import { svg, mount } from 'redom';
 
@@ -212,12 +212,12 @@ mount(document.body, drawing);
 ```
 
 ## Mounting
-Please use `mount`/`unmount`/`setChildren` everytime you need to mount/unmount elements inside RE:DOM app. That will trigger lifecycle events, add references to components etc.
+Please use `mount`/`unmount`/`setChildren` every time you need to mount/unmount elements inside a RE:DOM app. These functions will trigger lifecycle events, add references to components etc.
 
 ### Mount
 You can mount elements/components with `mount(parent, child, [before])`. If you define the third parameter, it works like `insertBefore` and otherwise it's like `appendChild`.
 
-Mount will trigger `mount` [lifecycle event](#component-lifecycle) the first time you mount a child. If you mount the same child again to the same parent, `remount` gets called. If you mount it to another place, `unmount` + `mount` gets called. Read more about lifecycle events [here](#component-lifecycle).
+Mount will trigger the `mount` [lifecycle event](#component-lifecycle) the first time you mount a child. If you mount the same child again to the same parent, `remount` gets called. If you mount it to another place, `unmount` and `mount` get called. Read more about lifecycle events [here](#component-lifecycle).
 
 ```js
 import { el, mount } from 'redom';
@@ -232,7 +232,7 @@ mount(document.body, hello, document.body.firstChild);
 ```
 
 ### Unmount
-If you need to remove elements/components, you use `unmount(parent, child)`. That will trigger `unmount` [lifecycle event](#component-lifecycle):
+If you need to remove elements/components, use `unmount(parent, child)`. That will trigger the `unmount` [lifecycle event](#component-lifecycle):
 
 ```js
 unmount(document.body, hello);
@@ -258,13 +258,14 @@ setChildren(document.body, [c, b]);
 </body>
 ```
 
-If you need to clear a body for example, you can also use `setChildren(document.body, []);`.
+For example, if you need to clear the document body, you can also use `setChildren(document.body, []);`.
 
-There's also a shortcut replacing children with a single component / element: `setChildren(document.body, app);`.
+There's also a shortcut for replacing children with a single component / element: `setChildren(document.body, app);`.
 
 ## Update elements
+
 ### setAttr
-There's a helper for updating attributes / properties. It will auto-detect attributes / properties:
+A helper for updating attributes and properties. It will auto-detect attributes and properties:
 ```js
 import { el, setAttr } from 'redom';
 
@@ -276,7 +277,7 @@ setAttr(hello, {
 });
 ```
 ### setStyle
-There's also a shortcut for updating style attribute:
+There's also a shortcut for updating the `style` attribute:
 ```js
 import { setStyle } from 'redom';
 
@@ -284,7 +285,9 @@ setStyle(hello, { color: 'green' });
 ```
 
 ## Components
-It's really easy to create components with RE:DOM. You just define a class or function, which returns an object with at least `el` property and in case of [list](#lists) also the `update` property:
+It's really easy to create components with RE:DOM.
+Simply define a class or function, which returns an object with at least an `el` property, and in case of [list](#lists) also the `update` property:
+
 ```js
 import { el, mount } from 'redom';
 
@@ -305,7 +308,10 @@ mount(document.body, hello);
 ```
 
 ### Diffing
-You don't have to diff class names / properties / attributes __except when dealing with URL's__. If you change `img`, `iframe` or `video` element `src`, even if it's the same, the browser will __reload__ the asset/website. One way to diff would be:
+You don't have to manually diff class names / properties / attributes __except when dealing with URLs__.
+If you change the `src` of  `img`, `iframe` or `video` elements, the browser will __reload__ the asset/website even if the value did not actually change.
+One way to work around this would be:
+
 ```js
 import { el, mount } from 'redom';
 
@@ -327,9 +333,11 @@ class Image {
 ```
 
 ### Component lifecycle
-RE:DOM v2.0.0 supports true lifecycle events. There's three events `mount`, `remount` and `unmount`.
+RE:DOM v2.0.0 supports true lifecycle events. Three events are defined: `mount`, `remount` and `unmount`.
 
-First time you mount the element, `mount` gets called. If you mount the same element again to the same parent, `remount` will get called. If you move element from a parent to another parent, `unmount` gets called.
+* First time you mount the element, `mount` gets called.
+* If you mount the same element again to the same parent, `remount` gets called.
+* If you move an element from a parent to another parent, `unmount` gets called.
 
 ```js
 import { el, mount } from 'redom';
@@ -387,7 +395,8 @@ unmounted App
 unmounted Hello
 ```
 ## Lists
-When you have dynamic data, it's not that easy to keep the elements and the data in sync. That's when `list` comes to rescue.
+When you have dynamic data, it's not that easy to manually keep the elements and the data in sync.
+That's when the `list` helper comes to rescue.
 
 To use `list`, just define a parent node and component:
 ```js
@@ -411,7 +420,9 @@ list.update([2, 2, 4]);
 ```
 
 ### List lifecycle
-When you call `List.update`, list will automatically:
+
+When you call `List.update`, the list will automatically:
+
 - Create new components for new items
 - Mount new components in the right place
 - Reorder moved items (remount)
@@ -420,9 +431,10 @@ When you call `List.update`, list will automatically:
 - Call `.update` for all components, except removed ones
 
 ### Keyed list
-Normally `list` will update by index, so it only adds/removes last items.
+Normally `list` will update by index, so it only adds/removes the last item.
 
-If you want to define a key, you can do that by adding a third parameter to the `list`. With key, the list will automatically insert/reorder/remove elements by that key.
+If you want to define a key, you can do that by adding a third parameter to the `list`. With key, the list will automatically insert/reorder/remove elements by that key of each object in the list.
+
 ```js
 import { el, list, mount } from 'redom';
 
@@ -453,8 +465,9 @@ setTimeout(() => {
 }, 1000);
 ```
 
-### List component
-There's couple of ways to do a list component
+### List components
+
+There's couple of ways to do a list component:
 
 #### list.extend
 ```js
@@ -474,7 +487,8 @@ const table = el('table');
 mount(document.body, table);
 ```
 
-#### regular component
+#### Regular component
+
 ```js
 class Td {
   constructor () {
@@ -497,7 +511,9 @@ const table = el('table', Tr);
 
 mount(document.body, table);
 ```
-That works, but in case you need to access `this.el.el` (`<tr>`) in `Tr`, I'd recommend to use the following:
+
+This works, but in case you need to access `this.el.el` (`<tr>`) in `Tr`, I recommend to use the following:
+
 ```js
 class Td {
   constructor () {
@@ -527,7 +543,7 @@ this.el = this.list.el;
 ```
 
 ## Router
-Router is a component router, which will create/update/remove component by the current route.
+Router is a component router, which will create/update/remove components based on the current route.
 
 ```js
 import { router } from 'redom';
