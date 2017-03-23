@@ -15,5 +15,10 @@ https://redom.js.org
 RE:DOM [v2.0.0](https://github.com/pakastin/redom/releases/tag/v2.0.0) now released with true lifecycle events and a proper documentation!
 https://redom.js.org/documentation
 
+# Under the hood
+Here's a simplified explanation what's happening under the hood:
+
+https://www.youtube.com/watch?v=0nh2EK1xveg
+
 ## License
 [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
