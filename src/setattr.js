@@ -1,8 +1,8 @@
 import { setStyle } from './setstyle';
-import { isFunction, getParentElRecursive } from './util';
+import { isFunction, getEl } from './util';
 
 export function setAttr (view, arg1, arg2) {
-  const el = getParentElRecursive(view);
+  const el = getEl(view);
   let isSVG = el instanceof window.SVGElement;
 
   if (arguments.length > 2) {

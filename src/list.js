@@ -1,6 +1,5 @@
-import { html } from './html';
 import { setChildren } from './setchildren';
-import { isString, isFunction, getParentElRecursive } from './util';
+import { isFunction, ensureEl } from './util';
 
 export function list (parent, View, key, initData) {
   return new List(parent, View, key, initData);
@@ -12,7 +11,7 @@ export function List (parent, View, key, initData) {
   this.key = key;
   this.initData = initData;
   this.views = [];
-  this.el = getParentEl(parent);
+  this.el = ensureEl(parent);
 
   if (key) {
     this.lookup = {};
@@ -62,5 +61,3 @@ List.prototype.update = function (data = []) {
   }
   this.views = newViews;
 };
-
-export const getParentEl = parent => isString(parent) ? html(parent) : getParentElRecursive(parent);

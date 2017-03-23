@@ -2,13 +2,11 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var text = function (str) { return doc.createTextNode(str); };
-
 var hookNames = ['onmount', 'onunmount'];
 
 function mount (parent, child, before) {
-  var parentEl = getParentElRecursive(parent);
-  var childEl = getParentElRecursive(child);
+  var parentEl = getEl(parent);
+  var childEl = getEl(child);
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided
@@ -27,7 +25,7 @@ function mount (parent, child, before) {
   }
 
   if (before) {
-    parentEl.insertBefore(childEl, getParentElRecursive(before));
+    parentEl.insertBefore(childEl, getEl(before));
   } else {
     parentEl.appendChild(childEl);
   }
@@ -188,7 +186,7 @@ function trigger (childEl, eventName) {
 }
 
 function setStyle (view, arg1, arg2) {
-  var el = getParentElRecursive(view);
+  var el = getEl(view);
 
   if (arguments.length > 2) {
     el.style[arg1] = arg2;
@@ -202,7 +200,7 @@ function setStyle (view, arg1, arg2) {
 }
 
 function setAttr (view, arg1, arg2) {
-  var el = getParentElRecursive(view);
+  var el = getEl(view);
   var isSVG = el instanceof window.SVGElement;
 
   if (arguments.length > 2) {
@@ -222,6 +220,8 @@ function setAttr (view, arg1, arg2) {
   }
 }
 
+var text = function (str) { return doc.createTextNode(str); };
+
 function parseArguments (element, args) {
   for (var i = 0; i < args.length; i++) {
     var arg = args[i];
@@ -235,7 +235,7 @@ function parseArguments (element, args) {
       arg(element);
     } else if (isString(arg) || isNumber(arg)) {
       element.appendChild(text(arg));
-    } else if (isNode(getParentElRecursive(arg))) {
+    } else if (isNode(getEl(arg))) {
       mount(element, arg);
     } else if (arg.length) {
       parseArguments(element, arg);
@@ -245,7 +245,8 @@ function parseArguments (element, args) {
   }
 }
 
-var getParentElRecursive = function (parent) { return (!parent.el && parent) || getParentElRecursive(parent.el); };
+var ensureEl = function (parent) { return isString(parent) ? html(parent) : getEl(parent); };
+var getEl = function (parent) { return (!parent.el && parent) || getEl(parent.el); };
 
 var isString = function (a) { return typeof a === 'string'; };
 var isNumber = function (a) { return typeof a === 'number'; };
@@ -354,7 +355,7 @@ function setChildren (parent, children) {
     return setChildren(parent, [children]);
   }
 
-  var parentEl = getParentElRecursive(parent);
+  var parentEl = getEl(parent);
   var traverse = parentEl.firstChild;
 
   for (var i = 0; i < children.length; i++) {
@@ -364,7 +365,7 @@ function setChildren (parent, children) {
       continue;
     }
 
-    var childEl = getParentElRecursive(child);
+    var childEl = getEl(child);
 
     if (childEl === traverse) {
       traverse = traverse.nextSibling;
@@ -393,7 +394,7 @@ function List (parent, View, key, initData) {
   this.key = key;
   this.initData = initData;
   this.views = [];
-  this.el = getParentEl(parent);
+  this.el = ensureEl(parent);
 
   if (key) {
     this.lookup = {};
@@ -430,11 +431,11 @@ List.prototype.update = function (data) {
     } else {
       view = newViews[i] = oldViews[i] || new View(initData, item, i, data);
     }
-    var el$$1 = view.el;
-    if (el$$1.__redom_list) {
-      el$$1 = el$$1.el;
+    var el = view.el;
+    if (el.__redom_list) {
+      el = el.el;
     }
-    el$$1.__redom_view = view;
+    el.__redom_view = view;
     view.update && view.update(item, i, data);
   }
 
@@ -446,14 +447,12 @@ List.prototype.update = function (data) {
   this.views = newViews;
 };
 
-var getParentEl = function (parent) { return isString(parent) ? html(parent) : getParentElRecursive(parent); };
-
 function router (parent, Views, initData) {
   return new Router(parent, Views, initData);
 }
 
 var Router = function Router (parent, Views, initData) {
-  this.el = getParentEl(parent);
+  this.el = ensureEl(parent);
   this.Views = Views;
   this.initData = initData;
 };

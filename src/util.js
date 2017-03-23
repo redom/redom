@@ -1,6 +1,7 @@
-import { text } from './text';
+import { html } from './html';
 import { mount } from './mount';
 import { setAttr } from './setattr';
+import { text } from './text';
 
 export function parseArguments (element, args) {
   for (let i = 0; i < args.length; i++) {
@@ -15,7 +16,7 @@ export function parseArguments (element, args) {
       arg(element);
     } else if (isString(arg) || isNumber(arg)) {
       element.appendChild(text(arg));
-    } else if (isNode(getParentElRecursive(arg))) {
+    } else if (isNode(getEl(arg))) {
       mount(element, arg);
     } else if (arg.length) {
       parseArguments(element, arg);
@@ -25,7 +26,8 @@ export function parseArguments (element, args) {
   }
 }
 
-export const getParentElRecursive = parent => (!parent.el && parent) || getParentElRecursive(parent.el);
+export const ensureEl = parent => isString(parent) ? html(parent) : getEl(parent);
+export const getEl = parent => (!parent.el && parent) || getEl(parent.el);
 
 export const isString = a => typeof a === 'string';
 export const isNumber = a => typeof a === 'number';
