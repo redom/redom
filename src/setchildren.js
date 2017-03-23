@@ -1,12 +1,12 @@
 import { mount, unmount } from './mount';
-import { isList } from './util';
+import { getEl } from './util';
 
 export function setChildren (parent, children) {
   if (children.length === undefined) {
     return setChildren(parent, [children]);
   }
 
-  const parentEl = parent.el || parent;
+  const parentEl = getEl(parent);
   let traverse = parentEl.firstChild;
 
   for (let i = 0; i < children.length; i++) {
@@ -16,11 +16,7 @@ export function setChildren (parent, children) {
       continue;
     }
 
-    let childEl = child.el || child;
-
-    if (isList(childEl)) {
-      childEl = childEl.el;
-    }
+    let childEl = getEl(child);
 
     if (childEl === traverse) {
       traverse = traverse.nextSibling;

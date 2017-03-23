@@ -1,4 +1,4 @@
-import { getParentEl } from './list';
+import { ensureEl } from './util';
 import { setChildren } from './setchildren';
 
 export function router (parent, Views, initData) {
@@ -7,7 +7,7 @@ export function router (parent, Views, initData) {
 
 export class Router {
   constructor (parent, Views, initData) {
-    this.el = getParentEl(parent);
+    this.el = ensureEl(parent);
     this.Views = Views;
     this.initData = initData;
   }

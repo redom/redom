@@ -1,7 +1,7 @@
-import { isString } from './util';
+import { isString, getEl } from './util';
 
 export function setStyle (view, arg1, arg2) {
-  const el = view.el || view;
+  const el = getEl(view);
 
   if (arguments.length > 2) {
     el.style[arg1] = arg2;

@@ -81,6 +81,18 @@ module.exports = function (redom) {
       );
       t.equals(app.outerHTML, '<app><test></test></app>');
     });
+    t.test('child view composition', function (t) {
+      t.plan(1);
+      function Test () {
+        this.el = (new function () {
+          this.el = el('test');
+        }());
+      }
+      var app = el('app',
+        new Test()
+      );
+      t.equals(app.outerHTML, '<app><test></test></app>');
+    });
     t.test('array', function (t) {
       t.plan(1);
       var ul = el('ul',
@@ -215,6 +227,29 @@ module.exports = function (redom) {
       items.update([1, 2, 3]);
       t.equals(items.el.outerHTML, '<ul><li>1</li><li>2</li><li>3</li></ul>');
     });
+    t.test('component parent composition', function (t) {
+      t.plan(1);
+
+      function Ul () {
+        this.el = (new function () {
+          this.el = el('ul');
+        }());
+      }
+
+      function Item () {
+        this.el = el('li');
+        this.update = data => {
+          this.el.textContent = data;
+        };
+      }
+
+      var ul = new Ul();
+
+      var items = list(ul, Item);
+      items.update(); // empty list
+      items.update([1, 2, 3]);
+      t.equals(items.el.outerHTML, '<ul><li>1</li><li>2</li><li>3</li></ul>');
+    });
     t.test('with key', function (t) {
       t.plan(4);
 
@@ -290,7 +325,7 @@ module.exports = function (redom) {
 
       var table = new Table();
 
-      table.update([[ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ]]);
+      table.update([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
       t.equals(table.el.outerHTML, '<table><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table>');
     });
     t.test('mount / unmount / remount', function (t) {

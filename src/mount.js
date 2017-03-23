@@ -1,14 +1,10 @@
-import { isList } from './util';
+import { getEl } from './util';
 
 const hookNames = ['onmount', 'onunmount'];
 
 export function mount (parent, child, before) {
-  const parentEl = parent.el || parent;
-  let childEl = child.el || child;
-
-  if (isList(childEl)) {
-    childEl = childEl.el;
-  }
+  const parentEl = getEl(parent);
+  let childEl = getEl(child);
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided
@@ -27,7 +23,7 @@ export function mount (parent, child, before) {
   }
 
   if (before) {
-    parentEl.insertBefore(childEl, before.el || before);
+    parentEl.insertBefore(childEl, getEl(before));
   } else {
     parentEl.appendChild(childEl);
   }
