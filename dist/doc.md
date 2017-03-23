@@ -7,6 +7,8 @@ Because RE:DOM is so close to the metal and __doesn't use virtual dom__, it's ac
 
 It's also easy to create __reusable components__ with RE:DOM.
 
+Another great benefit is, that you can use just __pure JavaScript__, so no complicated templating languages to learn and hassle with.
+
 ### Browser support
 Only if you use `el.extend`, `svg.extend` or `list.extend`, you'll need at least IE9. All other features should work even in IE6. So for the most parts basically almost every browser out there is supported.
 
@@ -192,7 +194,7 @@ html('div')
 ```
 
 ### SVG
-`el` and `html` only create HTML elements. If you want to create an SVG element, you must use `svg`:
+`el` and `html` only create HTML elements. If you want to create a SVG element, you must use `svg`:
 ```js
 import { svg, mount } from 'redom';
 
