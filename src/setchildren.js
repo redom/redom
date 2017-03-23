@@ -1,12 +1,12 @@
 import { mount, unmount } from './mount';
-import { getParentElRecursive } from './util';
+import { getEl } from './util';
 
 export function setChildren (parent, children) {
   if (children.length === undefined) {
     return setChildren(parent, [children]);
   }
 
-  const parentEl = getParentElRecursive(parent);
+  const parentEl = getEl(parent);
   let traverse = parentEl.firstChild;
 
   for (let i = 0; i < children.length; i++) {
@@ -16,7 +16,7 @@ export function setChildren (parent, children) {
       continue;
     }
 
-    let childEl = getParentElRecursive(child);
+    let childEl = getEl(child);
 
     if (childEl === traverse) {
       traverse = traverse.nextSibling;
