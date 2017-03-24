@@ -1,16 +1,31 @@
 
 var test = require('tape');
 
+var c = {
+  'cyan': '36m',
+  'magenta': '35m',
+  'blue': '34m',
+  'yellow': '33m',
+  'green': '32m',
+  'red': '31m',
+  'gray': '90m',
+}
+
+function cc (text, code) {
+  return ('\u001b[' + code + text + '\u001b[0m')
+}
+
 module.exports = function (redom) {
   var { el, html, mount, unmount } = redom;
+
+  var nApexes = 25;
+  var nLeaves = 20;
+  var nBranches = 15;
+  var nIterations = 10;
 
   test('   [notifyDown version]   running simple benchmarks', function (t) {
     t.test('lifecycle performance output, 100% lifecycle bound', function (t) {
       t.plan(1);
-
-      var nApexes = 30;
-      var nLeaves = 25;
-      var nBranches = 20;
 
       var count = 0;
       var onmounts = 0;
@@ -96,8 +111,7 @@ module.exports = function (redom) {
         times.onunmounts.push(onunmounts);
       }
 
-      var nIteration = 5;
-      for (let i = 1; i < nIteration + 1; i++) {
+      for (let i = 1; i < nIterations + 1; i++) {
         check();
       }
 
@@ -116,15 +130,12 @@ module.exports = function (redom) {
       console.log('create median: ' + averages.create);
       console.log('mount median: ' + averages.mount);
       console.log('unmount median: ' + averages.unmount);
+      console.log('create + mount + unmount: ' + cc(averages.create + averages.mount + averages.unmount, c['yellow']));
 
       t.pass();
     });
     t.test('lifecycle performance output, 1% lifecycle bound', function (t) {
       t.plan(1);
-
-      var nApexes = 30;
-      var nLeaves = 25;
-      var nBranches = 20;
 
       var count = 0;
       var onmounts = 0;
@@ -221,8 +232,7 @@ module.exports = function (redom) {
         times.onunmounts.push(onunmounts);
       }
 
-      var nIteration = 5;
-      for (let i = 1; i < nIteration + 1; i++) {
+      for (let i = 1; i < nIterations + 1; i++) {
         check();
       }
 
@@ -241,15 +251,12 @@ module.exports = function (redom) {
       console.log('create median: ' + averages.create);
       console.log('mount median: ' + averages.mount);
       console.log('unmount median: ' + averages.unmount);
+      console.log('create + mount + unmount: ' + cc(averages.create + averages.mount + averages.unmount, c['yellow']));
 
       t.pass();
     });
     t.test('lifecycle performance output, 0.025% lifecycle bound', function (t) {
       t.plan(1);
-
-      var nApexes = 30;
-      var nLeaves = 25;
-      var nBranches = 20;
 
       var count = 0;
       var onmounts = 0;
@@ -346,8 +353,7 @@ module.exports = function (redom) {
         times.onunmounts.push(onunmounts);
       }
 
-      var nIteration = 5;
-      for (let i = 1; i < nIteration + 1; i++) {
+      for (let i = 1; i < nIterations + 1; i++) {
         check();
       }
 
@@ -366,15 +372,13 @@ module.exports = function (redom) {
       console.log('create median: ' + averages.create);
       console.log('mount median: ' + averages.mount);
       console.log('unmount median: ' + averages.unmount);
+      console.log('create + mount: ' + cc(averages.create + averages.mount, c['cyan']));
+      console.log('create + mount + unmount: ' + cc(averages.create + averages.mount + averages.unmount, c['magenta']));
 
       t.pass();
     });
     t.test('lifecycle performance output, 0% lifecycle bound', function (t) {
       t.plan(1);
-
-      var nApexes = 30;
-      var nLeaves = 25;
-      var nBranches = 20;
 
       var count = 0;
       var onmounts = 0;
@@ -451,8 +455,7 @@ module.exports = function (redom) {
         times.onunmounts.push(onunmounts);
       }
 
-      var nIteration = 5;
-      for (let i = 1; i < nIteration + 1; i++) {
+      for (let i = 1; i < nIterations + 1; i++) {
         check();
       }
 
@@ -471,6 +474,7 @@ module.exports = function (redom) {
       console.log('create median: ' + averages.create);
       console.log('mount median: ' + averages.mount);
       console.log('unmount median: ' + averages.unmount);
+      console.log('create + mount + unmount: ' + cc(averages.create + averages.mount + averages.unmount, c['yellow']));
 
       t.pass();
     });
