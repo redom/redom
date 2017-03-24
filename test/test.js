@@ -5,7 +5,7 @@ var SVGElement = window.SVGElement;
 var CustomEvent = window.CustomEvent;
 
 module.exports = function (redom) {
-  var { el, list, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
+  var { el, html, list, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
 
   test('exports utils', function (t) {
     t.plan(2);
@@ -172,6 +172,10 @@ module.exports = function (redom) {
     t.test('throw error when no arguments', function (t) {
       t.plan(1);
       t.throws(el, new Error('At least one argument required'));
+    });
+    t.test('html alias', function (t) {
+      t.plan(1);
+      t.equals(el, html);
     });
   });
 
