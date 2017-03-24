@@ -5,7 +5,7 @@ var SVGElement = window.SVGElement;
 var CustomEvent = window.CustomEvent;
 
 module.exports = function (redom) {
-  var { el, list, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
+  var { el, html, list, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
 
   test('exports utils', function (t) {
     t.plan(2);
@@ -172,6 +172,10 @@ module.exports = function (redom) {
     t.test('throw error when no arguments', function (t) {
       t.plan(1);
       t.throws(el, new Error('At least one argument required'));
+    });
+    t.test('html alias', function (t) {
+      t.plan(1);
+      t.equals(el, html);
     });
   });
 
@@ -518,5 +522,112 @@ module.exports = function (redom) {
     t.equals(_router.el.outerHTML, '<div class="test"><a>1</a></div>');
     _router.update('b', 2);
     t.equals(_router.el.outerHTML, '<div class="test"><b>2</b></div>');
+  });
+  test('lifecycle event order consistency check', function (t) {
+    t.plan(1);
+    var logs = [];
+
+    var nApexes = 30;
+    var nLeaves = 20;
+    var nBranches = 10;
+
+    function Base (name, content) {
+      var el = html('', content);
+
+      function onmount () {
+        logs.push(name + ' mounted: ' + (typeof el.getBoundingClientRect()));
+      }
+
+      function onunmount () {
+        logs.push(name + ' unmounting: ' + (typeof el.getBoundingClientRect()));
+      }
+
+      return { el, onmount, onunmount };
+    }
+
+    function Apex () {
+      return Base('Apex');
+    }
+
+    function Leaf () {
+      var size = nApexes;
+      var apexes = [];
+      for (var i = 0; i < size; i++) {
+        apexes.push(Apex());
+      }
+      return Base('Leaf', apexes);
+    }
+
+    function Branch () {
+      var size = nLeaves;
+      var leaves = [];
+      for (var i = 0; i < size; i++) {
+        leaves.push(Leaf());
+      }
+      return Base('Branch', leaves);
+    }
+
+    function Tree () {
+      var size = nBranches;
+      var branches = [];
+      for (var i = 0; i < size; i++) {
+        branches.push(Branch());
+      }
+      return Base('Tree', branches);
+    }
+
+    var expectedLog = [];
+    // onmount -- mounted
+    expectedLog.push('Tree mounted: object');
+    for (let i = 0; i < nBranches; i++) {
+      expectedLog.push('Branch mounted: object');
+    }
+    for (let j = 0; j < nBranches * nLeaves; j++) {
+      expectedLog.push('Leaf mounted: object');
+    }
+    for (let k = 0; k < nBranches * nLeaves * nApexes; k++) {
+      expectedLog.push('Apex mounted: object');
+    }
+    // onunmount -- unmounting
+    expectedLog.push('Tree unmounting: object');
+    for (let i = 0; i < nBranches; i++) {
+      expectedLog.push('Branch unmounting: object');
+    }
+    for (let j = 0; j < nBranches * nLeaves; j++) {
+      expectedLog.push('Leaf unmounting: object');
+    }
+    for (let k = 0; k < nBranches * nLeaves * nApexes; k++) {
+      expectedLog.push('Apex unmounting: object');
+    }
+
+    // // DOM logical ordering
+    // expectedLog.push('Tree mounted: object');
+    // for (let i = 0; i < nBranches; i++) {
+    //   expectedLog.push('Branch mounted: object');
+    //   for (let j = 0; j < nBranches * nLeaves; j++) {
+    //     expectedLog.push('Leaf mounted: object');
+    //     for (let k = 0; k < nBranches * nLeaves * nApexes; k++) {
+    //       expectedLog.push('Apex mounted: object');
+    //     }
+    //   }
+    // }
+    // // (reversed when unmounting)
+    // // onunmount -- unmounting
+    // for (let i = 0; i < nBranches; i++) {
+    //   for (let j = 0; j < nBranches * nLeaves; j++) {
+    //     for (let k = 0; k < nBranches * nLeaves * nApexes; k++) {
+    //       expectedLog.push('Apex unmount: object');
+    //     }
+    //     expectedLog.push('Leaf unmount: object');
+    //   }
+    //   expectedLog.push('Branch unmount: object');
+    // }
+    // expectedLog.push('Tree unmount: object');
+
+    var tree = Tree();
+    mount(document.body, tree);
+    unmount(document.body, tree);
+
+    t.deepEqual(logs, expectedLog);
   });
 };

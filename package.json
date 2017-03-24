@@ -18,6 +18,7 @@
     "fixlint": "semistandard 'src/**/*.js' 'test/test.js' --fix",
     "lint": "semistandard 'src/**/*.js' 'test/test.js'",
     "test": "npm run lint && rollup -c -n redom -f cjs src/index.js -o test/redom.js && browserify -t coverify test/index.js | tape-run | coverify",
+    "bench": "npm run lint && rollup -c -n redom -f cjs src/index.js -o bench/redom.js && browserify bench/index.js | tape-run",
     "nocoverage": "standard src/index.js && rollup -c -n redom -f cjs src/index.js -o test/redom.js && browserify test/index.js | tape-run",
     "justtest": "browserify -t coverify test/index.js | tape-run | coverify",
     "build-doc": "node build-doc"
