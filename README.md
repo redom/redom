@@ -20,5 +20,11 @@ Here's a simplified explanation what's happening under the hood:
 
 https://www.youtube.com/watch?v=0nh2EK1xveg
 
+# Server-side rendering
+https://github.com/pakastin/nodom
+
+# Launch fast with project generator!
+https://github.com/pakastin/redom-cli
+
 ## License
 [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
