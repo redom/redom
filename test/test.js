@@ -73,7 +73,7 @@ module.exports = function (redom) {
     });
     t.test('child views', function (t) {
       t.plan(1);
-      function Test () {
+      function Test() {
         this.el = el('test');
       }
       var app = el('app',
@@ -83,7 +83,7 @@ module.exports = function (redom) {
     });
     t.test('child view composition', function (t) {
       t.plan(1);
-      function Test () {
+      function Test() {
         this.el = (new function () {
           this.el = el('test');
         }());
@@ -131,7 +131,7 @@ module.exports = function (redom) {
     t.test('lifecycle events', function (t) {
       t.plan(1);
       var eventsFired = {};
-      function Item () {
+      function Item() {
         this.el = el('p');
         this.onmount = function () {
           eventsFired.onmount = true;
@@ -149,6 +149,31 @@ module.exports = function (redom) {
       mount(document.head, item2);
       mount(document.body, item2);
       mount(document.body, item.el); // test view lookup (__redom_view)
+      unmount(document.body, item);
+      t.deepEqual(eventsFired, {
+        onmount: true,
+        onremount: true,
+        onunmount: true
+      });
+    });
+    t.test('component lifecycle events inside node element', function (t) {
+      t.plan(1);
+      var eventsFired = {};
+      function Item() {
+        this.el = el('p');
+        this.onmount = function () {
+          eventsFired.onmount = true;
+        };
+        this.onremount = function () {
+          eventsFired.onremount = true;
+        };
+        this.onunmount = function () {
+          eventsFired.onunmount = true;
+        };
+      }
+      var item = el("wrapper", new Item());
+      mount(document.body, item);
+      mount(document.body, item);
       unmount(document.body, item);
       t.deepEqual(eventsFired, {
         onmount: true,
@@ -183,7 +208,7 @@ module.exports = function (redom) {
     t.test('without key', function (t) {
       t.plan(1);
 
-      function Item () {
+      function Item() {
         this.el = el('li');
         this.update = data => {
           this.el.textContent = data;
@@ -198,7 +223,7 @@ module.exports = function (redom) {
     t.test('element parent', function (t) {
       t.plan(1);
 
-      function Item () {
+      function Item() {
         this.el = el('li');
         this.update = data => {
           this.el.textContent = data;
@@ -213,11 +238,11 @@ module.exports = function (redom) {
     t.test('component parent', function (t) {
       t.plan(1);
 
-      function Ul () {
+      function Ul() {
         this.el = el('ul');
       }
 
-      function Item () {
+      function Item() {
         this.el = el('li');
         this.update = data => {
           this.el.textContent = data;
@@ -234,13 +259,13 @@ module.exports = function (redom) {
     t.test('component parent composition', function (t) {
       t.plan(1);
 
-      function Ul () {
+      function Ul() {
         this.el = (new function () {
           this.el = el('ul');
         }());
       }
 
-      function Item () {
+      function Item() {
         this.el = el('li');
         this.update = data => {
           this.el.textContent = data;
@@ -257,7 +282,7 @@ module.exports = function (redom) {
     t.test('with key', function (t) {
       t.plan(4);
 
-      function Item () {
+      function Item() {
         this.el = el('li');
         this.update = function (data) {
           this.el.textContent = data.id;
@@ -278,7 +303,7 @@ module.exports = function (redom) {
     t.test('with function key', function (t) {
       t.plan(4);
 
-      function Item () {
+      function Item() {
         this.el = el('li');
         this.update = (data) => {
           this.el.textContent = data.id;
@@ -299,7 +324,7 @@ module.exports = function (redom) {
     t.test('adding / removing', function (t) {
       t.plan(3);
 
-      function Item () {
+      function Item() {
         this.el = el('li');
         this.update = (data) => {
           this.el.textContent = data;
@@ -318,7 +343,7 @@ module.exports = function (redom) {
     t.test('extend', function (t) {
       t.plan(1);
 
-      function Td () {
+      function Td() {
         this.el = el('td');
         this.update = function (data) {
           this.el.textContent = data;
@@ -334,7 +359,7 @@ module.exports = function (redom) {
     });
     t.test('mount / unmount / remount', function (t) {
       t.plan(8);
-      function Test () {
+      function Test() {
         this.el = el('test');
       }
       Test.prototype.onmount = function () {
@@ -348,30 +373,30 @@ module.exports = function (redom) {
       };
       var test = new Test();
       setChildren(document.body, []);
-      mount(document.body, test);
-      mount(document.body, test);
-      t.equals(document.body.outerHTML, '<body><test></test></body>');
-      unmount(document.body, test.el);
-      mount(document.body, test.el);
-      mount(document.body, test.el);
-      unmount(document.body, test);
-      t.equals(document.body.outerHTML, '<body></body>');
+      mount(document.body, test); // ONMOUNT pass - 1
+      mount(document.body, test); // ONREMOUNT pass - 2
+      t.equals(document.body.outerHTML, '<body><test></test></body>'); // pass - 3
+      unmount(document.body, test.el); // ONUNMOUNT - 4
+      mount(document.body, test.el); // ONMOUNT - 5
+      mount(document.body, test.el); // ONREMOUNT - 6
+      unmount(document.body, test); // ONUNMOUNT - 7
+      t.equals(document.body.outerHTML, '<body></body>'); // pass - 8
     });
     t.test('special cases', function (t) {
       t.plan(1);
-      function Td () {
+      function Td() {
         this.el = el('td');
       }
       Td.prototype.update = function (data) {
         this.el.textContent = data;
       };
-      function Tr () {
+      function Tr() {
         this.el = list('tr', Td);
       }
       Tr.prototype.update = function (data) {
         this.el.update(data);
       };
-      function Table () {
+      function Table() {
         this.el = list('table', Tr);
       }
       Table.prototype.update = function (data) {
@@ -472,7 +497,7 @@ module.exports = function (redom) {
     t.test('child view', function (t) {
       t.plan(1);
 
-      function Circle () {
+      function Circle() {
         this.el = svg('circle', { cx: 1, cy: 2, r: 3 });
       }
 
@@ -499,14 +524,14 @@ module.exports = function (redom) {
   });
   test('router', function (t) {
     t.plan(2);
-    function A () {
+    function A() {
       this.el = el('a');
     }
     A.prototype.update = function (val) {
       this.el.textContent = val;
     };
 
-    function B () {
+    function B() {
       this.el = el('b');
     }
 
@@ -527,29 +552,29 @@ module.exports = function (redom) {
     t.plan(1);
     var logs = [];
 
-    var nApexes = 30;
-    var nLeaves = 20;
-    var nBranches = 10;
+    var nApexes = 3;
+    var nLeaves = 2;
+    var nBranches = 1;
 
-    function Base (name, content) {
-      var el = html('', content);
+    function Base(name, content) {
+      var _el = html('', content);
 
-      function onmount () {
-        logs.push(name + ' mounted: ' + (typeof el.getBoundingClientRect()));
+      function onmount() {
+        logs.push(name + ' mounted: ' + (typeof _el.getBoundingClientRect()));
       }
 
-      function onunmount () {
-        logs.push(name + ' unmounting: ' + (typeof el.getBoundingClientRect()));
+      function onunmount() {
+        logs.push(name + ' unmount: ' + (typeof _el.getBoundingClientRect()));
       }
 
-      return { el, onmount, onunmount };
+      return { el: _el, onmount, onunmount };
     }
 
-    function Apex () {
+    function Apex() {
       return Base('Apex');
     }
 
-    function Leaf () {
+    function Leaf() {
       var size = nApexes;
       var apexes = [];
       for (var i = 0; i < size; i++) {
@@ -558,7 +583,7 @@ module.exports = function (redom) {
       return Base('Leaf', apexes);
     }
 
-    function Branch () {
+    function Branch() {
       var size = nLeaves;
       var leaves = [];
       for (var i = 0; i < size; i++) {
@@ -567,7 +592,7 @@ module.exports = function (redom) {
       return Base('Branch', leaves);
     }
 
-    function Tree () {
+    function Tree() {
       var size = nBranches;
       var branches = [];
       for (var i = 0; i < size; i++) {
@@ -581,48 +606,25 @@ module.exports = function (redom) {
     expectedLog.push('Tree mounted: object');
     for (let i = 0; i < nBranches; i++) {
       expectedLog.push('Branch mounted: object');
-    }
-    for (let j = 0; j < nBranches * nLeaves; j++) {
-      expectedLog.push('Leaf mounted: object');
-    }
-    for (let k = 0; k < nBranches * nLeaves * nApexes; k++) {
-      expectedLog.push('Apex mounted: object');
-    }
-    // onunmount -- unmounting
-    expectedLog.push('Tree unmounting: object');
-    for (let i = 0; i < nBranches; i++) {
-      expectedLog.push('Branch unmounting: object');
-    }
-    for (let j = 0; j < nBranches * nLeaves; j++) {
-      expectedLog.push('Leaf unmounting: object');
-    }
-    for (let k = 0; k < nBranches * nLeaves * nApexes; k++) {
-      expectedLog.push('Apex unmounting: object');
+      for (let j = 0; j < nLeaves; j++) {
+        expectedLog.push('Leaf mounted: object');
+        for (let k = 0; k < nApexes; k++) {
+          expectedLog.push('Apex mounted: object');
+        }
+      }
     }
 
-    // // DOM logical ordering
-    // expectedLog.push('Tree mounted: object');
-    // for (let i = 0; i < nBranches; i++) {
-    //   expectedLog.push('Branch mounted: object');
-    //   for (let j = 0; j < nBranches * nLeaves; j++) {
-    //     expectedLog.push('Leaf mounted: object');
-    //     for (let k = 0; k < nBranches * nLeaves * nApexes; k++) {
-    //       expectedLog.push('Apex mounted: object');
-    //     }
-    //   }
-    // }
-    // // (reversed when unmounting)
-    // // onunmount -- unmounting
-    // for (let i = 0; i < nBranches; i++) {
-    //   for (let j = 0; j < nBranches * nLeaves; j++) {
-    //     for (let k = 0; k < nBranches * nLeaves * nApexes; k++) {
-    //       expectedLog.push('Apex unmount: object');
-    //     }
-    //     expectedLog.push('Leaf unmount: object');
-    //   }
-    //   expectedLog.push('Branch unmount: object');
-    // }
-    // expectedLog.push('Tree unmount: object');
+    // onunmount -- unmounting
+    for (let i = 0; i < nBranches; i++) {
+      for (let j = 0; j < nLeaves; j++) {
+        for (let k = 0; k < nApexes; k++) {
+          expectedLog.push('Apex unmount: object');
+        }
+        expectedLog.push('Leaf unmount: object');
+      }
+      expectedLog.push('Branch unmount: object');
+    }
+    expectedLog.push('Tree unmount: object');
 
     var tree = Tree();
     mount(document.body, tree);
