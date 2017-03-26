@@ -36,12 +36,13 @@
       }
 
       const app = new App();
+      const container = el('.test', app);
 
-      mount(document.body, app);
-      mount(document.body, app);
-      mount(document.head, app);
-      mount(document.body, app);
-      unmount(document.body, app);
+      mount(document.body, container);
+      mount(document.body, container);
+      mount(document.head, container);
+      mount(document.body, container);
+      unmount(document.body, container);
     </script>
   </body>
 </html>

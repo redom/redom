@@ -56,16 +56,14 @@ function doMount (child, childEl, parentEl, oldParent) {
   var remount = (parentEl === oldParent);
   var hooksFound = false;
 
-  if (child !== childEl) {
-    for (var i = 0; i < hookNames.length; i++) {
-      var hookName = hookNames[i];
+  for (var i = 0; i < hookNames.length; i++) {
+    var hookName = hookNames[i];
 
-      if (!remount && (hookName in child)) {
-        hooks[hookName] = (hooks[hookName] || 0) + 1;
-      }
-      if (hooks[hookName]) {
-        hooksFound = true;
-      }
+    if (!remount && (child !== childEl) && (hookName in child)) {
+      hooks[hookName] = (hooks[hookName] || 0) + 1;
+    }
+    if (hooks[hookName]) {
+      hooksFound = true;
     }
   }
 
@@ -77,7 +75,7 @@ function doMount (child, childEl, parentEl, oldParent) {
   var triggered = false;
 
   if (remount || (!triggered && (traverse && traverse.__redom_mounted))) {
-    trigger(childEl, remount ? 'onremount' : 'onmount');
+    trigger([childEl], remount ? 'onremount' : 'onmount');
     triggered = true;
   }
 
@@ -94,7 +92,7 @@ function doMount (child, childEl, parentEl, oldParent) {
     }
 
     if (!triggered && (traverse === document || (parent && parent.__redom_mounted))) {
-      trigger(traverse, remount ? 'onremount' : 'onmount');
+      trigger([traverse], remount ? 'onremount' : 'onmount');
       triggered = true;
     }
 
@@ -112,7 +110,7 @@ function doUnmount (child, childEl, parentEl) {
   var traverse = parentEl;
 
   if (childEl.__redom_mounted) {
-    trigger(childEl, 'onunmount');
+    trigger([childEl], 'onunmount');
   }
 
   while (traverse) {
@@ -138,50 +136,39 @@ function doUnmount (child, childEl, parentEl) {
   }
 }
 
-function trigger (childEl, eventName) {
-  var children = [childEl];
+function trigger (children, eventName) {
+  for (var i = 0; i < children.length; i++) {
+    var childEl = children[i];
 
-  while (children && children.length) {
-    var newChildren = [];
+    if (eventName === 'onmount') {
+      childEl.__redom_mounted = true;
+    } else if (eventName === 'onunmount') {
+      childEl.__redom_mounted = false;
+    }
 
-    for (var i = 0; i < children.length; i++) {
-      var childEl$1 = children[i];
+    var hooks = childEl.__redom_lifecycle;
 
-      if (eventName === 'onmount') {
-        childEl$1.__redom_mounted = true;
-      } else if (eventName === 'onunmount') {
-        childEl$1.__redom_mounted = false;
-      }
+    if (!hooks) {
+      continue;
+    }
 
-      var hooks = childEl$1.__redom_lifecycle;
+    var view = childEl.__redom_view;
+    var hookCount = 0;
 
-      if (!hooks) {
-        continue;
-      }
+    view && view[eventName] && view[eventName]();
 
-      var view = childEl$1.__redom_view;
-      var hookCount = 0;
-
-      view && view[eventName] && view[eventName]();
-
-      for (var hook in hooks) {
-        if (hook) {
-          hookCount++;
-        }
-      }
-
-      if (!hookCount) {
-        continue;
-      }
-
-      var grandChildren = childEl$1.childNodes;
-
-      for (var i$1 = 0; i$1 < grandChildren.length; i$1++) {
-        newChildren.push(grandChildren[i$1]);
+    for (var hook in hooks) {
+      if (hook) {
+        hookCount++;
       }
     }
 
-    children = newChildren;
+    if (!hookCount) {
+      continue;
+    }
+
+    var grandChildren = childEl.childNodes;
+    trigger(grandChildren, eventName);
   }
 }
 
