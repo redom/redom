@@ -56,16 +56,14 @@ function doMount (child, childEl, parentEl, oldParent) {
   var remount = (parentEl === oldParent);
   var hooksFound = false;
 
-  if (child !== childEl) {
-    for (var i = 0; i < hookNames.length; i++) {
-      var hookName = hookNames[i];
+  for (var i = 0; i < hookNames.length; i++) {
+    var hookName = hookNames[i];
 
-      if (!remount && (hookName in child)) {
-        hooks[hookName] = (hooks[hookName] || 0) + 1;
-      }
-      if (hooks[hookName]) {
-        hooksFound = true;
-      }
+    if (!remount && (child !== childEl) && (hookName in child)) {
+      hooks[hookName] = (hooks[hookName] || 0) + 1;
+    }
+    if (hooks[hookName]) {
+      hooksFound = true;
     }
   }
 
@@ -138,50 +136,40 @@ function doUnmount (child, childEl, parentEl) {
   }
 }
 
-function trigger (childEl, eventName) {
-  var children = [childEl];
+function trigger (el, eventName) {
+  if (eventName === 'onmount') {
+    el.__redom_mounted = true;
+  } else if (eventName === 'onunmount') {
+    el.__redom_mounted = false;
+  }
 
-  while (children && children.length) {
-    var newChildren = [];
+  var hooks = el.__redom_lifecycle;
 
-    for (var i = 0; i < children.length; i++) {
-      var childEl$1 = children[i];
+  if (!hooks) {
+    return;
+  }
 
-      if (eventName === 'onmount') {
-        childEl$1.__redom_mounted = true;
-      } else if (eventName === 'onunmount') {
-        childEl$1.__redom_mounted = false;
-      }
+  var view = el.__redom_view;
+  var hookCount = 0;
 
-      var hooks = childEl$1.__redom_lifecycle;
+  view && view[eventName] && view[eventName]();
 
-      if (!hooks) {
-        continue;
-      }
-
-      var view = childEl$1.__redom_view;
-      var hookCount = 0;
-
-      view && view[eventName] && view[eventName]();
-
-      for (var hook in hooks) {
-        if (hook) {
-          hookCount++;
-        }
-      }
-
-      if (!hookCount) {
-        continue;
-      }
-
-      var grandChildren = childEl$1.childNodes;
-
-      for (var i$1 = 0; i$1 < grandChildren.length; i$1++) {
-        newChildren.push(grandChildren[i$1]);
-      }
+  for (var hook in hooks) {
+    if (hook) {
+      hookCount++;
     }
+  }
 
-    children = newChildren;
+  if (hookCount) {
+    var traverse = el.firstChild;
+
+    while (traverse) {
+      var next = traverse.nextSibling;
+
+      trigger(traverse, eventName);
+
+      traverse = next;
+    }
   }
 }
 
