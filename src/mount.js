@@ -73,7 +73,7 @@ function doMount (child, childEl, parentEl, oldParent) {
   let triggered = false;
 
   if (remount || (!triggered && (traverse && traverse.__redom_mounted))) {
-    trigger([childEl], remount ? 'onremount' : 'onmount');
+    trigger(childEl, remount ? 'onremount' : 'onmount');
     triggered = true;
   }
 
@@ -90,7 +90,7 @@ function doMount (child, childEl, parentEl, oldParent) {
     }
 
     if (!triggered && (traverse === document || (parent && parent.__redom_mounted))) {
-      trigger([traverse], remount ? 'onremount' : 'onmount');
+      trigger(traverse, remount ? 'onremount' : 'onmount');
       triggered = true;
     }
 
@@ -108,7 +108,7 @@ function doUnmount (child, childEl, parentEl) {
   let traverse = parentEl;
 
   if (childEl.__redom_mounted) {
-    trigger([childEl], 'onunmount');
+    trigger(childEl, 'onunmount');
   }
 
   while (traverse) {
@@ -134,38 +134,39 @@ function doUnmount (child, childEl, parentEl) {
   }
 }
 
-function trigger (children, eventName) {
-  for (let i = 0; i < children.length; i++) {
-    const childEl = children[i];
+function trigger (el, eventName) {
+  if (eventName === 'onmount') {
+    el.__redom_mounted = true;
+  } else if (eventName === 'onunmount') {
+    el.__redom_mounted = false;
+  }
 
-    if (eventName === 'onmount') {
-      childEl.__redom_mounted = true;
-    } else if (eventName === 'onunmount') {
-      childEl.__redom_mounted = false;
+  const hooks = el.__redom_lifecycle;
+
+  if (!hooks) {
+    return;
+  }
+
+  const view = el.__redom_view;
+  let hookCount = 0;
+
+  view && view[eventName] && view[eventName]();
+
+  for (const hook in hooks) {
+    if (hook) {
+      hookCount++;
     }
+  }
 
-    const hooks = childEl.__redom_lifecycle;
+  if (hookCount) {
+    let traverse = el.firstChild;
 
-    if (!hooks) {
-      continue;
+    while (traverse) {
+      const next = traverse.nextSibling;
+
+      trigger(traverse, eventName);
+
+      traverse = next;
     }
-
-    const view = childEl.__redom_view;
-    let hookCount = 0;
-
-    view && view[eventName] && view[eventName]();
-
-    for (const hook in hooks) {
-      if (hook) {
-        hookCount++;
-      }
-    }
-
-    if (!hookCount) {
-      continue;
-    }
-
-    const grandChildren = childEl.childNodes;
-    trigger(grandChildren, eventName);
   }
 }
