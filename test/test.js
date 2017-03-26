@@ -615,16 +615,16 @@ module.exports = function (redom) {
     }
 
     // onunmount -- unmounting
+    expectedLog.push('Tree unmount: object');
     for (let i = 0; i < nBranches; i++) {
+      expectedLog.push('Branch unmount: object');
       for (let j = 0; j < nLeaves; j++) {
+        expectedLog.push('Leaf unmount: object');
         for (let k = 0; k < nApexes; k++) {
           expectedLog.push('Apex unmount: object');
         }
-        expectedLog.push('Leaf unmount: object');
       }
-      expectedLog.push('Branch unmount: object');
     }
-    expectedLog.push('Tree unmount: object');
 
     var tree = Tree();
     mount(document.body, tree);
