@@ -343,7 +343,7 @@ module.exports = function (redom) {
     t.test('extend', function (t) {
       t.plan(1);
 
-      function Td() {
+      function Td () {
         this.el = el('td');
         this.update = function (data) {
           this.el.textContent = data;
