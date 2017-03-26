@@ -71,7 +71,7 @@ function doMount (child, childEl, parentEl, oldParent) {
   var triggered = false;
 
   if (remount || (!triggered && (traverse && traverse.__redom_mounted))) {
-    trigger([childEl], remount ? 'onremount' : 'onmount');
+    trigger(childEl, remount ? 'onremount' : 'onmount');
     triggered = true;
   }
 
@@ -88,7 +88,7 @@ function doMount (child, childEl, parentEl, oldParent) {
     }
 
     if (!triggered && (traverse === document || (parent && parent.__redom_mounted))) {
-      trigger([traverse], remount ? 'onremount' : 'onmount');
+      trigger(traverse, remount ? 'onremount' : 'onmount');
       triggered = true;
     }
 
@@ -106,7 +106,7 @@ function doUnmount (child, childEl, parentEl) {
   var traverse = parentEl;
 
   if (childEl.__redom_mounted) {
-    trigger([childEl], 'onunmount');
+    trigger(childEl, 'onunmount');
   }
 
   while (traverse) {
@@ -132,39 +132,40 @@ function doUnmount (child, childEl, parentEl) {
   }
 }
 
-function trigger (children, eventName) {
-  for (var i = 0; i < children.length; i++) {
-    var childEl = children[i];
+function trigger (el, eventName) {
+  if (eventName === 'onmount') {
+    el.__redom_mounted = true;
+  } else if (eventName === 'onunmount') {
+    el.__redom_mounted = false;
+  }
 
-    if (eventName === 'onmount') {
-      childEl.__redom_mounted = true;
-    } else if (eventName === 'onunmount') {
-      childEl.__redom_mounted = false;
+  var hooks = el.__redom_lifecycle;
+
+  if (!hooks) {
+    return;
+  }
+
+  var view = el.__redom_view;
+  var hookCount = 0;
+
+  view && view[eventName] && view[eventName]();
+
+  for (var hook in hooks) {
+    if (hook) {
+      hookCount++;
     }
+  }
 
-    var hooks = childEl.__redom_lifecycle;
+  if (hookCount) {
+    var traverse = el.firstChild;
 
-    if (!hooks) {
-      continue;
+    while (traverse) {
+      var next = traverse.nextSibling;
+
+      trigger(traverse, eventName);
+
+      traverse = next;
     }
-
-    var view = childEl.__redom_view;
-    var hookCount = 0;
-
-    view && view[eventName] && view[eventName]();
-
-    for (var hook in hooks) {
-      if (hook) {
-        hookCount++;
-      }
-    }
-
-    if (!hookCount) {
-      continue;
-    }
-
-    var grandChildren = childEl.childNodes;
-    trigger(grandChildren, eventName);
   }
 }
 
