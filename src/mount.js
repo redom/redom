@@ -115,14 +115,12 @@ function doUnmount (child, childEl, parentEl) {
     const parentHooks = traverse.__redom_lifecycle;
     let hooksFound = false;
 
-    if (hooks) {
-      for (const hook in hooks) {
-        if (parentHooks[hook]) {
-          parentHooks[hook] -= hooks[hook];
-        }
-        if (parentHooks[hook]) {
-          hooksFound = true;
-        }
+    for (const hook in hooks) {
+      if (parentHooks[hook]) {
+        parentHooks[hook] -= hooks[hook];
+      }
+      if (parentHooks[hook]) {
+        hooksFound = true;
       }
     }
 

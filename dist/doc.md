@@ -219,7 +219,7 @@ Please use `mount`/`unmount`/`setChildren` every time you need to mount/unmount 
 ### Mount
 You can mount elements/components with `mount(parent, child, [before])`. If you define the third parameter, it works like `insertBefore` and otherwise it's like `appendChild`.
 
-Mount will trigger the `mount` [lifecycle event](#component-lifecycle) the first time you mount a child. If you mount the same child again to the same parent, `remount` gets called. If you mount it to another place, `unmount` and `mount` get called. Read more about lifecycle events [here](#component-lifecycle).
+Mount will trigger the `mount` [lifecycle event](#component-lifecycle) the first time you mount a child. If you mount the same child again to the same parent, `remount` gets called. If you mount it to another place, `onunmount` and `onmount` get called. Read more about lifecycle events [here](#component-lifecycle).
 
 ```js
 import { el, mount } from 'redom';
@@ -335,11 +335,11 @@ class Image {
 ```
 
 ### Component lifecycle
-RE:DOM v2.0.0 supports true lifecycle events. Three events are defined: `mount`, `remount` and `unmount`.
+RE:DOM v2.0.0 supports true lifecycle events. Three events are defined: `onmount`, `onremount` and `onunmount`.
 
-* First time you mount the element, `mount` gets called.
-* If you mount the same element again to the same parent, `remount` gets called.
-* If you move an element from a parent to another parent, `unmount` gets called.
+* First time you mount the element, `onmount` gets called.
+* If you mount the same element again to the same parent, `onremount` gets called.
+* If you move an element from a parent to another parent, `onunmount` gets called.
 
 ```js
 import { el, mount } from 'redom';
@@ -368,10 +368,10 @@ class App {
   onmount () {
     console.log('mounted App');
   }
-  remount () {
+  onremount () {
     console.log('remounted App');
   }
-  unmount () {
+  onunmount () {
     console.log('unmounted App');
   }
 }
