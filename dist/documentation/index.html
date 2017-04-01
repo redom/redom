@@ -177,7 +177,7 @@ mount(document.body, drawing);
     <p>Please use <code>mount</code>/<code>unmount</code>/<code>setChildren</code> every time you need to mount/unmount elements inside a RE:DOM app. These functions will trigger lifecycle events, add references to components etc.</p>
     <h3 id="mount">Mount</h3>
     <p>You can mount elements/components with <code>mount(parent, child, [before])</code>. If you define the third parameter, it works like <code>insertBefore</code> and otherwise it&#39;s like <code>appendChild</code>.</p>
-    <p>Mount will trigger the <code>mount</code> <a href="#component-lifecycle">lifecycle event</a> the first time you mount a child. If you mount the same child again to the same parent, <code>remount</code> gets called. If you mount it to another place, <code>unmount</code> and <code>mount</code> get called. Read more about lifecycle events <a href="#component-lifecycle">here</a>.</p>
+    <p>Mount will trigger the <code>mount</code> <a href="#component-lifecycle">lifecycle event</a> the first time you mount a child. If you mount the same child again to the same parent, <code>remount</code> gets called. If you mount it to another place, <code>onunmount</code> and <code>onmount</code> get called. Read more about lifecycle events <a href="#component-lifecycle">here</a>.</p>
     <pre><code class="lang-js">import { el, mount } from &#39;redom&#39;;
 
 const hello = el(&#39;h1&#39;, &#39;Hello RE:DOM!&#39;);
@@ -272,11 +272,11 @@ class Image {
 }
     </code></pre>
     <h3 id="component-lifecycle">Component lifecycle</h3>
-    <p>RE:DOM v2.0.0 supports true lifecycle events. Three events are defined: <code>mount</code>, <code>remount</code> and <code>unmount</code>.</p>
+    <p>RE:DOM v2.0.0 supports true lifecycle events. Three events are defined: <code>onmount</code>, <code>onremount</code> and <code>onunmount</code>.</p>
     <ul>
-    <li>First time you mount the element, <code>mount</code> gets called.</li>
-    <li>If you mount the same element again to the same parent, <code>remount</code> gets called.</li>
-    <li>If you move an element from a parent to another parent, <code>unmount</code> gets called.</li>
+    <li>First time you mount the element, <code>onmount</code> gets called.</li>
+    <li>If you mount the same element again to the same parent, <code>onremount</code> gets called.</li>
+    <li>If you move an element from a parent to another parent, <code>onunmount</code> gets called.</li>
     </ul>
     <pre><code class="lang-js">import { el, mount } from &#39;redom&#39;;
 
@@ -304,10 +304,10 @@ class App {
   onmount () {
     console.log(&#39;mounted App&#39;);
   }
-  remount () {
+  onremount () {
     console.log(&#39;remounted App&#39;);
   }
-  unmount () {
+  onunmount () {
     console.log(&#39;unmounted App&#39;);
   }
 }
