@@ -23,7 +23,7 @@ https://www.youtube.com/watch?v=0nh2EK1xveg
 # Server-side rendering
 https://github.com/pakastin/nodom
 
-# Launch fast with project generator!
+# Launch fast with project generator! 🚀
 https://github.com/pakastin/redom-cli
 
 ## License
