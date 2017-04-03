@@ -162,23 +162,6 @@ mount(document.body, hello);</code></pre>
   &lt;h1&gt;Hello world!&lt;/h1&gt;
 &lt;/body&gt;</code></pre>
 
-      <h2>..also oldskool</h2>
-      <pre><code class="language-markup">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;body&gt;
-    &lt;script src="https://redom.js.org/redom.min.js"&gt;&lt;/script&gt;
-    &lt;script&gt;
-      var el = redom.el;
-      var mount = redom.mount;
-
-      var hello = el('h1', 'Hello world!');
-
-      mount(document.body, hello);
-    &lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-        </code></pre>
-
       <h2>Add attributes</h2>
       <pre><code class="language-js">import { el, mount } from 'redom';
 
