@@ -1,3 +1,65 @@
+var HASH = '#'.charCodeAt(0);
+var DOT = '.'.charCodeAt(0);
+
+function createElement (query, ns) {
+  var tag;
+  var id;
+  var className;
+
+  var mode = 0;
+  var start = 0;
+
+  for (var i = 0; i <= query.length; i++) {
+    var char = query.charCodeAt(i);
+
+    if (char === HASH || char === DOT || !char) {
+      if (mode === 0) {
+        if (i === 0) {
+          tag = 'div';
+        } else if (!char) {
+          tag = query;
+        } else {
+          tag = query.substring(start, i);
+        }
+      } else {
+        var slice = query.substring(start, i);
+
+        if (mode === 1) {
+          id = slice;
+        } else if (className) {
+          className += ' ' + slice;
+        } else {
+          className = slice;
+        }
+      }
+
+      start = i + 1;
+
+      if (char === HASH) {
+        mode = 1;
+      } else {
+        mode = 2;
+      }
+    }
+  }
+
+  var element = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
+
+  if (id) {
+    element.id = id;
+  }
+
+  if (className) {
+    if (ns) {
+      element.setAttribute('class', className);
+    } else {
+      element.className = className;
+    }
+  }
+
+  return element;
+}
+
 var hookNames = ['onmount', 'onunmount'];
 
 function mount (parent, child, before) {
@@ -202,7 +264,7 @@ function setAttr (view, arg1, arg2) {
   }
 }
 
-var text = function (str) { return doc.createTextNode(str); };
+var text = function (str) { return document.createTextNode(str); };
 
 function parseArguments (element, args) {
   for (var i = 0; i < args.length; i++) {
@@ -235,71 +297,6 @@ var isNumber = function (a) { return typeof a === 'number'; };
 var isFunction = function (a) { return typeof a === 'function'; };
 
 var isNode = function (a) { return a && a.nodeType; };
-
-
-var doc = document;
-
-var HASH = '#'.charCodeAt(0);
-var DOT = '.'.charCodeAt(0);
-
-function createElement (query, ns) {
-  var tag;
-  var id;
-  var className;
-
-  var mode = 0;
-  var start = 0;
-
-  for (var i = 0; i <= query.length; i++) {
-    var char = query.charCodeAt(i);
-
-    if (char === HASH || char === DOT || !char) {
-      if (mode === 0) {
-        if (i === 0) {
-          tag = 'div';
-        } else if (!char) {
-          tag = query;
-        } else {
-          tag = query.substring(start, i);
-        }
-      } else {
-        var slice = query.substring(start, i);
-
-        if (mode === 1) {
-          id = slice;
-        } else if (className) {
-          className += ' ' + slice;
-        } else {
-          className = slice;
-        }
-      }
-
-      start = i + 1;
-
-      if (char === HASH) {
-        mode = 1;
-      } else {
-        mode = 2;
-      }
-    }
-  }
-
-  var element = ns ? doc.createElementNS(ns, tag) : doc.createElement(tag);
-
-  if (id) {
-    element.id = id;
-  }
-
-  if (className) {
-    if (ns) {
-      element.setAttribute('class', className);
-    } else {
-      element.className = className;
-    }
-  }
-
-  return element;
-}
 
 var htmlCache = {};
 
