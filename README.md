@@ -5,6 +5,8 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=60)](https://twitter.com/pakastin)
 
 # RE:DOM
+
+[![Join the chat at https://gitter.im/pakastin/redom](https://badges.gitter.im/pakastin/redom.svg)](https://gitter.im/pakastin/redom?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Develop web apps with 100 % JavaScript and web standards. Size ~2 KB gzipped.
 
 ![RE:DOM](https://redom.js.org/img/logo.svg)
