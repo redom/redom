@@ -35,5 +35,3 @@ export const isFunction = a => typeof a === 'function';
 
 export const isNode = a => a && a.nodeType;
 export const isList = a => a && a.__redom_list;
-
-export const doc = document;

@@ -1,3 +1,1 @@
-import { doc } from './util';
-
-export const text = str => doc.createTextNode(str);
+export const text = str => document.createTextNode(str);
