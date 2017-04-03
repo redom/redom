@@ -17,7 +17,7 @@ fs.writeFileSync('dist/documentation/index.html',
   </head>
   <body>
     <div id="doc">
-      ${html.split('\n<').join('\n    <')}
+      ${html.split('\n<').join('\n      <')}
     </div>
     <script src="main.js"></script>
     <script src="../prism.js"></script>
