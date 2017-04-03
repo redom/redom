@@ -1,3 +1,4 @@
+[![Join the chat at https://gitter.im/pakastin/redom](https://badges.gitter.im/pakastin/redom.svg)](https://gitter.im/pakastin/redom?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Flet/semistandard)
 [![Build Status](https://img.shields.io/travis/pakastin/redom/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/pakastin/redom?branch=master)
 [![npm](https://img.shields.io/npm/v/redom.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/redom)
@@ -6,7 +7,6 @@
 
 # RE:DOM
 
-[![Join the chat at https://gitter.im/pakastin/redom](https://badges.gitter.im/pakastin/redom.svg)](https://gitter.im/pakastin/redom?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Develop web apps with 100 % JavaScript and web standards. Size ~2 KB gzipped.
 
 ![RE:DOM](https://redom.js.org/img/logo.svg)
