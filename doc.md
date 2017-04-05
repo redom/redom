@@ -28,6 +28,9 @@ You can also use the project generator, which will also install a file watcher a
 ### Server-side use
 RE:DOM also works on server side, by using [NO:DOM](https://github.com/pakastin/nodom).
 
+### RE:DOM dev tools for Chrome
+You can install [RE:DOM dev tools for Chrome](https://github.com/pakastin/redom-devtools)
+![RE:DOM dev tools](screenshot.png)
 ## Elements
 
 `el` ([alias](#alias): `html`) is a helper for `document.createElement` with couple of differences.
