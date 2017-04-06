@@ -28,5 +28,8 @@ https://github.com/pakastin/nodom
 # Launch fast with project generator! 🚀
 https://github.com/pakastin/redom-cli
 
+# Dev tools for Chrome
+https://github.com/pakastin/redom-devtools
+
 ## License
 [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
