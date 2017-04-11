@@ -33,7 +33,11 @@ function addItem (menu, child) {
   var link = document.createElement('a');
   var indentation = parseInt(child.tagName.slice(1), 10) - 2;
 
-  item.className = 'menu-item';
+  if (indentation) {
+    item.className = 'menu-item menu-item-' + (indentation + 1);
+  } else {
+    item.className = 'menu-item';
+  }
   item.style.paddingLeft = indentation + 'rem';
 
   link.textContent = child.textContent;

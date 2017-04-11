@@ -90,6 +90,10 @@ pre > code {
   padding: .125rem 0;
 }
 
+#menu .menu-item + .menu-item:not(.menu-item-2) {
+  padding-top: 1.125rem;
+}
+
 #menu .menu-item a {
   display: block;
 }
