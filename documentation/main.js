@@ -34,7 +34,7 @@ function addItem (menu, child) {
   var indentation = parseInt(child.tagName.slice(1), 10) - 2;
 
   if (indentation) {
-    item.className = 'menu-item menu-item-' + (indentation + 1);
+    item.className = 'menu-item menu-sub-item';
   } else {
     item.className = 'menu-item';
   }
