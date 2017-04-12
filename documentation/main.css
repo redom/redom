@@ -36,6 +36,11 @@ p {
   margin: 1.5em 0;
 }
 
+li {
+  line-height: 1.5;
+  max-width: 35rem;
+}
+
 strong {
   font-weight: 600;
 }
