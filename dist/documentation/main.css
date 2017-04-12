@@ -110,6 +110,7 @@ pre > code {
   display: block;
   width: 5rem;
   margin: 2rem 0;
+  margin-left: .75rem;
 }
 
 a {
