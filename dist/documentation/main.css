@@ -11,10 +11,13 @@ body {
 h1, h2 {
   font-weight: 700;
   letter-spacing: -0.025em;
+  margin-top: 6rem;
+  margin-bottom: 3rem;
 }
 
 h3, h4 {
-  margin-top: 1.5em;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
   font-weight: 600;
 }
 
