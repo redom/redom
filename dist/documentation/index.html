@@ -39,7 +39,6 @@ const hello = el(&#39;h1&#39;, &#39;Hello RE:DOM!&#39;);
 
 mount(document.body, hello);
       </code></pre>
-      <p>–&gt;</p>
       <pre><code class="lang-html">&lt;body&gt;
   &lt;h1&gt;Hello RE:DOM!&lt;/h1&gt;
 &lt;/body&gt;
@@ -54,7 +53,6 @@ mount(document.body, hello);
 
 hello.textContent = &#39;hi!&#39;;
       </code></pre>
-      <p>–&gt;</p>
       <pre><code class="lang-html">&lt;body&gt;hi!&lt;/body&gt;
       </code></pre>
       <h3 id="id-and-class-names">ID and class names</h3>
@@ -64,7 +62,6 @@ el(&#39;#hello&#39;)
 el(&#39;.hello&#39;)
 el(&#39;span.hello&#39;)
       </code></pre>
-      <p>–&gt;</p>
       <pre><code class="lang-html">&lt;div&gt;&lt;/div&gt;
 &lt;div id=&quot;hello&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;hello&quot;&gt;&lt;/div&gt;
@@ -75,7 +72,6 @@ el(&#39;span.hello&#39;)
       <pre><code class="lang-js">el(&#39;div&#39;, { style: &#39;color: red;&#39; })
 el(&#39;div&#39;, { style: { color: &#39;red&#39; } })
       </code></pre>
-      <p>–&gt;</p>
       <pre><code class="lang-html">&lt;div style=&quot;color: red;&quot;&gt;&lt;/div&gt;
 &lt;div style=&quot;color: red;&quot;&gt;&lt;/div&gt;
       </code></pre>
@@ -83,7 +79,6 @@ el(&#39;div&#39;, { style: { color: &#39;red&#39; } })
       <p>Properties and attributes are auto-detected:</p>
       <pre><code class="lang-js">el(&#39;input&#39;, { type=&quot;email&quot;, autofocus: true, value: &#39;foo&#39; })
       </code></pre>
-      <p>–&gt;</p>
       <pre><code class="lang-html">&lt;input type=&quot;email&quot; autofocus&gt; // $0.value === &#39;foo&#39;
       </code></pre>
       <h3 id="children">Children</h3>
@@ -94,7 +89,6 @@ el(&#39;div&#39;, { style: { color: &#39;red&#39; } })
   )
 )
       </code></pre>
-      <p>–&gt;</p>
       <pre><code class="lang-html">&lt;a&gt;
   &lt;b&gt;
     &lt;c&gt;&lt;/c&gt;
@@ -108,7 +102,6 @@ el(&#39;div&#39;, { style: { color: &#39;red&#39; } })
   el(&#39;c&#39;)
 ]);
       </code></pre>
-      <p>–&gt;</p>
       <pre><code class="lang-html">&lt;a&gt;
   &lt;b&gt;&lt;/b&gt;
   &lt;c&gt;&lt;/c&gt;
@@ -129,7 +122,6 @@ function middleware (el) {
   el.className = &#39;hello&#39;;
 }
       </code></pre>
-      <p>–&gt;</p>
       <pre><code class="lang-html">&lt;h1 class=&quot;hello&quot;&gt;Hello RE:DOM!&lt;/h1&gt;
       </code></pre>
       <h3 id="component-support">Component support</h3>
@@ -143,7 +135,6 @@ el(&#39;a&#39;,
   new B()
 )
       </code></pre>
-      <p>–&gt;</p>
       <pre><code class="lang-html">&lt;a&gt;
   &lt;b&gt;&lt;/b&gt;
 &lt;/a&gt;
@@ -155,7 +146,6 @@ el(&#39;a&#39;,
 el(&#39;div&#39;)
 html(&#39;div&#39;)
       </code></pre>
-      <p>–&gt;</p>
       <pre><code class="lang-html">&lt;div&gt;&lt;/div&gt;
 &lt;div&gt;&lt;/div&gt;
       </code></pre>
@@ -169,7 +159,6 @@ const drawing = svg(&#39;svg&#39;,
 
 mount(document.body, drawing);
       </code></pre>
-      <p>–&gt;</p>
       <pre><code class="lang-html">&lt;body&gt;
   &lt;svg&gt;
     &lt;circle r=&quot;50&quot; cx=&quot;25&quot; cy=&quot;25&quot;&gt;&lt;/circle&gt;
@@ -206,7 +195,6 @@ const c = el(&#39;c&#39;);
 setChildren(document.body, [a, b, c]);
 setChildren(document.body, [c, b]);
       </code></pre>
-      <p>–&gt;</p>
       <pre><code class="lang-html">&lt;body&gt;
   &lt;c&gt;&lt;/c&gt;
   &lt;b&gt;&lt;/b&gt;
@@ -322,7 +310,6 @@ mount(document.body, app);
 mount(document.head, app);
 unmount(document.head, app);
       </code></pre>
-      <p>–&gt;</p>
       <pre><code>mounted App
 mounted Hello
 remounted App

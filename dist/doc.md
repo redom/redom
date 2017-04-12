@@ -44,7 +44,6 @@ const hello = el('h1', 'Hello RE:DOM!');
 
 mount(document.body, hello);
 ```
-–>
 ```html
 <body>
   <h1>Hello RE:DOM!</h1>
@@ -62,7 +61,6 @@ mount(document.body, hello);
 
 hello.textContent = 'hi!';
 ```
-–>
 ```html
 <body>hi!</body>
 ```
@@ -75,7 +73,6 @@ el('#hello')
 el('.hello')
 el('span.hello')
 ```
-–>
 ```html
 <div></div>
 <div id="hello"></div>
@@ -89,7 +86,6 @@ You can define styles with strings or objects:
 el('div', { style: 'color: red;' })
 el('div', { style: { color: 'red' } })
 ```
-–>
 ```html
 <div style="color: red;"></div>
 <div style="color: red;"></div>
@@ -100,7 +96,6 @@ Properties and attributes are auto-detected:
 ```js
 el('input', { type="email", autofocus: true, value: 'foo' })
 ```
-–>
 ```html
 <input type="email" autofocus> // $0.value === 'foo'
 ```
@@ -115,7 +110,6 @@ el('a',
   )
 )
 ```
-–>
 ```html
 <a>
   <b>
@@ -133,7 +127,6 @@ el('a', [
   el('c')
 ]);
 ```
-–>
 ```html
 <a>
   <b></b>
@@ -159,7 +152,6 @@ function middleware (el) {
   el.className = 'hello';
 }
 ```
-–>
 ```html
 <h1 class="hello">Hello RE:DOM!</h1>
 ```
@@ -175,7 +167,6 @@ el('a',
   new B()
 )
 ```
-–>
 ```html
 <a>
   <b></b>
@@ -191,7 +182,6 @@ import { el, html } from 'redom';
 el('div')
 html('div')
 ```
-–>
 ```html
 <div></div>
 <div></div>
@@ -208,7 +198,6 @@ const drawing = svg('svg',
 
 mount(document.body, drawing);
 ```
-–>
 ```html
 <body>
   <svg>
@@ -256,7 +245,6 @@ const c = el('c');
 setChildren(document.body, [a, b, c]);
 setChildren(document.body, [c, b]);
 ```
-–>
 ```html
 <body>
   <c></c>
@@ -387,7 +375,6 @@ mount(document.body, app);
 mount(document.head, app);
 unmount(document.head, app);
 ```
-–>
 ```
 mounted App
 mounted Hello
