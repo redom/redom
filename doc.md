@@ -475,7 +475,7 @@ class Td {
 
 const Tr = list.extend('tr', Td);
 
-const table = el('table');
+const table = el('table', Tr);
 
 mount(document.body, table);
 ```
@@ -493,7 +493,7 @@ class Td {
 }
 class Tr {
   constructor () {
-    this.el = list('tr', Tr);
+    this.el = list('tr', Td);
   }
   update (data) {
     this.el.update(data);
@@ -519,7 +519,7 @@ class Td {
 class Tr {
   constructor () {
     this.el = el('tr');
-    this.list = list(this.el, Tr);
+    this.list = list(this.el, Td);
   }
   update (data) {
     this.list.update(data);
@@ -531,7 +531,7 @@ mount(document.body, table);
 ```
 or the other way around:
 ```js
-this.list = list('tr', Tr);
+this.list = list('tr', Td);
 this.el = this.list.el;
 ```
 
