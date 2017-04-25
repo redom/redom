@@ -7,3 +7,4 @@ export { setStyle } from './setstyle';
 export { setChildren } from './setchildren';
 export { svg } from './svg';
 export { text } from './text';
+export { hideable, hidable } from './hideable';

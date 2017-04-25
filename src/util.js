@@ -27,7 +27,7 @@ export function parseArguments (element, args) {
 }
 
 export const ensureEl = parent => isString(parent) ? html(parent) : getEl(parent);
-export const getEl = parent => (!parent.el && parent) || getEl(parent.el);
+export const getEl = parent => (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el);
 
 export const isString = a => typeof a === 'string';
 export const isNumber = a => typeof a === 'number';

@@ -296,7 +296,7 @@ function parseArguments (element, args) {
 }
 
 var ensureEl = function (parent) { return isString(parent) ? html(parent) : getEl(parent); };
-var getEl = function (parent) { return (!parent.el && parent) || getEl(parent.el); };
+var getEl = function (parent) { return (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el); };
 
 var isString = function (a) { return typeof a === 'string'; };
 var isNumber = function (a) { return typeof a === 'number'; };
@@ -485,6 +485,63 @@ svg.extend = function (query) {
   return svg.bind(this, clone);
 };
 
+function hideable (view) {
+  var el = view.el || view;
+  var placeholder = document.createTextNode('');
+  var update = view.update;
+  var visible = true;
+
+  view.show = function () {
+    if (visible) {
+      return;
+    }
+    if (view !== el) {
+      view.el = el;
+      view.update = update;
+    }
+
+    var parent = placeholder.parentNode;
+
+    if (parent) {
+      var next = placeholder.nextSibling;
+
+      mount(parent, view, next);
+      unmount(parent, placeholder);
+    }
+
+    visible = true;
+
+    return view;
+  };
+
+  view.hide = function () {
+    if (!visible) {
+      return;
+    }
+    var parent = el.parentNode;
+
+    if (parent) {
+      var next = el.nextSibling;
+
+      unmount(parent, view);
+      mount(parent, placeholder, next);
+    }
+
+    if (view !== el) {
+      view.el = placeholder;
+      view.update = function () {};
+    }
+
+    visible = false;
+
+    return view;
+  };
+
+  return view;
+}
+
+var hidable = hideable;
+
 exports.html = html;
 exports.el = el;
 exports.list = list;
@@ -498,6 +555,8 @@ exports.setStyle = setStyle;
 exports.setChildren = setChildren;
 exports.svg = svg;
 exports.text = text;
+exports.hideable = hideable;
+exports.hidable = hidable;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
