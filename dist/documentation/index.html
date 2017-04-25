@@ -397,7 +397,7 @@ setTimeout(() =&gt; {
 
 const Tr = list.extend(&#39;tr&#39;, Td);
 
-const table = el(&#39;table&#39;);
+const table = el(&#39;table&#39;, Tr);
 
 mount(document.body, table);
       </code></pre>
@@ -412,7 +412,7 @@ mount(document.body, table);
 }
 class Tr {
   constructor () {
-    this.el = list(&#39;tr&#39;, Tr);
+    this.el = list(&#39;tr&#39;, Td);
   }
   update (data) {
     this.el.update(data);
@@ -435,7 +435,7 @@ mount(document.body, table);
 class Tr {
   constructor () {
     this.el = el(&#39;tr&#39;);
-    this.list = list(this.el, Tr);
+    this.list = list(this.el, Td);
   }
   update (data) {
     this.list.update(data);
@@ -446,7 +446,7 @@ const table = el(&#39;table&#39;, Tr);
 mount(document.body, table);
       </code></pre>
       <p>or the other way around:</p>
-      <pre><code class="lang-js">this.list = list(&#39;tr&#39;, Tr);
+      <pre><code class="lang-js">this.list = list(&#39;tr&#39;, Td);
 this.el = this.list.el;
       </code></pre>
       <h2 id="router">Router</h2>
