@@ -120,3 +120,32 @@ a {
 a:not(:hover) {
   text-decoration: none;
 }
+
+@media (min-width: 1024px) {
+  #menu {
+    width: 20rem;
+    padding: 2rem;
+  }
+  #doc {
+    left: 20rem;
+    padding: 2rem 3rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  html {
+    font-size: 125%;
+  }
+}
+
+@media (max-width: 800px) {
+  html {
+    font-size: 87.5%;
+  }
+}
+
+@media (max-width: 640px) {
+  html {
+    font-size: 75%;
+  }
+}
