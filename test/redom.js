@@ -495,7 +495,9 @@ function hideable (view) {
     }
     if (view !== el) {
       view.el = el;
-      view.update = update;
+      if (update) {
+        view.update = update;
+      }
     }
 
     var parent = placeholder.parentNode;
@@ -527,7 +529,9 @@ function hideable (view) {
 
     if (view !== el) {
       view.el = placeholder;
-      view.update = function () {};
+      if (update) {
+        view.update = function () {};
+      }
     }
 
     visible = false;

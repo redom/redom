@@ -654,11 +654,15 @@ module.exports = function (redom) {
     t.equals(app.outerHTML, '<div class="app"><h1>Hello RE:DOM!</h1></div>');
   });
   test('hideable View', function (t) {
-    t.plan(3);
+    t.plan(5);
 
     function Hello () {
       this.el = el('h1', 'Hello RE:DOM!');
     }
+
+    Hello.prototype.update = () => {
+      t.pass('called update');
+    };
 
     var hello;
 
@@ -666,15 +670,21 @@ module.exports = function (redom) {
       hello = hideable(new Hello())
     );
 
+    hello.update();
+
     t.equals(app.outerHTML, '<div class="app"><h1>Hello RE:DOM!</h1></div>');
 
     hello.hide();
     hello.hide();
 
+    hello.update();
+
     t.equals(app.outerHTML, '<div class="app"></div>');
 
     hello.show();
     hello.show();
+
+    hello.update();
 
     t.equals(app.outerHTML, '<div class="app"><h1>Hello RE:DOM!</h1></div>');
   });

@@ -12,7 +12,9 @@ export function hideable (view) {
     }
     if (view !== el) {
       view.el = el;
-      view.update = update;
+      if (update) {
+        view.update = update;
+      }
     }
 
     const parent = placeholder.parentNode;
@@ -44,7 +46,9 @@ export function hideable (view) {
 
     if (view !== el) {
       view.el = placeholder;
-      view.update = () => {};
+      if (update) {
+        view.update = () => {};
+      }
     }
 
     visible = false;
