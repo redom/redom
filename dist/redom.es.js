@@ -270,7 +270,7 @@ function parseArguments (element, args) {
   for (var i = 0; i < args.length; i++) {
     var arg = args[i];
 
-    if (arg!==0 && !arg) {
+    if (arg !== 0 && !arg) {
       continue;
     }
 
