@@ -94,7 +94,7 @@ el('div', { style: { color: 'red' } })
 ### Attributes and properties
 Properties and attributes are auto-detected:
 ```js
-el('input', { type="email", autofocus: true, value: 'foo' })
+el('input', { type: 'email', autofocus: true, value: 'foo' })
 ```
 ```html
 <input type="email" autofocus> // $0.value === 'foo'
