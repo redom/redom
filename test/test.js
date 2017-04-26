@@ -5,7 +5,7 @@ var SVGElement = window.SVGElement;
 var CustomEvent = window.CustomEvent;
 
 module.exports = function (redom) {
-  var { el, html, list, router, svg, mount, unmount, setChildren, setAttr, setStyle, hideable } = redom;
+  var { el, html, list, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
 
   test('exports utils', function (t) {
     t.plan(2);
@@ -631,61 +631,5 @@ module.exports = function (redom) {
     unmount(document.body, tree);
 
     t.deepEqual(logs, expectedLog);
-  });
-  test('hideable el', function (t) {
-    t.plan(3);
-
-    var hello;
-
-    var app = el('.app',
-      hello = hideable(el('h1', 'Hello RE:DOM!'))
-    );
-
-    t.equals(app.outerHTML, '<div class="app"><h1>Hello RE:DOM!</h1></div>');
-
-    hello.hide();
-    hello.hide();
-
-    t.equals(app.outerHTML, '<div class="app"></div>');
-
-    hello.show();
-    hello.show();
-
-    t.equals(app.outerHTML, '<div class="app"><h1>Hello RE:DOM!</h1></div>');
-  });
-  test('hideable View', function (t) {
-    t.plan(5);
-
-    function Hello () {
-      this.el = el('h1', 'Hello RE:DOM!');
-    }
-
-    Hello.prototype.update = () => {
-      t.pass('called update');
-    };
-
-    var hello;
-
-    var app = el('.app',
-      hello = hideable(new Hello())
-    );
-
-    hello.update();
-
-    t.equals(app.outerHTML, '<div class="app"><h1>Hello RE:DOM!</h1></div>');
-
-    hello.hide();
-    hello.hide();
-
-    hello.update();
-
-    t.equals(app.outerHTML, '<div class="app"></div>');
-
-    hello.show();
-    hello.show();
-
-    hello.update();
-
-    t.equals(app.outerHTML, '<div class="app"><h1>Hello RE:DOM!</h1></div>');
   });
 };
