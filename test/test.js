@@ -29,6 +29,15 @@ module.exports = function (redom) {
       var hello = el('p.hello', 'Hello world!');
       t.equals(hello.outerHTML, '<p class="hello">Hello world!</p>');
     });
+    t.test('append number', function (t) {
+      t.plan(3);
+      var one = el('div', 1);
+      var minus = el('div', -1);
+      var zero = el('div', 0);
+      t.equals(one.outerHTML, '<div>1</div>');
+      t.equals(minus.outerHTML, '<div>-1</div>');
+      t.equals(zero.outerHTML, '<div>0</div>');
+    });
     t.test('multiple class', function (t) {
       t.plan(1);
       var hello = el('p.hello.world', 'Hello world!');

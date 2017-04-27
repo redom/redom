@@ -7,7 +7,7 @@ export function parseArguments (element, args) {
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
 
-    if (!arg) {
+    if (arg !== 0 && !arg) {
       continue;
     }
 
