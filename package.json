@@ -1,7 +1,7 @@
 {
   "name": "redom",
   "version": "2.4.1",
-  "description": "Tiny DOM library",
+  "description": "Tiny turboboosted JavaScript library for creating user interfaces. 100 % test coverage!",
   "main": "dist/redom.js",
   "module": "dist/redom.es.js",
   "jsnext:main": "dist/redom.es.js",
@@ -41,7 +41,6 @@
   "homepage": "https://github.com/pakastin/redom#readme",
   "devDependencies": {
     "browserify": "^14.3.0",
-    "chokidar": "~1.6.1",
     "coverify": "^1.4.1",
     "gh-pages": "~0.12.0",
     "marked": "~0.3.6",
@@ -50,6 +49,6 @@
     "semistandard": "~11.0.0",
     "tape": "^4.6.3",
     "tape-run": "^3.0.0",
-    "uglifyjs": "~2.4.10"
+    "uglify-js": "~3.0.1"
   }
 }

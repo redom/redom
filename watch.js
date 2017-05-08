@@ -1,5 +1,5 @@
 const cp = require('child_process');
-const chokidar = require('chokidar');
+const fs = require('fs');
 
 const exec = (cmd, args) => {
   return () => {
@@ -19,15 +19,7 @@ build();
 buildDoc();
 test();
 
-chokidar.watch('src/**/*.js')
-  .on('change', build)
-  .on('unlink', build);
-
-chokidar.watch('dist/redom.js')
-  .on('change', uglify);
-
-chokidar.watch('dist/doc.md')
-  .on('change', buildDoc);
-
-chokidar.watch('test/test.js')
-  .on('change', test);
+fs.watch('src', build);
+fs.watch('dist/redom.js', uglify);
+fs.watch('dist/doc.md', buildDoc);
+fs.watch('test/test.js', test);
