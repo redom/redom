@@ -112,7 +112,7 @@ function doUnmount (child, childEl, parentEl) {
   }
 
   while (traverse) {
-    const parentHooks = traverse.__redom_lifecycle;
+    const parentHooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
     let hooksFound = false;
 
     for (const hook in hooks) {
