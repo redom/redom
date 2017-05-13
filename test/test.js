@@ -4,8 +4,18 @@ var test = require('tape');
 var SVGElement = window.SVGElement;
 var CustomEvent = window.CustomEvent;
 
+var createElement = document.createElement;
+
+document.createElement = function (tagName) {
+  var element = createElement.call(document, tagName);
+
+  element.style.webkitTestPrefixes = '';
+
+  return element;
+};
+
 module.exports = function (redom) {
-  var { el, html, list, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
+  var { css, el, html, list, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
 
   test('exports utils', function (t) {
     t.plan(2);
@@ -640,5 +650,31 @@ module.exports = function (redom) {
     unmount(document.body, tree);
 
     t.deepEqual(logs, expectedLog);
+  });
+  test('css', function (t) {
+    t.plan(1);
+    css({
+      body: {
+        backgroundColor: '#ff0000',
+        testPrefixes: 'works',
+        color: 'blue',
+        notFound: 0,
+        p: {
+          color: 'blue',
+          '&:hover': {
+            color: 'red'
+          }
+        }
+      }
+    }, 'check');
+    css({
+      nostyles: {}
+    });
+    css({
+      body: {
+        dontInclude: ''
+      }
+    }, 'check');
+    t.equals(document.head.innerHTML, '<meta charset="utf8"><style>body{background-color:#ff0000;}body{-webkit-test-prefixes:works;}body{color:blue;}body{not-found:0;}body p{color:blue;}body p:hover{color:red;}</style>');
   });
 };

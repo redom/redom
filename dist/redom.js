@@ -4,6 +4,98 @@
 	(factory((global.redom = global.redom || {})));
 }(this, (function (exports) { 'use strict';
 
+var attached = {};
+var memoized = {};
+var style = {};
+
+document && (style = document.createElement('p').style);
+
+var css = function (obj, key) {
+  if (key != null) {
+    if (key in attached) {
+      return;
+    }
+    attached[key] = true;
+  }
+  var styles = [];
+
+  walkCSS(obj, function (str) {
+    styles.push(str);
+  });
+
+  if (!styles.length) {
+    return;
+  }
+  var style = document.createElement('style');
+  style.textContent = styles.join('');
+  document.head.appendChild(style);
+};
+
+function walkCSS (obj, iterator, path) {
+  if ( path === void 0 ) path = [];
+
+  var keys = Object.keys(obj);
+
+  var loop = function ( i ) {
+    var key = keys[i];
+    var keySplit = key.split(',');
+    var value = obj[key];
+
+    if (typeof value === 'object') {
+      keySplit.map(function (key) { return key.trim(); }).map(function (key) {
+        if (key[0] === '&') {
+          walkCSS(value, iterator, path.concat(key.slice(1)));
+        } else {
+          walkCSS(value, iterator, path.length ? path.concat(' ', key) : [key]);
+        }
+      });
+    } else if (value != null) {
+      iterator(path.join('') + '{' + kebabCase(prefix(key)) + ':' + value + ';}');
+    }
+  };
+
+  for (var i = 0; i < keys.length; i++) loop( i );
+}
+
+function prefix (param) {
+  if (memoized[param] != null) {
+    return memoized[param];
+  }
+
+  if (style[param] != null) {
+    return (memoized[param] = param);
+  }
+
+  var camelCase = param[0].toUpperCase() + param.slice(1);
+  var prefixes = ['webkit', 'moz', 'ms', 'o'];
+
+  for (var i = 0, len = prefixes.length; i < len; i++) {
+    var test = prefixes[i] + camelCase;
+
+    if (style[test] != null) {
+      return (memoized[param] = '-' + test);
+    }
+  }
+
+  if (!memoized[param]) {
+    return (memoized[param] = param);
+  }
+}
+
+function kebabCase (source) {
+  var result = [];
+  for (var i = 0; i < source.length; i++) {
+    var char = source[i];
+    var lowerCase = char.toLowerCase();
+    if (char !== lowerCase) {
+      result.push('-', lowerCase);
+    } else {
+      result.push(char);
+    }
+  }
+  return result.join('');
+}
+
 var HASH = '#'.charCodeAt(0);
 var DOT = '.'.charCodeAt(0);
 
@@ -485,6 +577,7 @@ svg.extend = function (query) {
   return svg.bind(this, clone);
 };
 
+exports.css = css;
 exports.html = html;
 exports.el = el;
 exports.list = list;
