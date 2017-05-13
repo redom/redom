@@ -1,25 +1,16 @@
 const cp = require('child_process');
 const fs = require('fs');
 
-const exec = (cmd, args) => {
-  return () => {
-    var child = cp.spawn(cmd, args, { shell: true });
+fs.watch('src', run('build'));
+fs.watch('dist/redom.js', () => run('uglify'));
+fs.watch('dist/doc.md', run('build-doc'));
+fs.watch('test/test.js', run('test'));
 
-    child.stdout.pipe(process.stdout);
-    child.stderr.pipe(process.stderr);
-  };
-};
+function run (script) {
+  const child = cp.spawn('npm', ['run', script]);
 
-const build = exec('npm', ['run', 'build']);
-const buildDoc = exec('npm', ['run', 'build-doc']);
-const uglify = exec('npm', ['run', 'uglify']);
-const test = exec('npm', ['test']);
+  child.stdout.pipe(process.stdout);
+  child.stderr.pipe(process.stderr);
 
-build();
-buildDoc();
-test();
-
-fs.watch('src', build);
-fs.watch('dist/redom.js', uglify);
-fs.watch('dist/doc.md', buildDoc);
-fs.watch('test/test.js', test);
+  return () => run(script);
+}
