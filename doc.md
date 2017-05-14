@@ -563,6 +563,88 @@ The example will:
 - update it with `data`
 - call all defined [lifecycle events](#component-lifecycle)
 
+## CSS
+CSS in RE:DOM is a lot like [Stylus](http://stylus-lang.com/), but with objects:
+```js
+import { css } from 'redom';
+
+css({
+  body: {
+    backgroundColor: 'red'
+  }
+});
+```
+```html
+<head>
+  <style>
+    body {
+      background-color: red;
+    }
+  </style>
+</head>
+```
+
+You can use kebab-case as well if you like:
+```js
+css({
+  body: {
+    'background-color': 'red'
+  }
+});
+```
+
+You can add multiple levels of hierarchy:
+```js
+css({
+  body {
+    p: {
+      color: 'blue'
+
+      '&:hover, &:focus': {
+        color: 'red'
+      }
+    }
+  }
+});
+```
+```html
+<head>
+  <style>
+    body p {
+      color: blue;
+    }
+    body p:hover, body p:focus {
+      color: red;
+    }
+  </style>
+```
+
+Keys will get prefixed automatically!
+```js
+css({
+  body {
+    textSizeAdjust: '100%' // will get prefixed if client's browser uses a prefix
+  }
+});
+```
+
+If you add `key` parameter, only the first call will append `<style>` to `<head>`
+```js
+class MyComponent {
+  constructor () {
+    css({
+      '.my-component': {
+        color: 'blue'
+      }
+    }, 'my-component');
+
+    this.el = el('.my-component');
+  }
+}
+```
+
+When used like that, style won't get activated until the component is created the first time!
+
 ## More examples
 You can find more examples on [RE:DOM website](https://redom.js.org)!
 
