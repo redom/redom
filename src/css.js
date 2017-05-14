@@ -43,14 +43,16 @@ function walkCSS (obj, iterator, path = '', previousKey = '') {
         pushInner('}');
       } else {
         const split = key.split(',');
-        const cssKey = split.map(key => {
+        const cssKey = [];
+        for (let i = 0; i < split.length; i++) {
+          const key = split[i];
           if (key[0] === '&') {
-            return path + key.slice(1);
+            cssKey.push(path + key.slice(1));
           } else {
-            return (path + ' ' + key).trim();
+            cssKey.push((path + ' ' + key).trim());
           }
-        }).join(',');
-        walkCSS(value, pushInner, cssKey, key);
+        }
+        walkCSS(value, pushInner, cssKey.join(','), key);
       }
     } else {
       values.push(kebabCase(prefix(key)) + ':' + value + ';');

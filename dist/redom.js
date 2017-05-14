@@ -52,14 +52,16 @@ function walkCSS (obj, iterator, path, previousKey) {
         pushInner('}');
       } else {
         var split = key.split(',');
-        var cssKey = split.map(function (key) {
-          if (key[0] === '&') {
-            return path + key.slice(1);
+        var cssKey = [];
+        for (var i = 0; i < split.length; i++) {
+          var key$1 = split[i];
+          if (key$1[0] === '&') {
+            cssKey.push(path + key$1.slice(1));
           } else {
-            return (path + ' ' + key).trim();
+            cssKey.push((path + ' ' + key$1).trim());
           }
-        }).join(',');
-        walkCSS(value, pushInner, cssKey, key);
+        }
+        walkCSS(value, pushInner, cssKey.join(','), key);
       }
     } else {
       values.push(kebabCase(prefix(key)) + ':' + value + ';');
@@ -71,8 +73,8 @@ function walkCSS (obj, iterator, path, previousKey) {
     iterator('}');
   }
   if (inner.length) {
-    for (var i = 0; i < inner.length; i++) {
-      iterator(inner[i]);
+    for (var i$1 = 0; i$1 < inner.length; i$1++) {
+      iterator(inner[i$1]);
     }
   }
 }
