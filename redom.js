@@ -54,7 +54,7 @@ function walkCSS (obj, iterator, path, previousKey) {
         var split = key.split(',');
         var cssKey = new Array(split.length);
         for (var i = 0; i < split.length; i++) {
-          var key$1 = split[i];
+          var key$1 = split[i].trim();
           if (key$1[0] === '&') {
             cssKey[i] = path + key$1.slice(1);
           } else {
