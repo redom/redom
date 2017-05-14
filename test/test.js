@@ -665,6 +665,11 @@ module.exports = function (redom) {
             color: 'red'
           }
         }
+      },
+      '@media (max-width: 640px)': {
+        html: {
+          fontSize: '75%'
+        }
       }
     }, 'check');
     css({
@@ -675,6 +680,6 @@ module.exports = function (redom) {
         dontInclude: ''
       }
     }, 'check');
-    t.equals(document.head.innerHTML, '<meta charset="utf8"><style>body{background-color:#ff0000;}body{-webkit-test-prefixes:works;}body{color:blue;}body{not-found:0;}body p{color:blue;}body p:hover{color:red;}</style>');
+    t.equals(document.head.innerHTML, '<meta charset="utf8"><style>body{background-color:#ff0000;}body{-webkit-test-prefixes:works;}body{color:blue;}body{not-found:0;}body p{color:blue;}body p:hover{color:red;}@media (max-width: 640px){ html{font-size:75%;}}</style>');
   });
 };

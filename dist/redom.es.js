@@ -44,7 +44,11 @@ function walkCSS (obj, iterator, path) {
         }
       });
     } else if (value != null) {
-      iterator(path.join('') + '{' + kebabCase(prefix(key)) + ':' + value + ';}');
+      if (path[0][0] === '@') {
+        iterator(path[0] + '{' + path.slice(1).join('') + '{' + kebabCase(prefix(key)) + ':' + value + ';}}');
+      } else {
+        iterator(path.join('') + '{' + kebabCase(prefix(key)) + ':' + value + ';}');
+      }
     }
   };
 
