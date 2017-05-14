@@ -50,13 +50,13 @@ function walkCSS (obj, iterator, path, previousKey) {
         pushInner('}');
       } else {
         var split = key.split(',');
-        var cssKey = [];
+        var cssKey = new Array(split.length);
         for (var i = 0; i < split.length; i++) {
           var key$1 = split[i];
           if (key$1[0] === '&') {
-            cssKey.push(path + key$1.slice(1));
+            cssKey[i] = path + key$1.slice(1);
           } else {
-            cssKey.push((path + ' ' + key$1).trim());
+            cssKey[i] = (path + ' ' + key$1).trim();
           }
         }
         walkCSS(value, pushInner, cssKey.join(','), key);
