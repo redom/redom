@@ -17,42 +17,58 @@ var css = function (obj, key) {
     styles.push(str);
   });
 
-  if (!styles.length) {
-    return;
+  if (styles.length) {
+    var style = document.createElement('style');
+    style.textContent = styles.join('');
+    document.head.appendChild(style);
   }
-  var style = document.createElement('style');
-  style.textContent = styles.join('');
-  document.head.appendChild(style);
 };
 
-function walkCSS (obj, iterator, path) {
-  if ( path === void 0 ) path = [];
+function walkCSS (obj, iterator, path, previousKey) {
+  if ( path === void 0 ) path = '';
+  if ( previousKey === void 0 ) previousKey = '';
 
-  var keys = Object.keys(obj);
+  var values = [];
+  var inner = [];
+  var pushInner = function (str) { return inner.push(str); };
 
-  var loop = function ( i ) {
-    var key = keys[i];
-    var keySplit = key.split(',');
+  for (var key in obj) {
     var value = obj[key];
 
     if (typeof value === 'object') {
-      keySplit.map(function (key) { return key.trim(); }).map(function (key) {
-        if (key[0] === '&') {
-          walkCSS(value, iterator, path.concat(key.slice(1)));
-        } else {
-          walkCSS(value, iterator, path.length ? path.concat(' ', key) : [key]);
-        }
-      });
-    } else if (value != null) {
-      if (path[0][0] === '@') {
-        iterator(path[0] + '{' + path.slice(1).join('') + '{' + kebabCase(prefix(key)) + ':' + value + ';}}');
+      if (key[0] === '@') {
+        pushInner(key + '{');
+        walkCSS(value, pushInner, '', key);
+        pushInner('}');
+      } else if (previousKey.slice(0, 10) === '@keyframes') {
+        pushInner(key + '{');
+        walkCSS(value, pushInner, '', key);
+        pushInner('}');
       } else {
-        iterator(path.join('') + '{' + kebabCase(prefix(key)) + ':' + value + ';}');
+        var split = key.split(',');
+        var cssKey = split.map(function (key) {
+          if (key[0] === '&') {
+            return path + key.slice(1);
+          } else {
+            return (path + ' ' + key).trim();
+          }
+        }).join(',');
+        walkCSS(value, pushInner, cssKey, key);
       }
+    } else {
+      values.push(kebabCase(prefix(key)) + ':' + value + ';');
     }
-  };
-
-  for (var i = 0; i < keys.length; i++) loop( i );
+  }
+  if (values.length) {
+    iterator(path + '{');
+    iterator(values.join(''));
+    iterator('}');
+  }
+  if (inner.length) {
+    for (var i = 0; i < inner.length; i++) {
+      iterator(inner[i]);
+    }
+  }
 }
 
 function prefix (param) {
@@ -575,4 +591,4 @@ svg.extend = function (query) {
   return svg.bind(this, clone);
 };
 
-export { css, html, el, list, List, mount, unmount, router, Router, setAttr, setStyle, setChildren, svg, text };
+export { css, prefix, html, el, list, List, mount, unmount, router, Router, setAttr, setStyle, setChildren, svg, text };

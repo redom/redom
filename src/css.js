@@ -17,41 +17,58 @@ export const css = (obj, key) => {
     styles.push(str);
   });
 
-  if (!styles.length) {
-    return;
+  if (styles.length) {
+    const style = document.createElement('style');
+    style.textContent = styles.join('');
+    document.head.appendChild(style);
   }
-  const style = document.createElement('style');
-  style.textContent = styles.join('');
-  document.head.appendChild(style);
 };
 
-function walkCSS (obj, iterator, path = []) {
-  const keys = Object.keys(obj);
+function walkCSS (obj, iterator, path = '', previousKey = '') {
+  const values = [];
+  const inner = [];
+  const pushInner = (str) => inner.push(str);
 
-  for (let i = 0; i < keys.length; i++) {
-    const key = keys[i];
-    const keySplit = key.split(',');
+  for (let key in obj) {
     const value = obj[key];
 
     if (typeof value === 'object') {
-      keySplit.map(key => key.trim()).map(key => {
-        if (key[0] === '&') {
-          walkCSS(value, iterator, path.concat(key.slice(1)));
-        } else {
-          walkCSS(value, iterator, path.length ? path.concat(' ', key) : [key]);
-        }
-      });
-    } else if (value != null) {
-      if (path[0][0] === '@') {
-        iterator(path[0] + '{' + path.slice(1).join('') + '{' + kebabCase(prefix(key)) + ':' + value + ';}}');
+      if (key[0] === '@') {
+        pushInner(key + '{');
+        walkCSS(value, pushInner, '', key);
+        pushInner('}');
+      } else if (previousKey.slice(0, 10) === '@keyframes') {
+        pushInner(key + '{');
+        walkCSS(value, pushInner, '', key);
+        pushInner('}');
       } else {
-        iterator(path.join('') + '{' + kebabCase(prefix(key)) + ':' + value + ';}');
+        const split = key.split(',');
+        const cssKey = split.map(key => {
+          if (key[0] === '&') {
+            return path + key.slice(1);
+          } else {
+            return (path + ' ' + key).trim();
+          }
+        }).join(',');
+        walkCSS(value, pushInner, cssKey, key);
       }
+    } else {
+      values.push(kebabCase(prefix(key)) + ':' + value + ';');
+    }
+  }
+  if (values.length) {
+    iterator(path + '{');
+    iterator(values.join(''));
+    iterator('}');
+  }
+  if (inner.length) {
+    for (let i = 0; i < inner.length; i++) {
+      iterator(inner[i]);
     }
   }
 }
 
-function prefix (param) {
+export function prefix (param) {
   if (memoized[param] != null) {
     return memoized[param];
   }
