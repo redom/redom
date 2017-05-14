@@ -661,7 +661,7 @@ module.exports = function (redom) {
         notFound: 0,
         p: {
           color: 'blue',
-          '&:hover': {
+          '&:hover, &:active': {
             color: 'red'
           }
         }
@@ -692,6 +692,6 @@ module.exports = function (redom) {
         dontInclude: ''
       }
     }, 'check');
-    t.equals(document.head.innerHTML, '<meta charset="utf8"><style>body{background-color:#ff0000;-webkit-test-prefixes:works;color:blue;not-found:0;}body p{color:blue;}body p:hover{color:red;}@media (max-width: 640px){html{font-size:75%;}}@keyframes{0{body{color:blue;}}100%{body{color:red;}}}</style>');
+    t.equals(document.head.innerHTML, '<meta charset="utf8"><style>body{background-color:#ff0000;-webkit-test-prefixes:works;color:blue;not-found:0;}body p{color:blue;}body p:hover,body p:active{color:red;}@media (max-width: 640px){html{font-size:75%;}}@keyframes{0{body{color:blue;}}100%{body{color:red;}}}</style>');
   });
 };
