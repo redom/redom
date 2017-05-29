@@ -37,10 +37,6 @@ function walkCSS (obj, iterator, path = '', previousKey = '') {
         pushInner(key + '{');
         walkCSS(value, pushInner, '', key);
         pushInner('}');
-      } else if (previousKey.slice(0, 10) === '@keyframes') {
-        pushInner(key + '{');
-        walkCSS(value, pushInner, '', key);
-        pushInner('}');
       } else {
         const split = key.split(',');
         const cssKey = new Array(split.length);
