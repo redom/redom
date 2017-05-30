@@ -346,7 +346,7 @@ function trigger (el, eventName) {
 function setStyle (view, arg1, arg2) {
   var el = getEl(view);
 
-  if (arguments.length > 2) {
+  if (arg2 !== undefined) {
     el.style[arg1] = arg2;
   } else if (isString(arg1)) {
     el.setAttribute('style', arg1);
@@ -361,7 +361,7 @@ function setAttr (view, arg1, arg2) {
   var el = getEl(view);
   var isSVG = el instanceof window.SVGElement;
 
-  if (arguments.length > 2) {
+  if (arg2 !== undefined) {
     if (arg1 === 'style') {
       setStyle(el, arg2);
     } else if (isSVG && isFunction(arg2)) {
