@@ -5,7 +5,7 @@ export function setAttr (view, arg1, arg2) {
   const el = getEl(view);
   let isSVG = el instanceof window.SVGElement;
 
-  if (arguments.length > 2) {
+  if (arg2 !== undefined) {
     if (arg1 === 'style') {
       setStyle(el, arg2);
     } else if (isSVG && isFunction(arg2)) {

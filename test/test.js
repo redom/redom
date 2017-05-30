@@ -65,8 +65,8 @@ module.exports = function (redom) {
     });
     t.test('styles with object', function (t) {
       t.plan(1);
-      var hello = el('p', { style: { color: 'red' } });
-      t.equals(hello.outerHTML, '<p style="color: red;"></p>');
+      var hello = el('p', { style: { color: 'red', opacity: 0 } });
+      t.equals(hello.outerHTML, '<p style="color: red; opacity: 0;"></p>');
     });
     t.test('styles with String', function (t) {
       t.plan(1);
@@ -80,8 +80,8 @@ module.exports = function (redom) {
     });
     t.test('attributes', function (t) {
       t.plan(1);
-      var hello = el('p', { foo: 'bar' }, 'Hello world!');
-      t.equals(hello.outerHTML, '<p foo="bar">Hello world!</p>');
+      var hello = el('p', { foo: 'bar', zero: 0 }, 'Hello world!');
+      t.equals(hello.outerHTML, '<p foo="bar" zero="0">Hello world!</p>');
     });
     t.test('children', function (t) {
       t.plan(1);
