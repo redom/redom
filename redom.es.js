@@ -410,7 +410,7 @@ var isNode = function (a) { return a && a.nodeType; };
 
 var htmlCache = {};
 
-var memoizeHTML = function (query) { return htmlCache[query] || createElement(query); };
+var memoizeHTML = function (query) { return htmlCache[query] || (htmlCache[query] = createElement(query)); };
 
 function html (query) {
   var args = [], len = arguments.length - 1;
@@ -562,7 +562,7 @@ var SVG = 'http://www.w3.org/2000/svg';
 
 var svgCache = {};
 
-var memoizeSVG = function (query) { return svgCache[query] || createElement(query, SVG); };
+var memoizeSVG = function (query) { return svgCache[query] || (svgCache[query] = createElement(query, SVG)); };
 
 function svg (query) {
   var args = [], len = arguments.length - 1;
