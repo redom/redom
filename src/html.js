@@ -3,7 +3,7 @@ import { parseArguments, isString, isNode } from './util';
 
 const htmlCache = {};
 
-const memoizeHTML = query => htmlCache[query] || createElement(query);
+const memoizeHTML = query => htmlCache[query] || (htmlCache[query] = createElement(query));
 
 export function html (query, ...args) {
   let element;

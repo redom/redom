@@ -5,7 +5,7 @@ const SVG = 'http://www.w3.org/2000/svg';
 
 const svgCache = {};
 
-const memoizeSVG = query => svgCache[query] || createElement(query, SVG);
+const memoizeSVG = query => svgCache[query] || (svgCache[query] = createElement(query, SVG));
 
 export function svg (query, ...args) {
   let element;
