@@ -1,6 +1,8 @@
 import { setChildren } from './setchildren';
 import { isFunction, ensureEl } from './util';
 
+const propKey = key => item => item[key];
+
 export function list (parent, View, key, initData) {
   return new List(parent, View, key, initData);
 }
@@ -8,13 +10,13 @@ export function list (parent, View, key, initData) {
 export function List (parent, View, key, initData) {
   this.__redom_list = true;
   this.View = View;
-  this.key = key;
   this.initData = initData;
   this.views = [];
   this.el = ensureEl(parent);
 
-  if (key) {
+  if (key != null) {
     this.lookup = {};
+    this.key = isFunction(key) ? key : propKey(key);
   }
 }
 
@@ -27,7 +29,6 @@ list.extend = List.extend;
 List.prototype.update = function (data = []) {
   const View = this.View;
   const key = this.key;
-  const functionKey = isFunction(key);
   const initData = this.initData;
   const newViews = new Array(data.length);
   const oldViews = this.views;
@@ -38,8 +39,8 @@ List.prototype.update = function (data = []) {
     const item = data[i];
     let view;
 
-    if (key) {
-      const id = functionKey ? key(item) : item[key];
+    if (key != null) {
+      const id = key(item);
       view = newViews[i] = oldLookup[id] || new View(initData, item, i, data);
       newLookup[id] = view;
       view.__id = id;
@@ -56,7 +57,7 @@ List.prototype.update = function (data = []) {
 
   setChildren(this, newViews);
 
-  if (key) {
+  if (key != null) {
     this.lookup = newLookup;
   }
   this.views = newViews;
