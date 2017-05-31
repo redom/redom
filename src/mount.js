@@ -22,7 +22,7 @@ export function mount (parent, child, before) {
     doUnmount(child, childEl, oldParent);
   }
 
-  if (before) {
+  if (before != null) {
     parentEl.insertBefore(childEl, getEl(before));
   } else {
     parentEl.appendChild(childEl);

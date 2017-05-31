@@ -196,7 +196,7 @@ function mount (parent, child, before) {
     doUnmount(child, childEl, oldParent);
   }
 
-  if (before) {
+  if (before != null) {
     parentEl.insertBefore(childEl, getEl(before));
   } else {
     parentEl.appendChild(childEl);
@@ -477,6 +477,8 @@ function setChildren (parent, children) {
   }
 }
 
+var propKey = function (key) { return function (item) { return item[key]; }; };
+
 function list (parent, View, key, initData) {
   return new List(parent, View, key, initData);
 }
@@ -484,13 +486,13 @@ function list (parent, View, key, initData) {
 function List (parent, View, key, initData) {
   this.__redom_list = true;
   this.View = View;
-  this.key = key;
   this.initData = initData;
   this.views = [];
   this.el = ensureEl(parent);
 
-  if (key) {
+  if (key != null) {
     this.lookup = {};
+    this.key = isFunction(key) ? key : propKey(key);
   }
 }
 
@@ -505,7 +507,6 @@ List.prototype.update = function (data) {
 
   var View = this.View;
   var key = this.key;
-  var functionKey = isFunction(key);
   var initData = this.initData;
   var newViews = new Array(data.length);
   var oldViews = this.views;
@@ -516,8 +517,8 @@ List.prototype.update = function (data) {
     var item = data[i];
     var view = (void 0);
 
-    if (key) {
-      var id = functionKey ? key(item) : item[key];
+    if (key != null) {
+      var id = key(item);
       view = newViews[i] = oldLookup[id] || new View(initData, item, i, data);
       newLookup[id] = view;
       view.__id = id;
@@ -534,7 +535,7 @@ List.prototype.update = function (data) {
 
   setChildren(this, newViews);
 
-  if (key) {
+  if (key != null) {
     this.lookup = newLookup;
   }
   this.views = newViews;
