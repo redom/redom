@@ -67,11 +67,11 @@ function walkCSS (obj, iterator, path = '', previousKey = '') {
 }
 
 export function prefix (param) {
-  if (memoized[param] != null) {
+  if (param in memoized) {
     return memoized[param];
   }
 
-  if (style[param] != null) {
+  if (param in style) {
     return (memoized[param] = param);
   }
 
@@ -81,7 +81,7 @@ export function prefix (param) {
   for (let i = 0, len = prefixes.length; i < len; i++) {
     const test = prefixes[i] + camelCase;
 
-    if (style[test] != null) {
+    if (test in style) {
       return (memoized[param] = '-' + test);
     }
   }

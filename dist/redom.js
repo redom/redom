@@ -76,11 +76,11 @@ function walkCSS (obj, iterator, path, previousKey) {
 }
 
 function prefix (param) {
-  if (memoized[param] != null) {
+  if (param in memoized) {
     return memoized[param];
   }
 
-  if (style[param] != null) {
+  if (param in style) {
     return (memoized[param] = param);
   }
 
@@ -90,7 +90,7 @@ function prefix (param) {
   for (var i = 0, len = prefixes.length; i < len; i++) {
     var test = prefixes[i] + camelCase;
 
-    if (style[test] != null) {
+    if (test in style) {
       return (memoized[param] = '-' + test);
     }
   }
@@ -505,10 +505,12 @@ List.extend = function (parent, View, key, initData) {
 list.extend = List.extend;
 
 List.prototype.update = function (data) {
+  var this$1 = this;
   if ( data === void 0 ) data = [];
 
   var View = this.View;
   var key = this.key;
+  var keySet = key != null;
   var initData = this.initData;
   var newViews = new Array(data.length);
   var oldViews = this.views;
@@ -519,7 +521,7 @@ List.prototype.update = function (data) {
     var item = data[i];
     var view = (void 0);
 
-    if (key != null) {
+    if (keySet) {
       var id = key(item);
       view = newViews[i] = oldLookup[id] || new View(initData, item, i, data);
       newLookup[id] = view;
@@ -535,9 +537,19 @@ List.prototype.update = function (data) {
     view.update && view.update(item, i, data);
   }
 
+  if (keySet) {
+    for (var i$1 = 0; i$1 < oldViews.length; i$1++) {
+      var id$1 = oldViews[i$1].__id;
+
+      if (!(id$1 in newLookup)) {
+        unmount(this$1, oldLookup[id$1]);
+      }
+    }
+  }
+
   setChildren(this, newViews);
 
-  if (key != null) {
+  if (keySet) {
     this.lookup = newLookup;
   }
   this.views = newViews;

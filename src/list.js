@@ -1,5 +1,6 @@
 import { setChildren } from './setchildren';
 import { isFunction, ensureEl } from './util';
+import { unmount } from './mount';
 
 const propKey = key => item => item[key];
 
@@ -29,6 +30,7 @@ list.extend = List.extend;
 List.prototype.update = function (data = []) {
   const View = this.View;
   const key = this.key;
+  const keySet = key != null;
   const initData = this.initData;
   const newViews = new Array(data.length);
   const oldViews = this.views;
@@ -39,7 +41,7 @@ List.prototype.update = function (data = []) {
     const item = data[i];
     let view;
 
-    if (key != null) {
+    if (keySet) {
       const id = key(item);
       view = newViews[i] = oldLookup[id] || new View(initData, item, i, data);
       newLookup[id] = view;
@@ -55,9 +57,19 @@ List.prototype.update = function (data = []) {
     view.update && view.update(item, i, data);
   }
 
+  if (keySet) {
+    for (let i = 0; i < oldViews.length; i++) {
+      const id = oldViews[i].__id;
+
+      if (!(id in newLookup)) {
+        unmount(this, oldLookup[id]);
+      }
+    }
+  }
+
   setChildren(this, newViews);
 
-  if (key != null) {
+  if (keySet) {
     this.lookup = newLookup;
   }
   this.views = newViews;
