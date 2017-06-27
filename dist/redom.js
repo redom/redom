@@ -242,6 +242,7 @@ function doMount (child, childEl, parentEl, oldParent) {
   }
 
   if (!hooksFound) {
+    childEl.__redom_mounted = true;
     return;
   }
 
@@ -278,6 +279,7 @@ function doUnmount (child, childEl, parentEl) {
   var hooks = childEl.__redom_lifecycle;
 
   if (!hooks) {
+    childEl.__redom_mounted = false;
     return;
   }
 
