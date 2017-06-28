@@ -15,7 +15,7 @@ document.createElement = function (tagName) {
 };
 
 module.exports = function (redom) {
-  var { css, el, html, list, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
+  var { el, html, list, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
 
   test('exports utils', function (t) {
     t.plan(2);
@@ -467,13 +467,13 @@ module.exports = function (redom) {
       var circle = svg('circle', { onclick: e => t.pass() });
       circle.dispatchEvent(new CustomEvent('click', {}));
     });
-    t.test('CSS with String', function (t) {
+    t.test('Style string', function (t) {
       t.plan(1);
 
       var circle = svg('circle', { style: 'color: red;' });
       t.equals(circle.outerHTML, '<circle style="color: red;"></circle>');
     });
-    t.test('CSS with Object', function (t) {
+    t.test('Style object', function (t) {
       t.plan(1);
 
       var circle = svg('circle', { style: { color: 'red' } });
@@ -650,44 +650,5 @@ module.exports = function (redom) {
     unmount(document.body, tree);
 
     t.deepEqual(logs, expectedLog);
-  });
-  test('css', function (t) {
-    t.plan(1);
-    css({
-      body: {
-        backgroundColor: '#ff0000',
-        testPrefixes: 'works',
-        color: 'blue',
-        notFound: 0,
-        p: {
-          color: 'blue',
-          '&:hover, &:active': {
-            color: 'red'
-          }
-        }
-      },
-      '@media (max-width: 640px)': {
-        html: {
-          fontSize: '75%'
-        }
-      },
-      '@keyframes': {
-        0: {
-          color: 'blue'
-        },
-        '100%': {
-          color: 'red'
-        }
-      }
-    }, 'check');
-    css({
-      nostyles: {}
-    });
-    css({
-      body: {
-        dontInclude: ''
-      }
-    }, 'check');
-    t.equals(document.head.innerHTML, '<meta charset="utf8"><style>body{background-color:#ff0000;-webkit-test-prefixes:works;color:blue;not-found:0;}body p{color:blue;}body p:hover,body p:active{color:red;}@media (max-width: 640px){html{font-size:75%;}}@keyframes{0{color:blue;}100%{color:red;}}</style>');
   });
 };

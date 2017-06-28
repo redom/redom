@@ -2,116 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var attached = {};
-var memoized = {};
-var style = {};
-
-document && (style = document.createElement('p').style);
-
-var css = function (obj, key) {
-  if (key != null) {
-    if (key in attached) {
-      return;
-    }
-    attached[key] = true;
-  }
-  var styles = [];
-
-  walkCSS(obj, function (str) {
-    styles.push(str);
-  });
-
-  if (styles.length) {
-    var style = document.createElement('style');
-    style.textContent = styles.join('');
-    document.head.appendChild(style);
-  }
-};
-
-function walkCSS (obj, iterator, path, previousKey) {
-  if ( path === void 0 ) path = '';
-  if ( previousKey === void 0 ) previousKey = '';
-
-  var values = [];
-  var inner = [];
-  var pushInner = function (str) { return inner.push(str); };
-
-  for (var key in obj) {
-    var value = obj[key];
-
-    if (typeof value === 'object') {
-      if (key[0] === '@') {
-        pushInner(key + '{');
-        walkCSS(value, pushInner, '', key);
-        pushInner('}');
-      } else {
-        var split = key.split(',');
-        var cssKey = new Array(split.length);
-        for (var i = 0; i < split.length; i++) {
-          var key$1 = split[i].trim();
-          if (key$1[0] === '&') {
-            cssKey[i] = path + key$1.slice(1);
-          } else {
-            cssKey[i] = (path + ' ' + key$1).trim();
-          }
-        }
-        walkCSS(value, pushInner, cssKey.join(','), key);
-      }
-    } else {
-      values.push(kebabCase(prefix(key)) + ':' + value + ';');
-    }
-  }
-  if (values.length) {
-    iterator(path + '{');
-    iterator(values.join(''));
-    iterator('}');
-  }
-  if (inner.length) {
-    for (var i$1 = 0; i$1 < inner.length; i$1++) {
-      iterator(inner[i$1]);
-    }
-  }
-}
-
-function prefix (param) {
-  if (param in memoized) {
-    return memoized[param];
-  }
-
-  if (param in style) {
-    return (memoized[param] = param);
-  }
-
-  var camelCase = param[0].toUpperCase() + param.slice(1);
-  var prefixes = ['webkit', 'moz', 'ms', 'o'];
-
-  for (var i = 0, len = prefixes.length; i < len; i++) {
-    var test = prefixes[i] + camelCase;
-
-    if (test in style) {
-      return (memoized[param] = '-' + test);
-    }
-  }
-
-  if (!memoized[param]) {
-    return (memoized[param] = param);
-  }
-}
-
-function kebabCase (source) {
-  var result = [];
-  for (var i = 0; i < source.length; i++) {
-    var char = source[i];
-    var lowerCase = char.toLowerCase();
-    if (char !== lowerCase) {
-      result.push('-', lowerCase);
-    } else {
-      result.push(char);
-    }
-  }
-  return result.join('');
-}
-
 var HASH = '#'.charCodeAt(0);
 var DOT = '.'.charCodeAt(0);
 
@@ -608,8 +498,6 @@ svg.extend = function (query) {
   return svg.bind(this, clone);
 };
 
-exports.css = css;
-exports.prefix = prefix;
 exports.html = html;
 exports.el = el;
 exports.list = list;

@@ -475,54 +475,6 @@ app.update(&#39;about&#39;, data);
       <li>update it with <code>data</code></li>
       <li>call all defined <a href="#component-lifecycle">lifecycle events</a></li>
       </ul>
-      <h2 id="css">CSS</h2>
-      <p>CSS in RE:DOM is a lot like <a href="http://stylus-lang.com/">Stylus</a>, but with objects:</p>
-      <pre><code class="lang-js">import { css } from &#39;redom&#39;;
-
-css({
-  body: {
-    backgroundColor: &#39;red&#39;
-  }
-});
-      </code></pre>
-      <pre><code class="lang-html">&lt;head&gt;
-  &lt;style&gt;
-    body {
-      background-color: red;
-    }
-  &lt;/style&gt;
-&lt;/head&gt;
-      </code></pre>
-      <p>You can use kebab-case as well if you like:</p>
-      <pre><code class="lang-js">css({
-  body: {
-    &#39;background-color&#39;: &#39;red&#39;
-  }
-});
-      </code></pre>
-      <p>You can add multiple levels of hierarchy:</p>
-      <pre><code class="lang-js">css({
-  body {
-    p: {
-      color: &#39;blue&#39;
-
-      &#39;&amp;:hover, &amp;:focus&#39;: {
-        color: &#39;red&#39;
-      }
-    }
-  }
-});
-      </code></pre>
-      <pre><code class="lang-html">&lt;head&gt;
-  &lt;style&gt;
-    body p {
-      color: blue;
-    }
-    body p:hover, body p:focus {
-      color: red;
-    }
-  &lt;/style&gt;
-      </code></pre>
       <p>Keys will get prefixed automatically!</p>
       <pre><code class="lang-js">css({
   body {
