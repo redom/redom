@@ -13,21 +13,21 @@ Develop web apps with 100 % JavaScript and web standards. Size ~2 KB gzipped.
 
 https://redom.js.org
 
-# Get started!
+## Get started!
 https://redom.js.org/documentation
 
-# Under the hood
+## Under the hood
 Here's a simplified explanation what's happening under the hood:
 
 https://www.youtube.com/watch?v=0nh2EK1xveg
 
-# Server-side rendering
+## Server-side rendering
 https://github.com/pakastin/nodom
 
-# Launch fast with project generator! 🚀
+## Launch fast with project generator! 🚀
 https://github.com/pakastin/redom-cli
 
-# Dev tools for Chrome
+## Dev tools for Chrome
 https://github.com/pakastin/redom-devtools
 
 ## License
