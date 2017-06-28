@@ -5,3 +5,4 @@ bench/build.js
 
 *.sw?
 .source*
+package-lock.json
