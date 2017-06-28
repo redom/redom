@@ -14,7 +14,6 @@ Develop web apps with 100 % JavaScript and web standards. Size ~2 KB gzipped.
 https://redom.js.org
 
 # Get started!
-RE:DOM [v2.0.0](https://github.com/pakastin/redom/releases/tag/v2.0.0) now released with true lifecycle events and a proper documentation!
 https://redom.js.org/documentation
 
 # Under the hood
