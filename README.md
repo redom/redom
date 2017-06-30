@@ -30,5 +30,8 @@ https://github.com/pakastin/redom-cli
 ## Dev tools for Chrome
 https://github.com/pakastin/redom-devtools
 
+## Code of conduct
+https://github.com/pakastin/redom/blob/master/CODE_OF_CONDUCT.md
+
 ## License
 [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
