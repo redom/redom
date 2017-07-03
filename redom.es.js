@@ -94,8 +94,8 @@ function mount (parent, child, before) {
 }
 
 function unmount (parent, child) {
-  var parentEl = parent.el || parent;
-  var childEl = child.el || child;
+  var parentEl = getEl(parent);
+  var childEl = getEl(child);
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided
