@@ -475,27 +475,6 @@ app.update(&#39;about&#39;, data);
       <li>update it with <code>data</code></li>
       <li>call all defined <a href="#component-lifecycle">lifecycle events</a></li>
       </ul>
-      <p>Keys will get prefixed automatically!</p>
-      <pre><code class="lang-js">css({
-  body {
-    textSizeAdjust: &#39;100%&#39; // will get prefixed if client&#39;s browser uses a prefix
-  }
-});
-      </code></pre>
-      <p>If you add <code>key</code> parameter, only the first call will append <code>&lt;style&gt;</code> to <code>&lt;head&gt;</code></p>
-      <pre><code class="lang-js">class MyComponent {
-  constructor () {
-    css({
-      &#39;.my-component&#39;: {
-        color: &#39;blue&#39;
-      }
-    }, &#39;my-component&#39;);
-
-    this.el = el(&#39;.my-component&#39;);
-  }
-}
-      </code></pre>
-      <p>When used like that, style won&#39;t get activated until the component is created the first time!</p>
       <h2 id="more-examples">More examples</h2>
       <p>You can find more examples on <a href="https://redom.js.org">RE:DOM website</a>!</p>
       <h2 id="support-feedback">Support / feedback</h2>
