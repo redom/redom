@@ -567,10 +567,10 @@ The example will:
 You can find more examples on [RE:DOM website](https://redom.js.org)!
 
 ## Support / feedback
-If you have any feedback about RE:DOM, you can join [#redom](https://koodiklinikka.slack.com/messages/redom/) at [koodiklinikka.slack.com](koodiklinikka.slack.com) (get invitation by entering your email at [koodiklinikka.fi](https://koodiklinikka.fi)) or raise an issue on [Github](https://github.com/pakastin/redom).
+If you have any feedback about RE:DOM, you can join [#redom](https://koodiklinikka.slack.com/messages/redom/) at [koodiklinikka.slack.com](koodiklinikka.slack.com) (get invitation by entering your email at [koodiklinikka.fi](https://koodiklinikka.fi)) or raise an issue on [GitHub](https://github.com/pakastin/redom).
 
 ## Developing
-RE:DOM is on [Github](https://github.com/pakastin/redom), source is [here](https://github.com/pakastin/redom/tree/master/src). To start developing:
+RE:DOM is on [GitHub](https://github.com/pakastin/redom), source is [here](https://github.com/pakastin/redom/tree/master/src). To start developing:
 - Clone repository
 - `npm i`
 - `npm run dev`
