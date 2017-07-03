@@ -34,8 +34,8 @@ export function mount (parent, child, before) {
 }
 
 export function unmount (parent, child) {
-  const parentEl = parent.el || parent;
-  const childEl = child.el || child;
+  const parentEl = getEl(parent);
+  const childEl = getEl(child);
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided
