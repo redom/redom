@@ -13,23 +13,28 @@ Develop web apps with 100 % JavaScript and web standards. Size ~2 KB gzipped.
 
 https://redom.js.org
 
-# Get started!
-RE:DOM [v2.0.0](https://github.com/pakastin/redom/releases/tag/v2.0.0) now released with true lifecycle events and a proper documentation!
+## Get started!
 https://redom.js.org/documentation
 
-# Under the hood
+## Under the hood
 Here's a simplified explanation what's happening under the hood:
 
 https://www.youtube.com/watch?v=0nh2EK1xveg
 
-# Server-side rendering
+## Server-side rendering
 https://github.com/pakastin/nodom
 
-# Launch fast with project generator! 🚀
+## Launch fast with project generator! 🚀
 https://github.com/pakastin/redom-cli
 
-# Dev tools for Chrome
+## Dev tools for Chrome
 https://github.com/pakastin/redom-devtools
+
+## Performance
+[RE:DOM is one of the fastest UI library out there.](https://rawgit.com/krausest/js-framework-benchmark/964ae451d222ccc4de774fedeef7025c10227558/webdriver-ts-results/table.html)
+
+## Code of conduct
+[Contributor Covenant](https://github.com/pakastin/redom/blob/master/CODE_OF_CONDUCT.md)
 
 ## License
 [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
