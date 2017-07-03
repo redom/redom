@@ -97,6 +97,9 @@
         background-color: #ba152b;
         color: #fff;
       }
+      .violator:not(.solid):hover {
+        box-shadow: inset 0 0 0 1px #ba152b;
+      }
       .violator a {
         display: inline-block;
         color: inherit;
@@ -109,6 +112,12 @@
       }
       .small {
         font-size: .75rem;
+      }
+      p {
+        line-height: 1.5;
+      }
+      a {
+        color: #d31b33;
       }
       @media (min-width: 1280px) {
         html {
@@ -140,17 +149,23 @@
 
       <p style="font-weight: 500; letter-spacing: -0.025em;">Develop web apps with 100 % JavaScript and web standards.</p>
 
-      <br>
-
-      <p class="small">“RE:DOM seems to be exactly the kind of UI library I have been looking for.”</p>
-      <p class="small">“The only UI library that makes sense right now.”</p>
-
       <p class="violator solid">
         <a href="documentation">Get started!</a>
       </p>
 
       <p class="violator">
         <a href="https://github.com/pakastin/redom" target="_blank">Github</a>
+      </p>
+
+      <div style="text-align: left; max-width: 30rem; margin: 0 auto;">
+        <p>RE:DOM is a tiny (2 KB) DOM library by <a href="https://pakastin.fi" target="_blank">Juha Lindstedt</a> and <a href="https://github.com/pakastin/redom/graphs/contributors">contributors</a>, which adds some useful helpers to create DOM elements and keeping them in sync with the data.</p>
+        <p>Because RE:DOM is so close to the metal and <strong>doesn&#39;t use virtual dom</strong>, it&#39;s actually <strong>faster</strong> and uses <strong>less memory</strong> than almost all virtual dom based libraries, including React (<a href="https://rawgit.com/krausest/js-framework-benchmark/964ae451d222ccc4de774fedeef7025c10227558/webdriver-ts-results/table.html" target="_blank">benchmark</a>).</p>
+        <p>It&#39;s also easy to create <strong>reusable components</strong> with RE:DOM.</p>
+        <p>Another great benefit is, that you can use just <strong>pure JavaScript</strong>, so no complicated templating languages to learn and hassle with.</p>
+      </div>
+
+      <p class="violator">
+        <a href="documentation">Learn more!</a>
       </p>
 
       <h2>Create HTML elements easily</h2>
