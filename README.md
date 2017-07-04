@@ -7,7 +7,7 @@
 
 # RE:DOM
 
-Develop web apps with 100 % JavaScript and web standards. Size ~2 KB gzipped.
+Develop web apps with 100 % JavaScript and web standards.
 
 ![RE:DOM](https://redom.js.org/img/logo.svg)
 
