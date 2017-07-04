@@ -27,22 +27,22 @@ Another great benefit is, that you can use just **pure JavaScript**, so no compl
 ## Under the hood
 Here's a simplified explanation what's happening under the hood:
 
-https://www.youtube.com/watch?v=0nh2EK1xveg
+- ["Minimum viable view library"](https://www.youtube.com/watch?v=0nh2EK1xveg) - talk at HelsinkiJS / Frontend Finland
 
 ## Server-side rendering
-https://github.com/pakastin/nodom
+- [NO:DOM](https://github.com/pakastin/nodom)
 
 ## Launch fast with project generator! 🚀
-https://github.com/pakastin/redom-cli
+- [RE:DOM project generator](https://github.com/pakastin/redom-cli)
 
-## Dev tools for Chrome
-https://github.com/pakastin/redom-devtools
+## Dev tools
+- [Dev tools for Chrome](https://github.com/pakastin/redom-devtools)
 
 ## Performance
-[RE:DOM is one of the fastest UI library out there.](https://rawgit.com/krausest/js-framework-benchmark/964ae451d222ccc4de774fedeef7025c10227558/webdriver-ts-results/table.html)
+- [RE:DOM is one of the fastest UI library out there.](https://rawgit.com/krausest/js-framework-benchmark/964ae451d222ccc4de774fedeef7025c10227558/webdriver-ts-results/table.html)
 
 ## Code of conduct
-[Contributor Covenant](https://github.com/pakastin/redom/blob/master/CODE_OF_CONDUCT.md)
+- [Contributor Covenant](https://github.com/pakastin/redom/blob/master/CODE_OF_CONDUCT.md)
 
 ## License
-[MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
+- [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
