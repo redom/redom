@@ -33,8 +33,6 @@ Another great benefit is, that you can use just **pure JavaScript**, so no compl
 ## Performance
 - [RE:DOM is one of the fastest UI library out there.](https://rawgit.com/krausest/js-framework-benchmark/964ae451d222ccc4de774fedeef7025c10227558/webdriver-ts-results/table.html)
 
-## Code of conduct
-- [Contributor Covenant](https://github.com/pakastin/redom/blob/master/CODE_OF_CONDUCT.md)
-
-## License
-- [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
+## Legal stuff
+- Code of conduct: [Contributor Covenant](https://github.com/pakastin/redom/blob/master/CODE_OF_CONDUCT.md)
+- License: [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
