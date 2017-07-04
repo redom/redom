@@ -15,11 +15,11 @@ https://redom.js.org
 
 RE:DOM is a tiny (2 KB) UI library by Juha Lindstedt and contributors, which adds some useful helpers to create DOM elements and keeping them in sync with the data.
 
-Because RE:DOM is so close to the metal and *doesn't use virtual dom*, it's actually *faster* and uses *less memory* than almost all virtual dom based libraries, including React (benchmark).
+Because RE:DOM is so close to the metal and **doesn't use virtual dom**, it's actually **faster** and uses **less memory** than almost all virtual dom based libraries, including React (benchmark).
 
-It's also easy to create *reusable components* with RE:DOM.
+It's also easy to create **reusable components** with RE:DOM.
 
-Another great benefit is, that you can use just *pure JavaScript*, so no complicated templating languages to learn and hassle with.
+Another great benefit is, that you can use just **pure JavaScript**, so no complicated templating languages to learn and hassle with.
 
 ## Get started!
 https://redom.js.org/documentation
