@@ -21,8 +21,8 @@ It's also easy to create **reusable components** with RE:DOM.
 
 Another great benefit is, that you can use just **pure JavaScript**, so no complicated templating languages to learn and hassle with.
 
-## Get started!
-https://redom.js.org/documentation
+## Get started
+- [Documentation](https://redom.js.org/documentation)
 
 ## Under the hood
 Here's a simplified explanation what's happening under the hood:
