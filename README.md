@@ -23,19 +23,11 @@ Another great benefit is, that you can use just **pure JavaScript**, so no compl
 
 ## Get started
 - [Documentation](https://redom.js.org/documentation)
-
-## Under the hood
-Here's a simplified explanation what's happening under the hood:
-
 - ["Minimum viable view library"](https://www.youtube.com/watch?v=0nh2EK1xveg) - talk at HelsinkiJS / Frontend Finland
 
-## Server-side rendering
-- [NO:DOM](https://github.com/pakastin/nodom)
-
-## Launch fast with project generator! 🚀
+## Tools
+- [NO:DOM](https://github.com/pakastin/nodom) (server-side rendering)
 - [RE:DOM project generator](https://github.com/pakastin/redom-cli)
-
-## Dev tools
 - [Dev tools for Chrome](https://github.com/pakastin/redom-devtools)
 
 ## Performance
