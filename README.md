@@ -23,7 +23,7 @@ Another great benefit is, that you can use just **pure JavaScript**, so no compl
 
 ## Get started
 - [Documentation](https://redom.js.org/documentation)
-- ["Minimum viable view library"](https://www.youtube.com/watch?v=0nh2EK1xveg) - talk at HelsinkiJS / Frontend Finland - see what's happening under the hood
+- ["Minimum viable view library"](https://www.youtube.com/watch?v=0nh2EK1xveg) - talk @ HelsinkiJS - see what's happening under the hood
 
 ## Tools
 - [NO:DOM](https://github.com/pakastin/nodom) (server-side rendering)
