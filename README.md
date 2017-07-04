@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/npm/l/redom.svg?maxAge=60&style=flat-square)](https://github.com/pakastin/redom/blob/master/LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=60)](https://twitter.com/pakastin)
 
-![RE:DOM](dist/img/title.png)
+![RE:DOM](dist/img/title.png?)
 
 Develop web apps with 100 % JavaScript and web standards.
 
