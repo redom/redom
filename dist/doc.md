@@ -213,7 +213,7 @@ Please use `mount`/`unmount`/`setChildren` every time you need to mount/unmount 
 ### Mount
 You can mount elements/components with `mount(parent, child, [before])`. If you define the third parameter, it works like `insertBefore` and otherwise it's like `appendChild`.
 
-Mount will trigger the `mount` [lifecycle event](#component-lifecycle) the first time you mount a child. If you mount the same child again to the same parent, `remount` gets called. If you mount it to another place, `onunmount` and `onmount` get called. Read more about lifecycle events [here](#component-lifecycle).
+Mount will trigger the `onmount` [lifecycle event](#component-lifecycle) the first time you mount a child. If you mount the same child again to the same parent, `onremount` gets called. If you mount it to another place, `onunmount` and `onmount` get called. Read more about lifecycle events [here](#component-lifecycle).
 
 ```js
 import { el, mount } from 'redom';
@@ -228,7 +228,7 @@ mount(document.body, hello, document.body.firstChild);
 ```
 
 ### Unmount
-If you need to remove elements/components, use `unmount(parent, child)`. That will trigger the `unmount` [lifecycle event](#component-lifecycle):
+If you need to remove elements/components, use `unmount(parent, child)`. That will trigger the `onunmount` [lifecycle event](#component-lifecycle):
 
 ```js
 unmount(document.body, hello);
@@ -328,7 +328,7 @@ class Image {
 ```
 
 ### Component lifecycle
-RE:DOM v2.0.0 supports true lifecycle events. Three events are defined: `onmount`, `onremount` and `onunmount`.
+RE:DOM supports true lifecycle events since v2.0.0. Three events are defined: `onmount`, `onremount` and `onunmount`.
 
 * First time you mount the element, `onmount` gets called.
 * If you mount the same element again to the same parent, `onremount` gets called.
