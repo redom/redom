@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/npm/l/redom.svg?maxAge=60&style=flat-square)](https://github.com/pakastin/redom/blob/master/LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=60)](https://twitter.com/pakastin)
 
-![RE:DOM](dist/img/title.png)
+[![RE:DOM](https://redom.js.org/img/title.png)](https://redom.js.org)
 
 Develop web apps with 100 % JavaScript and web standards.
 
@@ -13,36 +13,26 @@ https://redom.js.org
 
 ## Introduction
 
-RE:DOM is a tiny (2 KB) DOM library by Juha Lindstedt and contributors, which adds some useful helpers to create DOM elements and keeping them in sync with the data.
+RE:DOM is a tiny (2 KB) UI library by Juha Lindstedt and contributors, which adds some useful helpers to create DOM elements and keeping them in sync with the data.
 
-Because RE:DOM is so close to the metal and doesn't use virtual dom, it's actually faster and uses less memory than almost all virtual dom based libraries, including React (benchmark).
+Because RE:DOM is so close to the metal and **doesn't use virtual dom**, it's actually **faster** and uses **less memory** than almost all virtual dom based libraries, including React ([benchmark](https://rawgit.com/krausest/js-framework-benchmark/964ae451d222ccc4de774fedeef7025c10227558/webdriver-ts-results/table.html)).
 
-It's also easy to create reusable components with RE:DOM.
+It's also easy to create **reusable components** with RE:DOM.
 
-Another great benefit is, that you can use just pure JavaScript, so no complicated templating languages to learn and hassle with.
+Another great benefit is, that you can use just **pure JavaScript**, so no complicated templating languages to learn and hassle with.
 
-## Get started!
-https://redom.js.org/documentation
+## Get started
+- [Documentation](https://redom.js.org/documentation)
+- ["Minimum viable view library"](https://www.youtube.com/watch?v=0nh2EK1xveg) - talk @ HelsinkiJS - see what's happening under the hood
 
-## Under the hood
-Here's a simplified explanation what's happening under the hood:
-
-https://www.youtube.com/watch?v=0nh2EK1xveg
-
-## Server-side rendering
-https://github.com/pakastin/nodom
-
-## Launch fast with project generator! 🚀
-https://github.com/pakastin/redom-cli
-
-## Dev tools for Chrome
-https://github.com/pakastin/redom-devtools
+## Tools
+- [NO:DOM](https://github.com/pakastin/nodom) (server-side rendering)
+- [RE:DOM project generator](https://github.com/pakastin/redom-cli)
+- [Dev tools for Chrome](https://github.com/pakastin/redom-devtools)
 
 ## Performance
-[RE:DOM is one of the fastest UI library out there.](https://rawgit.com/krausest/js-framework-benchmark/964ae451d222ccc4de774fedeef7025c10227558/webdriver-ts-results/table.html)
+- [RE:DOM is one of the fastest UI library out there.](https://rawgit.com/krausest/js-framework-benchmark/964ae451d222ccc4de774fedeef7025c10227558/webdriver-ts-results/table.html)
 
-## Code of conduct
-[Contributor Covenant](https://github.com/pakastin/redom/blob/master/CODE_OF_CONDUCT.md)
-
-## License
-[MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
+## Open source
+- Code of conduct: [Contributor Covenant](https://github.com/pakastin/redom/blob/master/CODE_OF_CONDUCT.md)
+- License: [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
