@@ -12,7 +12,7 @@
       <h1 id="re-dom-documentation">RE:DOM documentation</h1>
       <h2 id="introduction">Introduction</h2>
       <p>RE:DOM is a tiny (2 KB) DOM library by <a href="https://pakastin.fi">Juha Lindstedt</a> and <a href="https://github.com/pakastin/redom/graphs/contributors">contributors</a>, which adds some useful helpers to create DOM elements and keeping them in sync with the data.</p>
-      <p>Because RE:DOM is so close to the metal and <strong>doesn&#39;t use virtual dom</strong>, it&#39;s actually <strong>faster</strong> and uses <strong>less memory</strong> than almost all virtual dom based libraries, including React (<a href="https://rawgit.com/krausest/js-framework-benchmark/964ae451d222ccc4de774fedeef7025c10227558/webdriver-ts-results/table.html">benchmark</a>).</p>
+      <p>Because RE:DOM is so close to the metal and <strong>doesn&#39;t use virtual dom</strong>, it&#39;s actually <strong>faster</strong> and uses <strong>less memory</strong> than almost all virtual dom based libraries, including React (<a href="https://twitter.com/pakastin/status/881771280760008705">benchmark</a>).</p>
       <p>It&#39;s also easy to create <strong>reusable components</strong> with RE:DOM.</p>
       <p>Another great benefit is, that you can use just <strong>pure JavaScript</strong>, so no complicated templating languages to learn and hassle with.</p>
       <h3 id="browser-support">Browser support</h3>
@@ -131,6 +131,7 @@ function middleware (el) {
     this.el = el(&#39;b&#39;);
   }
 }
+
 el(&#39;a&#39;,
   new B()
 )
@@ -478,7 +479,7 @@ app.update(&#39;about&#39;, data);
       <h2 id="more-examples">More examples</h2>
       <p>You can find more examples on <a href="https://redom.js.org">RE:DOM website</a>!</p>
       <h2 id="support-feedback">Support / feedback</h2>
-      <p>If you have any feedback about RE:DOM, you can join <a href="https://koodiklinikka.slack.com/messages/redom/">#redom</a> at <a href="koodiklinikka.slack.com">koodiklinikka.slack.com</a> (get invitation by entering your email at <a href="https://koodiklinikka.fi">koodiklinikka.fi</a>) or raise an issue on <a href="https://github.com/pakastin/redom">GitHub</a>.</p>
+      <p>You&#39;re welcome to join  <a href="https://koodiklinikka.slack.com/messages/redom/">#redom</a> @ <a href="koodiklinikka.slack.com">koodiklinikka.slack.com</a> (get invitation by entering your email at <a href="https://koodiklinikka.fi">koodiklinikka.fi</a>). If you have any questions / feedback, you can also raise an issue on <a href="https://github.com/pakastin/redom">GitHub</a>.</p>
       <h2 id="developing">Developing</h2>
       <p>RE:DOM is on <a href="https://github.com/pakastin/redom">GitHub</a>, source is <a href="https://github.com/pakastin/redom/tree/master/src">here</a>. To start developing:</p>
       <ul>
