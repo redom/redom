@@ -296,7 +296,11 @@ mount(document.body, table);
 
 // schedule another update
 setTimeout(() => {
-  table.update([2, 3, 4, 5]);
+  table.update([
+    [ 3, 2, 1 ],
+    [ 6, 5, 4 ],
+    [ 9, 8, 7 ]
+  ]);
 }, 1000);</code></pre>
 <pre><code class="language-markup">&lt;body&gt;
   &lt;table&gt;
