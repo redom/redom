@@ -27,7 +27,7 @@ Another great benefit is, that you can use just **pure JavaScript**, so no compl
 
 ## Tools
 - [NO:DOM](https://github.com/pakastin/nodom) (server-side rendering)
-- [RE:DOM project generator](https://github.com/pakastin/redom-cli)
+- [Project generator](https://github.com/pakastin/redom-cli)
 - [Dev tools for Chrome](https://github.com/pakastin/redom-devtools)
 
 ## Performance
