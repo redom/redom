@@ -170,7 +170,7 @@ mount(document.body, drawing);
       <p>Please use <code>mount</code>/<code>unmount</code>/<code>setChildren</code> every time you need to mount/unmount elements inside a RE:DOM app. These functions will trigger lifecycle events, add references to components etc.</p>
       <h3 id="mount">Mount</h3>
       <p>You can mount elements/components with <code>mount(parent, child, [before])</code>. If you define the third parameter, it works like <code>insertBefore</code> and otherwise it&#39;s like <code>appendChild</code>.</p>
-      <p>Mount will trigger the <code>mount</code> <a href="#component-lifecycle">lifecycle event</a> the first time you mount a child. If you mount the same child again to the same parent, <code>remount</code> gets called. If you mount it to another place, <code>onunmount</code> and <code>onmount</code> get called. Read more about lifecycle events <a href="#component-lifecycle">here</a>.</p>
+      <p>Mount will trigger the <code>onmount</code> <a href="#component-lifecycle">lifecycle event</a> the first time you mount a child. If you mount the same child again to the same parent, <code>onremount</code> gets called. If you mount it to another place, <code>onunmount</code> and <code>onmount</code> get called. Read more about lifecycle events <a href="#component-lifecycle">here</a>.</p>
       <pre><code class="lang-js">import { el, mount } from &#39;redom&#39;;
 
 const hello = el(&#39;h1&#39;, &#39;Hello RE:DOM!&#39;);
@@ -182,7 +182,7 @@ mount(document.body, hello);
 mount(document.body, hello, document.body.firstChild);
       </code></pre>
       <h3 id="unmount">Unmount</h3>
-      <p>If you need to remove elements/components, use <code>unmount(parent, child)</code>. That will trigger the <code>unmount</code> <a href="#component-lifecycle">lifecycle event</a>:</p>
+      <p>If you need to remove elements/components, use <code>unmount(parent, child)</code>. That will trigger the <code>onunmount</code> <a href="#component-lifecycle">lifecycle event</a>:</p>
       <pre><code class="lang-js">unmount(document.body, hello);
       </code></pre>
       <h3 id="set-children">Set children</h3>
@@ -264,7 +264,7 @@ class Image {
 }
       </code></pre>
       <h3 id="component-lifecycle">Component lifecycle</h3>
-      <p>RE:DOM v2.0.0 supports true lifecycle events. Three events are defined: <code>onmount</code>, <code>onremount</code> and <code>onunmount</code>.</p>
+      <p>RE:DOM supports true lifecycle events since v2.0.0. Three events are defined: <code>onmount</code>, <code>onremount</code> and <code>onunmount</code>.</p>
       <ul>
       <li>First time you mount the element, <code>onmount</code> gets called.</li>
       <li>If you mount the same element again to the same parent, <code>onremount</code> gets called.</li>
