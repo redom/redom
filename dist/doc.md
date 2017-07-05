@@ -3,7 +3,7 @@
 ## Introduction
 RE:DOM is a tiny (2 KB) DOM library by [Juha Lindstedt](https://pakastin.fi) and [contributors](https://github.com/pakastin/redom/graphs/contributors), which adds some useful helpers to create DOM elements and keeping them in sync with the data.
 
-Because RE:DOM is so close to the metal and __doesn't use virtual dom__, it's actually __faster__ and uses __less memory__ than almost all virtual dom based libraries, including React ([benchmark](https://rawgit.com/krausest/js-framework-benchmark/964ae451d222ccc4de774fedeef7025c10227558/webdriver-ts-results/table.html)).
+Because RE:DOM is so close to the metal and __doesn't use virtual dom__, it's actually __faster__ and uses __less memory__ than almost all virtual dom based libraries, including React ([benchmark](https://twitter.com/pakastin/status/881771280760008705)).
 
 It's also easy to create __reusable components__ with RE:DOM.
 
@@ -163,6 +163,7 @@ class B {
     this.el = el('b');
   }
 }
+
 el('a',
   new B()
 )
@@ -567,7 +568,7 @@ The example will:
 You can find more examples on [RE:DOM website](https://redom.js.org)!
 
 ## Support / feedback
-If you have any feedback about RE:DOM, you can join [#redom](https://koodiklinikka.slack.com/messages/redom/) at [koodiklinikka.slack.com](koodiklinikka.slack.com) (get invitation by entering your email at [koodiklinikka.fi](https://koodiklinikka.fi)) or raise an issue on [GitHub](https://github.com/pakastin/redom).
+You're welcome to join  [#redom](https://koodiklinikka.slack.com/messages/redom/) @ [koodiklinikka.slack.com](koodiklinikka.slack.com) (get invitation by entering your email at [koodiklinikka.fi](https://koodiklinikka.fi)). If you have any questions / feedback, you can also raise an issue on [GitHub](https://github.com/pakastin/redom).
 
 ## Developing
 RE:DOM is on [GitHub](https://github.com/pakastin/redom), source is [here](https://github.com/pakastin/redom/tree/master/src). To start developing:
