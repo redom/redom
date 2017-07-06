@@ -34,5 +34,5 @@ Another great benefit is, that you can use just **pure JavaScript**, so no compl
 - [RE:DOM is one of the fastest UI library out there.](https://twitter.com/pakastin/status/881771280760008705)
 
 ## Open source
-- Code of conduct: [Contributor Covenant](https://github.com/pakastin/redom/blob/master/CODE_OF_CONDUCT.md)
 - License: [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
+- Code of conduct: [Contributor Covenant](https://github.com/pakastin/redom/blob/master/CODE_OF_CONDUCT.md)
