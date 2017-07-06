@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pakastin/redom.git"
+    "url": "git+https://github.com/redom/redom.git"
   },
   "keywords": [
     "redom",
@@ -36,9 +36,9 @@
   "author": "Juha Lindstedt",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pakastin/redom/issues"
+    "url": "https://github.com/redom/redom/issues"
   },
-  "homepage": "https://github.com/pakastin/redom#readme",
+  "homepage": "https://github.com/redom/redom#readme",
   "devDependencies": {
     "browserify": "^14.4.0",
     "coverify": "^1.4.1",
