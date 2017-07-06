@@ -21,6 +21,11 @@ It's also easy to create **reusable components** with RE:DOM.
 
 Another great benefit is, that you can use just **pure JavaScript**, so no complicated templating languages to learn and hassle with.
 
+## Installing
+```
+npm i redom
+```
+
 ## Get started
 - [Documentation](https://redom.js.org/documentation)
 - ["Minimum viable view library"](https://www.youtube.com/watch?v=0nh2EK1xveg) - talk @ HelsinkiJS - see what's happening under the hood
