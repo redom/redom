@@ -1,9 +1,10 @@
 [![Join the chat at https://gitter.im/pakastin/redom](https://badges.gitter.im/pakastin/redom.svg)](https://gitter.im/pakastin/redom?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Flet/semistandard)
-[![Build Status](https://img.shields.io/travis/pakastin/redom/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/pakastin/redom?branch=master)
+[![Build Status](https://img.shields.io/travis/redom/redom/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/redom/redom?branch=master)
 [![npm](https://img.shields.io/npm/v/redom.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/redom)
-[![npm](https://img.shields.io/npm/l/redom.svg?maxAge=60&style=flat-square)](https://github.com/pakastin/redom/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/l/redom.svg?maxAge=60&style=flat-square)](https://github.com/redom/redom/blob/master/LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=60)](https://twitter.com/pakastin)
+[![Twitter Follow](https://img.shields.io/twitter/follow/redomjs.svg?style=social&maxAge=60)](https://twitter.com/redomjs)
 
 [![RE:DOM](https://redom.js.org/img/title.png)](https://redom.js.org)
 
@@ -13,7 +14,7 @@ https://redom.js.org
 
 ## Introduction
 
-RE:DOM is a tiny (2 KB) UI library by [Juha Lindstedt](https://pakastin.fi) and [contributors](https://github.com/pakastin/redom/graphs/contributors), which adds some useful helpers to create DOM elements and keeping them in sync with the data.
+RE:DOM is a tiny (2 KB) UI library by [Juha Lindstedt](https://pakastin.fi) and [contributors](https://github.com/redom/redom/graphs/contributors), which adds some useful helpers to create DOM elements and keeping them in sync with the data.
 
 Because RE:DOM is so close to the metal and **doesn't use virtual dom**, it's actually **faster** and uses **less memory** than almost all virtual dom based libraries, including React ([benchmark](https://twitter.com/pakastin/status/881771280760008705)).
 
@@ -31,13 +32,13 @@ npm i redom
 - ["Minimum viable view library"](https://www.youtube.com/watch?v=0nh2EK1xveg) - talk @ HelsinkiJS - see what's happening under the hood
 
 ## Tools
-- [NO:DOM](https://github.com/pakastin/nodom) (server-side rendering)
-- [Project generator](https://github.com/pakastin/redom-cli)
-- [Dev tools for Chrome](https://github.com/pakastin/redom-devtools)
+- [NO:DOM](https://github.com/redom/nodom) (server-side rendering)
+- [Project generator](https://github.com/redom/redom-cli)
+- [Dev tools for Chrome](https://github.com/redom/redom-devtools)
 
 ## Performance
 - [RE:DOM is one of the fastest UI library out there.](https://twitter.com/pakastin/status/881771280760008705)
 
 ## Open source
-- License: [MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
-- Code of conduct: [Contributor Covenant](https://github.com/pakastin/redom/blob/master/CODE_OF_CONDUCT.md)
+- License: [MIT](https://github.com/redom/redom/blob/master/LICENSE)
+- Code of conduct: [Contributor Covenant](https://github.com/redom/redom/blob/master/CODE_OF_CONDUCT.md)
