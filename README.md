@@ -2,6 +2,8 @@
 [![Build Status](https://img.shields.io/travis/redom/redom/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/redom/redom?branch=master)
 [![npm](https://img.shields.io/npm/v/redom.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/redom)
 [![npm](https://img.shields.io/npm/l/redom.svg?maxAge=60&style=flat-square)](https://github.com/redom/redom/blob/master/LICENSE)
+
+
 [![Join the chat at https://gitter.im/pakastin/redom](https://badges.gitter.im/pakastin/redom.svg)](https://gitter.im/pakastin/redom?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=60)](https://twitter.com/pakastin)
 [![Twitter Follow](https://img.shields.io/twitter/follow/redomjs.svg?style=social&maxAge=60)](https://twitter.com/redomjs)
