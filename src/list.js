@@ -1,5 +1,5 @@
 import { setChildren } from './setchildren';
-import { isFunction, ensureEl } from './util';
+import { isFunction, ensureEl, getEl } from './util';
 import { unmount } from './mount';
 
 const propKey = key => item => item[key];
@@ -49,10 +49,7 @@ List.prototype.update = function (data = []) {
     } else {
       view = newViews[i] = oldViews[i] || new View(initData, item, i, data);
     }
-    let el = view.el;
-    if (el.__redom_list) {
-      el = el.el;
-    }
+    let el = getEl(view.el);
     el.__redom_view = view;
     view.update && view.update(item, i, data);
   }
