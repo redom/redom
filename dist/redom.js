@@ -421,10 +421,7 @@ List.prototype.update = function (data) {
     } else {
       view = newViews[i] = oldViews[i] || new View(initData, item, i, data);
     }
-    var el = view.el;
-    if (el.__redom_list) {
-      el = el.el;
-    }
+    var el = getEl(view.el);
     el.__redom_view = view;
     view.update && view.update(item, i, data);
   }
