@@ -405,12 +405,12 @@ class Li {
   }
 }
 
-const list = list('ul', Li);
+const ul = list('ul', Li);
 
-mount(document.body, list);
+mount(document.body, ul);
 
-list.update([1, 2, 3]);
-list.update([2, 2, 4]);
+ul.update([1, 2, 3]);
+ul.update([2, 2, 4]);
 ```
 
 ### List lifecycle
