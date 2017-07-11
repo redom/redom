@@ -441,18 +441,18 @@ class Li {
   }
 }
 
-const list = list('ul', Li, '_id');
+const ul = list('ul', Li, '_id');
 
-mount(document.body, list);
+mount(document.body, ul);
 
-list.update([
+ul.update([
   { _id: 1, name: 'Item 1' },
   { _id: 2, name: 'Item 2' },
   { _id: 3, name: 'Item 3' }
 ]);
 
 setTimeout(() => {
-  list.update([
+  ul.update([
     { _id: 3, name: 'Item 3' },
     { _id: 2, name: 'Item 2' }
   ]);
