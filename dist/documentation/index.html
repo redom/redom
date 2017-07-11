@@ -336,12 +336,12 @@ class Li {
   }
 }
 
-const list = list(&#39;ul&#39;, Li);
+const ul = list(&#39;ul&#39;, Li);
 
-mount(document.body, list);
+mount(document.body, ul);
 
-list.update([1, 2, 3]);
-list.update([2, 2, 4]);
+ul.update([1, 2, 3]);
+ul.update([2, 2, 4]);
       </code></pre>
       <h3 id="list-lifecycle">List lifecycle</h3>
       <p>When you call <code>List.update</code>, the list will automatically:</p>
@@ -367,18 +367,18 @@ class Li {
   }
 }
 
-const list = list(&#39;ul&#39;, Li, &#39;_id&#39;);
+const ul = list(&#39;ul&#39;, Li, &#39;_id&#39;);
 
-mount(document.body, list);
+mount(document.body, ul);
 
-list.update([
+ul.update([
   { _id: 1, name: &#39;Item 1&#39; },
   { _id: 2, name: &#39;Item 2&#39; },
   { _id: 3, name: &#39;Item 3&#39; }
 ]);
 
 setTimeout(() =&gt; {
-  list.update([
+  ul.update([
     { _id: 3, name: &#39;Item 3&#39; },
     { _id: 2, name: &#39;Item 2&#39; }
   ]);
