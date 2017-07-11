@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.redom = global.redom || {})));
+	(factory((global.redom = {})));
 }(this, (function (exports) { 'use strict';
 
 var HASH = '#'.charCodeAt(0);
