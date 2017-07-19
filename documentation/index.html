@@ -452,11 +452,11 @@ this.el = this.list.el;
       </code></pre>
       <h2 id="router">Router</h2>
       <p>Router is a component router, which will create/update/remove components based on the current route.</p>
-      <pre><code class="lang-js">import { router } from &#39;redom&#39;;
+      <pre><code class="lang-js">import { router, mount } from &#39;redom&#39;;
 
 import { Home, About, Contact } from &#39;./sections/index&#39;
 
-const app = router({
+const app = router(&#39;.app&#39;, {
   home: Home,
   about: About,
   contact: Contact
