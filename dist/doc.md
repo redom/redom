@@ -540,11 +540,11 @@ this.el = this.list.el;
 Router is a component router, which will create/update/remove components based on the current route.
 
 ```js
-import { router } from 'redom';
+import { router, mount } from 'redom';
 
 import { Home, About, Contact } from './sections/index'
 
-const app = router({
+const app = router('.app', {
   home: Home,
   about: About,
   contact: Contact
