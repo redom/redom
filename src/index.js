@@ -1,6 +1,7 @@
 export { html, el } from './html';
 export { list, List } from './list';
 export { mount, unmount } from './mount';
+export { place, Place } from './place';
 export { router, Router } from './router';
 export { setAttr } from './setattr';
 export { setStyle } from './setstyle';

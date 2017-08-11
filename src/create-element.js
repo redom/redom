@@ -1,7 +1,7 @@
 const HASH = '#'.charCodeAt(0);
 const DOT = '.'.charCodeAt(0);
 
-export function createElement (query, ns) {
+export const createElement = (query, ns) => {
   let tag;
   let id;
   let className;
@@ -58,4 +58,4 @@ export function createElement (query, ns) {
   }
 
   return element;
-}
+};

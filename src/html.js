@@ -5,7 +5,7 @@ const htmlCache = {};
 
 const memoizeHTML = query => htmlCache[query] || (htmlCache[query] = createElement(query));
 
-export function html (query, ...args) {
+export const html = (query, ...args) => {
   let element;
 
   if (isString(query)) {
@@ -19,7 +19,7 @@ export function html (query, ...args) {
   parseArguments(element, args);
 
   return element;
-}
+};
 
 html.extend = function (query) {
   const clone = memoizeHTML(query);

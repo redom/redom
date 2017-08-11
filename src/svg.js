@@ -7,7 +7,7 @@ const svgCache = {};
 
 const memoizeSVG = query => svgCache[query] || (svgCache[query] = createElement(query, SVG));
 
-export function svg (query, ...args) {
+export const svg = (query, ...args) => {
   let element;
 
   if (isString(query)) {
@@ -21,7 +21,7 @@ export function svg (query, ...args) {
   parseArguments(element, args);
 
   return element;
-}
+};
 
 svg.extend = function (query) {
   const clone = memoizeSVG(query);

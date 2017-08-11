@@ -2,7 +2,7 @@ import { getEl } from './util';
 
 const hookNames = ['onmount', 'onunmount'];
 
-export function mount (parent, child, before) {
+export const mount = (parent, child, before) => {
   const parentEl = getEl(parent);
   let childEl = getEl(child);
 
@@ -31,9 +31,9 @@ export function mount (parent, child, before) {
   doMount(child, childEl, parentEl, oldParent);
 
   return child;
-}
+};
 
-export function unmount (parent, child) {
+export const unmount = (parent, child) => {
   const parentEl = getEl(parent);
   const childEl = getEl(child);
 
@@ -47,9 +47,9 @@ export function unmount (parent, child) {
   parentEl.removeChild(childEl);
 
   return child;
-}
+};
 
-function doMount (child, childEl, parentEl, oldParent) {
+const doMount = (child, childEl, parentEl, oldParent) => {
   const hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
   const remount = (parentEl === oldParent);
   let hooksFound = false;
@@ -97,9 +97,9 @@ function doMount (child, childEl, parentEl, oldParent) {
 
     traverse = parent;
   }
-}
+};
 
-function doUnmount (child, childEl, parentEl) {
+const doUnmount = (child, childEl, parentEl) => {
   const hooks = childEl.__redom_lifecycle;
 
   if (!hooks) {
@@ -132,9 +132,9 @@ function doUnmount (child, childEl, parentEl) {
 
     traverse = traverse.parentNode;
   }
-}
+};
 
-function trigger (el, eventName) {
+const trigger = (el, eventName) => {
   if (eventName === 'onmount') {
     el.__redom_mounted = true;
   } else if (eventName === 'onunmount') {
@@ -169,4 +169,4 @@ function trigger (el, eventName) {
       traverse = next;
     }
   }
-}
+};

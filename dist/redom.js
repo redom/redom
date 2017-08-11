@@ -7,7 +7,7 @@
 var HASH = '#'.charCodeAt(0);
 var DOT = '.'.charCodeAt(0);
 
-function createElement (query, ns) {
+var createElement = function (query, ns) {
   var tag;
   var id;
   var className;
@@ -64,11 +64,11 @@ function createElement (query, ns) {
   }
 
   return element;
-}
+};
 
 var hookNames = ['onmount', 'onunmount'];
 
-function mount (parent, child, before) {
+var mount = function (parent, child, before) {
   var parentEl = getEl(parent);
   var childEl = getEl(child);
 
@@ -97,9 +97,9 @@ function mount (parent, child, before) {
   doMount(child, childEl, parentEl, oldParent);
 
   return child;
-}
+};
 
-function unmount (parent, child) {
+var unmount = function (parent, child) {
   var parentEl = getEl(parent);
   var childEl = getEl(child);
 
@@ -113,9 +113,9 @@ function unmount (parent, child) {
   parentEl.removeChild(childEl);
 
   return child;
-}
+};
 
-function doMount (child, childEl, parentEl, oldParent) {
+var doMount = function (child, childEl, parentEl, oldParent) {
   var hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
   var remount = (parentEl === oldParent);
   var hooksFound = false;
@@ -163,9 +163,9 @@ function doMount (child, childEl, parentEl, oldParent) {
 
     traverse = parent;
   }
-}
+};
 
-function doUnmount (child, childEl, parentEl) {
+var doUnmount = function (child, childEl, parentEl) {
   var hooks = childEl.__redom_lifecycle;
 
   if (!hooks) {
@@ -198,9 +198,9 @@ function doUnmount (child, childEl, parentEl) {
 
     traverse = traverse.parentNode;
   }
-}
+};
 
-function trigger (el, eventName) {
+var trigger = function (el, eventName) {
   if (eventName === 'onmount') {
     el.__redom_mounted = true;
   } else if (eventName === 'onunmount') {
@@ -235,9 +235,9 @@ function trigger (el, eventName) {
       traverse = next;
     }
   }
-}
+};
 
-function setStyle (view, arg1, arg2) {
+var setStyle = function (view, arg1, arg2) {
   var el = getEl(view);
 
   if (arg2 !== undefined) {
@@ -249,9 +249,9 @@ function setStyle (view, arg1, arg2) {
       setStyle(el, key, arg1[key]);
     }
   }
-}
+};
 
-function setAttr (view, arg1, arg2) {
+var setAttr = function (view, arg1, arg2) {
   var el = getEl(view);
   var isSVG = el instanceof window.SVGElement;
 
@@ -270,11 +270,11 @@ function setAttr (view, arg1, arg2) {
       setAttr(el, key, arg1[key]);
     }
   }
-}
+};
 
 var text = function (str) { return document.createTextNode(str); };
 
-function parseArguments (element, args) {
+var parseArguments = function (element, args) {
   for (var i = 0; i < args.length; i++) {
     var arg = args[i];
 
@@ -295,7 +295,7 @@ function parseArguments (element, args) {
       setAttr(element, arg);
     }
   }
-}
+};
 
 var ensureEl = function (parent) { return isString(parent) ? html(parent) : getEl(parent); };
 var getEl = function (parent) { return (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el); };
@@ -310,7 +310,7 @@ var htmlCache = {};
 
 var memoizeHTML = function (query) { return htmlCache[query] || (htmlCache[query] = createElement(query)); };
 
-function html (query) {
+var html = function (query) {
   var args = [], len = arguments.length - 1;
   while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
@@ -327,7 +327,7 @@ function html (query) {
   parseArguments(element, args);
 
   return element;
-}
+};
 
 html.extend = function (query) {
   var clone = memoizeHTML(query);
@@ -337,7 +337,7 @@ html.extend = function (query) {
 
 var el = html;
 
-function setChildren (parent, children) {
+var setChildren = function (parent, children) {
   if (children.length === undefined) {
     return setChildren(parent, [children]);
   }
@@ -369,15 +369,15 @@ function setChildren (parent, children) {
 
     traverse = next;
   }
-}
+};
 
 var propKey = function (key) { return function (item) { return item[key]; }; };
 
-function list (parent, View, key, initData) {
+var list = function (parent, View, key, initData) {
   return new List(parent, View, key, initData);
-}
+};
 
-function List (parent, View, key, initData) {
+var List = function List (parent, View, key, initData) {
   this.__redom_list = true;
   this.View = View;
   this.initData = initData;
@@ -388,17 +388,10 @@ function List (parent, View, key, initData) {
     this.lookup = {};
     this.key = isFunction(key) ? key : propKey(key);
   }
-}
-
-List.extend = function (parent, View, key, initData) {
-  return List.bind(List, parent, View, key, initData);
 };
-
-list.extend = List.extend;
-
-List.prototype.update = function (data) {
-  var this$1 = this;
-  if ( data === void 0 ) data = [];
+List.prototype.update = function update (data) {
+    var this$1 = this;
+    if ( data === void 0 ) data = [];
 
   var View = this.View;
   var key = this.key;
@@ -444,9 +437,54 @@ List.prototype.update = function (data) {
   this.views = newViews;
 };
 
-function router (parent, Views, initData) {
+List.extend = function (parent, View, key, initData) {
+  return List.bind(List, parent, View, key, initData);
+};
+
+list.extend = List.extend;
+
+var place = function (View, initData) {
+  return new Place(View, initData);
+};
+
+var Place = function Place (View, initData) {
+  this.el = text('');
+  this._placeholder = this.el;
+  this._visible = false;
+  this._View = View;
+  this._initData = initData;
+};
+Place.prototype.update = function update (visible, data) {
+  if (visible) {
+    if (!this._visible) {
+      var View = this._View;
+      var view = new View(this._initData);
+
+      this.el = getEl(view.el);
+      this._view = view;
+
+      var parentNode = this._placeholder.parentNode;
+
+      mount(parentNode, this.el, this._placeholder);
+      unmount(parentNode, this._placeholder);
+    }
+    this._view.update && this._view.update(data);
+  } else {
+    if (this._visible) {
+      var parentNode$1 = this.el.parentNode;
+
+      mount(parentNode$1, this._placeholder, this.el);
+      unmount(parentNode$1, this.el);
+
+      this.el = this._placeholder;
+    }
+  }
+  this._visible = visible;
+};
+
+var router = function (parent, Views, initData) {
   return new Router(parent, Views, initData);
-}
+};
 
 var Router = function Router (parent, Views, initData) {
   this.el = ensureEl(parent);
@@ -472,7 +510,7 @@ var svgCache = {};
 
 var memoizeSVG = function (query) { return svgCache[query] || (svgCache[query] = createElement(query, SVG)); };
 
-function svg (query) {
+var svg = function (query) {
   var args = [], len = arguments.length - 1;
   while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
@@ -489,7 +527,7 @@ function svg (query) {
   parseArguments(element, args);
 
   return element;
-}
+};
 
 svg.extend = function (query) {
   var clone = memoizeSVG(query);
@@ -503,6 +541,8 @@ exports.list = list;
 exports.List = List;
 exports.mount = mount;
 exports.unmount = unmount;
+exports.place = place;
+exports.Place = Place;
 exports.router = router;
 exports.Router = Router;
 exports.setAttr = setAttr;

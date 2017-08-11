@@ -3,7 +3,7 @@ import { mount } from './mount';
 import { setAttr } from './setattr';
 import { text } from './text';
 
-export function parseArguments (element, args) {
+export const parseArguments = (element, args) => {
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
 
@@ -24,7 +24,7 @@ export function parseArguments (element, args) {
       setAttr(element, arg);
     }
   }
-}
+};
 
 export const ensureEl = parent => isString(parent) ? html(parent) : getEl(parent);
 export const getEl = parent => (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el);

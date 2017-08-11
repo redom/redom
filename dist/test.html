@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script src="redom.min.js"></script>
+    <script>
+    const { el, mount, place } = redom;
+
+    class B {
+      constructor () {
+        this.el = el('.b', 'Hello from place!');
+      }
+    }
+
+    class A {
+      constructor () {
+        this.el = el('.a',
+          this.place = place(B)
+        );
+      }
+    }
+
+    const a = new A();
+
+    mount(document.body, a);
+
+    setTimeout(function () {
+      a.place.update(true);
+    }, 1000);
+
+    setTimeout(function () {
+      a.place.update(false);
+    }, 2000);
+    </script>
+  </body>
+</html>
