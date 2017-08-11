@@ -462,10 +462,13 @@ const app = el(&#39;.app&#39;,
   this.content = new Content()
 );
 
-// show menu and send data update:
+// create Menu and send data update:
 this.menu.update(true, data);
 
-// hide menu:
+// just update Menu (was already created):
+this.menu.update(true, data2);
+
+// delete Menu:
 this.menu.update(false);
       </code></pre>
       <h2 id="router">Router</h2>

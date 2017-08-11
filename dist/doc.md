@@ -551,10 +551,13 @@ const app = el('.app',
   this.content = new Content()
 );
 
-// show menu and send data update:
+// create Menu and send data update:
 this.menu.update(true, data);
 
-// hide menu:
+// just update Menu (was already created):
+this.menu.update(true, data2);
+
+// delete Menu:
 this.menu.update(false);
 
 ```
