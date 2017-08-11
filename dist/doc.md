@@ -536,11 +536,34 @@ this.list = list('tr', Td);
 this.el = this.list.el;
 ```
 
+## Place
+Sometimes you want to be able to create/delete a component while reserving it's place, that's when `place` come in handy!
+
+Think of it as a single view router (without the need of a parent).
+
+```js
+import { place, mount } from 'redom';
+import { Top, Menu, Content } from './elements';
+
+const app = el('.app',
+  this.top = new Top(),
+  this.menu = place(Menu),
+  this.content = new Content()
+);
+
+// show menu and send data update:
+this.menu.update(true, data);
+
+// hide menu:
+this.menu.update(false);
+
+```
+
 ## Router
 Router is a component router, which will create/update/remove components based on the current route.
 
 ```js
-import { router, mount } from 'redom';
+import { router, mount } from 'redom';
 
 import { Home, About, Contact } from './sections/index'
 

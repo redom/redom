@@ -450,6 +450,24 @@ mount(document.body, table);
       <pre><code class="lang-js">this.list = list(&#39;tr&#39;, Td);
 this.el = this.list.el;
       </code></pre>
+      <h2 id="place">Place</h2>
+      <p>Sometimes you want to be able to create/delete a component while reserving it&#39;s place, that&#39;s when <code>place</code> come in handy!</p>
+      <p>Think of it as a single view router (without the need of a parent).</p>
+      <pre><code class="lang-js">import { place, mount } from &#39;redom&#39;;
+import { Top, Menu, Content } from &#39;./elements&#39;;
+
+const app = el(&#39;.app&#39;,
+  this.top = new Top(),
+  this.menu = place(Menu),
+  this.content = new Content()
+);
+
+// show menu and send data update:
+this.menu.update(true, data);
+
+// hide menu:
+this.menu.update(false);
+      </code></pre>
       <h2 id="router">Router</h2>
       <p>Router is a component router, which will create/update/remove components based on the current route.</p>
       <pre><code class="lang-js">import { router, mount } from &#39;redom&#39;;
