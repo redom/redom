@@ -31,7 +31,7 @@
       <p>You can install <a href="https://github.com/redom/redom-devtools">RE:DOM dev tools for Chrome</a></p>
       <p><img src="screenshot.png" alt="RE:DOM dev tools"></p>
       <h2 id="elements">Elements</h2>
-      <p><code>el</code> (<a href="#alias">alias</a>: <code>html</code>) is a helper for <code>document.createElement</code> with couple of differences.</p>
+      <p><code>el</code> (actually <a href="#alias">alias</a> for <a href="https://github.com/redom/redom/blob/master/src/html.js"><code>html</code></a>) is a helper for <code>document.createElement</code> with couple of differences.</p>
       <p>The basic idea is to simply create elements with <code>el</code> and mount them with <code>mount</code>, almost like you would do with plain JavaScript:</p>
       <pre><code class="lang-js">import { el, mount } from &#39;redom&#39;;
 
@@ -44,7 +44,7 @@ mount(document.body, hello);
 &lt;/body&gt;
       </code></pre>
       <h3 id="text-reference">Text reference</h3>
-      <p>String and Number arguments (after the query) generate text nodes. You can also use the <code>text</code> helper, which will return a reference to the text node:</p>
+      <p>String and Number arguments (after the query) generate text nodes. You can also use the <a href="https://github.com/redom/redom/blob/master/src/text.js"><code>text</code></a> helper, which will return a reference to the text node:</p>
       <pre><code class="lang-js">import { text, mount } from &#39;redom&#39;;
 
 const hello = text(&#39;hello&#39;);
@@ -151,7 +151,7 @@ html(&#39;div&#39;)
 &lt;div&gt;&lt;/div&gt;
       </code></pre>
       <h3 id="svg">SVG</h3>
-      <p><code>el</code> and <code>html</code> only create HTML elements. If you want to create a SVG element, you must use <code>svg</code>:</p>
+      <p><code>el</code> and <code>html</code> only create HTML elements. If you want to create a SVG element, you must use <a href="https://github.com/redom/redom/blob/master/src/svg.js"><code>svg(query)</code></a>:</p>
       <pre><code class="lang-js">import { svg, mount } from &#39;redom&#39;;
 
 const drawing = svg(&#39;svg&#39;,
@@ -169,7 +169,7 @@ mount(document.body, drawing);
       <h2 id="mounting">Mounting</h2>
       <p>Please use <code>mount</code>/<code>unmount</code>/<code>setChildren</code> every time you need to mount/unmount elements inside a RE:DOM app. These functions will trigger lifecycle events, add references to components etc.</p>
       <h3 id="mount">Mount</h3>
-      <p>You can mount elements/components with <code>mount(parent, child, [before])</code>. If you define the third parameter, it works like <code>insertBefore</code> and otherwise it&#39;s like <code>appendChild</code>.</p>
+      <p>You can mount elements/components with <a href="https://github.com/redom/redom/blob/master/src/mount.js"><code>mount(parent, child, [before])</code></a>. If you define the third parameter, it works like <code>insertBefore</code> and otherwise it&#39;s like <code>appendChild</code>.</p>
       <p>Mount will trigger the <code>onmount</code> <a href="#component-lifecycle">lifecycle event</a> the first time you mount a child. If you mount the same child again to the same parent, <code>onremount</code> gets called. If you mount it to another place, <code>onunmount</code> and <code>onmount</code> get called. Read more about lifecycle events <a href="#component-lifecycle">here</a>.</p>
       <pre><code class="lang-js">import { el, mount } from &#39;redom&#39;;
 
@@ -182,11 +182,11 @@ mount(document.body, hello);
 mount(document.body, hello, document.body.firstChild);
       </code></pre>
       <h3 id="unmount">Unmount</h3>
-      <p>If you need to remove elements/components, use <code>unmount(parent, child)</code>. That will trigger the <code>onunmount</code> <a href="#component-lifecycle">lifecycle event</a>:</p>
+      <p>If you need to remove elements/components, use <a href="https://github.com/redom/redom/blob/master/src/unmount.js"><code>unmount(parent, child)</code></a>. That will trigger the <code>onunmount</code> <a href="#component-lifecycle">lifecycle event</a>:</p>
       <pre><code class="lang-js">unmount(document.body, hello);
       </code></pre>
       <h3 id="set-children">Set children</h3>
-      <p>RE:DOM uses <code>setChildren(parent, children)</code> under the hood for <a href="#lists">lists</a>. When you call <code>setChildren</code>, RE:DOM will add/reorder/remove elements/components automatically by reference:</p>
+      <p>RE:DOM uses <a href="https://github.com/redom/redom/blob/master/src/setchildren.js"><code>setChildren(parent, children)</code></a> under the hood for <a href="#lists">lists</a>. When you call <code>setChildren</code>, RE:DOM will add/reorder/remove elements/components automatically by reference:</p>
       <pre><code class="lang-js">import { el, setChildren } from &#39;redom&#39;;
 
 const a = el(&#39;a&#39;);
@@ -205,7 +205,7 @@ setChildren(document.body, [c, b]);
       <p>There&#39;s also a shortcut for replacing children with a single component / element: <code>setChildren(document.body, app);</code>.</p>
       <h2 id="update-elements">Update elements</h2>
       <h3 id="setattr">setAttr</h3>
-      <p>A helper for updating attributes and properties. It will auto-detect attributes and properties:</p>
+      <p><a href="https://github.com/redom/redom/blob/master/src/setattr.js"><code>setAttr(el, attrs)</code></a> is a helper for updating attributes and properties. It will auto-detect attributes and properties:</p>
       <pre><code class="lang-js">import { el, setAttr } from &#39;redom&#39;;
 
 const hello = el(&#39;h1&#39;, &#39;Hello RE:DOM!&#39;);
@@ -216,7 +216,7 @@ setAttr(hello, {
 });
       </code></pre>
       <h3 id="setstyle">setStyle</h3>
-      <p>There&#39;s also a shortcut for updating the <code>style</code> attribute:</p>
+      <p><a href="https://github.com/redom/redom/blob/master/src/setstyle.js"><code>setStyle(el, styles)</code></a> is a shortcut for updating the <code>style</code> attribute:</p>
       <pre><code class="lang-js">import { setStyle } from &#39;redom&#39;;
 
 setStyle(hello, { color: &#39;green&#39; });
@@ -264,7 +264,7 @@ class Image {
 }
       </code></pre>
       <h3 id="component-lifecycle">Component lifecycle</h3>
-      <p>RE:DOM supports true lifecycle events since v2.0.0. Three events are defined: <code>onmount</code>, <code>onremount</code> and <code>onunmount</code>.</p>
+      <p>RE:DOM supports true lifecycle events. Three events are defined: <code>onmount</code>, <code>onremount</code> and <code>onunmount</code>.</p>
       <ul>
       <li>First time you mount the element, <code>onmount</code> gets called.</li>
       <li>If you mount the same element again to the same parent, <code>onremount</code> gets called.</li>
@@ -323,7 +323,7 @@ unmounted App
 unmounted Hello
       </code></pre><h2 id="lists">Lists</h2>
       <p>When you have dynamic data, it&#39;s not that easy to manually keep the elements and the data in sync.
-That&#39;s when the <code>list</code> helper comes to rescue.</p>
+That&#39;s when the <a href="https://github.com/redom/redom/blob/master/src/list.js"><code>list(parent, View, key, initData)</code></a> helper comes to rescue.</p>
       <p>To use <code>list</code>, just define a parent node and component:</p>
       <pre><code class="lang-js">import { el, list, mount } from &#39;redom&#39;;
 
@@ -451,7 +451,7 @@ mount(document.body, table);
 this.el = this.list.el;
       </code></pre>
       <h2 id="place">Place</h2>
-      <p>Sometimes you might need to create/delete a component while reserving it&#39;s place. That&#39;s when <code>place</code> come in handy!</p>
+      <p>Sometimes you might need to create/delete a component while reserving it&#39;s place. That&#39;s when <a href="https://github.com/redom/redom/blob/master/src/place.js"><code>place(View)</code></a> come in handy!</p>
       <p>Think of it as a single view router (without the need of a parent).</p>
       <pre><code class="lang-js">import { place, mount } from &#39;redom&#39;;
 import { Top, Menu, Content } from &#39;./elements&#39;;
@@ -472,7 +472,7 @@ this.menu.update(true, data2);
 this.menu.update(false);
       </code></pre>
       <h2 id="router">Router</h2>
-      <p>Router is a component router, which will create/update/remove components based on the current route.</p>
+      <p><a href="https://github.com/redom/redom/blob/master/src/router.js"><code>router(parent, routes)</code></a> is a component router, which will create/update/remove components based on the current route.</p>
       <pre><code class="lang-js">import { router, mount } from &#39;redom&#39;;
 
 import { Home, About, Contact } from &#39;./sections/index&#39;
