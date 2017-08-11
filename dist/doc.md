@@ -537,7 +537,7 @@ this.el = this.list.el;
 ```
 
 ## Place
-Sometimes you might need to create/delete a component while reserving it's place, that's when `place` come in handy!
+Sometimes you might need to create/delete a component while reserving it's place. That's when `place` come in handy!
 
 Think of it as a single view router (without the need of a parent).
 
