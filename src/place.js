@@ -17,13 +17,12 @@ export class Place {
   update (visible, data) {
     if (visible) {
       if (!this._visible) {
+        const parentNode = this._placeholder.parentNode;
         const View = this._View;
         const view = new View(this._initData);
 
         this.el = getEl(view.el);
         this._view = view;
-
-        const parentNode = this._placeholder.parentNode;
 
         mount(parentNode, this.el, this._placeholder);
         unmount(parentNode, this._placeholder);

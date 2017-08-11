@@ -457,13 +457,12 @@ var Place = function Place (View, initData) {
 Place.prototype.update = function update (visible, data) {
   if (visible) {
     if (!this._visible) {
+      var parentNode = this._placeholder.parentNode;
       var View = this._View;
       var view = new View(this._initData);
 
       this.el = getEl(view.el);
       this._view = view;
-
-      var parentNode = this._placeholder.parentNode;
 
       mount(parentNode, this.el, this._placeholder);
       unmount(parentNode, this._placeholder);
