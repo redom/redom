@@ -457,25 +457,27 @@ var Place = function Place (View, initData) {
 Place.prototype.update = function update (visible, data) {
   if (visible) {
     if (!this._visible) {
-      var parentNode = this._placeholder.parentNode;
+      var placeholder = this._placeholder;
+      var parentNode = placeholder.parentNode;
       var View = this._View;
       var view = new View(this._initData);
 
       this.el = getEl(view.el);
       this._view = view;
 
-      mount(parentNode, this.el, this._placeholder);
-      unmount(parentNode, this._placeholder);
+      mount(parentNode, this.el, placeholder);
+      unmount(parentNode, placeholder);
     }
     this._view.update && this._view.update(data);
   } else {
     if (this._visible) {
+      var placeholder$1 = this._placeholder;
       var parentNode$1 = this.el.parentNode;
 
-      mount(parentNode$1, this._placeholder, this.el);
+      mount(parentNode$1, placeholder$1, this.el);
       unmount(parentNode$1, this.el);
 
-      this.el = this._placeholder;
+      this.el = placeholder$1;
     }
   }
   this._visible = visible;
