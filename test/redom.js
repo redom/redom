@@ -447,8 +447,9 @@ var place = function (View, initData) {
 
 var Place = function Place (View, initData) {
   this.el = text('');
-  this._placeholder = this.el;
   this.visible = false;
+  this.view = null;
+  this._placeholder = this.el;
   this._View = View;
   this._initData = initData;
 };
