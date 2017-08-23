@@ -7,10 +7,7 @@ fs.watch('dist/doc.md', run('build-doc'));
 fs.watch('test/test.js', run('test'));
 
 function run (script) {
-  const child = cp.spawn('npm', ['run', script]);
-
-  child.stdout.pipe(process.stdout);
-  child.stderr.pipe(process.stderr);
+  cp.spawn('npm', ['run', script], { stdio: 'inherit' });
 
   return () => run(script);
 }
