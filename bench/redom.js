@@ -2,6 +2,76 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var HASH = '#'.charCodeAt(0);
+var DOT = '.'.charCodeAt(0);
+
+var parseQuery = function (query) {
+  var tag;
+  var id;
+  var className;
+
+  var mode = 0;
+  var start = 0;
+
+  for (var i = 0; i <= query.length; i++) {
+    var char = query.charCodeAt(i);
+
+    if (char === HASH || char === DOT || !char) {
+      if (mode === 0) {
+        if (i === 0) {
+          tag = 'div';
+        } else if (!char) {
+          tag = query;
+        } else {
+          tag = query.substring(start, i);
+        }
+      } else {
+        var slice = query.substring(start, i);
+
+        if (mode === 1) {
+          id = slice;
+        } else if (className) {
+          className += ' ' + slice;
+        } else {
+          className = slice;
+        }
+      }
+
+      start = i + 1;
+
+      if (char === HASH) {
+        mode = 1;
+      } else {
+        mode = 2;
+      }
+    }
+  }
+
+  return { tag: tag, id: id, className: className };
+};
+
+function createElement (query, ns) {
+  var ref = parseQuery(query);
+  var tag = ref.tag;
+  var id = ref.id;
+  var className = ref.className;
+  var element = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
+
+  if (id) {
+    element.id = id;
+  }
+
+  if (className) {
+    if (ns) {
+      element.setAttribute('class', className);
+    } else {
+      element.className = className;
+    }
+  }
+
+  return element;
+}
+
 var hookNames = ['onmount', 'onunmount'];
 
 function mount (parent, child, before) {
@@ -24,7 +94,7 @@ function mount (parent, child, before) {
     doUnmount(child, childEl, oldParent);
   }
 
-  if (before) {
+  if (before != null) {
     parentEl.insertBefore(childEl, getEl(before));
   } else {
     parentEl.appendChild(childEl);
@@ -36,8 +106,8 @@ function mount (parent, child, before) {
 }
 
 function unmount (parent, child) {
-  var parentEl = parent.el || parent;
-  var childEl = child.el || child;
+  var parentEl = getEl(parent);
+  var childEl = getEl(child);
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided
@@ -68,6 +138,7 @@ function doMount (child, childEl, parentEl, oldParent) {
   }
 
   if (!hooksFound) {
+    childEl.__redom_mounted = true;
     return;
   }
 
@@ -104,6 +175,7 @@ function doUnmount (child, childEl, parentEl) {
   var hooks = childEl.__redom_lifecycle;
 
   if (!hooks) {
+    childEl.__redom_mounted = false;
     return;
   }
 
@@ -114,17 +186,15 @@ function doUnmount (child, childEl, parentEl) {
   }
 
   while (traverse) {
-    var parentHooks = traverse.__redom_lifecycle;
+    var parentHooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
     var hooksFound = false;
 
-    if (hooks) {
-      for (var hook in hooks) {
-        if (parentHooks[hook]) {
-          parentHooks[hook] -= hooks[hook];
-        }
-        if (parentHooks[hook]) {
-          hooksFound = true;
-        }
+    for (var hook in hooks) {
+      if (parentHooks[hook]) {
+        parentHooks[hook] -= hooks[hook];
+      }
+      if (parentHooks[hook]) {
+        hooksFound = true;
       }
     }
 
@@ -176,7 +246,7 @@ function trigger (el, eventName) {
 function setStyle (view, arg1, arg2) {
   var el = getEl(view);
 
-  if (arguments.length > 2) {
+  if (arg2 !== undefined) {
     el.style[arg1] = arg2;
   } else if (isString(arg1)) {
     el.setAttribute('style', arg1);
@@ -191,7 +261,7 @@ function setAttr (view, arg1, arg2) {
   var el = getEl(view);
   var isSVG = el instanceof window.SVGElement;
 
-  if (arguments.length > 2) {
+  if (arg2 !== undefined) {
     if (arg1 === 'style') {
       setStyle(el, arg2);
     } else if (isSVG && isFunction(arg2)) {
@@ -208,13 +278,13 @@ function setAttr (view, arg1, arg2) {
   }
 }
 
-var text = function (str) { return doc.createTextNode(str); };
+var text = function (str) { return document.createTextNode(str); };
 
 function parseArguments (element, args) {
   for (var i = 0; i < args.length; i++) {
     var arg = args[i];
 
-    if (!arg) {
+    if (arg !== 0 && !arg) {
       continue;
     }
 
@@ -234,7 +304,7 @@ function parseArguments (element, args) {
 }
 
 var ensureEl = function (parent) { return isString(parent) ? html(parent) : getEl(parent); };
-var getEl = function (parent) { return (!parent.el && parent) || getEl(parent.el); };
+var getEl = function (parent) { return (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el); };
 
 var isString = function (a) { return typeof a === 'string'; };
 var isNumber = function (a) { return typeof a === 'number'; };
@@ -242,74 +312,9 @@ var isFunction = function (a) { return typeof a === 'function'; };
 
 var isNode = function (a) { return a && a.nodeType; };
 
-
-var doc = document;
-
-var HASH = '#'.charCodeAt(0);
-var DOT = '.'.charCodeAt(0);
-
-function createElement (query, ns) {
-  var tag;
-  var id;
-  var className;
-
-  var mode = 0;
-  var start = 0;
-
-  for (var i = 0; i <= query.length; i++) {
-    var char = query.charCodeAt(i);
-
-    if (char === HASH || char === DOT || !char) {
-      if (mode === 0) {
-        if (i === 0) {
-          tag = 'div';
-        } else if (!char) {
-          tag = query;
-        } else {
-          tag = query.substring(start, i);
-        }
-      } else {
-        var slice = query.substring(start, i);
-
-        if (mode === 1) {
-          id = slice;
-        } else if (className) {
-          className += ' ' + slice;
-        } else {
-          className = slice;
-        }
-      }
-
-      start = i + 1;
-
-      if (char === HASH) {
-        mode = 1;
-      } else {
-        mode = 2;
-      }
-    }
-  }
-
-  var element = ns ? doc.createElementNS(ns, tag) : doc.createElement(tag);
-
-  if (id) {
-    element.id = id;
-  }
-
-  if (className) {
-    if (ns) {
-      element.setAttribute('class', className);
-    } else {
-      element.className = className;
-    }
-  }
-
-  return element;
-}
-
 var htmlCache = {};
 
-var memoizeHTML = function (query) { return htmlCache[query] || createElement(query); };
+var memoizeHTML = function (query) { return htmlCache[query] || (htmlCache[query] = createElement(query)); };
 
 function html (query) {
   var args = [], len = arguments.length - 1;
@@ -372,6 +377,8 @@ function setChildren (parent, children) {
   }
 }
 
+var propKey = function (key) { return function (item) { return item[key]; }; };
+
 function list (parent, View, key, initData) {
   return new List(parent, View, key, initData);
 }
@@ -379,13 +386,13 @@ function list (parent, View, key, initData) {
 function List (parent, View, key, initData) {
   this.__redom_list = true;
   this.View = View;
-  this.key = key;
   this.initData = initData;
   this.views = [];
   this.el = ensureEl(parent);
 
-  if (key) {
+  if (key != null) {
     this.lookup = {};
+    this.key = isFunction(key) ? key : propKey(key);
   }
 }
 
@@ -396,11 +403,12 @@ List.extend = function (parent, View, key, initData) {
 list.extend = List.extend;
 
 List.prototype.update = function (data) {
+  var this$1 = this;
   if ( data === void 0 ) data = [];
 
   var View = this.View;
   var key = this.key;
-  var functionKey = isFunction(key);
+  var keySet = key != null;
   var initData = this.initData;
   var newViews = new Array(data.length);
   var oldViews = this.views;
@@ -411,25 +419,33 @@ List.prototype.update = function (data) {
     var item = data[i];
     var view = (void 0);
 
-    if (key) {
-      var id = functionKey ? key(item) : item[key];
-      view = newViews[i] = oldLookup[id] || new View(initData, item, i, data);
+    if (keySet) {
+      var id = key(item);
+      view = oldLookup[id] || new View(initData, item, i, data);
       newLookup[id] = view;
-      view.__id = id;
+      view.__redom_id = id;
     } else {
-      view = newViews[i] = oldViews[i] || new View(initData, item, i, data);
+      view = oldViews[i] || new View(initData, item, i, data);
     }
-    var el = view.el;
-    if (el.__redom_list) {
-      el = el.el;
-    }
+    newViews[i] = view;
+    var el = getEl(view.el);
     el.__redom_view = view;
     view.update && view.update(item, i, data);
   }
 
+  if (keySet) {
+    for (var i$1 = 0; i$1 < oldViews.length; i$1++) {
+      var id$1 = oldViews[i$1].__redom_id;
+
+      if (!(id$1 in newLookup)) {
+        unmount(this$1, oldLookup[id$1]);
+      }
+    }
+  }
+
   setChildren(this, newViews);
 
-  if (key) {
+  if (keySet) {
     this.lookup = newLookup;
   }
   this.views = newViews;
@@ -461,7 +477,7 @@ var SVG = 'http://www.w3.org/2000/svg';
 
 var svgCache = {};
 
-var memoizeSVG = function (query) { return svgCache[query] || createElement(query, SVG); };
+var memoizeSVG = function (query) { return svgCache[query] || (svgCache[query] = createElement(query, SVG)); };
 
 function svg (query) {
   var args = [], len = arguments.length - 1;

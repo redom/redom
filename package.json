@@ -9,7 +9,8 @@
     "dev": "node watch",
     "dist": "gh-pages -d dist",
     "build-es": "rollup -c -n redom -f es -i src/index.js -o dist/redom.es.js",
-    "build": "npm run build-es && rollup -c -n redom -f umd -i src/index.js -o dist/redom.js",
+    "build-js": "rollup -c -n redom -f umd -i src/index.js -o dist/redom.js",
+    "build": "npm run build-es && npm run build-js",
     "uglify": "uglifyjs dist/redom.js -cmo dist/redom.min.js",
     "preversion": "npm run build && npm run uglify && npm run test",
     "postversion": "git push --tags",
@@ -44,12 +45,12 @@
     "coverify": "^1.4.1",
     "gh-pages": "~1.0.0",
     "marked": "~0.3.6",
-    "rollup": "~0.46.1",
+    "rollup": "~0.48.2",
     "rollup-plugin-buble": "~0.15.0",
     "rollup-plugin-node-resolve": "~3.0.0",
     "semistandard": "~11.0.0",
     "tape": "^4.8.0",
     "tape-run": "^3.0.0",
-    "uglify-js": "~3.0.27"
+    "uglify-js": "~3.0.28"
   }
 }

@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var HASH = '#'.charCodeAt(0);
 var DOT = '.'.charCodeAt(0);
 
-var createElement = function (query, ns) {
+var parseQuery = function (query) {
   var tag;
   var id;
   var className;
@@ -47,6 +47,14 @@ var createElement = function (query, ns) {
     }
   }
 
+  return { tag: tag, id: id, className: className };
+};
+
+function createElement (query, ns) {
+  var ref = parseQuery(query);
+  var tag = ref.tag;
+  var id = ref.id;
+  var className = ref.className;
   var element = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
 
   if (id) {
@@ -406,12 +414,13 @@ List.prototype.update = function update (data) {
 
     if (keySet) {
       var id = key(item);
-      view = newViews[i] = oldLookup[id] || new View(initData, item, i, data);
+      view = oldLookup[id] || new View(initData, item, i, data);
       newLookup[id] = view;
-      view.__id = id;
+      view.__redom_id = id;
     } else {
-      view = newViews[i] = oldViews[i] || new View(initData, item, i, data);
+      view = oldViews[i] || new View(initData, item, i, data);
     }
+    newViews[i] = view;
     var el = getEl(view.el);
     el.__redom_view = view;
     view.update && view.update(item, i, data);
@@ -419,7 +428,7 @@ List.prototype.update = function update (data) {
 
   if (keySet) {
     for (var i$1 = 0; i$1 < oldViews.length; i$1++) {
-      var id$1 = oldViews[i$1].__id;
+      var id$1 = oldViews[i$1].__redom_id;
 
       if (!(id$1 in newLookup)) {
         unmount(this$1, oldLookup[id$1]);
