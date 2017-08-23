@@ -15,7 +15,7 @@ document.createElement = function (tagName) {
 };
 
 module.exports = function (redom) {
-  var { el, html, list, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
+  var { el, html, list, place, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
 
   test('exports utils', function (t) {
     t.plan(2);
@@ -541,6 +541,7 @@ module.exports = function (redom) {
       t.throws(svg, new Error('At least one argument required'));
     });
   });
+
   test('router', function (t) {
     t.plan(2);
     function A () {
@@ -650,5 +651,38 @@ module.exports = function (redom) {
     unmount(document.body, tree);
 
     t.deepEqual(logs, expectedLog);
+  });
+
+  test('place', function (t) {
+    t.plan(3);
+
+    function B (initData) {
+      this.el = el('.b', 'place!');
+
+      t.equals(initData, 1);
+    }
+
+    B.prototype.update = function (data) {
+      this.el.textContent = data;
+    };
+
+    function A () {
+      this.el = el('.a',
+        this.place = place(B, 1)
+      );
+    }
+
+    var a = new A();
+
+    mount(document.body, a);
+
+    a.place.update(true, 2);
+
+    t.equals(a.el.innerHTML, '<div class="b">2</div>');
+
+    a.place.update(false, 2);
+
+    t.equals(a.el.innerHTML, '');
+    unmount(document.body, a);
   });
 };

@@ -1,6 +1,6 @@
 import { parseQuery } from './parse-query';
 
-export function createElement (query, ns) {
+export const createElement = (query, ns) => {
   const { tag, id, className } = parseQuery(query);
   const element = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
 
@@ -17,4 +17,4 @@ export function createElement (query, ns) {
   }
 
   return element;
-}
+};

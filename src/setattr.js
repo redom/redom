@@ -1,7 +1,7 @@
 import { setStyle } from './setstyle';
 import { isFunction, getEl } from './util';
 
-export function setAttr (view, arg1, arg2) {
+export const setAttr = (view, arg1, arg2) => {
   const el = getEl(view);
   let isSVG = el instanceof window.SVGElement;
 
@@ -20,4 +20,4 @@ export function setAttr (view, arg1, arg2) {
       setAttr(el, key, arg1[key]);
     }
   }
-}
+};
