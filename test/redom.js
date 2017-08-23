@@ -2,14 +2,10 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var memoize = {};
 var HASH = '#'.charCodeAt(0);
 var DOT = '.'.charCodeAt(0);
 
 var parseQuery = function (query) {
-  if (memoize[query]) {
-    return memoize[query];
-  }
   var tag;
   var id;
   var className;
@@ -51,7 +47,7 @@ var parseQuery = function (query) {
     }
   }
 
-  return (memoize[query] = { tag: tag, id: id, className: className });
+  return { tag: tag, id: id, className: className };
 };
 
 function createElement (query, ns) {
