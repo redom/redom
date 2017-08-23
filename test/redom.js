@@ -448,37 +448,36 @@ var place = function (View, initData) {
 var Place = function Place (View, initData) {
   this.el = text('');
   this._placeholder = this.el;
-  this._visible = false;
+  this.visible = false;
   this._View = View;
   this._initData = initData;
 };
 Place.prototype.update = function update (visible, data) {
+  var placeholder = this._placeholder;
+  var parentNode = this.el.parentNode;
+
   if (visible) {
-    if (!this._visible) {
-      var placeholder = this._placeholder;
-      var parentNode = placeholder.parentNode;
+    if (!this.visible) {
       var View = this._View;
       var view = new View(this._initData);
 
       this.el = getEl(view.el);
-      this._view = view;
+      this.view = view;
 
       mount(parentNode, this.el, placeholder);
       unmount(parentNode, placeholder);
     }
-    this._view.update && this._view.update(data);
+    this.view.update && this.view.update(data);
   } else {
-    if (this._visible) {
-      var placeholder$1 = this._placeholder;
-      var parentNode$1 = this.el.parentNode;
+    if (this.visible) {
+      mount(parentNode, placeholder, this.el);
+      unmount(parentNode, this.el);
 
-      mount(parentNode$1, placeholder$1, this.el);
-      unmount(parentNode$1, this.el);
-
-      this.el = placeholder$1;
+      this.el = placeholder;
+      this.view = null;
     }
   }
-  this._visible = visible;
+  this.visible = visible;
 };
 
 var router = function (parent, Views, initData) {

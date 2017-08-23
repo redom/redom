@@ -9,37 +9,37 @@ export const place = (View, initData) => {
 export class Place {
   constructor (View, initData) {
     this.el = text('');
+    this.visible = false;
+    this.view = null;
     this._placeholder = this.el;
-    this._visible = false;
     this._View = View;
     this._initData = initData;
   }
   update (visible, data) {
+    const placeholder = this._placeholder;
+    const parentNode = this.el.parentNode;
+
     if (visible) {
-      if (!this._visible) {
-        const placeholder = this._placeholder;
-        const parentNode = placeholder.parentNode;
+      if (!this.visible) {
         const View = this._View;
         const view = new View(this._initData);
 
         this.el = getEl(view.el);
-        this._view = view;
+        this.view = view;
 
         mount(parentNode, this.el, placeholder);
         unmount(parentNode, placeholder);
       }
-      this._view.update && this._view.update(data);
+      this.view.update && this.view.update(data);
     } else {
-      if (this._visible) {
-        const placeholder = this._placeholder;
-        const parentNode = this.el.parentNode;
-
+      if (this.visible) {
         mount(parentNode, placeholder, this.el);
         unmount(parentNode, this.el);
 
         this.el = placeholder;
+        this.view = null;
       }
     }
-    this._visible = visible;
+    this.visible = visible;
   }
 }
