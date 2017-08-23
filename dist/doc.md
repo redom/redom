@@ -539,7 +539,7 @@ this.el = this.list.el;
 ## Place
 Sometimes you might need to create/destroy a component while reserving it's place. That's when [`place(View, initData)`](https://github.com/redom/redom/blob/master/src/place.js) come in handy!
 
-Think of it as a single view router (without the need of a parent).
+Think of it as a single view [router](#router) (without the need of a parent).
 
 ```js
 import { place, mount } from 'redom';
@@ -561,6 +561,11 @@ this.menu.update(true, data2);
 this.menu.update(false);
 
 ```
+
+When you call `place.update(visible, data)`, the `Place` will automatically detect what to do with the component:
+- [construct](https://github.com/redom/redom/blob/master/src/place.js#L25)
+- [update](https://github.com/redom/redom/blob/master/src/place.js#L33)
+- [destroy](https://github.com/redom/redom/blob/master/src/place.js#L40)
 
 ## Router
 [`router(parent, routes, initData)`](https://github.com/redom/redom/blob/master/src/router.js) is a component router, which will create/update/remove components based on the current route.
