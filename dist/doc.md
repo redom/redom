@@ -537,7 +537,7 @@ this.el = this.list.el;
 ```
 
 ## Place
-Sometimes you might need to create/delete a component while reserving it's place. That's when [`place(View)`](https://github.com/redom/redom/blob/master/src/place.js) come in handy!
+Sometimes you might need to create/destroy a component while reserving it's place. That's when [`place(View, initData)`](https://github.com/redom/redom/blob/master/src/place.js) come in handy!
 
 Think of it as a single view router (without the need of a parent).
 
@@ -563,7 +563,7 @@ this.menu.update(false);
 ```
 
 ## Router
-[`router(parent, routes)`](https://github.com/redom/redom/blob/master/src/router.js) is a component router, which will create/update/remove components based on the current route.
+[`router(parent, routes, initData)`](https://github.com/redom/redom/blob/master/src/router.js) is a component router, which will create/update/remove components based on the current route.
 
 ```js
 import { router, mount } from 'redom';

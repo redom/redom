@@ -451,7 +451,7 @@ mount(document.body, table);
 this.el = this.list.el;
       </code></pre>
       <h2 id="place">Place</h2>
-      <p>Sometimes you might need to create/delete a component while reserving it&#39;s place. That&#39;s when <a href="https://github.com/redom/redom/blob/master/src/place.js"><code>place(View)</code></a> come in handy!</p>
+      <p>Sometimes you might need to create/destroy3 a component while reserving it&#39;s place. That&#39;s when <a href="https://github.com/redom/redom/blob/master/src/place.js"><code>place(View, initData)</code></a> come in handy!</p>
       <p>Think of it as a single view router (without the need of a parent).</p>
       <pre><code class="lang-js">import { place, mount } from &#39;redom&#39;;
 import { Top, Menu, Content } from &#39;./elements&#39;;
@@ -472,7 +472,7 @@ this.menu.update(true, data2);
 this.menu.update(false);
       </code></pre>
       <h2 id="router">Router</h2>
-      <p><a href="https://github.com/redom/redom/blob/master/src/router.js"><code>router(parent, routes)</code></a> is a component router, which will create/update/remove components based on the current route.</p>
+      <p><a href="https://github.com/redom/redom/blob/master/src/router.js"><code>router(parent, routes, initData)</code></a> is a component router, which will create/update/remove components based on the current route.</p>
       <pre><code class="lang-js">import { router, mount } from &#39;redom&#39;;
 
 import { Home, About, Contact } from &#39;./sections/index&#39;
