@@ -35,23 +35,23 @@ export class List {
       const item = data[i];
       let view;
 
-    if (keySet) {
-      const id = key(item);
-      view = oldLookup[id] || new View(initData, item, i, data);
-      newLookup[id] = view;
-      view.__redom_id = id;
-    } else {
-      view = oldViews[i] || new View(initData, item, i, data);
+      if (keySet) {
+        const id = key(item);
+        view = oldLookup[id] || new View(initData, item, i, data);
+        newLookup[id] = view;
+        view.__redom_id = id;
+      } else {
+        view = oldViews[i] || new View(initData, item, i, data);
+      }
+      newViews[i] = view;
+      let el = getEl(view.el);
+      el.__redom_view = view;
+      view.update && view.update(item, i, data);
     }
-    newViews[i] = view;
-    let el = getEl(view.el);
-    el.__redom_view = view;
-    view.update && view.update(item, i, data);
-  }
 
-  if (keySet) {
-    for (let i = 0; i < oldViews.length; i++) {
-      const id = oldViews[i].__redom_id;
+    if (keySet) {
+      for (let i = 0; i < oldViews.length; i++) {
+        const id = oldViews[i].__redom_id;
         if (!(id in newLookup)) {
           unmount(this, oldLookup[id]);
         }
