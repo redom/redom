@@ -50,7 +50,7 @@ var parseQuery = function (query) {
   return { tag: tag, id: id, className: className };
 };
 
-function createElement (query, ns) {
+var createElement = function (query, ns) {
   var ref = parseQuery(query);
   var tag = ref.tag;
   var id = ref.id;
@@ -429,7 +429,6 @@ List.prototype.update = function update (data) {
   if (keySet) {
     for (var i$1 = 0; i$1 < oldViews.length; i$1++) {
       var id$1 = oldViews[i$1].__redom_id;
-
       if (!(id$1 in newLookup)) {
         unmount(this$1, oldLookup[id$1]);
       }
