@@ -343,6 +343,32 @@ mount(document.body, ul);
 ul.update([1, 2, 3]);
 ul.update([2, 2, 4]);
       </code></pre>
+      <h3 id="item-update-parameters">Item update parameters</h3>
+      <p><code>Item.update</code> will be called with several parameters:</p>
+      <ol>
+      <li>data: data of this item</li>
+      <li>index: index of this item in the items array</li>
+      <li>items: data of all items</li>
+      <li>context: contextual data forwarded from the second <code>List.update</code> parameter</li>
+      </ol>
+      <pre><code class="lang-js">import { el, list, mount } from &#39;redom&#39;;
+
+class Li {
+  constructor () {
+    this.el = el(&#39;li&#39;);
+  }
+  update (data, index, items, context) {
+    this.el.style.color = context.colors.accent
+    this.el.textContent = &#39;[&#39; + index + &#39;] = Item &#39; + data;
+  }
+}
+
+const ul = list(&#39;ul&#39;, Li);
+
+mount(document.body, ul);
+
+ul.update([1, 2, 3], { colors: { accent: &#39;red&#39; } });
+      </code></pre>
       <h3 id="list-lifecycle">List lifecycle</h3>
       <p>When you call <code>List.update</code>, the list will automatically:</p>
       <ul>
@@ -452,7 +478,7 @@ this.el = this.list.el;
       </code></pre>
       <h2 id="place">Place</h2>
       <p>Sometimes you might need to create/destroy a component while reserving it&#39;s place. That&#39;s when <a href="https://github.com/redom/redom/blob/master/src/place.js"><code>place(View, initData)</code></a> come in handy!</p>
-      <p>Think of it as a single view router (without the need of a parent).</p>
+      <p>Think of it as a single view <a href="#router">router</a> (without the need of a parent).</p>
       <pre><code class="lang-js">import { place, mount } from &#39;redom&#39;;
 import { Top, Menu, Content } from &#39;./elements&#39;;
 
@@ -471,6 +497,12 @@ this.menu.update(true, data2);
 // delete Menu:
 this.menu.update(false);
       </code></pre>
+      <p>When you call <code>place.update(visible, data)</code>, the <code>Place</code> will automatically detect what to do with the component:</p>
+      <ul>
+      <li><a href="https://github.com/redom/redom/blob/master/src/place.js#L25">construct</a></li>
+      <li><a href="https://github.com/redom/redom/blob/master/src/place.js#L33">update</a></li>
+      <li><a href="https://github.com/redom/redom/blob/master/src/place.js#L40">destroy</a></li>
+      </ul>
       <h2 id="router">Router</h2>
       <p><a href="https://github.com/redom/redom/blob/master/src/router.js"><code>router(parent, routes, initData)</code></a> is a component router, which will create/update/remove components based on the current route.</p>
       <pre><code class="lang-js">import { router, mount } from &#39;redom&#39;;

@@ -413,6 +413,34 @@ ul.update([1, 2, 3]);
 ul.update([2, 2, 4]);
 ```
 
+### Item update parameters
+`Item.update` will be called with several parameters:
+
+1. data: data of this item
+2. index: index of this item in the items array
+3. items: data of all items
+4. context: contextual data forwarded from the second `List.update` parameter
+
+```js
+import { el, list, mount } from 'redom';
+
+class Li {
+  constructor () {
+    this.el = el('li');
+  }
+  update (data, index, items, context) {
+    this.el.style.color = context.colors.accent
+    this.el.textContent = '[' + index + '] = Item ' + data;
+  }
+}
+
+const ul = list('ul', Li);
+
+mount(document.body, ul);
+
+ul.update([1, 2, 3], { colors: { accent: 'red' } });
+```
+
 ### List lifecycle
 
 When you call `List.update`, the list will automatically:
@@ -539,7 +567,7 @@ this.el = this.list.el;
 ## Place
 Sometimes you might need to create/destroy a component while reserving it's place. That's when [`place(View, initData)`](https://github.com/redom/redom/blob/master/src/place.js) come in handy!
 
-Think of it as a single view router (without the need of a parent).
+Think of it as a single view [router](#router) (without the need of a parent).
 
 ```js
 import { place, mount } from 'redom';
@@ -561,6 +589,11 @@ this.menu.update(true, data2);
 this.menu.update(false);
 
 ```
+
+When you call `place.update(visible, data)`, the `Place` will automatically detect what to do with the component:
+- [construct](https://github.com/redom/redom/blob/master/src/place.js#L25)
+- [update](https://github.com/redom/redom/blob/master/src/place.js#L33)
+- [destroy](https://github.com/redom/redom/blob/master/src/place.js#L40)
 
 ## Router
 [`router(parent, routes, initData)`](https://github.com/redom/redom/blob/master/src/router.js) is a component router, which will create/update/remove components based on the current route.
