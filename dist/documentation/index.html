@@ -346,7 +346,7 @@ ul.update([2, 2, 4]);
       <h3 id="item-update-parameters">Item update parameters</h3>
       <p><code>Item.update</code> will be called with several parameters:</p>
       <ol>
-      <li>item: data of this item</li>
+      <li>data: data of this item</li>
       <li>index: index of this item in the items array</li>
       <li>items: data of all items</li>
       <li>context: contextual data forwarded from the second <code>List.update</code> parameter</li>
@@ -357,9 +357,9 @@ class Li {
   constructor () {
     this.el = el(&#39;li&#39;);
   }
-  update (data, idx, items, context) {
+  update (data, index, items, context) {
     this.el.style.color = context.colors.accent
-    this.el.textContent = &#39;[&#39; + idx + &#39;] = Item &#39; + data;
+    this.el.textContent = &#39;[&#39; + index + &#39;] = Item &#39; + data;
   }
 }
 
