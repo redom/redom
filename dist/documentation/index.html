@@ -343,6 +343,32 @@ mount(document.body, ul);
 ul.update([1, 2, 3]);
 ul.update([2, 2, 4]);
       </code></pre>
+      <h3 id="item-update-parameters">Item update parameters</h3>
+      <p><code>Item.update</code> will be called with several parameters:</p>
+      <ol>
+      <li>data: data of this item</li>
+      <li>index: index of this item in the items array</li>
+      <li>items: data of all items</li>
+      <li>context: contextual data forwarded from the second <code>List.update</code> parameter</li>
+      </ol>
+      <pre><code class="lang-js">import { el, list, mount } from &#39;redom&#39;;
+
+class Li {
+  constructor () {
+    this.el = el(&#39;li&#39;);
+  }
+  update (data, index, items, context) {
+    this.el.style.color = context.colors.accent
+    this.el.textContent = &#39;[&#39; + index + &#39;] = Item &#39; + data;
+  }
+}
+
+const ul = list(&#39;ul&#39;, Li);
+
+mount(document.body, ul);
+
+ul.update([1, 2, 3], { colors: { accent: &#39;red&#39; } });
+      </code></pre>
       <h3 id="list-lifecycle">List lifecycle</h3>
       <p>When you call <code>List.update</code>, the list will automatically:</p>
       <ul>

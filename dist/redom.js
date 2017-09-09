@@ -397,7 +397,7 @@ var List = function List (parent, View, key, initData) {
     this.key = isFunction(key) ? key : propKey(key);
   }
 };
-List.prototype.update = function update (data) {
+List.prototype.update = function update (data, context) {
     var this$1 = this;
     if ( data === void 0 ) data = [];
 
@@ -425,7 +425,7 @@ List.prototype.update = function update (data) {
     newViews[i] = view;
     var el = getEl(view.el);
     el.__redom_view = view;
-    view.update && view.update(item, i, data);
+    view.update && view.update(item, i, data, context);
   }
 
   if (keySet) {

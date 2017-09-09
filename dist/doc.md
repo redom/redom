@@ -413,6 +413,34 @@ ul.update([1, 2, 3]);
 ul.update([2, 2, 4]);
 ```
 
+### Item update parameters
+`Item.update` will be called with several parameters:
+
+1. data: data of this item
+2. idx: idx of this item in the items array
+3. items: data of all items
+4. context: contextual data forwarded from the second `List.update` parameter
+
+```js
+import { el, list, mount } from 'redom';
+
+class Li {
+  constructor () {
+    this.el = el('li');
+  }
+  update (data, idx, items, context) {
+    this.el.style.color = context.colors.accent
+    this.el.textContent = '[' + idx + '] = Item ' + data;
+  }
+}
+
+const ul = list('ul', Li);
+
+mount(document.body, ul);
+
+ul.update([1, 2, 3], { colors: { accent: 'red' } });
+```
+
 ### List lifecycle
 
 When you call `List.update`, the list will automatically:

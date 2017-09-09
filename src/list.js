@@ -21,7 +21,7 @@ export class List {
       this.key = isFunction(key) ? key : propKey(key);
     }
   }
-  update (data = []) {
+  update (data = [], context) {
     const View = this.View;
     const key = this.key;
     const keySet = key != null;
@@ -46,7 +46,7 @@ export class List {
       newViews[i] = view;
       let el = getEl(view.el);
       el.__redom_view = view;
-      view.update && view.update(item, i, data);
+      view.update && view.update(item, i, data, context);
     }
 
     if (keySet) {
