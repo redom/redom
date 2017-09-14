@@ -119,7 +119,7 @@ a:not(:hover) {
   display: inline-block;
   color: inherit;
   padding: .75rem 1rem;
-  font-size: .75rem;
+  font-size: calc(.75rem + 1px);
   font-weight: 500;
   text-transform: uppercase;
   text-decoration: none;
@@ -127,7 +127,7 @@ a:not(:hover) {
 }
 
 .small {
-  font-size: .75rem;
+  font-size: calc(.75rem + 1px);
 }
 
 p {
