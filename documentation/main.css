@@ -1,16 +1,20 @@
 * {
   box-sizing: border-box;
 }
+
 body {
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Interface', sans-serif;
   color: #222;
   overflow: auto;
   overflow-x: hidden;
 }
 
+h1 {
+  letter-spacing: -0.0125em;
+}
+
 h1, h2 {
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  font-weight: 900;
   margin-top: 6rem;
   margin-bottom: 3rem;
 }
@@ -18,7 +22,8 @@ h1, h2 {
 h3, h4 {
   margin-top: 3rem;
   margin-bottom: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
+  color: #000;
 }
 
 h1 {
@@ -31,6 +36,7 @@ h2, h3, h4 {
 }
 
 p {
+  font-size: calc(1rem + 1px);
   line-height: 1.5;
   max-width: 35rem;
   margin: 1.5em 0;
@@ -42,7 +48,8 @@ li {
 }
 
 strong {
-  font-weight: 600;
+  font-weight: 500;
+  color: #000;
 }
 
 code {
@@ -64,7 +71,7 @@ pre > code {
   line-height: 1.25;
   padding: 1.5rem;
   padding-bottom: 0;
-  border-radius: 4px;
+  border-radius: 0.25rem;
 }
 
 #doc {
@@ -126,6 +133,7 @@ a:not(:hover) {
     width: 20rem;
     padding: 2rem;
   }
+
   #doc {
     left: 20rem;
     padding: 2rem 3rem;
