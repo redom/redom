@@ -58,7 +58,7 @@
 }
 
 .token.keyword {
-  color: #BA68C8; // purple
+  color: hsl(290, 85%, 75%); // purple
 }
 
 .token.regex,
