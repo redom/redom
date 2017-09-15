@@ -73,8 +73,8 @@ pre > code {
   position: relative;
   display: inline-block;
   font-family: 'Inconsolata', monospace;
-  font-size: .75rem;
-  line-height: 1rem;
+  font-size: .875rem;
+  line-height: 1.25;
   text-align: left;
   background-color: #161616;
   color: #eee;
