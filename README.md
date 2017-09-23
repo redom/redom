@@ -8,6 +8,8 @@
 
 [![RE:DOM](https://redom.js.org/img/title.png)](https://redom.js.org)
 
+# RE:DOM
+
 Develop web apps with 100 % JavaScript and web standards. 🚀
 
 https://redom.js.org
