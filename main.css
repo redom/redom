@@ -6,7 +6,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Interface', 'Work Sans', sans-serif;
+  font-family: 'Inter UI', 'Work Sans', sans-serif;
   background-color: #fff;
   color: #333;
   padding-bottom: 3rem;
@@ -154,28 +154,4 @@ a {
   html {
     font-size: 75%;
   }
-}
-
-@font-face {
-  font-family: 'Interface';
-  font-style: normal;
-  font-weight: 700;
-  src: url(../font/Interface-Bold.woff2) format('woff2');
-  src: url(../font/Interface-Bold.woff) format('woff');
-}
-
-@font-face {
-  font-family: 'Interface';
-  font-style: normal;
-  font-weight: 500;
-  src: url(../font/Interface-Medium.woff2) format('woff2');
-  src: url(../font/Interface-Medium.woff) format('woff');
-}
-
-@font-face {
-  font-family: 'Interface';
-  font-style: normal;
-  font-weight: 400;
-  src: url(../font/Interface-Regular.woff2) format('woff2');
-  src: url(../font/Interface-Regular.woff) format('woff');
 }
