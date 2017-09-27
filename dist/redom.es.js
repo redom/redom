@@ -2,44 +2,44 @@ var HASH = '#'.charCodeAt(0);
 var DOT = '.'.charCodeAt(0);
 
 var parseQuery = function (query) {
-  var tag;
-  var id;
-  var className;
-
+  var tag = null;
+  var id = null;
+  var className = null;
   var mode = 0;
-  var start = 0;
+  var buffer = '';
 
   for (var i = 0; i <= query.length; i++) {
     var char = query.charCodeAt(i);
+    var isHash = char === HASH;
+    var isDot = char === DOT;
+    var isEnd = !char;
 
-    if (char === HASH || char === DOT || !char) {
+    if (isHash || isDot || isEnd) {
       if (mode === 0) {
         if (i === 0) {
           tag = 'div';
-        } else if (!char) {
-          tag = query;
         } else {
-          tag = query.substring(start, i);
+          tag = buffer;
         }
+      } else if (mode === 1) {
+        id = buffer;
       } else {
-        var slice = query.substring(start, i);
-
-        if (mode === 1) {
-          id = slice;
-        } else if (className) {
-          className += ' ' + slice;
+        if (className) {
+          className += ' ' + buffer;
         } else {
-          className = slice;
+          className = buffer;
         }
       }
 
-      start = i + 1;
-
-      if (char === HASH) {
+      if (isHash) {
         mode = 1;
-      } else {
+      } else if (isDot) {
         mode = 2;
       }
+
+      buffer = '';
+    } else {
+      buffer += query[i];
     }
   }
 
