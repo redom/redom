@@ -31,7 +31,6 @@ RE:DOM also works on server side, by using [NO:DOM](https://github.com/redom/nod
 ### RE:DOM dev tools for Chrome
 You can install [RE:DOM dev tools for Chrome](https://github.com/redom/redom-devtools)
 
-![RE:DOM dev tools](screenshot.png)
 ## Elements
 
 `el` (actually [alias](#alias) for [`html`](https://github.com/redom/redom/blob/master/src/html.js)) is a helper for `document.createElement` with couple of differences.
