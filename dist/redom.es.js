@@ -253,9 +253,11 @@ var setStyle = function (view, arg1, arg2) {
   }
 };
 
+/* global SVGElement */
+
 var setAttr = function (view, arg1, arg2) {
   var el = getEl(view);
-  var isSVG = el instanceof window.SVGElement;
+  var isSVG = el instanceof SVGElement;
 
   if (arg2 !== undefined) {
     if (arg1 === 'style') {
