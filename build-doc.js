@@ -22,8 +22,8 @@ fs.writeFileSync('dist/documentation/index.html',
   </head>
   <body>
     <div id="doc">
-      ${html.split('\n<').join('\n      <')}
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6944220562573081" data-ad-slot="2121933094" data-ad-format="auto"></ins>
+      ${html.split('\n<').join('\n      <')}
     </div>
     <script src="main.js"></script>
     <script src="../prism.js"></script>
