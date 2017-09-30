@@ -23,16 +23,18 @@ hovermenu.onclick = function (e) {
     menu.onclick = doc.onclick = window.onresize = null;
     menu.classList.add('fadeout');
     menu.classList.remove('slidein');
+    menu.style.overflow = 'hidden';
     doc.classList.add('pushin');
     doc.classList.remove('pushout');
     hovermenu.style.display = '';
     window.onclick = null;
+    document.body.style.overflow = '';
     setTimeout(function () {
       if (!mobile) {
         return;
       }
-      document.body.style.overflow = '';
       menu.style.display = 'none';
+      menu.style.overflow = '';
     }, 500);
   };
 };
