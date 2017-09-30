@@ -21,6 +21,10 @@ npm i redom
 RE:DOM supports [UMD](https://github.com/umdjs/umd):
 ```html
 <script src="https://redom.js.org/redom.min.js"></script>
+<script>
+  const { el, mount } = redom;
+  ...
+</script>
 ```
 
 It's also possible to use the new [ES2015 import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) while developing:
