@@ -138,7 +138,7 @@ pre > code {
 #hovermenu {
   position: fixed;
   bottom: 3rem;
-  right: 1.5rem;
+  right: 3rem;
   font-size: 1.25rem;
   font-weight: 500;
   text-transform: uppercase;
