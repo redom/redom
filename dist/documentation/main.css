@@ -63,6 +63,8 @@ code {
   line-height: 1.3;
 
   background-color: #eee;
+
+  white-space: pre-wrap;
 }
 
 pre > code {
