@@ -146,13 +146,12 @@ pre > code {
 }
 
 #doc.pushin {
-  animation: pushin .5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
-  animation-delay: .25s;
+  animation: pushin 1s cubic-bezier(0.215, 0.610, 0.355, 1.000);
   animation-fill-mode: both;
 }
 
 #doc.pushout {
-  animation: pushout .25s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  animation: pushout .5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
   animation-fill-mode: both;
 }
 
@@ -216,9 +215,14 @@ a:not(:hover) {
 @keyframes pushin {
   0% {
     transform: scale(.95);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(.95);
   }
   100% {
     transform: scale(1);
+    opacity: 1;
   }
 }
 
@@ -228,6 +232,7 @@ a:not(:hover) {
   }
   100% {
     transform: scale(.95);
+    opacity: 0.5;
   }
 }
 
