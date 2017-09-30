@@ -18,10 +18,16 @@ You can install RE:DOM from npm by calling:
 npm i redom
 ```
 
-RE:DOM also supports [UMD](https://github.com/umdjs/umd):
+RE:DOM supports [UMD](https://github.com/umdjs/umd):
 ```html
 <script src="https://redom.js.org/redom.min.js"></script>
 ```
+
+It's also possible to use the new [ES2015 import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) while developing:
+```js
+import { el, mount } from 'https://redom.js.org/redom.es.min.js';
+```
+
 ### Project generator
 You can also use the project generator, which will also install a file watcher and bundler. You can find it [here](https://github.com/redom/redom-cli).
 
