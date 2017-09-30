@@ -19,8 +19,8 @@ hovermenu.onclick = function (e) {
   menu.classList.add('slidein');
   doc.classList.remove('pushin');
   doc.classList.add('pushout');
-  menu.onclick = doc.onclick = window.onresize = function (e) {
-    menu.onclick = doc.onclick = window.onresize = null;
+  menu.onclick = doc.onclick = function (e) {
+    menu.onclick = doc.onclick = null;
     menu.classList.add('fadeout');
     menu.classList.remove('slidein');
     menu.style.overflow = 'hidden';
