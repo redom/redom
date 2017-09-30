@@ -28,7 +28,7 @@ hovermenu.onclick = function (e) {
   hovermenu.style.display = 'none';
   hovermenuclose.style.display = '';
   hovermenuclose.classList.add('slidein');
-  hovermenuclose.style.animationDelay = '0.125s';
+  hovermenuclose.style.animationDelay = '0.25s';
   menu.scrollTop = targetMenuItem.offsetTop - window.innerHeight / 4;
   document.body.classList.add('pushout');
   menu.classList.remove('fadeout');
@@ -44,7 +44,7 @@ hovermenu.onclick = function (e) {
     doc.classList.remove('pushout');
     hovermenu.style.display = '';
     hovermenu.classList.add('slidein');
-    hovermenu.style.animationDelay = '0.125s';
+    hovermenu.style.animationDelay = '0.25s';
     hovermenuclose.classList.remove('slidein');
     hovermenuclose.classList.add('fadeout');
     hovermenuclose.style.display = 'none';
@@ -59,7 +59,7 @@ hovermenu.onclick = function (e) {
       menu.classList.remove('fadeout');
       doc.classList.remove('pushin');
       hovermenu.classList.remove('slidein');
-    }, 500);
+    }, 750);
   };
 };
 
