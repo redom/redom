@@ -127,12 +127,12 @@ pre > code {
   display: block;
 }
 
-#menu.slidein {
+#menu.slidein, #hovermenu.slidein, #hovermenuclose.slidein {
   animation: slidein 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
   animation-fill-mode: both;
 }
 
-#menu.fadeout {
+#menu.fadeout, #hovermenu.fadeout {
   animation: fadeout 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
   animation-fill-mode: both;
 }
@@ -153,7 +153,7 @@ pre > code {
   margin: 2rem auto;
 }
 
-#hovermenu {
+#hovermenu, #hovermenuclose {
   position: fixed;
   bottom: 4rem;
   right: 2rem;
@@ -168,7 +168,11 @@ pre > code {
   border-radius: 0.1875rem;
 }
 
-#hovermenu:hover {
+#hovermenuclose {
+  pointer-events: none;
+}
+
+#hovermenu:hover, #hovermenuclose:hover {
   background: linear-gradient(to bottom, hsl(360, 80%, 48%), hsl(346, 80%, 41%));
   background-color: hsl(352, 80%, 45%);
   color: #fff;

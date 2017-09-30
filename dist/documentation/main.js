@@ -4,11 +4,15 @@ var menucontainer = document.createElement('div');
 var logoA = document.createElement('a');
 var logo = document.createElement('img');
 var hovermenu = document.createElement('div');
+var hovermenuclose = document.createElement('div');
 var mobile = false;
 
 hovermenu.id = 'hovermenu';
 hovermenu.textContent = 'Menu';
 hovermenu.style.display = 'none';
+hovermenuclose.id = 'hovermenuclose';
+hovermenuclose.textContent = 'Close menu';
+hovermenuclose.style.display = 'none';
 
 hovermenu.onclick = function (e) {
   var targetMenuItem;
@@ -22,20 +26,28 @@ hovermenu.onclick = function (e) {
   document.body.style.overflow = 'hidden';
   menu.style.display = '';
   hovermenu.style.display = 'none';
+  hovermenuclose.style.display = '';
+  hovermenuclose.classList.add('slidein');
+  hovermenuclose.style.animationDelay = '0.125s';
   menu.scrollTop = targetMenuItem.offsetTop - window.innerHeight / 4;
   document.body.classList.add('pushout');
   menu.classList.remove('fadeout');
   menu.classList.add('slidein');
   doc.classList.remove('pushin');
   doc.classList.add('pushout');
-  menu.onclick = doc.onclick = function (e) {
-    menu.onclick = doc.onclick = null;
+  menu.onclick = doc.onclick = hovermenuclose.onclick = function (e) {
+    menu.onclick = doc.onclick = hovermenuclose.onclick = null;
     menu.classList.add('fadeout');
     menu.classList.remove('slidein');
     menu.style.overflow = 'hidden';
     doc.classList.add('pushin');
     doc.classList.remove('pushout');
     hovermenu.style.display = '';
+    hovermenu.classList.add('slidein');
+    hovermenu.style.animationDelay = '0.125s';
+    hovermenuclose.classList.remove('slidein');
+    hovermenuclose.classList.add('fadeout');
+    hovermenuclose.style.display = 'none';
     window.onclick = null;
     document.body.style.overflow = '';
     setTimeout(function () {
@@ -46,6 +58,7 @@ hovermenu.onclick = function (e) {
       menu.style.overflow = '';
       menu.classList.remove('fadeout');
       doc.classList.remove('pushin');
+      hovermenu.classList.remove('slidein');
     }, 500);
   };
 };
@@ -103,6 +116,7 @@ function addItem (menu, child) {
 }
 menu.appendChild(menucontainer);
 document.body.appendChild(menu);
+document.body.appendChild(hovermenuclose);
 
 window.addEventListener('resize', resize);
 
@@ -121,6 +135,7 @@ function resize () {
     menucontainer.style.textAlign = 'left';
     menucontainer.style.display = 'inline-block';
     hovermenu.style.display = '';
+    hovermenuclose.style.display = 'none';
     doc.style.left = 0;
   } else {
     if (!mobile) {
@@ -134,6 +149,7 @@ function resize () {
     menucontainer.style.textAlign = '';
     menucontainer.style.display = '';
     hovermenu.style.display = 'none';
+    hovermenuclose.style.display = 'none';
     doc.style.left = '';
     doc.classList.remove('pushin');
     doc.classList.remove('pushout');
