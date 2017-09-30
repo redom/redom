@@ -5,7 +5,7 @@
 body {
   font-family: 'Inter UI', sans-serif;
   color: #222;
-  background-color: #222;
+  background-color: #fff;
 }
 
 h1 {
@@ -93,7 +93,6 @@ pre > code {
 
   padding: .5rem 1.5rem;
   padding-bottom: 3rem;
-  background-color: #fff;
 }
 
 #menu {
@@ -130,7 +129,6 @@ pre > code {
 
 #menu.slidein {
   animation: slidein 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
-  animation-delay: .125s;
   animation-fill-mode: both;
 }
 
@@ -187,7 +185,7 @@ a:not(:hover) {
 
 @keyframes slidein {
   0% {
-    transform: translate(0, 6rem);
+    transform: translate(0, 3rem);
     opacity: 0;
   }
   100% {
@@ -203,30 +201,6 @@ a:not(:hover) {
   100% {
     opacity: 0;
     transform: scale(0.95);
-  }
-}
-
-@keyframes pushin {
-  0% {
-    transform: scale(.95);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(.95);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes pushout {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(.95);
-    opacity: 0.5;
   }
 }
 

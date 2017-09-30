@@ -11,16 +11,14 @@ hovermenu.textContent = 'Menu';
 hovermenu.style.display = 'none';
 
 hovermenu.onclick = function (e) {
-  var scrollTop = document.documentElement.scrollTop;
+  document.body.style.overflow = 'hidden';
+  document.body.classList.add('pushout');
   menu.style.display = '';
   hovermenu.style.display = 'none';
   menu.classList.remove('fadeout');
   menu.classList.add('slidein');
   doc.classList.remove('pushin');
   doc.classList.add('pushout');
-  doc.style.bottom = 0;
-  doc.style.overflow = 'hidden';
-  doc.scrollTop = scrollTop;
   menu.onclick = doc.onclick = window.onresize = function (e) {
     menu.onclick = doc.onclick = window.onresize = null;
     menu.classList.add('fadeout');
@@ -33,12 +31,9 @@ hovermenu.onclick = function (e) {
       if (!mobile) {
         return;
       }
-      var scrollTop = doc.scrollTop;
-      doc.style.bottom = '';
-      doc.style.overflow = '';
+      document.body.style.overflow = '';
       menu.style.display = 'none';
-      document.documentElement.scrollTop = scrollTop;
-    }, 1000);
+    }, 500);
   };
 };
 
