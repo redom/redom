@@ -46,7 +46,7 @@ h2, h3, h4 {
 }
 
 #menu p {
-  line-height: 1.5;
+  line-height: 1.25;
   max-width: 35rem;
   margin: 1.5em 0;
 }
@@ -116,7 +116,7 @@ pre > code {
 
 #menu .menu-item {
   margin: 0;
-  padding: .125rem 0;
+  padding: .25rem 0;
 }
 
 #menu .menu-item + .menu-item:not(.menu-sub-item) {
