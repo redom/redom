@@ -11,25 +11,34 @@ hovermenu.textContent = 'Menu';
 hovermenu.style.display = 'none';
 
 hovermenu.onclick = function (e) {
+  var scrollTop = document.documentElement.scrollTop;
   menu.style.display = '';
   hovermenu.style.display = 'none';
-  document.body.style.overflow = 'hidden';
   menu.classList.remove('fadeout');
   menu.classList.add('slidein');
   doc.classList.remove('pushin');
   doc.classList.add('pushout');
-  menu.onclick = doc.onclick = function (e) {
-    menu.onclick = null;
+  doc.style.bottom = 0;
+  doc.style.overflow = 'hidden';
+  doc.scrollTop = scrollTop;
+  menu.onclick = doc.onclick = window.onresize = function (e) {
+    menu.onclick = doc.onclick = window.onresize = null;
     menu.classList.add('fadeout');
     menu.classList.remove('slidein');
     doc.classList.add('pushin');
     doc.classList.remove('pushout');
     hovermenu.style.display = '';
-    document.body.style.overflow = '';
     window.onclick = null;
     setTimeout(function () {
+      if (!mobile) {
+        return;
+      }
+      var scrollTop = doc.scrollTop;
+      doc.style.bottom = '';
+      doc.style.overflow = '';
       menu.style.display = 'none';
-    }, 500);
+      document.documentElement.scrollTop = scrollTop;
+    }, 1000);
   };
 };
 
