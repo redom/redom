@@ -163,7 +163,7 @@ pre > code {
   background: linear-gradient(to bottom, hsl(360, 80%, 44%), hsl(346, 80%, 36%));
   background-color: hsl(352, 80%, 40%);
   color: rgba(255, 255, 255, 0.95);
-  padding: 1.25rem 1.5rem;
+  padding: 1.125rem 1.75rem;
   cursor: pointer;
   border-radius: 0.1875rem;
 }

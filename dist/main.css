@@ -92,16 +92,19 @@ a:not(:hover) {
 
 .violator {
   display: inline-block;
-  margin: 3rem 0;
+  margin: 3rem .25rem;
   border: 1px solid #ba152b;
   border-radius: 0.1875rem;
   color: #ba152b;
   cursor: pointer;
+  font-size: calc(1.25rem + 1px);
 }
 
 .violator.solid {
+  border: 0;
   background: linear-gradient(to bottom, hsl(360, 80%, 44%), hsl(346, 80%, 36%));
   background-color: hsl(352, 80%, 40%);
+  padding: 1px;
   color: rgba(255, 255, 255, .95);
 }
 
@@ -118,8 +121,8 @@ a:not(:hover) {
 .violator a {
   display: inline-block;
   color: inherit;
-  padding: .75rem 1rem;
-  font-size: calc(.75rem + 1px);
+  padding: .75rem 1.25rem;
+  font-size: calc(.875rem + 1px);
   font-weight: 500;
   text-transform: uppercase;
   text-decoration: none;
