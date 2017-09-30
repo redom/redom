@@ -572,5 +572,13 @@ app.update(&#39;about&#39;, data);
     </div>
     <script src="main.js"></script>
     <script src="../prism.js"></script>
+    <script>https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js</script>
+    <script>
+      if ('addEventListener' in document) {
+      	document.addEventListener('DOMContentLoaded', function() {
+      		FastClick.attach(document.body);
+      	}, false);
+      }
+    </script>
   </body>
 </html>
