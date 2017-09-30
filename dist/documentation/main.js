@@ -101,7 +101,7 @@ function resize () {
     menu.style.display = 'none';
     menu.style.width = '100%';
     menu.style.textAlign = 'center';
-    menu.style.fontSize = '1.5rem';
+    menu.style.fontSize = 'calc(1.5rem + 1px)';
     menucontainer.style.textAlign = 'left';
     menucontainer.style.display = 'inline-block';
     hovermenu.style.display = '';
