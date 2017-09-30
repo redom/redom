@@ -1,5 +1,6 @@
 var doc = document.getElementById('doc');
 var menu = document.createElement('div');
+var menucontainer = document.createElement('div');
 var logoA = document.createElement('a');
 var logo = document.createElement('img');
 var hovermenu = document.createElement('div');
@@ -23,13 +24,14 @@ hovermenu.onclick = function (e) {
 };
 
 menu.id = 'menu';
+menucontainer.id = 'menucontainer';
 
 logoA.href = 'https://redom.js.org';
 logo.id = 'logo';
 logo.src = '../img/logo.svg';
 
 logoA.appendChild(logo);
-menu.appendChild(logoA);
+menucontainer.appendChild(logoA);
 
 document.body.appendChild(hovermenu);
 
@@ -65,9 +67,9 @@ function addItem (menu, child) {
 
   link.href = '#' + child.id;
   item.appendChild(link);
-  menu.appendChild(item);
+  menucontainer.appendChild(item);
 }
-
+menu.appendChild(menucontainer);
 document.body.appendChild(menu);
 
 window.addEventListener('resize', resize);
@@ -81,7 +83,11 @@ function resize () {
     }
     mobile = true;
     menu.style.display = 'none';
-    menu.style.width = '75%';
+    menu.style.width = '100%';
+    menu.style.textAlign = 'center';
+    menu.style.fontSize = '1.5rem';
+    menucontainer.style.textAlign = 'left';
+    menucontainer.style.display = 'inline-block';
     hovermenu.style.display = '';
     doc.style.left = 0;
   } else {
@@ -91,6 +97,10 @@ function resize () {
     mobile = false;
     menu.style.display = '';
     menu.style.width = '';
+    menu.style.textAlign = '';
+    menu.style.fontSize = '';
+    menucontainer.style.textAlign = '';
+    menucontainer.style.display = '';
     hovermenu.style.display = 'none';
     doc.style.opacity = '';
     doc.style.left = '';
