@@ -10,18 +10,10 @@ hovermenu.textContent = 'Menu';
 hovermenu.style.display = 'none';
 
 hovermenu.onclick = function (e) {
-  e.menu = true;
   menu.style.display = '';
   hovermenu.style.display = 'none';
   doc.style.opacity = 0.1;
-  document.body.onclick = function (e) {
-    if (e.menu) {
-      return;
-    }
-    if (!mobile) {
-      document.body.onclick = null;
-      return;
-    }
+  menu.onclick = doc.onclick = function (e) {
     menu.style.display = 'none';
     menu.onclick = null;
     hovermenu.style.display = '';
@@ -102,5 +94,6 @@ function resize () {
     hovermenu.style.display = 'none';
     doc.style.opacity = '';
     doc.style.left = '';
+    menu.onclick = doc.onclick = null;
   }
 }
