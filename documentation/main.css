@@ -36,8 +36,18 @@ h2, h3, h4 {
   padding-top: 1.5em;
 }
 
-p {
+#doc p {
   font-size: calc(1rem + 1px);
+  line-height: 1.5;
+  max-width: 35rem;
+  margin: 1.5em 0;
+}
+
+#menu {
+  font-size: calc(1rem + 1px);
+}
+
+#menu p {
   line-height: 1.5;
   max-width: 35rem;
   margin: 1.5em 0;
@@ -82,10 +92,15 @@ pre > code {
   top: 0;
   left: 14rem;
   right: 0;
+  bottom: 0;
 
   padding: .5rem 1.5rem;
   padding-bottom: 3rem;
   background-color: #fff;
+
+  overflow: auto;
+  overflow-x: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 #menu {
