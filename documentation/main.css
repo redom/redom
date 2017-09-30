@@ -92,15 +92,10 @@ pre > code {
   top: 0;
   left: 14rem;
   right: 0;
-  bottom: 0;
 
   padding: .5rem 1.5rem;
   padding-bottom: 3rem;
   background-color: #fff;
-
-  overflow: auto;
-  overflow-x: none;
-  -webkit-overflow-scrolling: touch;
 }
 
 #menu {
@@ -137,8 +132,8 @@ pre > code {
 
 #hovermenu {
   position: fixed;
-  bottom: 3rem;
-  right: 3rem;
+  bottom: 4rem;
+  right: 2rem;
   font-size: 1.25rem;
   font-weight: 500;
   text-transform: uppercase;
