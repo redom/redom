@@ -157,15 +157,14 @@ pre > code {
   position: fixed;
   bottom: 4rem;
   right: 2rem;
-  font-size: 1.25rem;
+  font-size: calc(1.25rem + 1px);
   font-weight: 500;
   text-transform: uppercase;
   background: linear-gradient(to bottom, hsl(360, 80%, 44%), hsl(346, 80%, 36%));
   background-color: hsl(352, 80%, 40%);
   color: rgba(255, 255, 255, 0.95);
-  padding: 1rem 1.25rem;
+  padding: 1.125rem 1.75rem;
   cursor: pointer;
-  border: 1px solid #ba152b;
   border-radius: 0.1875rem;
 }
 
