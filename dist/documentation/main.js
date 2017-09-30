@@ -11,10 +11,19 @@ hovermenu.textContent = 'Menu';
 hovermenu.style.display = 'none';
 
 hovermenu.onclick = function (e) {
+  var targetMenuItem;
+  for (var i = 0; i < headers.length; i++) {
+    if (headers[i].getBoundingClientRect().top >= 0) {
+      targetMenuItem = menuitems[i];
+      break;
+    }
+  }
+
   document.body.style.overflow = 'hidden';
-  document.body.classList.add('pushout');
   menu.style.display = '';
   hovermenu.style.display = 'none';
+  menu.scrollTop = targetMenuItem.offsetTop - window.innerHeight / 2;
+  document.body.classList.add('pushout');
   menu.classList.remove('fadeout');
   menu.classList.add('slidein');
   doc.classList.remove('pushin');
@@ -35,6 +44,8 @@ hovermenu.onclick = function (e) {
       }
       menu.style.display = 'none';
       menu.style.overflow = '';
+      menu.classList.remove('fadeout');
+      doc.classList.remove('pushin');
     }, 500);
   };
 };
@@ -51,13 +62,17 @@ menucontainer.appendChild(logoA);
 
 document.body.appendChild(hovermenu);
 
+var headers = [];
+var menuitems = [];
+
 for (var i = 0; i < doc.children.length; i++) {
   var child = doc.children[i];
 
   if (~'H2 H3 H4'.split(' ').indexOf(child.tagName)) {
+    headers.push(child);
     addItem(menu, child);
   } else if (child.tagName === 'PRE') {
-    const code = child.querySelector('code');
+    var code = child.querySelector('code');
 
     if (code.className === 'lang-html') {
       code.className = 'language-markup';
@@ -84,6 +99,7 @@ function addItem (menu, child) {
   link.href = '#' + child.id;
   item.appendChild(link);
   menucontainer.appendChild(item);
+  menuitems.push(item);
 }
 menu.appendChild(menucontainer);
 document.body.appendChild(menu);
