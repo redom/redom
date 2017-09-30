@@ -44,6 +44,7 @@
   "homepage": "https://redom.js.org",
   "devDependencies": {
     "browserify": "^14.4.0",
+    "butternut": "~0.4.6",
     "coverify": "^1.4.1",
     "gh-pages": "~1.0.0",
     "marked": "~0.3.6",
