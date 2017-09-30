@@ -5,9 +5,7 @@
 body {
   font-family: 'Inter UI', sans-serif;
   color: #222;
-  overflow: auto;
-  overflow-x: hidden;
-  background-color: #eee;
+  background-color: #222;
 }
 
 h1 {
@@ -92,10 +90,16 @@ pre > code {
   top: 0;
   left: 14rem;
   right: 0;
+  bottom: 0;
 
   padding: .5rem 1.5rem;
   padding-bottom: 3rem;
   background-color: #fff;
+
+  overflow: auto;
+  overflow-x: hidden;
+
+  -webkit-overflow-scrolling: touch;
 }
 
 #menu {
@@ -130,6 +134,34 @@ pre > code {
   display: block;
 }
 
+#menu.slidein {
+  animation: slidein 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  animation-delay: .125s;
+  animation-fill-mode: both;
+}
+
+#menu.fadeout {
+  animation: fadeout 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  animation-fill-mode: both;
+}
+
+#doc.pushin {
+  animation: pushin .5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  animation-delay: .25s;
+  animation-fill-mode: both;
+}
+
+#doc.pushout {
+  animation: pushout .25s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  animation-fill-mode: both;
+}
+
+#logo {
+  display: block;
+  width: 5rem;
+  margin: 2rem auto;
+}
+
 #hovermenu {
   position: fixed;
   bottom: 4rem;
@@ -152,18 +184,51 @@ pre > code {
   color: #fff;
 }
 
-#logo {
-  display: block;
-  width: 5rem;
-  margin: 2rem auto;
-}
-
 a {
   color: #d31b33;
 }
 
 a:not(:hover) {
   text-decoration: none;
+}
+
+@keyframes slidein {
+  0% {
+    transform: translate(0, 6rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes pushin {
+  0% {
+    transform: scale(.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pushout {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(.95);
+  }
 }
 
 @media (min-width: 1024px) {

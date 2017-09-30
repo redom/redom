@@ -13,15 +13,23 @@ hovermenu.style.display = 'none';
 hovermenu.onclick = function (e) {
   menu.style.display = '';
   hovermenu.style.display = 'none';
-  doc.style.opacity = 0.1;
   document.body.style.overflow = 'hidden';
+  menu.classList.remove('fadeout');
+  menu.classList.add('slidein');
+  doc.classList.remove('pushin');
+  doc.classList.add('pushout');
   menu.onclick = doc.onclick = function (e) {
-    menu.style.display = 'none';
     menu.onclick = null;
+    menu.classList.add('fadeout');
+    menu.classList.remove('slidein');
+    doc.classList.add('pushin');
+    doc.classList.remove('pushout');
     hovermenu.style.display = '';
-    doc.style.opacity = '';
     document.body.style.overflow = '';
     window.onclick = null;
+    setTimeout(function () {
+      menu.style.display = 'none';
+    }, 500);
   };
 };
 
@@ -104,8 +112,11 @@ function resize () {
     menucontainer.style.textAlign = '';
     menucontainer.style.display = '';
     hovermenu.style.display = 'none';
-    doc.style.opacity = '';
     doc.style.left = '';
+    doc.classList.remove('pushin');
+    doc.classList.remove('pushout');
+    menu.classList.remove('slidein');
+    menu.classList.remove('fadeout');
     menu.onclick = doc.onclick = null;
     document.body.style.overflow = '';
   }
