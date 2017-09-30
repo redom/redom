@@ -22,7 +22,7 @@ hovermenu.onclick = function (e) {
   document.body.style.overflow = 'hidden';
   menu.style.display = '';
   hovermenu.style.display = 'none';
-  menu.scrollTop = targetMenuItem.offsetTop - window.innerHeight / 2;
+  menu.scrollTop = targetMenuItem.offsetTop - window.innerHeight / 4;
   document.body.classList.add('pushout');
   menu.classList.remove('fadeout');
   menu.classList.add('slidein');
