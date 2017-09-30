@@ -103,7 +103,7 @@ pre > code {
   width: 14rem;
   height: 100%;
 
-  padding: .5rem 1rem;
+  padding: .5rem 1.5rem;
   padding-bottom: 25vh;
 
   overflow: auto;
@@ -149,7 +149,7 @@ pre > code {
 
 #logo {
   display: block;
-  width: 5rem;
+  width: 50%;
   margin: 2rem auto;
 }
 

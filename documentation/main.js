@@ -130,9 +130,8 @@ function resize () {
     mobile = true;
     menu.style.display = 'none';
     menu.style.width = '100%';
-    menu.style.textAlign = 'center';
     menu.style.fontSize = 'calc(1.5rem + 1px)';
-    menucontainer.style.textAlign = 'left';
+    menu.style.paddingLeft = '3rem';
     menucontainer.style.display = 'inline-block';
     hovermenu.style.display = '';
     hovermenuclose.style.display = 'none';
@@ -146,6 +145,7 @@ function resize () {
     menu.style.width = '';
     menu.style.textAlign = '';
     menu.style.fontSize = '';
+    menu.style.paddingLeft = '';
     menucontainer.style.textAlign = '';
     menucontainer.style.display = '';
     hovermenu.style.display = 'none';
