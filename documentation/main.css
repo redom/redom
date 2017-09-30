@@ -7,6 +7,7 @@ body {
   color: #222;
   overflow: auto;
   overflow-x: hidden;
+  background-color: #eee;
 }
 
 h1 {
@@ -77,12 +78,12 @@ pre > code {
 #doc {
   position: absolute;
   top: 0;
-  left: 15rem;
+  left: 14rem;
+  right: 0;
 
-  width: calc(100% - 15rem);
-
-  padding: .5rem;
+  padding: .5rem 1.5rem;
   padding-bottom: 3rem;
+  background-color: #fff;
 }
 
 #menu {
@@ -93,11 +94,13 @@ pre > code {
   width: 14rem;
   height: 100%;
 
-  padding: .5rem;
+  padding: .5rem 1rem;
   padding-bottom: 4.5rem;
 
   overflow: auto;
   overflow-x: hidden;
+
+  background-color: #fff;
 }
 
 #menu .menu-item {
@@ -113,11 +116,32 @@ pre > code {
   display: block;
 }
 
+#hovermenu {
+  position: fixed;
+  bottom: 3rem;
+  right: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  background: linear-gradient(to bottom, hsl(360, 80%, 44%), hsl(346, 80%, 36%));
+  background-color: hsl(352, 80%, 40%);
+  color: rgba(255, 255, 255, 0.95);
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  border: 1px solid #ba152b;
+  border-radius: 0.1875rem;
+}
+
+#hovermenu:hover {
+  background: linear-gradient(to bottom, hsl(360, 80%, 48%), hsl(346, 80%, 41%));
+  background-color: hsl(352, 80%, 45%);
+  color: #fff;
+}
+
 #logo {
   display: block;
   width: 5rem;
-  margin: 2rem 0;
-  margin-left: .75rem;
+  margin: 2rem auto;
 }
 
 a {
