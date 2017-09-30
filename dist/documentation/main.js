@@ -14,11 +14,13 @@ hovermenu.onclick = function (e) {
   menu.style.display = '';
   hovermenu.style.display = 'none';
   doc.style.opacity = 0.1;
+  document.body.style.overflow = 'hidden';
   menu.onclick = doc.onclick = function (e) {
     menu.style.display = 'none';
     menu.onclick = null;
     hovermenu.style.display = '';
     doc.style.opacity = '';
+    document.body.style.overflow = '';
     window.onclick = null;
   };
 };
@@ -105,5 +107,6 @@ function resize () {
     doc.style.opacity = '';
     doc.style.left = '';
     menu.onclick = doc.onclick = null;
+    document.body.style.overflow = '';
   }
 }
