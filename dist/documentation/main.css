@@ -168,10 +168,13 @@ pre > code {
 }
 
 #hovermenu svg, #hovermenuclose svg {
-  fill: #fff;
   width: 1.5rem;
   height: 1.5rem;
   transform: translate(0, .125rem);
+}
+
+#hovermenu path, #hovermenuclose path {
+  fill: #fff;
 }
 
 #hovermenuclose {
