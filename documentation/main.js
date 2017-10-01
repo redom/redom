@@ -84,14 +84,17 @@ for (var i = 0; i < doc.children.length; i++) {
   if (~'H2 H3 H4'.split(' ').indexOf(child.tagName)) {
     headers.push(child);
     addItem(menu, child);
-  } else if (child.tagName === 'PRE') {
-    var code = child.querySelector('code');
+  } else {
+    if (child.tagName === 'PRE') {
+      var code = child.querySelector('code');
 
-    if (code.className === 'lang-html') {
-      code.className = 'language-markup';
-    } else if (code.className === 'lang-js') {
-      code.className = 'language-javascript';
+      if (code.className === 'lang-html') {
+        code.className = 'language-markup';
+      } else if (code.className === 'lang-js') {
+        code.className = 'language-javascript';
+      }
     }
+    console.log(headers[headers.length - 1].textContent, child.textContent);
   }
 }
 
