@@ -54,7 +54,6 @@ hovermenu.onclick = function (e) {
 
   document.body.style.overflow = 'hidden';
   menu.style.display = '';
-  searchField.focus();
   hovermenu.style.display = 'none';
   hovermenuclose.style.display = '';
   hovermenuclose.classList.add('slidein');
