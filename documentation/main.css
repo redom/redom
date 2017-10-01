@@ -34,23 +34,6 @@ h2, h3, h4 {
   padding-top: 1.5em;
 }
 
-#doc p {
-  font-size: calc(1rem + 1px);
-  line-height: 1.5;
-  max-width: 35rem;
-  margin: 1.5em 0;
-}
-
-#menu {
-  font-size: calc(1rem + 1px);
-}
-
-#menu p {
-  line-height: 1.25;
-  max-width: 35rem;
-  margin: 1.5em 0;
-}
-
 li {
   line-height: 1.5;
   max-width: 35rem;
@@ -95,23 +78,40 @@ pre > code {
   padding-bottom: 25vh;
 }
 
+#doc p {
+  font-size: calc(1rem + 1px);
+  line-height: 1.5;
+  max-width: 35rem;
+  margin: 1.5em 0;
+}
+
+#doc.pushin {
+  animation: pushin 1s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  animation-fill-mode: both;
+}
+
+#doc.pushout {
+  animation: pushout .5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  animation-fill-mode: both;
+}
+
 #menu {
   position: fixed;
   top: 0;
   left: 0;
 
+  font-size: calc(1rem + 1px);
+
   width: 14rem;
   height: 100%;
 
-  padding: .5rem 1.5rem;
-  padding-bottom: 25vh;
-
-  overflow: auto;
-  overflow-x: hidden;
-
-  -webkit-overflow-scrolling: touch;
-
   background-color: #fff;
+}
+
+#menu p {
+  line-height: 1.25;
+  max-width: 35rem;
+  margin: 1.5em 0;
 }
 
 #menu .menu-item {
@@ -137,14 +137,56 @@ pre > code {
   animation-fill-mode: both;
 }
 
-#doc.pushin {
-  animation: pushin 1s cubic-bezier(0.215, 0.610, 0.355, 1.000);
-  animation-fill-mode: both;
+#search {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
-#doc.pushout {
-  animation: pushout .5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
-  animation-fill-mode: both;
+#search input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: block;
+  font: inherit;
+  font-size: calc(1rem + 1px);
+  line-height: 1.5rem;
+  padding: .75rem .75rem;
+  padding-left: 2.25rem;
+  margin: 0;
+  border: 0;
+  outline: 0;
+  background-color: #eee;
+}
+
+#search svg {
+  position: absolute;
+  top: 1rem;
+  left: .75rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+#search path {
+  fill: #555;
+}
+
+#menucontainer {
+  position: absolute;
+  top: 3rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  padding: .5rem 1.5rem;
+  padding-bottom: 25vh;
+
+  overflow: auto;
+  overflow-x: hidden;
+
+  -webkit-overflow-scrolling: touch;
 }
 
 #logo {
