@@ -29,9 +29,9 @@ searchField.oninput = function () {
     var menuitem = menuitems[i];
 
     if (searchResults[i]) {
-      menuitem.style.opacity = 1;
+      menuitem.style.display = '';
     } else {
-      menuitem.style.opacity = 0.25;
+      menuitem.style.display = 'none';
     }
   }
 };
@@ -59,7 +59,7 @@ hovermenu.onclick = function (e) {
   hovermenuclose.style.display = '';
   hovermenuclose.classList.add('slidein');
   hovermenuclose.style.animationDelay = '0.25s';
-  menu.scrollTop = targetMenuItem.offsetTop - window.innerHeight / 4;
+  menucontainer.scrollTop = targetMenuItem.offsetTop - window.innerHeight / 4;
   document.body.classList.add('pushout');
   menu.classList.remove('fadeout');
   menu.classList.add('slidein');
@@ -166,6 +166,8 @@ function addItem (menu, child) {
   item.onclick = function () {
     searchField.value = '';
     searchField.oninput();
+
+    menucontainer.scrollTop = item.offsetTop - window.innerHeight / 4;
   };
 }
 menu.appendChild(menucontainer);
