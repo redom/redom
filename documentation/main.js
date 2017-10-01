@@ -164,10 +164,13 @@ function addItem (menu, child) {
   menuitems.push(item);
 
   item.onclick = function () {
+    var searching = searchField.value;
     searchField.value = '';
     searchField.oninput();
 
-    menucontainer.scrollTop = item.offsetTop - window.innerHeight / 4;
+    if (searching) {
+      menucontainer.scrollTop = item.offsetTop - window.innerHeight / 4;
+    }
   };
 }
 menu.appendChild(menucontainer);
