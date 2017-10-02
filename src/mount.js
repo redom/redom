@@ -42,7 +42,7 @@ export const unmount = (parent, child) => {
     child = childEl.__redom_view;
   }
 
-  if (parentEl.contains(childEl) === true) {
+  if (childEl.parentNode) {
     doUnmount(child, childEl, parentEl);
 
     parentEl.removeChild(childEl);
