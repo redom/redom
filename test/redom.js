@@ -114,9 +114,11 @@ var unmount = function (parent, child) {
     child = childEl.__redom_view;
   }
 
-  doUnmount(child, childEl, parentEl);
+  if (childEl.parentNode) {
+    doUnmount(child, childEl, parentEl);
 
-  parentEl.removeChild(childEl);
+    parentEl.removeChild(childEl);
+  }
 
   return child;
 };

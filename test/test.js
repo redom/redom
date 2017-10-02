@@ -442,6 +442,18 @@ module.exports = function (redom) {
       mount(document.body, table);
       t.equals(document.body.innerHTML, '<table><tr><td>1</td><td>2</td><td>3</td></tr></table>');
     });
+    t.test('unmounting unmounted', function (t) {
+      t.plan(2);
+      function Test () {
+        this.el = el('div');
+      }
+      var test = new Test();
+      unmount(document.body, test);
+      mount(document.body, test);
+      t.equals(document.body.contains(test.el), true);
+      unmount(document.body, test);
+      t.equals(document.body.contains(test.el), false);
+    });
   });
 
   test('SVG', function (t) {
