@@ -139,9 +139,10 @@ pre > code {
 
 #search {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
+  height: 3rem;
 }
 
 #search input {
@@ -175,10 +176,10 @@ pre > code {
 
 #menucontainer {
   position: absolute;
-  top: 3rem;
+  top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 3rem;
 
   padding: .5rem 1.5rem;
   padding-bottom: 25vh;
