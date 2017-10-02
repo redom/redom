@@ -1,6 +1,6 @@
 {
   "name": "redom",
-  "version": "3.4.0",
+  "version": "3.5.3",
   "description": "Tiny turboboosted JavaScript library for creating user interfaces. 100 % test coverage!",
   "main": "dist/redom.js",
   "module": "dist/redom.es.js",
@@ -11,7 +11,9 @@
     "build-es": "rollup -c -n redom -f es -i src/index.js -o dist/redom.es.js",
     "build-js": "rollup -c -n redom -f umd -i src/index.js -o dist/redom.js",
     "build": "npm run build-es && npm run build-js",
-    "uglify": "uglifyjs dist/redom.js -cmo dist/redom.min.js",
+    "uglify": "npm run uglify-js && npm run uglify-es",
+    "uglify-js": "uglifyjs dist/redom.js -cmo dist/redom.min.js",
+    "uglify-es": "squash dist/redom.es.js -o dist/redom.es.min.js",
     "preversion": "npm run build && npm run uglify && npm run test",
     "postversion": "git push --tags",
     "prepublish": "npm run build && npm run uglify && npm run test",
@@ -39,18 +41,19 @@
   "bugs": {
     "url": "https://github.com/redom/redom/issues"
   },
-  "homepage": "https://github.com/redom/redom#readme",
+  "homepage": "https://redom.js.org",
   "devDependencies": {
     "browserify": "^14.4.0",
+    "butternut": "~0.4.6",
     "coverify": "^1.4.1",
     "gh-pages": "~1.0.0",
     "marked": "~0.3.6",
-    "rollup": "~0.49.3",
-    "rollup-plugin-buble": "~0.15.0",
+    "rollup": "~0.50.0",
+    "rollup-plugin-buble": "~0.16.0",
     "rollup-plugin-node-resolve": "~3.0.0",
     "semistandard": "~11.0.0",
     "tape": "^4.8.0",
     "tape-run": "^3.0.0",
-    "uglify-js": "~3.0.28"
+    "uglify-js": "~3.1.2"
   }
 }

@@ -9,136 +9,13 @@
     <meta name="twitter:title" content="RE:DOM">
     <meta name="twitter:description" content="Tiny (2 KB) turboboosted JavaScript library for creating user interfaces">
     <meta name="twitter:image" content="https://redom.js.org/img/twitter.jpg">
-    <style>
-      *, *:before, *:after {
-        box-sizing: inherit;
-      }
-      body {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Work Sans', sans-serif;
-        background-color: #fff;
-        color: #333;
-        padding-bottom: 3rem;
-        text-size-adjust: 100%;
-        -webkit-text-size-adjust: 100%;
-      }
-      header {
-        background-color: #fff;
-        padding-top: 6rem;
-        height: 16rem;
-      }
-      #redom-logo {
-        margin: 0 auto;
-        background-image: url(img/logo.svg);
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: 50% 50%;
-        width: 8.9375rem;
-        height: 8.0625rem;
-      }
-      section.center {
-        text-align: center;
-        max-width: 40rem;
-        margin: 1.5rem auto;
-      }
-      h1 {
-        font-size: 2rem;
-        font-weight: 600;
-        line-height: 3rem;
-        margin: 1.5rem auto;
-        padding: 1rem 3rem;
-        text-align: center;
-        letter-spacing: -0.05em;
-      }
-      h2 {
-        font-weight: 500;
-        line-height: 3rem;
-        margin-top: 6rem;
-        margin-bottom: 3rem;
-        color: #d31b33;
-        letter-spacing: -0.05em;
-      }
-      p {
-        font-size: 1rem;
-      }
-      pre {
-        display: block;
-      }
-      pre > code {
-        position: relative;
-        display: inline-block;
-        font-family: 'Inconsolata', monospace;
-        font-size: .75rem;
-        line-height: 1rem;
-        text-align: left;
-        background-color: #161616;
-        color: #eee;
-        margin: 0 auto;
-        padding: 1.5rem;
-        border-radius: 4px;
-        white-space: pre-wrap;
-        word-break: break-all;
-        overflow-x: hidden;
-      }
-      a:not(:hover) {
-        text-decoration: none;
-      }
-      .violator {
-        display: inline-block;
-        margin: 3rem 0;
-        border: 1px solid #ba152b;
-        border-radius: 4px;
-        color: #ba152b;
-        cursor: pointer;
-      }
-      .violator.solid {
-        background-color: #ba152b;
-        color: #fff;
-      }
-      .violator:not(.solid):hover {
-        box-shadow: inset 0 0 0 1px #ba152b;
-      }
-      .violator a {
-        display: inline-block;
-        color: inherit;
-        padding: .75rem 1rem;
-        font-size: .75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        text-decoration: none;
-        cursor: inherit;
-      }
-      .small {
-        font-size: .75rem;
-      }
-      p {
-        line-height: 1.5;
-      }
-      a {
-        color: #d31b33;
-      }
-      @media (min-width: 1280px) {
-        html {
-          font-size: 112.5%;
-        }
-      }
-      @media (min-width: 1600px) {
-        html {
-          font-size: 125%;
-        }
-      }
-      @media (max-width: 640px) {
-        html {
-          font-size: 75%;
-        }
-
-      }
-    </style>
-    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500,600|Inconsolata" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
+    <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet">
     <link href="prism.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <title>RE:DOM – Tiny (2 KB) turboboosted JavaScript library for creating user interfaces</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54216829-7"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config', 'UA-54216829-7');</script>
   </head>
   <body>
     <header>
@@ -147,25 +24,25 @@
     <section class="center">
       <h1>Tiny<span style="font-weight: 500; letter-spacing: 0; font-size: .875rem; line-height: 2.5rem; vertical-align: top;"> (2 KB)</span> turboboosted JavaScript library for creating user interfaces</h1>
 
-      <p style="font-weight: 500; letter-spacing: -0.025em;">Develop web apps with 100 % JavaScript and web standards.</p>
+      <p style="font-weight: 500; letter-spacing: -0.0125em;">Develop web apps with 100 % JavaScript and web standards.</p>
 
       <p class="violator solid">
-        <a href="documentation">Get started!</a>
+        <a href="documentation">Documentation</a>
       </p>
 
       <p class="violator">
-        <a href="https://github.com/redom/redom" target="_blank">GitHub</a>
+        <a href="https://github.com/redom/redom">GitHub</a>
       </p>
 
       <div style="text-align: left; max-width: 30rem; margin: 0 auto;">
         <p>RE:DOM is a tiny (2 KB) DOM library by <a href="https://pakastin.fi" target="_blank">Juha Lindstedt</a> and <a href="https://github.com/redom/redom/graphs/contributors">contributors</a>, which adds some useful helpers to create DOM elements and keeping them in sync with the data.</p>
-        <p>Because RE:DOM is so close to the metal and <strong>doesn&#39;t use virtual dom</strong>, it&#39;s actually <strong>faster</strong> and uses <strong>less memory</strong> than almost all virtual dom based libraries, including React (<a href="https://rawgit.com/krausest/js-framework-benchmark/964ae451d222ccc4de774fedeef7025c10227558/webdriver-ts-results/table.html" target="_blank">benchmark</a>).</p>
+        <p>Because RE:DOM is so close to the metal and <strong>doesn&#39;t use virtual dom</strong>, it&#39;s actually <strong>faster</strong> and uses <strong>less memory</strong> than almost all virtual dom based libraries, including React (<a href="https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html" target="_blank">benchmark</a>).</p>
         <p>It&#39;s also easy to create <strong>reusable components</strong> with RE:DOM.</p>
         <p>Another great benefit is, that you can use just <strong>pure JavaScript</strong>, so no complicated templating languages to learn and hassle with.</p>
       </div>
 
       <p class="violator">
-        <a href="documentation">Learn more!</a>
+        <a href="documentation">Learn more</a>
       </p>
 
       <h2>Create HTML elements easily</h2>
@@ -484,24 +361,19 @@ const html = render(document.body);
 
 console.log(html); // &lt;body&gt;&lt;h1&gt;Hello world!&lt;/h1&gt;&lt;/body&gt;</code></pre>
       <h2>Looks fun!</h2>
+
       <p class="violator solid">
-        <a href="documentation">Get started!</a>
+        <a href="documentation">Documentation</a>
       </p>
 
       <p class="violator">
-        <a href="https://github.com/redom/redom" target="_blank">GitHub</a>
+        <a href="https://github.com/redom/redom">GitHub</a>
       </p>
+
+      <div style="margin: 5rem 0;">
+        <img src="meme.jpg" style="height: 7.5rem">
+      </div>
     </section>
     <script src="prism.js"></script>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-54216829-7', 'auto');
-      ga('send', 'pageview');
-
-    </script>
   </body>
 </html>

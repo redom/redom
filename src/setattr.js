@@ -1,9 +1,11 @@
+/* global SVGElement */
+
 import { setStyle } from './setstyle';
 import { isFunction, getEl } from './util';
 
 export const setAttr = (view, arg1, arg2) => {
   const el = getEl(view);
-  let isSVG = el instanceof window.SVGElement;
+  let isSVG = el instanceof SVGElement;
 
   if (arg2 !== undefined) {
     if (arg1 === 'style') {

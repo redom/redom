@@ -2,10 +2,14 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>RE:DOM documentation</title>
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="../prism.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Work+Sans:400,600,700">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter-ui.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54216829-7"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config', 'UA-54216829-7');</script>
   </head>
   <body>
     <div id="doc">
@@ -18,18 +22,36 @@
       <h3 id="browser-support">Browser support</h3>
       <p>Only if you use <code>el.extend</code>, <code>svg.extend</code> or <code>list.extend</code>, you&#39;ll need at least IE9. All other features should work even in IE6. So for the most parts basically almost every browser out there is supported.</p>
       <h2 id="installing">Installing</h2>
+      <p>There&#39;s many ways to use RE:DOM.</p>
+      <h3 id="npm">npm</h3>
       <p>You can install RE:DOM from npm by calling:</p>
       <pre><code>npm i redom
-      </code></pre><p>RE:DOM also supports <a href="https://github.com/umdjs/umd">UMD</a>:</p>
+      </code></pre><h3 id="umd">UMD</h3>
+      <p>RE:DOM supports <a href="https://github.com/umdjs/umd">UMD</a>:</p>
       <pre><code class="lang-html">&lt;script src=&quot;https://redom.js.org/redom.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  const { el, mount } = redom;
+  ...
+&lt;/script&gt;
       </code></pre>
+      <h3 id="es2015">ES2015</h3>
+      <p>It&#39;s also possible to use the new <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">ES2015 import</a>:</p>
+      <pre><code class="lang-js">import { el, mount } from &#39;https://redom.js.org/redom.es.min.js&#39;;
+      </code></pre>
+      <h3 id="download">Download</h3>
+      <p>Here&#39;s the download links:</p>
+      <ul>
+      <li><a href="https://redom.js.org/redom.js">https://redom.js.org/redom.js</a> (UMD, development)</li>
+      <li><a href="https://redom.js.org/redom.min.js">https://redom.js.org/redom.min.js</a> (UMD, production)</li>
+      <li><a href="https://redom.js.org/redom.es.js">https://redom.js.org/redom.es.js</a> (ES2015, development)</li>
+      <li><a href="https://redom.js.org/redom.es.min.js">https://redom.js.org/redom.es.min.js</a> (ES2015, production)</li>
+      </ul>
       <h3 id="project-generator">Project generator</h3>
       <p>You can also use the project generator, which will also install a file watcher and bundler. You can find it <a href="https://github.com/redom/redom-cli">here</a>.</p>
       <h3 id="server-side-use">Server-side use</h3>
       <p>RE:DOM also works on server side, by using <a href="https://github.com/redom/nodom">NO:DOM</a>.</p>
       <h3 id="re-dom-dev-tools-for-chrome">RE:DOM dev tools for Chrome</h3>
       <p>You can install <a href="https://github.com/redom/redom-devtools">RE:DOM dev tools for Chrome</a></p>
-      <p><img src="screenshot.png" alt="RE:DOM dev tools"></p>
       <h2 id="elements">Elements</h2>
       <p><code>el</code> (actually <a href="#alias">alias</a> for <a href="https://github.com/redom/redom/blob/master/src/html.js"><code>html</code></a>) is a helper for <code>document.createElement</code> with couple of differences.</p>
       <p>The basic idea is to simply create elements with <code>el</code> and mount them with <code>mount</code>, almost like you would do with plain JavaScript:</p>
@@ -547,15 +569,5 @@ app.update(&#39;about&#39;, data);
     </div>
     <script src="main.js"></script>
     <script src="../prism.js"></script>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-54216829-7', 'auto');
-      ga('send', 'pageview');
-
-    </script>
   </body>
 </html>

@@ -1,12 +1,12 @@
 .token.comment {
   color: #666;
 }
+
 .token.prolog,
 .token.doctype,
 .token.cdata {
   color: #aaa;
 }
-
 
 .token.punctuation {
   color: #888;
@@ -19,6 +19,7 @@
 .token.property {
   color: #888;
 }
+
 .token.tag,
 .token.constant,
 .token.symbol {
@@ -43,6 +44,7 @@
 .token.operator {
   color: #4DD0E1; // cyan
 }
+
 .token.entity,
 .token.url,
 .token.variable {
@@ -56,7 +58,7 @@
 }
 
 .token.keyword {
-  color: #BA68C8; // purple
+  color: hsl(290, 85%, 75%); // purple
 }
 
 .token.regex,
@@ -68,6 +70,7 @@
 .token.bold {
 	font-weight: bold;
 }
+
 .token.italic {
 	font-style: italic;
 }

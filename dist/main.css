@@ -1,0 +1,160 @@
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter UI', 'Work Sans', sans-serif;
+  background-color: #fff;
+  color: #333;
+  padding-bottom: 3rem;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+header {
+  background-color: #fff;
+  padding-top: 6rem;
+  height: 16rem;
+}
+
+#redom-logo {
+  margin: 0 auto;
+  background-image: url(img/logo.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  width: 8.9375rem;
+  height: 8.0625rem;
+}
+
+section.center {
+  text-align: center;
+  max-width: 40rem;
+  margin: 1.5rem auto;
+}
+
+h1 {
+  font-size: calc(2rem + 1px);
+  font-weight: 700;
+  line-height: 3rem;
+  margin: 1.5rem auto;
+  padding: 1rem 3rem;
+  text-align: center;
+  letter-spacing: -0.0125em;
+}
+
+h2 {
+  font-size: calc(1.5rem + 1px);
+  font-weight: 500;
+  line-height: 3rem;
+  margin-top: 6rem;
+  margin-bottom: 3rem;
+  color: #d31b33;
+  letter-spacing: -0.0125em;
+}
+
+p {
+  font-size: calc(1rem + 1px);
+}
+
+strong {
+  color: #000;
+  font-weight: 500;
+}
+
+pre {
+  display: block;
+}
+
+pre > code {
+  position: relative;
+  display: inline-block;
+  font-family: 'Inconsolata', monospace;
+  font-size: .875rem;
+  line-height: 1.25;
+  text-align: left;
+  background-color: #161616;
+  color: #eee;
+  margin: 0 auto;
+  padding: 1.5rem;
+  border-radius: 0.1875rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-x: hidden;
+}
+
+a:not(:hover) {
+  text-decoration: none;
+}
+
+.violator {
+  display: inline-block;
+  margin: 3rem .25rem;
+  border: 1px solid #ba152b;
+  border-radius: 0.1875rem;
+  color: #ba152b;
+  cursor: pointer;
+  font-size: calc(1.25rem + 1px);
+}
+
+.violator.solid {
+  border: 0;
+  background: linear-gradient(to bottom, hsl(360, 80%, 44%), hsl(346, 80%, 36%));
+  background-color: hsl(352, 80%, 40%);
+  padding: 1px;
+  color: rgba(255, 255, 255, .95);
+}
+
+.violator.solid:hover {
+  background: linear-gradient(to bottom, hsl(360, 80%, 48%), hsl(346, 80%, 41%));
+  background-color: hsl(352, 80%, 45%);
+  color: #fff;
+}
+
+.violator:not(.solid):hover {
+  box-shadow: inset 0 0 0 1px #ba152b;
+}
+
+.violator a {
+  display: inline-block;
+  color: inherit;
+  padding: .75rem 1.25rem;
+  font-size: calc(.875rem + 1px);
+  font-weight: 500;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: inherit;
+}
+
+.small {
+  font-size: calc(.75rem + 1px);
+}
+
+p {
+  line-height: 1.5;
+}
+
+a {
+  color: #d31b33;
+}
+
+@media (min-width: 1280px) {
+  html {
+    font-size: 112.5%;
+  }
+}
+
+@media (min-width: 1600px) {
+  html {
+    font-size: 125%;
+  }
+}
+
+@media (max-width: 640px) {
+  html {
+    font-size: 75%;
+  }
+}
