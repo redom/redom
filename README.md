@@ -43,4 +43,3 @@ npm i redom
 
 ## Open source
 - License: [MIT](https://github.com/redom/redom/blob/master/LICENSE)
-- Code of conduct: [Contributor Covenant](https://github.com/redom/redom/blob/master/CODE_OF_CONDUCT.md)
