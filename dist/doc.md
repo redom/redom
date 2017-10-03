@@ -1,4 +1,5 @@
 # RE:DOM documentation
+<p class="violator solid"><a href="https://redom.js.org/">Website</a></p><p class="violator"><a href="https://github.com/redom/redom">GitHub</a></p>
 
 ## Introduction
 RE:DOM is a tiny (2 KB) DOM library by [Juha Lindstedt](https://pakastin.fi) and [contributors](https://github.com/redom/redom/graphs/contributors), which adds some useful helpers to create DOM elements and keeping them in sync with the data.
@@ -660,3 +661,5 @@ Pull requests are more than welcome!
 
 ## License
 [MIT](https://github.com/redom/redom/blob/master/LICENSE)
+
+<p class="violator solid"><a href="https://redom.js.org/">Website</a></p><p class="violator"><a href="https://github.com/redom/redom">GitHub</a></p>
