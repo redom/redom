@@ -27,14 +27,14 @@ export class Place {
         this.el = getEl(view.el);
         this.view = view;
 
-        mount(parentNode, this.el, placeholder);
+        mount(parentNode, view, placeholder);
         unmount(parentNode, placeholder);
       }
       this.view.update && this.view.update(data);
     } else {
       if (this.visible) {
-        mount(parentNode, placeholder, this.el);
-        unmount(parentNode, this.el);
+        mount(parentNode, placeholder, this.view);
+        unmount(parentNode, this.view);
 
         this.el = placeholder;
         this.view = null;

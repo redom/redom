@@ -477,14 +477,16 @@ Place.prototype.update = function update (visible, data) {
       this.el = getEl(view.el);
       this.view = view;
 
-      mount(parentNode, this.el, placeholder);
+      console.log('mount', this);
+
+      mount(parentNode, this, placeholder);
       unmount(parentNode, placeholder);
     }
     this.view.update && this.view.update(data);
   } else {
     if (this.visible) {
-      mount(parentNode, placeholder, this.el);
-      unmount(parentNode, this.el);
+      mount(parentNode, placeholder, this);
+      unmount(parentNode, this);
 
       this.el = placeholder;
       this.view = null;
