@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="tiny,view,library,redom,github,npm,javascript,html5,dom,vanilla,plain,fast,benchmark,performance">
+    <meta name="description" content="Tiny (2 KB) turboboosted JavaScript library for creating user interfaces">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@redomjs">
     <meta name="twitter:creator" content="@pakastin">
@@ -13,7 +15,7 @@
     <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet">
     <link href="prism.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
-    <title>RE:DOM – Tiny (2 KB) turboboosted JavaScript library for creating user interfaces</title>
+    <title>RE:DOM – Tiny turboboosted JavaScript library for creating user interfaces</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54216829-7"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config', 'UA-54216829-7');</script>
   </head>
@@ -22,7 +24,7 @@
       <div id="redom-logo"></div>
     </header>
     <section class="center">
-      <h1>Tiny<span style="font-weight: 500; letter-spacing: 0; font-size: .875rem; line-height: 2.5rem; vertical-align: top;"> (2 KB)</span> turboboosted JavaScript library for creating user interfaces</h1>
+      <h2>Tiny<span style="font-weight: 500; letter-spacing: 0; font-size: .875rem; line-height: 2.5rem; vertical-align: top;"> (2 KB)</span> turboboosted JavaScript library for creating user interfaces</h2>
 
       <p style="font-weight: 500; letter-spacing: -0.0125em;">Develop web apps with 100 % JavaScript and web standards.</p>
 
@@ -45,7 +47,7 @@
         <a href="documentation">Learn more</a>
       </p>
 
-      <h2>Create HTML elements easily</h2>
+      <h3>Create HTML elements easily</h3>
       <pre><code class="language-js">import { el, mount } from 'redom';
 
 // create HTML element
@@ -57,7 +59,7 @@ mount(document.body, hello);</code></pre>
   &lt;h1&gt;Hello world!&lt;/h1&gt;
 &lt;/body&gt;</code></pre>
 
-      <h2>Add attributes</h2>
+      <h3>Add attributes</h3>
       <pre><code class="language-js">import { el, mount } from 'redom';
 
 // create HTML element
@@ -71,7 +73,7 @@ mount(document.body, logo);</code></pre>
   &lt;img id="redom-logo" class="logo" src="img/logo.svg"&gt;
 &lt;/body&gt;</code></pre>
 
-      <h2>Listen to events</h2>
+      <h3>Listen to events</h3>
       <pre><code class="language-js">import { el, mount } from 'redom';
 
 // define Login component
@@ -108,7 +110,7 @@ mount(document.body, login);</code></pre>
   &lt;/form&gt;
 &lt;/body&gt;</code></pre>
 
-      <h2>Sync lists</h2>
+      <h3>Sync lists</h3>
       <pre><code class="language-js">import { el, list, mount } from 'redom';
 
 // define &lt;li&gt; component
@@ -142,7 +144,7 @@ setTimeout(() => {
   &lt;/ul&gt;
 &lt;/body&gt;</code></pre>
 
-    <h2>Sync tables</h2>
+    <h3>Sync tables</h3>
     <pre><code class="language-js">import { el, list, mount } from 'redom';
 
 // define &lt;td&gt; component
@@ -193,7 +195,7 @@ setTimeout(() => {
   &lt;/table&gt;
 &lt;/body&gt;</code></pre>
 
-    <h2>Create and update components</h2>
+    <h3>Create and update components</h3>
     <pre><code class="language-javascript">import { el, text, mount } from 'redom';
 
 // define component
@@ -221,7 +223,7 @@ mount(document.body, hello);</code></pre>
   &lt;h1&gt;Hello RE:DOM!&lt;/h1&gt;
 &lt;/body&gt;</code></pre>
 
-      <h2>Combine list + component</h2>
+      <h3>Combine list + component</h3>
       <pre><code class="language-javascript">import { el, text, list, mount } from 'redom';
 
 // define component
@@ -277,7 +279,7 @@ setTimeout(() => {
     &lt;h1&gt;Hello world!&lt;/h1&gt;
   &lt;/section&gt;
 &lt;/body&gt;</code></pre>
-      <h2>Switch sections</h2>
+      <h3>Switch sections</h3>
       <pre><code class="language-javascript">const { el, router, mount } = require('redom');
 
 // define A component
@@ -347,7 +349,7 @@ setTimeout(() => {
   &lt;/div&gt;
 &lt;/body&gt;</code></pre>
 
-      <h2>Works on server-side as well!</h2>
+      <h3>Works on server-side as well!</h3>
       <pre><code class="language-javascript">const { Document, render } = require('nodom');
 
 // create a fake DOM before requiring RE:DOM
@@ -360,7 +362,7 @@ mount(document.body, el('h1', 'Hello world!'));
 const html = render(document.body);
 
 console.log(html); // &lt;body&gt;&lt;h1&gt;Hello world!&lt;/h1&gt;&lt;/body&gt;</code></pre>
-      <h2>Looks fun!</h2>
+      <h3>Looks fun!</h3>
 
       <p class="violator solid">
         <a href="documentation">Documentation</a>

@@ -36,8 +36,8 @@ section.center {
   margin: 1.5rem auto;
 }
 
-h1 {
-  font-size: calc(2rem + 1px);
+h2 {
+  font-size: 2rem;
   font-weight: 700;
   line-height: 3rem;
   margin: 1.5rem auto;
@@ -46,8 +46,8 @@ h1 {
   letter-spacing: -0.0125em;
 }
 
-h2 {
-  font-size: calc(1.5rem + 1px);
+h3 {
+  font-size: 1.5rem;
   font-weight: 500;
   line-height: 3rem;
   margin-top: 6rem;
@@ -57,7 +57,7 @@ h2 {
 }
 
 p {
-  font-size: calc(1rem + 1px);
+  font-size: 1rem;
 }
 
 strong {
@@ -93,11 +93,12 @@ a:not(:hover) {
 .violator {
   display: inline-block;
   margin: 3rem .25rem;
+  margin-top: 1.5rem;
   border: 1px solid #ba152b;
   border-radius: 0.1875rem;
   color: #ba152b;
   cursor: pointer;
-  font-size: calc(1.25rem + 1px);
+  font-size: 1.25rem;
 }
 
 .violator.solid {
@@ -122,7 +123,7 @@ a:not(:hover) {
   display: inline-block;
   color: inherit;
   padding: .75rem 1.25rem;
-  font-size: calc(.875rem + 1px);
+  font-size: .875rem;
   font-weight: 500;
   text-transform: uppercase;
   text-decoration: none;
@@ -130,7 +131,7 @@ a:not(:hover) {
 }
 
 .small {
-  font-size: calc(.75rem + 1px);
+  font-size: .75rem;
 }
 
 p {
