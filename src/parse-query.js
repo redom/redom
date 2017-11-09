@@ -1,11 +1,15 @@
 const HASH = '#'.charCodeAt(0);
 const DOT = '.'.charCodeAt(0);
 
+const TAGNAME = 0;
+const ID = 1;
+const CLASSNAME = 2;
+
 export const parseQuery = (query) => {
   let tag = null;
   let id = null;
   let className = null;
-  let mode = 0;
+  let mode = TAGNAME;
   let buffer = '';
 
   for (let i = 0; i <= query.length; i++) {
@@ -15,13 +19,13 @@ export const parseQuery = (query) => {
     const isEnd = !char;
 
     if (isHash || isDot || isEnd) {
-      if (mode === 0) {
+      if (mode === TAGNAME) {
         if (i === 0) {
           tag = 'div';
         } else {
           tag = buffer;
         }
-      } else if (mode === 1) {
+      } else if (mode === ID) {
         id = buffer;
       } else {
         if (className) {
@@ -32,9 +36,9 @@ export const parseQuery = (query) => {
       }
 
       if (isHash) {
-        mode = 1;
+        mode = ID;
       } else if (isDot) {
-        mode = 2;
+        mode = CLASSNAME;
       }
 
       buffer = '';
