@@ -41,5 +41,8 @@ npm i redom
 ## Performance
 - [RE:DOM is one of the fastest UI library out there.](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html)
 
+## Links
+- [Product Hunt](https://www.producthunt.com/posts/re-dom)
+
 ## Open source
 - License: [MIT](https://github.com/redom/redom/blob/master/LICENSE)
