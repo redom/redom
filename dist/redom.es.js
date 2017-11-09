@@ -1,11 +1,15 @@
 var HASH = '#'.charCodeAt(0);
 var DOT = '.'.charCodeAt(0);
 
+var TAGNAME = 0;
+var ID = 1;
+var CLASSNAME = 2;
+
 var parseQuery = function (query) {
   var tag = null;
   var id = null;
   var className = null;
-  var mode = 0;
+  var mode = TAGNAME;
   var buffer = '';
 
   for (var i = 0; i <= query.length; i++) {
@@ -15,13 +19,13 @@ var parseQuery = function (query) {
     var isEnd = !char;
 
     if (isHash || isDot || isEnd) {
-      if (mode === 0) {
+      if (mode === TAGNAME) {
         if (i === 0) {
           tag = 'div';
         } else {
           tag = buffer;
         }
-      } else if (mode === 1) {
+      } else if (mode === ID) {
         id = buffer;
       } else {
         if (className) {
@@ -32,9 +36,9 @@ var parseQuery = function (query) {
       }
 
       if (isHash) {
-        mode = 1;
+        mode = ID;
       } else if (isDot) {
-        mode = 2;
+        mode = CLASSNAME;
       }
 
       buffer = '';
@@ -68,6 +72,59 @@ var createElement = function (query, ns) {
   return element;
 };
 
+var unmount = function (parent, child) {
+  var parentEl = getEl(parent);
+  var childEl = getEl(child);
+
+  if (child === childEl && childEl.__redom_view) {
+    // try to look up the view if not provided
+    child = childEl.__redom_view;
+  }
+
+  if (childEl.parentNode) {
+    doUnmount(child, childEl, parentEl);
+
+    parentEl.removeChild(childEl);
+  }
+
+  return child;
+};
+
+var doUnmount = function (child, childEl, parentEl) {
+  var hooks = childEl.__redom_lifecycle;
+
+  if (!hooks) {
+    childEl.__redom_mounted = false;
+    return;
+  }
+
+  var traverse = parentEl;
+
+  if (childEl.__redom_mounted) {
+    trigger(childEl, 'onunmount');
+  }
+
+  while (traverse) {
+    var parentHooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
+    var hooksFound = false;
+
+    for (var hook in hooks) {
+      if (parentHooks[hook]) {
+        parentHooks[hook] -= hooks[hook];
+      }
+      if (parentHooks[hook]) {
+        hooksFound = true;
+      }
+    }
+
+    if (!hooksFound) {
+      traverse.__redom_lifecycle = null;
+    }
+
+    traverse = traverse.parentNode;
+  }
+};
+
 var hookNames = ['onmount', 'onunmount'];
 
 var mount = function (parent, child, before) {
@@ -97,24 +154,6 @@ var mount = function (parent, child, before) {
   }
 
   doMount(child, childEl, parentEl, oldParent);
-
-  return child;
-};
-
-var unmount = function (parent, child) {
-  var parentEl = getEl(parent);
-  var childEl = getEl(child);
-
-  if (child === childEl && childEl.__redom_view) {
-    // try to look up the view if not provided
-    child = childEl.__redom_view;
-  }
-
-  if (childEl.parentNode) {
-    doUnmount(child, childEl, parentEl);
-
-    parentEl.removeChild(childEl);
-  }
 
   return child;
 };
@@ -166,41 +205,6 @@ var doMount = function (child, childEl, parentEl, oldParent) {
     }
 
     traverse = parent;
-  }
-};
-
-var doUnmount = function (child, childEl, parentEl) {
-  var hooks = childEl.__redom_lifecycle;
-
-  if (!hooks) {
-    childEl.__redom_mounted = false;
-    return;
-  }
-
-  var traverse = parentEl;
-
-  if (childEl.__redom_mounted) {
-    trigger(childEl, 'onunmount');
-  }
-
-  while (traverse) {
-    var parentHooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
-    var hooksFound = false;
-
-    for (var hook in hooks) {
-      if (parentHooks[hook]) {
-        parentHooks[hook] -= hooks[hook];
-      }
-      if (parentHooks[hook]) {
-        hooksFound = true;
-      }
-    }
-
-    if (!hooksFound) {
-      traverse.__redom_lifecycle = null;
-    }
-
-    traverse = traverse.parentNode;
   }
 };
 
