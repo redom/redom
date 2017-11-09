@@ -75,7 +75,7 @@ pre > code {
   border-radius: 0.1875rem;
   color: #ba152b;
   cursor: pointer;
-  font-size: calc(1.25rem + 1px);
+  font-size: 1.25rem;
 }
 
 #doc .violator + h2 {
@@ -104,7 +104,7 @@ pre > code {
   display: inline-block;
   color: inherit;
   padding: .75rem 1.25rem;
-  font-size: calc(.875rem + 1px);
+  font-size: .875rem;
   font-weight: 500;
   text-transform: uppercase;
   text-decoration: none;
@@ -122,7 +122,7 @@ pre > code {
 }
 
 #doc p {
-  font-size: calc(1rem + 1px);
+  font-size: 1rem;
   line-height: 1.5;
   max-width: 35rem;
   margin: 1.5em 0;
@@ -143,7 +143,7 @@ pre > code {
   top: 0;
   left: 0;
 
-  font-size: calc(1rem + 1px);
+  font-size: 1rem;
 
   width: 14rem;
   height: 100%;
@@ -195,7 +195,7 @@ pre > code {
   width: 100%;
   display: block;
   font: inherit;
-  font-size: calc(1.25rem + 1px);
+  font-size: 1.25rem;
   line-height: 1.5rem;
   padding: .75rem .75rem;
   padding-left: 2.25rem;
