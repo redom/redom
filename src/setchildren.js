@@ -1,4 +1,5 @@
-import { mount, unmount } from './mount';
+import { mount } from './mount';
+import { unmount } from './unmount';
 import { getEl } from './util';
 
 export const setChildren = (parent, children) => {

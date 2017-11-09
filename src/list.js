@@ -1,6 +1,6 @@
 import { setChildren } from './setchildren';
 import { isFunction, ensureEl, getEl } from './util';
-import { unmount } from './mount';
+import { unmount } from './unmount';
 
 const propKey = key => item => item[key];
 
