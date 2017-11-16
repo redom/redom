@@ -16,7 +16,7 @@ https://redom.js.org
 
 ## Introduction
 
-RE:DOM is a tiny (2 KB) UI library by [Juha Lindstedt](https://pakastin.fi) and [contributors](https://github.com/redom/redom/graphs/contributors), which adds some useful helpers to create DOM elements and keeping them in sync with the data.
+RE:DOM is a tiny (2 KB) UI library by [Juha Lindstedt](https://github.com/pakastin) and [contributors](https://github.com/redom/redom/graphs/contributors), which adds some useful helpers to create DOM elements and keeping them in sync with the data.
 
 Because RE:DOM is so close to the metal and **doesn't use virtual dom**, it's actually **faster** and uses **less memory** than almost all virtual dom based libraries, including React ([benchmark](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html)).
 
@@ -40,6 +40,9 @@ npm i redom
 
 ## Performance
 - [RE:DOM is one of the fastest UI library out there.](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html)
+
+## Links
+- [Product Hunt](https://www.producthunt.com/posts/re-dom)
 
 ## Open source
 - License: [MIT](https://github.com/redom/redom/blob/master/LICENSE)
