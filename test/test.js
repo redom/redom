@@ -680,7 +680,24 @@ module.exports = function (redom) {
     t.deepEqual(logs, expectedLog);
   });
 
-  test('place', function (t) {
+  test('element place', function (t) {
+    t.plan(3);
+
+    var elementPlace = place(el('h1', 'Hello RE:DOM!'));
+
+    setChildren(document.body, []);
+
+    mount(document.body, elementPlace);
+    t.equals(document.body.innerHTML, '');
+
+    elementPlace.update(true);
+    t.equals(document.body.innerHTML, '<h1>Hello RE:DOM!</h1>');
+
+    elementPlace.update(false);
+    t.equals(document.body.innerHTML, '');
+  });
+
+  test('component place', function (t) {
     t.plan(3);
 
     function B (initData) {

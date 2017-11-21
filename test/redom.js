@@ -457,6 +457,8 @@ List.extend = function (parent, View, key, initData) {
 
 list.extend = List.extend;
 
+/* global Node */
+
 var place = function (View, initData) {
   return new Place(View, initData);
 };
@@ -466,7 +468,11 @@ var Place = function Place (View, initData) {
   this.visible = false;
   this.view = null;
   this._placeholder = this.el;
-  this._View = View;
+  if (View instanceof Node) {
+    this._el = View;
+  } else {
+    this._View = View;
+  }
   this._initData = initData;
 };
 Place.prototype.update = function update (visible, data) {
@@ -475,6 +481,13 @@ Place.prototype.update = function update (visible, data) {
 
   if (visible) {
     if (!this.visible) {
+      if (this._el) {
+        mount(parentNode, this._el, placeholder);
+        unmount(parentNode, placeholder);
+        this.el = this._el;
+        this.visible = visible;
+        return;
+      }
       var View = this._View;
       var view = new View(this._initData);
 
@@ -487,6 +500,13 @@ Place.prototype.update = function update (visible, data) {
     this.view.update && this.view.update(data);
   } else {
     if (this.visible) {
+      if (this._el) {
+        mount(parentNode, placeholder, this.view);
+        unmount(parentNode, this._el);
+        this.el = placeholder;
+        this.visible = visible;
+        return;
+      }
       mount(parentNode, placeholder, this.view);
       unmount(parentNode, this.view);
 
