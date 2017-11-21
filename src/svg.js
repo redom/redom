@@ -28,3 +28,5 @@ svg.extend = function (query) {
 
   return svg.bind(this, clone);
 };
+
+export const s = svg;

@@ -28,3 +28,4 @@ html.extend = function (query) {
 };
 
 export const el = html;
+export const h = html;

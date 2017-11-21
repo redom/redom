@@ -350,6 +350,7 @@ html.extend = function (query) {
 };
 
 var el = html;
+var h = html;
 
 var setChildren = function (parent, children) {
   if (children.length === undefined) {
@@ -570,8 +571,11 @@ svg.extend = function (query) {
   return svg.bind(this, clone);
 };
 
-exports.html = html;
+var s = svg;
+
 exports.el = el;
+exports.h = h;
+exports.html = html;
 exports.list = list;
 exports.List = List;
 exports.mount = mount;
@@ -583,5 +587,6 @@ exports.Router = Router;
 exports.setAttr = setAttr;
 exports.setStyle = setStyle;
 exports.setChildren = setChildren;
+exports.s = s;
 exports.svg = svg;
 exports.text = text;
