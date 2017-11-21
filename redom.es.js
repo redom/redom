@@ -346,6 +346,7 @@ html.extend = function (query) {
 };
 
 var el = html;
+var h = html;
 
 var setChildren = function (parent, children) {
   if (children.length === undefined) {
@@ -566,4 +567,6 @@ svg.extend = function (query) {
   return svg.bind(this, clone);
 };
 
-export { html, el, list, List, mount, unmount, place, Place, router, Router, setAttr, setStyle, setChildren, svg, text };
+var s = svg;
+
+export { el, h, html, list, List, mount, unmount, place, Place, router, Router, setAttr, setStyle, setChildren, s, svg, text };
