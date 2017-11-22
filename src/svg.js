@@ -1,11 +1,11 @@
 import { createElement } from './create-element';
 import { parseArguments, isString, isNode } from './util';
 
-const SVG = 'http://www.w3.org/2000/svg';
+const ns = 'http://www.w3.org/2000/svg';
 
 const svgCache = {};
 
-const memoizeSVG = query => svgCache[query] || (svgCache[query] = createElement(query, SVG));
+const memoizeSVG = query => svgCache[query] || (svgCache[query] = createElement(query, ns));
 
 export const svg = (query, ...args) => {
   let element;
@@ -28,5 +28,7 @@ svg.extend = function (query) {
 
   return svg.bind(this, clone);
 };
+
+svg.ns = ns;
 
 export const s = svg;

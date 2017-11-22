@@ -540,11 +540,11 @@ Router.prototype.update = function update (route, data) {
   this.view && this.view.update && this.view.update(data, route);
 };
 
-var SVG = 'http://www.w3.org/2000/svg';
+var ns = 'http://www.w3.org/2000/svg';
 
 var svgCache = {};
 
-var memoizeSVG = function (query) { return svgCache[query] || (svgCache[query] = createElement(query, SVG)); };
+var memoizeSVG = function (query) { return svgCache[query] || (svgCache[query] = createElement(query, ns)); };
 
 var svg = function (query) {
   var args = [], len = arguments.length - 1;
@@ -570,6 +570,8 @@ svg.extend = function (query) {
 
   return svg.bind(this, clone);
 };
+
+svg.ns = ns;
 
 var s = svg;
 
