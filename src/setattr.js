@@ -3,6 +3,8 @@
 import { setStyle } from './setstyle';
 import { isFunction, getEl } from './util';
 
+const xlinkns = 'http://www.w3.org/1999/xlink';
+
 export const setAttr = (view, arg1, arg2) => {
   const el = getEl(view);
   let isSVG = el instanceof SVGElement;
@@ -15,6 +17,10 @@ export const setAttr = (view, arg1, arg2) => {
     } else if (!isSVG && (arg1 in el || isFunction(arg2))) {
       el[arg1] = arg2;
     } else {
+      if (isSVG && (arg1 === 'xlink')) {
+        setXlink(el, arg2);
+        return;
+      }
       el.setAttribute(arg1, arg2);
     }
   } else {
@@ -23,3 +29,9 @@ export const setAttr = (view, arg1, arg2) => {
     }
   }
 };
+
+function setXlink (el, obj) {
+  for (const key in obj) {
+    el.setAttributeNS(xlinkns, key, obj[key]);
+  }
+}

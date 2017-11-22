@@ -265,6 +265,8 @@ var setStyle = function (view, arg1, arg2) {
 
 /* global SVGElement */
 
+var xlinkns = 'http://www.w3.org/1999/xlink';
+
 var setAttr = function (view, arg1, arg2) {
   var el = getEl(view);
   var isSVG = el instanceof SVGElement;
@@ -277,6 +279,10 @@ var setAttr = function (view, arg1, arg2) {
     } else if (!isSVG && (arg1 in el || isFunction(arg2))) {
       el[arg1] = arg2;
     } else {
+      if (isSVG && (arg1 === 'xlink')) {
+        setXlink(el, arg2);
+        return;
+      }
       el.setAttribute(arg1, arg2);
     }
   } else {
@@ -285,6 +291,12 @@ var setAttr = function (view, arg1, arg2) {
     }
   }
 };
+
+function setXlink (el, obj) {
+  for (var key in obj) {
+    el.setAttributeNS(xlinkns, key, obj[key]);
+  }
+}
 
 var text = function (str) { return document.createTextNode(str); };
 

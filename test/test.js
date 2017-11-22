@@ -567,6 +567,11 @@ module.exports = function (redom) {
       t.plan(1);
       t.throws(svg, new Error('At least one argument required'));
     });
+    t.test('xlink', function (t) {
+      t.plan(1);
+      var use = svg('use', { xlink: { href: '#menu' } });
+      t.equals(use.outerHTML, '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use>');
+    });
   });
 
   test('router', function (t) {
