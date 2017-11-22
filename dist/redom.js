@@ -512,7 +512,7 @@ Place.prototype.update = function update (visible, data) {
       mount(parentNode, view, placeholder);
       unmount(parentNode, placeholder);
     }
-    this.view.update && this.view.update(data);
+    this.view && this.view.update && this.view.update(data);
   } else {
     if (this.visible) {
       if (this._el) {
