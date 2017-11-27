@@ -693,13 +693,36 @@ module.exports = function (redom) {
     setChildren(document.body, []);
 
     mount(document.body, elementPlace);
-    t.equals(document.body.innerHTML, '');
+    mount(document.body, el('p', 'After'));
+    t.equals(document.body.innerHTML, '<p>After</p>');
 
     elementPlace.update(true);
-    t.equals(document.body.innerHTML, '<h1>Hello RE:DOM!</h1>');
+    t.equals(document.body.innerHTML, '<h1>Hello RE:DOM!</h1><p>After</p>');
 
     elementPlace.update(false);
-    t.equals(document.body.innerHTML, '');
+    t.equals(document.body.innerHTML, '<p>After</p>');
+
+    elementPlace.update(true);
+  });
+
+  test('extended element place', function (t) {
+    t.plan(3);
+
+    var elementPlace = place(el.extend('h1', 'Hello RE:DOM!'));
+
+    setChildren(document.body, []);
+
+    mount(document.body, elementPlace);
+    mount(document.body, el('p', 'After'));
+    t.equals(document.body.innerHTML, '<p>After</p>');
+
+    elementPlace.update(true);
+    t.equals(document.body.innerHTML, '<h1>Hello RE:DOM!</h1><p>After</p>');
+
+    elementPlace.update(false);
+    t.equals(document.body.innerHTML, '<p>After</p>');
+
+    elementPlace.update(true);
   });
 
   test('component place', function (t) {
