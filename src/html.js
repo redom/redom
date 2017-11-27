@@ -21,10 +21,10 @@ export const html = (query, ...args) => {
   return element;
 };
 
-html.extend = function (query) {
+html.extend = function (query, ...args) {
   const clone = memoizeHTML(query);
 
-  return html.bind(this, clone);
+  return html.bind(this, clone, ...args);
 };
 
 export const el = html;

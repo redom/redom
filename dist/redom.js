@@ -358,9 +358,12 @@ var html = function (query) {
 };
 
 html.extend = function (query) {
+  var args = [], len = arguments.length - 1;
+  while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+
   var clone = memoizeHTML(query);
 
-  return html.bind(this, clone);
+  return html.bind.apply(html, [ this, clone ].concat( args ));
 };
 
 var el = html;
@@ -506,7 +509,7 @@ Place.prototype.update = function update (visible, data) {
       var View = this._View;
       var view = new View(this._initData);
 
-      this.el = getEl(view.el);
+      this.el = getEl(view);
       this.view = view;
 
       mount(parentNode, view, placeholder);

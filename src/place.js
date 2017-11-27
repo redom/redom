@@ -38,7 +38,7 @@ export class Place {
         const View = this._View;
         const view = new View(this._initData);
 
-        this.el = getEl(view.el);
+        this.el = getEl(view);
         this.view = view;
 
         mount(parentNode, view, placeholder);
