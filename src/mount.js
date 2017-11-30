@@ -2,6 +2,7 @@ import { getEl } from './util';
 import { doUnmount } from './unmount';
 
 const hookNames = ['onmount', 'onunmount'];
+const shadowRootAvailable = 'ShadowRoot' in window;
 
 export const mount = (parent, child, before) => {
   const parentEl = getEl(parent);
@@ -75,7 +76,7 @@ const doMount = (child, childEl, parentEl, oldParent) => {
       parentHooks[hook] = (parentHooks[hook] || 0) + hooks[hook];
     }
 
-    if (!triggered && (traverse === document || (parent && parent.__redom_mounted))) {
+    if (!triggered && (traverse === document || (shadowRootAvailable && (traverse instanceof window.ShadowRoot)) || (parent && parent.__redom_mounted))) {
       trigger(traverse, remount ? 'onremount' : 'onmount');
       triggered = true;
     }
