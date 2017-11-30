@@ -175,6 +175,23 @@ module.exports = function (redom) {
         onunmount: true
       });
     });
+    t.test('lifecycle with shadow root', function (t) {
+      t.plan(1);
+      var div = document.createElement('div');
+      var root = div.createShadowRoot();
+      var eventsFired = {};
+
+      function Test () {
+        this.el = el('div');
+        this.onmount = function () {
+          eventsFired.onmount = true;
+        };
+      }
+
+      mount(root, new Test());
+
+      t.equals(eventsFired.onmount, true);
+    });
     t.test('component lifecycle events inside node element', function (t) {
       t.plan(1);
       var eventsFired = {};

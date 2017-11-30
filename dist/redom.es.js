@@ -199,7 +199,7 @@ var doMount = function (child, childEl, parentEl, oldParent) {
       parentHooks[hook] = (parentHooks[hook] || 0) + hooks[hook];
     }
 
-    if (!triggered && (traverse === document || (parent && parent.__redom_mounted))) {
+    if (!triggered && (traverse === document || (window.ShadowRoot && (traverse instanceof window.ShadowRoot)) || (parent && parent.__redom_mounted))) {
       trigger(traverse, remount ? 'onremount' : 'onmount');
       triggered = true;
     }
