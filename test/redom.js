@@ -130,6 +130,7 @@ var doUnmount = function (child, childEl, parentEl) {
 };
 
 var hookNames = ['onmount', 'onunmount'];
+var shadowRootAvailable = 'ShadowRoot' in window;
 
 var mount = function (parent, child, before) {
   var parentEl = getEl(parent);
@@ -203,7 +204,7 @@ var doMount = function (child, childEl, parentEl, oldParent) {
       parentHooks[hook] = (parentHooks[hook] || 0) + hooks[hook];
     }
 
-    if (!triggered && (traverse === document || (window.ShadowRoot && (traverse instanceof window.ShadowRoot)) || (parent && parent.__redom_mounted))) {
+    if (!triggered && (traverse === document || (shadowRootAvailable && (traverse instanceof window.ShadowRoot)) || (parent && parent.__redom_mounted))) {
       trigger(traverse, remount ? 'onremount' : 'onmount');
       triggered = true;
     }
