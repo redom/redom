@@ -176,7 +176,7 @@ module.exports = function (redom) {
       });
     });
     t.test('lifecycle with shadow root', function (t) {
-      t.plan(1);
+      t.plan(2);
       var div = document.createElement('div');
       var root = div.createShadowRoot();
       var eventsFired = {};
@@ -186,11 +186,19 @@ module.exports = function (redom) {
         this.onmount = function () {
           eventsFired.onmount = true;
         };
+        this.onunmount = function () {
+          eventsFired.onunmount = true;
+        };
       }
 
-      mount(root, new Test());
+      var test = new Test();
+
+      mount(root, test);
 
       t.equals(eventsFired.onmount, true);
+      unmount(root, test);
+
+      t.equals(eventsFired.onunmount, true);
     });
     t.test('component lifecycle events inside node element', function (t) {
       t.plan(1);
