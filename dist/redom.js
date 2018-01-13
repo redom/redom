@@ -550,8 +550,8 @@ Router.prototype.update = function update (route, data) {
     var Views = this.Views;
     var View = Views[route];
 
-    this.view = View && new View(this.initData, data);
     this.route = route;
+    this.view = View && new View(this.initData, data);
 
     setChildren(this.el, [ this.view ]);
   }
