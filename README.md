@@ -37,6 +37,7 @@ npm i redom
 - [NO:DOM](https://github.com/redom/nodom) (server-side rendering)
 - [Project generator](https://github.com/redom/redom-cli)
 - [Dev tools for Chrome](https://github.com/redom/redom-devtools)
+- [Babel RE:DOM JSX transform](https://github.com/tomerigal/babel-plugin-transform-redom-jsx)
 
 ## Performance
 - [RE:DOM is one of the fastest UI library out there.](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html)
