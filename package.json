@@ -43,17 +43,17 @@
   },
   "homepage": "https://redom.js.org",
   "devDependencies": {
-    "browserify": "^15.0.0",
+    "browserify": "^15.1.0",
     "butternut": "~0.4.6",
     "coverify": "^1.5.0",
     "gh-pages": "~1.1.0",
-    "marked": "~0.3.9",
-    "rollup": "~0.53.3",
+    "marked": "~0.3.12",
+    "rollup": "~0.54.0",
     "rollup-plugin-buble": "~0.18.0",
-    "rollup-plugin-node-resolve": "~3.0.0",
+    "rollup-plugin-node-resolve": "~3.0.2",
     "semistandard": "~12.0.0",
     "tape": "^4.8.0",
     "tape-run": "^3.0.1",
-    "uglify-js": "~3.3.4"
+    "uglify-js": "~3.3.5"
   }
 }
