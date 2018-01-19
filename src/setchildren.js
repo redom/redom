@@ -36,7 +36,7 @@ function traverse (parent, children, _current) {
       current = current.nextSibling;
       continue;
     }
-    console.log(child);
+
     mount(parent, child, current);
   }
 
