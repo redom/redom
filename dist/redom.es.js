@@ -369,9 +369,7 @@ var setChildren = function (parent) {
   while ( len-- > 0 ) children[ len ] = arguments[ len + 1 ];
 
   var parentEl = getEl(parent);
-  var current = parentEl.firstChild;
-
-  traverse(parent, children, traverse);
+  var current = traverse(parent, children, parentEl.firstChild);
 
   while (current) {
     var next = current.nextSibling;
@@ -382,11 +380,18 @@ var setChildren = function (parent) {
   }
 };
 
-function traverse (parent, children, current) {
+function traverse (parent, children, _current) {
+  var current = _current;
+
   for (var i = 0; i < children.length; i++) {
     var child = children[i];
 
     if (!child) {
+      continue;
+    }
+
+    if (child.length != null) {
+      current = traverse(parent, child, current);
       continue;
     }
 
@@ -399,6 +404,8 @@ function traverse (parent, children, current) {
 
     mount(parent, child, current);
   }
+
+  return current;
 }
 
 var propKey = function (key) { return function (item) { return item[key]; }; };
