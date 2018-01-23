@@ -1,8 +1,7 @@
 import { setChildren } from './setchildren';
-import { isFunction, ensureEl, getEl } from './util';
+import { ensureEl } from './util';
 import { unmount } from './unmount';
-
-const propKey = key => item => item[key];
+import { ListPool } from './listpool.js';
 
 export const list = (parent, View, key, initData) => {
   return new List(parent, View, key, initData);
@@ -14,56 +13,33 @@ export class List {
     this.View = View;
     this.initData = initData;
     this.views = [];
+    this.pool = new ListPool(View, key, initData);
     this.el = ensureEl(parent);
-
-    if (key != null) {
-      this.lookup = {};
-      this.key = isFunction(key) ? key : propKey(key);
-    }
+    this.keySet = key != null;
   }
   update (data = [], context) {
-    const View = this.View;
-    const key = this.key;
-    const keySet = key != null;
-    const initData = this.initData;
-    const newViews = new Array(data.length);
+    const { keySet } = this;
     const oldViews = this.views;
-    const newLookup = key && {};
-    const oldLookup = key && this.lookup;
+    const oldLookup = keySet && this.lookup;
 
-    for (let i = 0; i < data.length; i++) {
-      const item = data[i];
-      let view;
-
-      if (keySet) {
-        const id = key(item);
-        view = oldLookup[id] || new View(initData, item, i, data);
-        newLookup[id] = view;
-        view.__redom_id = id;
-      } else {
-        view = oldViews[i] || new View(initData, item, i, data);
-      }
-      newViews[i] = view;
-      let el = getEl(view.el);
-      el.__redom_view = view;
-      view.update && view.update(item, i, data, context);
-    }
+    this.pool.update(data, context);
+    const { views, lookup } = this.pool;
 
     if (keySet) {
       for (let i = 0; i < oldViews.length; i++) {
         const id = oldViews[i].__redom_id;
-        if (!(id in newLookup)) {
+        if (!(id in lookup)) {
           unmount(this, oldLookup[id]);
         }
       }
     }
 
-    setChildren(this, newViews);
+    setChildren(this, views);
 
     if (keySet) {
-      this.lookup = newLookup;
+      this.lookup = lookup;
     }
-    this.views = newViews;
+    this.views = views;
   }
 }
 

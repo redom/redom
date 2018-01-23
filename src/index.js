@@ -1,5 +1,6 @@
 export { el, h, html } from './html';
 export { list, List } from './list';
+export { listPool, ListPool } from './listpool';
 export { mount } from './mount';
 export { unmount } from './unmount';
 export { place, Place } from './place';

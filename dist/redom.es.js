@@ -1,15 +1,15 @@
 var HASH = '#'.charCodeAt(0);
 var DOT = '.'.charCodeAt(0);
 
-var TAGNAME = 0;
+var TAG_NAME = 0;
 var ID = 1;
-var CLASSNAME = 2;
+var CLASS_NAME = 2;
 
 var parseQuery = function (query) {
   var tag = null;
   var id = null;
   var className = null;
-  var mode = TAGNAME;
+  var mode = TAG_NAME;
   var buffer = '';
 
   for (var i = 0; i <= query.length; i++) {
@@ -19,7 +19,7 @@ var parseQuery = function (query) {
     var isEnd = !char;
 
     if (isHash || isDot || isEnd) {
-      if (mode === TAGNAME) {
+      if (mode === TAG_NAME) {
         if (i === 0) {
           tag = 'div';
         } else {
@@ -38,7 +38,7 @@ var parseQuery = function (query) {
       if (isHash) {
         mode = ID;
       } else if (isDot) {
-        mode = CLASSNAME;
+        mode = CLASS_NAME;
       }
 
       buffer = '';
@@ -364,13 +364,24 @@ html.extend = function (query) {
 var el = html;
 var h = html;
 
-var setChildren = function (parent, children) {
-  if (children.length === undefined) {
-    return setChildren(parent, [children]);
-  }
+var setChildren = function (parent) {
+  var children = [], len = arguments.length - 1;
+  while ( len-- > 0 ) children[ len ] = arguments[ len + 1 ];
 
   var parentEl = getEl(parent);
-  var traverse = parentEl.firstChild;
+  var current = traverse(parent, children, parentEl.firstChild);
+
+  while (current) {
+    var next = current.nextSibling;
+
+    unmount(parent, current);
+
+    current = next;
+  }
+};
+
+function traverse (parent, children, _current) {
+  var current = _current;
 
   for (var i = 0; i < children.length; i++) {
     var child = children[i];
@@ -379,55 +390,55 @@ var setChildren = function (parent, children) {
       continue;
     }
 
-    var childEl = getEl(child);
-
-    if (childEl === traverse) {
-      traverse = traverse.nextSibling;
+    if (child.length != null) {
+      current = traverse(parent, child, current);
       continue;
     }
 
-    mount(parent, child, traverse);
+    var childEl = getEl(child);
+
+    if (childEl === current) {
+      current = current.nextSibling;
+      continue;
+    }
+
+    mount(parent, child, current);
   }
 
-  while (traverse) {
-    var next = traverse.nextSibling;
-
-    unmount(parent, traverse);
-
-    traverse = next;
-  }
-};
+  return current;
+}
 
 var propKey = function (key) { return function (item) { return item[key]; }; };
 
-var list = function (parent, View, key, initData) {
-  return new List(parent, View, key, initData);
+var listPool = function (View, key, initData) {
+  return new ListPool(View, key, initData);
 };
 
-var List = function List (parent, View, key, initData) {
-  this.__redom_list = true;
+var ListPool = function ListPool (View, key, initData) {
   this.View = View;
   this.initData = initData;
+  this.oldLookup = {};
+  this.lookup = {};
+  this.oldViews = [];
   this.views = [];
-  this.el = ensureEl(parent);
 
   if (key != null) {
     this.lookup = {};
     this.key = isFunction(key) ? key : propKey(key);
   }
 };
-List.prototype.update = function update (data, context) {
-    var this$1 = this;
-    if ( data === void 0 ) data = [];
-
-  var View = this.View;
-  var key = this.key;
+ListPool.prototype.update = function update (data, context) {
+  var ref = this;
+    var View = ref.View;
+    var key = ref.key;
+    var initData = ref.initData;
   var keySet = key != null;
-  var initData = this.initData;
+
+  var oldLookup = this.lookup;
+  var newLookup = {};
+
   var newViews = new Array(data.length);
   var oldViews = this.views;
-  var newLookup = key && {};
-  var oldLookup = key && this.lookup;
 
   for (var i = 0; i < data.length; i++) {
     var item = data[i];
@@ -441,27 +452,62 @@ List.prototype.update = function update (data, context) {
     } else {
       view = oldViews[i] || new View(initData, item, i, data);
     }
-    newViews[i] = view;
+    view.update && view.update(item, i, data, context);
+
     var el = getEl(view.el);
     el.__redom_view = view;
-    view.update && view.update(item, i, data, context);
+    newViews[i] = view;
   }
 
+  this.oldViews = oldViews;
+  this.views = newViews;
+
+  this.oldLookup = oldLookup;
+  this.lookup = newLookup;
+};
+
+var list = function (parent, View, key, initData) {
+  return new List(parent, View, key, initData);
+};
+
+var List = function List (parent, View, key, initData) {
+  this.__redom_list = true;
+  this.View = View;
+  this.initData = initData;
+  this.views = [];
+  this.pool = new ListPool(View, key, initData);
+  this.el = ensureEl(parent);
+  this.keySet = key != null;
+};
+List.prototype.update = function update (data, context) {
+    var this$1 = this;
+    if ( data === void 0 ) data = [];
+
+  var ref = this;
+    var keySet = ref.keySet;
+  var oldViews = this.views;
+  var oldLookup = keySet && this.lookup;
+
+  this.pool.update(data, context);
+  var ref$1 = this.pool;
+    var views = ref$1.views;
+    var lookup = ref$1.lookup;
+
   if (keySet) {
-    for (var i$1 = 0; i$1 < oldViews.length; i$1++) {
-      var id$1 = oldViews[i$1].__redom_id;
-      if (!(id$1 in newLookup)) {
-        unmount(this$1, oldLookup[id$1]);
+    for (var i = 0; i < oldViews.length; i++) {
+      var id = oldViews[i].__redom_id;
+      if (!(id in lookup)) {
+        unmount(this$1, oldLookup[id]);
       }
     }
   }
 
-  setChildren(this, newViews);
+  setChildren(this, views);
 
   if (keySet) {
-    this.lookup = newLookup;
+    this.lookup = lookup;
   }
-  this.views = newViews;
+  this.views = views;
 };
 
 List.extend = function (parent, View, key, initData) {
@@ -587,4 +633,4 @@ svg.ns = ns;
 
 var s = svg;
 
-export { el, h, html, list, List, mount, unmount, place, Place, router, Router, setAttr, setStyle, setChildren, s, svg, text };
+export { el, h, html, list, List, listPool, ListPool, mount, unmount, place, Place, router, Router, setAttr, setStyle, setChildren, s, svg, text };
