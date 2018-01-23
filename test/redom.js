@@ -14,7 +14,7 @@ var parseQuery = function (query) {
   var id = null;
   var className = null;
   var mode = TAG_NAME;
-  var buffer = '';
+  var offset = 0;
 
   for (var i = 0; i <= query.length; i++) {
     var char = query.charCodeAt(i);
@@ -27,15 +27,15 @@ var parseQuery = function (query) {
         if (i === 0) {
           tag = 'div';
         } else {
-          tag = buffer;
+          tag = query.substring(offset, i);
         }
       } else if (mode === ID) {
-        id = buffer;
+        id = query.substring(offset, i);
       } else {
         if (className) {
-          className += ' ' + buffer;
+          className += ' ' + query.substring(offset, i);
         } else {
-          className = buffer;
+          className = query.substring(offset, i);
         }
       }
 
@@ -45,9 +45,7 @@ var parseQuery = function (query) {
         mode = CLASS_NAME;
       }
 
-      buffer = '';
-    } else {
-      buffer += query[i];
+      offset = i + 1;
     }
   }
 

@@ -10,7 +10,7 @@ export const parseQuery = (query) => {
   let id = null;
   let className = null;
   let mode = TAG_NAME;
-  let buffer = '';
+  let offset = 0;
 
   for (let i = 0; i <= query.length; i++) {
     const char = query.charCodeAt(i);
@@ -23,15 +23,15 @@ export const parseQuery = (query) => {
         if (i === 0) {
           tag = 'div';
         } else {
-          tag = buffer;
+          tag = query.substring(offset, i);
         }
       } else if (mode === ID) {
-        id = buffer;
+        id = query.substring(offset, i);
       } else {
         if (className) {
-          className += ' ' + buffer;
+          className += ' ' + query.substring(offset, i);
         } else {
-          className = buffer;
+          className = query.substring(offset, i);
         }
       }
 
@@ -41,9 +41,7 @@ export const parseQuery = (query) => {
         mode = CLASS_NAME;
       }
 
-      buffer = '';
-    } else {
-      buffer += query[i];
+      offset = i + 1;
     }
   }
 
