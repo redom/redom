@@ -7,15 +7,15 @@
 var HASH = '#'.charCodeAt(0);
 var DOT = '.'.charCodeAt(0);
 
-var TAGNAME = 0;
+var TAG_NAME = 0;
 var ID = 1;
-var CLASSNAME = 2;
+var CLASS_NAME = 2;
 
 var parseQuery = function (query) {
   var tag = null;
   var id = null;
   var className = null;
-  var mode = TAGNAME;
+  var mode = TAG_NAME;
   var buffer = '';
 
   for (var i = 0; i <= query.length; i++) {
@@ -25,7 +25,7 @@ var parseQuery = function (query) {
     var isEnd = !char;
 
     if (isHash || isDot || isEnd) {
-      if (mode === TAGNAME) {
+      if (mode === TAG_NAME) {
         if (i === 0) {
           tag = 'div';
         } else {
@@ -44,7 +44,7 @@ var parseQuery = function (query) {
       if (isHash) {
         mode = ID;
       } else if (isDot) {
-        mode = CLASSNAME;
+        mode = CLASS_NAME;
       }
 
       buffer = '';
