@@ -210,7 +210,7 @@ mount(document.body, hello, document.body.firstChild);
       <pre><code class="lang-js">unmount(document.body, hello);
       </code></pre>
       <h3 id="set-children">Set children</h3>
-      <p>RE:DOM uses <a href="https://github.com/redom/redom/blob/master/src/setchildren.js"><code>setChildren(parent, children)</code></a> under the hood for <a href="#lists">lists</a>. When you call <code>setChildren</code>, RE:DOM will add/reorder/remove elements/components automatically by reference:</p>
+      <p>RE:DOM uses <a href="https://github.com/redom/redom/blob/master/src/setchildren.js"><code>setChildren(parent, ...children)</code></a> under the hood for <a href="#lists">lists</a>. When you call <code>setChildren</code>, RE:DOM will add/reorder/remove elements/components automatically by reference:</p>
       <pre><code class="lang-js">import { el, setChildren } from &#39;redom&#39;;
 
 const a = el(&#39;a&#39;);
@@ -499,6 +499,41 @@ mount(document.body, table);
       <p>or the other way around:</p>
       <pre><code class="lang-js">this.list = list(&#39;tr&#39;, Td);
 this.el = this.list.el;
+      </code></pre>
+      <h2 id="listpool">ListPool</h2>
+      <p>Sometimes you need more flexible lists. Luckily there&#39;s <code>ListPool(View, key, initData)</code></p>
+      <pre><code class="lang-js">import { el, listPool, setChildren, mount } from &#39;redom&#39;;
+
+class Item {
+  constructor (name) {
+    this.el = el(&#39;li&#39;, name);
+    this.update(name);
+  }
+  update (name) {
+    this.el.textContent = name;
+  }
+}
+
+class GroceryList {
+  constructor () {
+    this.el = el(&#39;ul&#39;,
+      this.milk = new Item(&#39;Milk&#39;)
+    );
+    this.others = listPool(Item)
+  }
+  update (items) {
+    this.others.update(items);
+    setChildren(this.el, this.milk, this.others.views);
+  }
+}
+
+const groceryList = new GroceryList();
+
+mount(document.body, groceryList);
+
+setTimeout(() =&gt; {
+  groceryList.update([&#39;Bread&#39;, &#39;Butter&#39;, &#39;Ham&#39;]);
+}, 1000);
       </code></pre>
       <h2 id="place">Place</h2>
       <p>Sometimes you might need to create/destroy a component while reserving it&#39;s place. That&#39;s when <a href="https://github.com/redom/redom/blob/master/src/place.js"><code>place(View, initData)</code></a> come in handy!</p>
