@@ -230,6 +230,7 @@ module.exports = function (redom) {
       var h1 = el.extend('h1');
       var a = h1('a');
       var b = h1('b');
+      var c = text('c');
       setChildren(document.body, [
         a,
         b
@@ -238,8 +239,8 @@ module.exports = function (redom) {
       setChildren(document.body, a);
       t.equals(document.body.innerHTML, '<h1>a</h1>');
 
-      setChildren(document.body, [[a]], [b]);
-      t.equals(document.body.innerHTML, '<h1>a</h1><h1>b</h1>');
+      setChildren(document.body, [[a]], [b, [c]]);
+      t.equals(document.body.innerHTML, '<h1>a</h1><h1>b</h1>c');
     });
     t.test('throw error when no arguments', function (t) {
       t.plan(1);
