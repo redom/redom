@@ -1,6 +1,6 @@
 import { mount } from './mount';
 import { unmount } from './unmount';
-import { getEl } from './util';
+import { getEl, isNode } from './util';
 
 export const setChildren = (parent, ...children) => {
   const parentEl = getEl(parent);
@@ -25,11 +25,6 @@ function traverse (parent, children, _current) {
       continue;
     }
 
-    if (child.length != null) {
-      current = traverse(parent, child, current);
-      continue;
-    }
-
     let childEl = getEl(child);
 
     if (childEl === current) {
@@ -37,7 +32,13 @@ function traverse (parent, children, _current) {
       continue;
     }
 
-    mount(parent, child, current);
+    if (isNode(childEl)) {
+      mount(parent, child, current);
+    }
+
+    if (child.length != null) {
+      current = traverse(parent, child, current);
+    }
   }
 
   return current;
