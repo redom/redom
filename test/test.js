@@ -15,7 +15,7 @@ document.createElement = function (tagName) {
 };
 
 module.exports = function (redom) {
-  var { el, html, list, listPool, place, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
+  var { el, html, list, listPool, place, router, svg, mount, unmount, setChildren, setAttr, setStyle, text } = redom;
 
   test('exports utils', function (t) {
     t.plan(2);
