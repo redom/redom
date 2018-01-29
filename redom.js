@@ -394,11 +394,6 @@ function traverse (parent, children, _current) {
       continue;
     }
 
-    if (child.length != null) {
-      current = traverse(parent, child, current);
-      continue;
-    }
-
     var childEl = getEl(child);
 
     if (childEl === current) {
@@ -406,7 +401,13 @@ function traverse (parent, children, _current) {
       continue;
     }
 
-    mount(parent, child, current);
+    if (isNode(childEl)) {
+      mount(parent, child, current);
+    }
+
+    if (child.length != null) {
+      current = traverse(parent, child, current);
+    }
   }
 
   return current;
