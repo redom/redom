@@ -226,7 +226,7 @@ module.exports = function (redom) {
       });
     });
     t.test('setChildren', function (t) {
-      t.plan(3);
+      t.plan(4);
       var h1 = el.extend('h1');
       var a = h1('a');
       var b = h1('b');
@@ -241,6 +241,9 @@ module.exports = function (redom) {
 
       setChildren(document.body, [[a]], [b, [c]]);
       t.equals(document.body.innerHTML, '<h1>a</h1><h1>b</h1>c');
+
+      setChildren(document.body, el('select', el('option', { value: 1 }), el('option', { value: 2 })));
+      t.equals(document.body.innerHTML, '<select><option value="1"></option><option value="2"></option></select>');
     });
     t.test('throw error when no arguments', function (t) {
       t.plan(1);
