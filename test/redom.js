@@ -401,6 +401,7 @@ function traverse (parent, children, _current) {
 
     if (isNode(childEl)) {
       mount(parent, child, current);
+      continue;
     }
 
     if (child.length != null) {
