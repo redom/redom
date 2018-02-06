@@ -241,7 +241,7 @@ pre > code {
 
 #hovermenu, #hovermenuclose {
   position: fixed;
-  bottom: 4rem;
+  top: 4rem;
   right: 2rem;
   font-weight: 500;
   text-transform: uppercase;
@@ -261,10 +261,6 @@ pre > code {
 
 #hovermenu path, #hovermenuclose path {
   fill: #fff;
-}
-
-#hovermenuclose {
-  pointer-events: none;
 }
 
 #hovermenu:hover, #hovermenuclose:hover {
