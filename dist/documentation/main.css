@@ -143,7 +143,7 @@ pre > code {
   top: 0;
   left: 0;
 
-  font-size: .875rem;
+  font-size: 1rem;
 
   width: 14rem;
   height: 100%;
@@ -152,7 +152,7 @@ pre > code {
 }
 
 #menu p {
-  font-size: .875rem;
+  font-size: 1rem;
   line-height: 1.25;
   max-width: 35rem;
   margin: 1.5em 0;
