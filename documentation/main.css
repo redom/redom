@@ -235,8 +235,8 @@ pre > code {
 
 #logo {
   display: block;
-  width: 50%;
-  margin: 2rem auto;
+  height: 4rem;
+  margin: 1.5rem 0;
 }
 
 #hovermenu, #hovermenuclose {
