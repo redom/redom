@@ -241,7 +241,7 @@ pre > code {
 
 #hovermenu, #hovermenuclose {
   position: fixed;
-  top: 4rem;
+  top: 5.5rem;
   right: 2rem;
   font-weight: 500;
   text-transform: uppercase;
