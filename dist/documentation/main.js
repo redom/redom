@@ -151,7 +151,7 @@ function addItem (menu, child) {
   } else {
     item.className = 'menu-item';
   }
-  item.style.paddingLeft = indentation + 'rem';
+  item.style.paddingLeft = indentation * 0.625 + 'rem';
 
   link.textContent = child.textContent;
 
