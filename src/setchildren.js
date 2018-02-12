@@ -1,13 +1,22 @@
-import { mount, unmount } from './mount';
-import { getEl } from './util';
+import { mount } from './mount';
+import { unmount } from './unmount';
+import { getEl, isNode } from './util';
 
-export function setChildren (parent, children) {
-  if (children.length === undefined) {
-    return setChildren(parent, [children]);
-  }
-
+export const setChildren = (parent, ...children) => {
   const parentEl = getEl(parent);
-  let traverse = parentEl.firstChild;
+  let current = traverse(parent, children, parentEl.firstChild);
+
+  while (current) {
+    const next = current.nextSibling;
+
+    unmount(parent, current);
+
+    current = next;
+  }
+};
+
+function traverse (parent, children, _current) {
+  let current = _current;
 
   for (let i = 0; i < children.length; i++) {
     const child = children[i];
@@ -18,19 +27,20 @@ export function setChildren (parent, children) {
 
     let childEl = getEl(child);
 
-    if (childEl === traverse) {
-      traverse = traverse.nextSibling;
+    if (childEl === current) {
+      current = current.nextSibling;
       continue;
     }
 
-    mount(parent, child, traverse);
+    if (isNode(childEl)) {
+      mount(parent, child, current);
+      continue;
+    }
+
+    if (child.length != null) {
+      current = traverse(parent, child, current);
+    }
   }
 
-  while (traverse) {
-    const next = traverse.nextSibling;
-
-    unmount(parent, traverse);
-
-    traverse = next;
-  }
+  return current;
 }

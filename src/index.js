@@ -1,9 +1,12 @@
-export { html, el } from './html';
+export { el, h, html } from './html';
 export { list, List } from './list';
-export { mount, unmount } from './mount';
+export { listPool, ListPool } from './listpool';
+export { mount } from './mount';
+export { unmount } from './unmount';
+export { place, Place } from './place';
 export { router, Router } from './router';
 export { setAttr } from './setattr';
 export { setStyle } from './setstyle';
 export { setChildren } from './setchildren';
-export { svg } from './svg';
+export { s, svg } from './svg';
 export { text } from './text';

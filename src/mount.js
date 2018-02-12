@@ -1,8 +1,10 @@
 import { getEl } from './util';
+import { doUnmount } from './unmount';
 
 const hookNames = ['onmount', 'onunmount'];
+const shadowRootAvailable = 'ShadowRoot' in window;
 
-export function mount (parent, child, before) {
+export const mount = (parent, child, before) => {
   const parentEl = getEl(parent);
   let childEl = getEl(child);
 
@@ -22,7 +24,7 @@ export function mount (parent, child, before) {
     doUnmount(child, childEl, oldParent);
   }
 
-  if (before) {
+  if (before != null) {
     parentEl.insertBefore(childEl, getEl(before));
   } else {
     parentEl.appendChild(childEl);
@@ -31,25 +33,9 @@ export function mount (parent, child, before) {
   doMount(child, childEl, parentEl, oldParent);
 
   return child;
-}
+};
 
-export function unmount (parent, child) {
-  const parentEl = parent.el || parent;
-  const childEl = child.el || child;
-
-  if (child === childEl && childEl.__redom_view) {
-    // try to look up the view if not provided
-    child = childEl.__redom_view;
-  }
-
-  doUnmount(child, childEl, parentEl);
-
-  parentEl.removeChild(childEl);
-
-  return child;
-}
-
-function doMount (child, childEl, parentEl, oldParent) {
+const doMount = (child, childEl, parentEl, oldParent) => {
   const hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
   const remount = (parentEl === oldParent);
   let hooksFound = false;
@@ -66,6 +52,7 @@ function doMount (child, childEl, parentEl, oldParent) {
   }
 
   if (!hooksFound) {
+    childEl.__redom_mounted = true;
     return;
   }
 
@@ -89,50 +76,16 @@ function doMount (child, childEl, parentEl, oldParent) {
       parentHooks[hook] = (parentHooks[hook] || 0) + hooks[hook];
     }
 
-    if (!triggered && (traverse === document || (parent && parent.__redom_mounted))) {
+    if (!triggered && (traverse === document || (shadowRootAvailable && (traverse instanceof window.ShadowRoot)) || (parent && parent.__redom_mounted))) {
       trigger(traverse, remount ? 'onremount' : 'onmount');
       triggered = true;
     }
 
     traverse = parent;
   }
-}
+};
 
-function doUnmount (child, childEl, parentEl) {
-  const hooks = childEl.__redom_lifecycle;
-
-  if (!hooks) {
-    return;
-  }
-
-  let traverse = parentEl;
-
-  if (childEl.__redom_mounted) {
-    trigger(childEl, 'onunmount');
-  }
-
-  while (traverse) {
-    const parentHooks = traverse.__redom_lifecycle;
-    let hooksFound = false;
-
-    for (const hook in hooks) {
-      if (parentHooks[hook]) {
-        parentHooks[hook] -= hooks[hook];
-      }
-      if (parentHooks[hook]) {
-        hooksFound = true;
-      }
-    }
-
-    if (!hooksFound) {
-      traverse.__redom_lifecycle = null;
-    }
-
-    traverse = traverse.parentNode;
-  }
-}
-
-function trigger (el, eventName) {
+export const trigger = (el, eventName) => {
   if (eventName === 'onmount') {
     el.__redom_mounted = true;
   } else if (eventName === 'onunmount') {
@@ -167,4 +120,4 @@ function trigger (el, eventName) {
       traverse = next;
     }
   }
-}
+};

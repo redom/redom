@@ -1,9 +1,10 @@
 # RE:DOM documentation
+<p class="violator solid"><a href="https://redom.js.org/">Website</a></p><p class="violator"><a href="https://github.com/redom/redom">GitHub</a></p>
 
 ## Introduction
-RE:DOM is a tiny DOM library by [Juha Lindstedt](https://pakastin.fi) and [contributors](https://github.com/pakastin/redom/graphs/contributors), which adds some useful helpers to create DOM elements and keeping them in sync with the data.
+RE:DOM is a tiny (2 KB) DOM library by [Juha Lindstedt](https://pakastin.fi) and [contributors](https://github.com/redom/redom/graphs/contributors), which adds some useful helpers to create DOM elements and keeping them in sync with the data.
 
-Because RE:DOM is so close to the metal and __doesn't use virtual dom__, it's actually __faster__ and uses __less memory__ than almost all virtual dom based libraries, including React.
+Because RE:DOM is so close to the metal and __doesn't use virtual dom__, it's actually __faster__ and uses __less memory__ than almost all virtual dom based libraries, including React ([benchmark](http://www.stefankrause.net/js-frameworks-benchmark7/table.html)).
 
 It's also easy to create __reusable components__ with RE:DOM.
 
@@ -13,28 +14,49 @@ Another great benefit is, that you can use just __pure JavaScript__, so no compl
 Only if you use `el.extend`, `svg.extend` or `list.extend`, you'll need at least IE9. All other features should work even in IE6. So for the most parts basically almost every browser out there is supported.
 
 ## Installing
+There's many ways to use RE:DOM.
+
+### npm
 You can install RE:DOM from npm by calling:
 ```
 npm i redom
 ```
 
-RE:DOM also supports [UMD](https://github.com/umdjs/umd):
+### UMD
+RE:DOM supports [UMD](https://github.com/umdjs/umd):
 ```html
 <script src="https://redom.js.org/redom.min.js"></script>
+<script>
+  const { el, mount } = redom;
+  ...
+</script>
 ```
+
+### ES2015
+It's also possible to use the new [ES2015 import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import):
+```js
+import { el, mount } from 'https://redom.js.org/redom.es.min.js';
+```
+
+### Download
+Here's the download links:
+- https://redom.js.org/redom.js (UMD, development)
+- https://redom.js.org/redom.min.js (UMD, production)
+- https://redom.js.org/redom.es.js (ES2015, development)
+- https://redom.js.org/redom.es.min.js (ES2015, production)
+
 ### Project generator
-You can also use the project generator, which will also install a file watcher and bundler. You can find it [here](https://github.com/pakastin/redom-cli).
+You can also use the project generator, which will also install a file watcher and bundler. You can find it [here](https://github.com/redom/redom-cli).
 
 ### Server-side use
-RE:DOM also works on server side, by using [NO:DOM](https://github.com/pakastin/nodom).
+RE:DOM also works on server side, by using [NO:DOM](https://github.com/redom/nodom).
 
 ### RE:DOM dev tools for Chrome
-You can install [RE:DOM dev tools for Chrome](https://github.com/pakastin/redom-devtools)
+You can install [RE:DOM dev tools for Chrome](https://github.com/redom/redom-devtools)
 
-![RE:DOM dev tools](screenshot.png)
 ## Elements
 
-`el` ([alias](#alias): `html`) is a helper for `document.createElement` with couple of differences.
+`el` (actually [alias](#alias) for [`html`](https://github.com/redom/redom/blob/master/src/html.js)) is a helper for `document.createElement` with couple of differences.
 
 The basic idea is to simply create elements with `el` and mount them with `mount`, almost like you would do with plain JavaScript:
 ```js
@@ -51,7 +73,7 @@ mount(document.body, hello);
 ```
 
 ### Text reference
-String and Number arguments (after the query) generate text nodes. You can also use the `text` helper, which will return a reference to the text node:
+String and Number arguments (after the query) generate text nodes. You can also use the [`text`](https://github.com/redom/redom/blob/master/src/text.js) helper, which will return a reference to the text node:
 ```js
 import { text, mount } from 'redom';
 
@@ -163,6 +185,7 @@ class B {
     this.el = el('b');
   }
 }
+
 el('a',
   new B()
 )
@@ -188,7 +211,7 @@ html('div')
 ```
 
 ### SVG
-`el` and `html` only create HTML elements. If you want to create a SVG element, you must use `svg`:
+`el` and `html` only create HTML elements. If you want to create a SVG element, you must use [`svg(query)`](https://github.com/redom/redom/blob/master/src/svg.js):
 ```js
 import { svg, mount } from 'redom';
 
@@ -210,9 +233,9 @@ mount(document.body, drawing);
 Please use `mount`/`unmount`/`setChildren` every time you need to mount/unmount elements inside a RE:DOM app. These functions will trigger lifecycle events, add references to components etc.
 
 ### Mount
-You can mount elements/components with `mount(parent, child, [before])`. If you define the third parameter, it works like `insertBefore` and otherwise it's like `appendChild`.
+You can mount elements/components with [`mount(parent, child, [before])`](https://github.com/redom/redom/blob/master/src/mount.js). If you define the third parameter, it works like `insertBefore` and otherwise it's like `appendChild`.
 
-Mount will trigger the `mount` [lifecycle event](#component-lifecycle) the first time you mount a child. If you mount the same child again to the same parent, `remount` gets called. If you mount it to another place, `onunmount` and `onmount` get called. Read more about lifecycle events [here](#component-lifecycle).
+Mount will trigger the `onmount` [lifecycle event](#component-lifecycle) the first time you mount a child. If you mount the same child again to the same parent, `onremount` gets called. If you mount it to another place, `onunmount` and `onmount` get called. Read more about lifecycle events [here](#component-lifecycle).
 
 ```js
 import { el, mount } from 'redom';
@@ -227,14 +250,14 @@ mount(document.body, hello, document.body.firstChild);
 ```
 
 ### Unmount
-If you need to remove elements/components, use `unmount(parent, child)`. That will trigger the `unmount` [lifecycle event](#component-lifecycle):
+If you need to remove elements/components, use [`unmount(parent, child)`](https://github.com/redom/redom/blob/master/src/unmount.js). That will trigger the `onunmount` [lifecycle event](#component-lifecycle):
 
 ```js
 unmount(document.body, hello);
 ```
 
 ### Set children
-RE:DOM uses `setChildren(parent, children)` under the hood for [lists](#lists). When you call `setChildren`, RE:DOM will add/reorder/remove elements/components automatically by reference:
+RE:DOM uses [`setChildren(parent, ...children)`](https://github.com/redom/redom/blob/master/src/setchildren.js) under the hood for [lists](#lists). When you call `setChildren`, RE:DOM will add/reorder/remove elements/components automatically by reference:
 ```js
 import { el, setChildren } from 'redom';
 
@@ -259,7 +282,7 @@ There's also a shortcut for replacing children with a single component / element
 ## Update elements
 
 ### setAttr
-A helper for updating attributes and properties. It will auto-detect attributes and properties:
+[`setAttr(el, attrs)`](https://github.com/redom/redom/blob/master/src/setattr.js) is a helper for updating attributes and properties. It will auto-detect attributes and properties:
 ```js
 import { el, setAttr } from 'redom';
 
@@ -271,7 +294,7 @@ setAttr(hello, {
 });
 ```
 ### setStyle
-There's also a shortcut for updating the `style` attribute:
+[`setStyle(el, styles)`](https://github.com/redom/redom/blob/master/src/setstyle.js) is a shortcut for updating the `style` attribute:
 ```js
 import { setStyle } from 'redom';
 
@@ -327,7 +350,7 @@ class Image {
 ```
 
 ### Component lifecycle
-RE:DOM v2.0.0 supports true lifecycle events. Three events are defined: `onmount`, `onremount` and `onunmount`.
+RE:DOM supports true lifecycle events. Three events are defined: `onmount`, `onremount` and `onunmount`.
 
 * First time you mount the element, `onmount` gets called.
 * If you mount the same element again to the same parent, `onremount` gets called.
@@ -389,7 +412,7 @@ unmounted Hello
 ```
 ## Lists
 When you have dynamic data, it's not that easy to manually keep the elements and the data in sync.
-That's when the `list` helper comes to rescue.
+That's when the [`list(parent, View, key, initData)`](https://github.com/redom/redom/blob/master/src/list.js) helper comes to rescue.
 
 To use `list`, just define a parent node and component:
 ```js
@@ -404,12 +427,40 @@ class Li {
   }
 }
 
-const list = list('ul', Li);
+const ul = list('ul', Li);
 
-mount(document.body, list);
+mount(document.body, ul);
 
-list.update([1, 2, 3]);
-list.update([2, 2, 4]);
+ul.update([1, 2, 3]);
+ul.update([2, 2, 4]);
+```
+
+### Item update parameters
+`Item.update` will be called with several parameters:
+
+1. data: data of this item
+2. index: index of this item in the items array
+3. items: data of all items
+4. context: contextual data forwarded from the second `List.update` parameter
+
+```js
+import { el, list, mount } from 'redom';
+
+class Li {
+  constructor () {
+    this.el = el('li');
+  }
+  update (data, index, items, context) {
+    this.el.style.color = context.colors.accent
+    this.el.textContent = '[' + index + '] = Item ' + data;
+  }
+}
+
+const ul = list('ul', Li);
+
+mount(document.body, ul);
+
+ul.update([1, 2, 3], { colors: { accent: 'red' } });
 ```
 
 ### List lifecycle
@@ -440,18 +491,18 @@ class Li {
   }
 }
 
-const list = list('ul', Li, '_id');
+const ul = list('ul', Li, '_id');
 
-mount(document.body, list);
+mount(document.body, ul);
 
-list.update([
+ul.update([
   { _id: 1, name: 'Item 1' },
   { _id: 2, name: 'Item 2' },
   { _id: 3, name: 'Item 3' }
 ]);
 
 setTimeout(() => {
-  list.update([
+  ul.update([
     { _id: 3, name: 'Item 3' },
     { _id: 2, name: 'Item 2' }
   ]);
@@ -535,15 +586,83 @@ this.list = list('tr', Td);
 this.el = this.list.el;
 ```
 
-## Router
-Router is a component router, which will create/update/remove components based on the current route.
+## ListPool
+Sometimes you need more flexible lists. Luckily there's `ListPool(View, key, initData)`
 
 ```js
-import { router } from 'redom';
+import { el, listPool, setChildren, mount } from 'redom';
+
+class Item {
+  constructor (name) {
+    this.el = el('li', name);
+    this.update(name);
+  }
+  update (name) {
+    this.el.textContent = name;
+  }
+}
+
+class GroceryList {
+  constructor () {
+    this.el = el('ul',
+      this.milk = new Item('Milk')
+    );
+    this.others = listPool(Item)
+  }
+  update (items) {
+    this.others.update(items);
+    setChildren(this.el, this.milk, this.others.views);
+  }
+}
+
+const groceryList = new GroceryList();
+
+mount(document.body, groceryList);
+
+setTimeout(() => {
+  groceryList.update(['Bread', 'Butter', 'Ham']);
+}, 1000);
+```
+## Place
+Sometimes you might need to create/destroy a component while reserving it's place. That's when [`place(View, initData)`](https://github.com/redom/redom/blob/master/src/place.js) come in handy!
+
+Think of it as a single view [router](#router) (without the need of a parent).
+
+```js
+import { place, mount } from 'redom';
+import { Top, Menu, Content } from './elements';
+
+const app = el('.app',
+  this.top = new Top(),
+  this.menu = place(Menu),
+  this.content = new Content()
+);
+
+// create Menu and send data update:
+this.menu.update(true, data);
+
+// just update Menu (was already created):
+this.menu.update(true, data2);
+
+// delete Menu:
+this.menu.update(false);
+
+```
+
+When you call `place.update(visible, data)`, the `Place` will automatically detect what to do with the component:
+- [construct](https://github.com/redom/redom/blob/master/src/place.js#L25)
+- [update](https://github.com/redom/redom/blob/master/src/place.js#L33)
+- [destroy](https://github.com/redom/redom/blob/master/src/place.js#L40)
+
+## Router
+[`router(parent, routes, initData)`](https://github.com/redom/redom/blob/master/src/router.js) is a component router, which will create/update/remove components based on the current route.
+
+```js
+import { router, mount } from 'redom';
 
 import { Home, About, Contact } from './sections/index'
 
-const app = router({
+const app = router('.app', {
   home: Home,
   about: About,
   contact: Contact
@@ -567,10 +686,10 @@ The example will:
 You can find more examples on [RE:DOM website](https://redom.js.org)!
 
 ## Support / feedback
-If you have any feedback about RE:DOM, you can join [#redom](https://koodiklinikka.slack.com/messages/redom/) at [koodiklinikka.slack.com](koodiklinikka.slack.com) (get invitation by entering your email at [koodiklinikka.fi](https://koodiklinikka.fi)) or raise an issue on [Github](https://github.com/pakastin/redom).
+You're welcome to join  [#redom](https://koodiklinikka.slack.com/messages/redom/) @ [koodiklinikka.slack.com](koodiklinikka.slack.com) (get invitation by entering your email at [koodiklinikka.fi](https://koodiklinikka.fi)). If you have any questions / feedback, you can also raise an issue on [GitHub](https://github.com/redom/redom).
 
 ## Developing
-RE:DOM is on [Github](https://github.com/pakastin/redom), source is [here](https://github.com/pakastin/redom/tree/master/src). To start developing:
+RE:DOM is on [GitHub](https://github.com/redom/redom), source is [here](https://github.com/redom/redom/tree/master/src). To start developing:
 - Clone repository
 - `npm i`
 - `npm run dev`
@@ -578,4 +697,6 @@ RE:DOM is on [Github](https://github.com/pakastin/redom), source is [here](https
 Pull requests are more than welcome!
 
 ## License
-[MIT](https://github.com/pakastin/redom/blob/master/LICENSE)
+[MIT](https://github.com/redom/redom/blob/master/LICENSE)
+
+<p class="violator solid"><a href="https://redom.js.org/">Website</a></p><p class="violator"><a href="https://github.com/redom/redom">GitHub</a></p>

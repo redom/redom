@@ -1,11 +1,15 @@
+/* global SVGElement */
+
 import { setStyle } from './setstyle';
 import { isFunction, getEl } from './util';
 
-export function setAttr (view, arg1, arg2) {
-  const el = getEl(view);
-  let isSVG = el instanceof window.SVGElement;
+const xlinkns = 'http://www.w3.org/1999/xlink';
 
-  if (arguments.length > 2) {
+export const setAttr = (view, arg1, arg2) => {
+  const el = getEl(view);
+  let isSVG = el instanceof SVGElement;
+
+  if (arg2 !== undefined) {
     if (arg1 === 'style') {
       setStyle(el, arg2);
     } else if (isSVG && isFunction(arg2)) {
@@ -13,11 +17,21 @@ export function setAttr (view, arg1, arg2) {
     } else if (!isSVG && (arg1 in el || isFunction(arg2))) {
       el[arg1] = arg2;
     } else {
+      if (isSVG && (arg1 === 'xlink')) {
+        setXlink(el, arg2);
+        return;
+      }
       el.setAttribute(arg1, arg2);
     }
   } else {
     for (const key in arg1) {
       setAttr(el, key, arg1[key]);
     }
+  }
+};
+
+function setXlink (el, obj) {
+  for (const key in obj) {
+    el.setAttributeNS(xlinkns, key, obj[key]);
   }
 }

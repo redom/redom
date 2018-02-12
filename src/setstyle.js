@@ -1,9 +1,9 @@
 import { isString, getEl } from './util';
 
-export function setStyle (view, arg1, arg2) {
+export const setStyle = (view, arg1, arg2) => {
   const el = getEl(view);
 
-  if (arguments.length > 2) {
+  if (arg2 !== undefined) {
     el.style[arg1] = arg2;
   } else if (isString(arg1)) {
     el.setAttribute('style', arg1);
@@ -12,4 +12,4 @@ export function setStyle (view, arg1, arg2) {
       setStyle(el, key, arg1[key]);
     }
   }
-}
+};

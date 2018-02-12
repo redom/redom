@@ -4,8 +4,18 @@ var test = require('tape');
 var SVGElement = window.SVGElement;
 var CustomEvent = window.CustomEvent;
 
+var createElement = document.createElement;
+
+document.createElement = function (tagName) {
+  var element = createElement.call(document, tagName);
+
+  element.style.webkitTestPrefixes = '';
+
+  return element;
+};
+
 module.exports = function (redom) {
-  var { el, html, list, router, svg, mount, unmount, setChildren, setAttr, setStyle } = redom;
+  var { el, html, list, listPool, place, router, svg, mount, unmount, setChildren, setAttr, setStyle, text } = redom;
 
   test('exports utils', function (t) {
     t.plan(2);
@@ -55,8 +65,8 @@ module.exports = function (redom) {
     });
     t.test('styles with object', function (t) {
       t.plan(1);
-      var hello = el('p', { style: { color: 'red' } });
-      t.equals(hello.outerHTML, '<p style="color: red;"></p>');
+      var hello = el('p', { style: { color: 'red', opacity: 0 } });
+      t.equals(hello.outerHTML, '<p style="color: red; opacity: 0;"></p>');
     });
     t.test('styles with String', function (t) {
       t.plan(1);
@@ -70,8 +80,8 @@ module.exports = function (redom) {
     });
     t.test('attributes', function (t) {
       t.plan(1);
-      var hello = el('p', { foo: 'bar' }, 'Hello world!');
-      t.equals(hello.outerHTML, '<p foo="bar">Hello world!</p>');
+      var hello = el('p', { foo: 'bar', zero: 0 }, 'Hello world!');
+      t.equals(hello.outerHTML, '<p foo="bar" zero="0">Hello world!</p>');
     });
     t.test('children', function (t) {
       t.plan(1);
@@ -165,6 +175,31 @@ module.exports = function (redom) {
         onunmount: true
       });
     });
+    t.test('lifecycle with shadow root', function (t) {
+      t.plan(2);
+      var div = document.createElement('div');
+      var root = div.createShadowRoot();
+      var eventsFired = {};
+
+      function Test () {
+        this.el = el('div');
+        this.onmount = function () {
+          eventsFired.onmount = true;
+        };
+        this.onunmount = function () {
+          eventsFired.onunmount = true;
+        };
+      }
+
+      var test = new Test();
+
+      mount(root, test);
+
+      t.equals(eventsFired.onmount, true);
+      unmount(root, test);
+
+      t.equals(eventsFired.onunmount, true);
+    });
     t.test('component lifecycle events inside node element', function (t) {
       t.plan(1);
       var eventsFired = {};
@@ -191,10 +226,11 @@ module.exports = function (redom) {
       });
     });
     t.test('setChildren', function (t) {
-      t.plan(2);
+      t.plan(4);
       var h1 = el.extend('h1');
       var a = h1('a');
       var b = h1('b');
+      var c = text('c');
       setChildren(document.body, [
         a,
         b
@@ -202,6 +238,12 @@ module.exports = function (redom) {
       t.equals(document.body.innerHTML, '<h1>a</h1><h1>b</h1>');
       setChildren(document.body, a);
       t.equals(document.body.innerHTML, '<h1>a</h1>');
+
+      setChildren(document.body, [[a]], [b, [c]]);
+      t.equals(document.body.innerHTML, '<h1>a</h1><h1>b</h1>c');
+
+      setChildren(document.body, el('select', el('option', { value: 1 }), el('option', { value: 2 })));
+      t.equals(document.body.innerHTML, '<select><option value="1"></option><option value="2"></option></select>');
     });
     t.test('throw error when no arguments', function (t) {
       t.plan(1);
@@ -211,6 +253,14 @@ module.exports = function (redom) {
       t.plan(1);
       t.equals(el, html);
     });
+  });
+
+  test('listPool', function (t) {
+    t.plan(1);
+
+    listPool(function () {}, null, null);
+
+    t.pass();
   });
 
   test('list', function (t) {
@@ -228,6 +278,21 @@ module.exports = function (redom) {
       items.update(); // empty list
       items.update([1, 2, 3]);
       t.equals(items.el.outerHTML, '<ul><li>1</li><li>2</li><li>3</li></ul>');
+    });
+    t.test('with context', function (t) {
+      t.plan(1);
+
+      function Item () {
+        this.el = el('li');
+        this.update = (data, id, items, context) => {
+          this.el.textContent = context + data;
+        };
+      }
+
+      var items = list(el('ul'), Item);
+      items.update();
+      items.update([1, 2, 3], 3);
+      t.equals(items.el.outerHTML, '<ul><li>4</li><li>5</li><li>6</li></ul>');
     });
     t.test('element parent', function (t) {
       t.plan(1);
@@ -417,6 +482,18 @@ module.exports = function (redom) {
       mount(document.body, table);
       t.equals(document.body.innerHTML, '<table><tr><td>1</td><td>2</td><td>3</td></tr></table>');
     });
+    t.test('unmounting unmounted', function (t) {
+      t.plan(2);
+      function Test () {
+        this.el = el('div');
+      }
+      var test = new Test();
+      unmount(document.body, test);
+      mount(document.body, test);
+      t.equals(document.body.contains(test.el), true);
+      unmount(document.body, test);
+      t.equals(document.body.contains(test.el), false);
+    });
   });
 
   test('SVG', function (t) {
@@ -457,13 +534,13 @@ module.exports = function (redom) {
       var circle = svg('circle', { onclick: e => t.pass() });
       circle.dispatchEvent(new CustomEvent('click', {}));
     });
-    t.test('CSS with String', function (t) {
+    t.test('Style string', function (t) {
       t.plan(1);
 
       var circle = svg('circle', { style: 'color: red;' });
       t.equals(circle.outerHTML, '<circle style="color: red;"></circle>');
     });
-    t.test('CSS with Object', function (t) {
+    t.test('Style object', function (t) {
       t.plan(1);
 
       var circle = svg('circle', { style: { color: 'red' } });
@@ -530,7 +607,13 @@ module.exports = function (redom) {
       t.plan(1);
       t.throws(svg, new Error('At least one argument required'));
     });
+    t.test('xlink', function (t) {
+      t.plan(1);
+      var use = svg('use', { xlink: { href: '#menu' } });
+      t.equals(use.outerHTML, '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use>');
+    });
   });
+
   test('router', function (t) {
     t.plan(2);
     function A () {
@@ -640,5 +723,78 @@ module.exports = function (redom) {
     unmount(document.body, tree);
 
     t.deepEqual(logs, expectedLog);
+  });
+
+  test('element place', function (t) {
+    t.plan(3);
+
+    var elementPlace = place(el('h1', 'Hello RE:DOM!'));
+
+    setChildren(document.body, []);
+
+    mount(document.body, elementPlace);
+    mount(document.body, el('p', 'After'));
+    t.equals(document.body.innerHTML, '<p>After</p>');
+
+    elementPlace.update(true);
+    t.equals(document.body.innerHTML, '<h1>Hello RE:DOM!</h1><p>After</p>');
+
+    elementPlace.update(false);
+    t.equals(document.body.innerHTML, '<p>After</p>');
+
+    elementPlace.update(true);
+  });
+
+  test('extended element place', function (t) {
+    t.plan(3);
+
+    var elementPlace = place(el.extend('h1', 'Hello RE:DOM!'));
+
+    setChildren(document.body, []);
+
+    mount(document.body, elementPlace);
+    mount(document.body, el('p', 'After'));
+    t.equals(document.body.innerHTML, '<p>After</p>');
+
+    elementPlace.update(true);
+    t.equals(document.body.innerHTML, '<h1>Hello RE:DOM!</h1><p>After</p>');
+
+    elementPlace.update(false);
+    t.equals(document.body.innerHTML, '<p>After</p>');
+
+    elementPlace.update(true);
+  });
+
+  test('component place', function (t) {
+    t.plan(3);
+
+    function B (initData) {
+      this.el = el('.b', 'place!');
+
+      t.equals(initData, 1);
+    }
+
+    B.prototype.update = function (data) {
+      this.el.textContent = data;
+    };
+
+    function A () {
+      this.el = el('.a',
+        this.place = place(B, 1)
+      );
+    }
+
+    var a = new A();
+
+    mount(document.body, a);
+
+    a.place.update(true, 2);
+
+    t.equals(a.el.innerHTML, '<div class="b">2</div>');
+
+    a.place.update(false, 2);
+
+    t.equals(a.el.innerHTML, '');
+    unmount(document.body, a);
   });
 };
