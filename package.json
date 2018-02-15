@@ -25,7 +25,8 @@
     "bench": "npm run lint && rollup -c -n redom -f cjs src/index.js -o bench/redom.js && browserify bench/index.js | tape-run",
     "nocoverage": "semistandard src/index.js && rollup -c -n redom -f cjs src/index.js -o test/redom.js && browserify test/index.js | tape-run",
     "justtest": "browserify -t coverify test/index.js | tape-run | coverify",
-    "build-doc": "node build-doc"
+    "build-doc": "node build-doc",
+    "postinstall": "opencollective postinstall"
   },
   "repository": {
     "type": "git",
@@ -57,5 +58,13 @@
     "tape": "^4.8.0",
     "tape-run": "^3.0.2",
     "uglify-js": "~3.3.9"
+  },
+  "dependencies": {
+    "opencollective": "^1.0.3"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/redom",
+    "logo": "https://opencollective.com/redom/logo.txt"
   }
 }
