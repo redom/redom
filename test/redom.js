@@ -297,7 +297,7 @@ function setXlink (el, obj) {
   }
 }
 
-var text = function (str) { return document.createTextNode(str); };
+var text = function (str) { return document.createTextNode((str != null) ? str : ''); };
 
 var parseArguments = function (element, args) {
   for (var i = 0; i < args.length; i++) {
