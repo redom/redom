@@ -275,6 +275,8 @@ var setAttr = function (view, arg1, arg2) {
       setStyle(el, arg2);
     } else if (isSVG && isFunction(arg2)) {
       el[arg1] = arg2;
+    } else if (arg1 === 'dataset') {
+      setData(el, arg2);
     } else if (!isSVG && (arg1 in el || isFunction(arg2))) {
       el[arg1] = arg2;
     } else {
@@ -297,7 +299,13 @@ function setXlink (el, obj) {
   }
 }
 
-var text = function (str) { return document.createTextNode(str); };
+function setData (el, obj) {
+  for (var key in obj) {
+    el.dataset[key] = obj[key];
+  }
+}
+
+var text = function (str) { return document.createTextNode((str != null) ? str : ''); };
 
 var parseArguments = function (element, args) {
   for (var i = 0; i < args.length; i++) {

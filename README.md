@@ -1,4 +1,4 @@
-[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Flet/semistandard)
+[![Backers on Open Collective](https://opencollective.com/redom/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/redom/sponsors/badge.svg)](#sponsors) [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Flet/semistandard)
 [![Build Status](https://img.shields.io/travis/redom/redom/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/redom/redom?branch=master)
 [![npm](https://img.shields.io/npm/v/redom.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/redom)
 [![npm](https://img.shields.io/npm/l/redom.svg?maxAge=60&style=flat-square)](https://github.com/redom/redom/blob/master/LICENSE)
@@ -6,7 +6,7 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=60)](https://twitter.com/pakastin)
 [![Twitter Follow](https://img.shields.io/twitter/follow/redomjs.svg?style=social&maxAge=60)](https://twitter.com/redomjs)
 
-[![RE:DOM](https://redom.js.org/img/title.png)](https://redom.js.org)
+[![RE:DOM](https://redom.js.org/img/title.png?5)](https://redom.js.org)
 
 # RE:DOM
 
@@ -42,8 +42,35 @@ npm i redom
 ## Performance
 - [RE:DOM is one of the fastest UI library out there.](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html)
 
-## Donate / sponsor
-You can donate or sponsor the project [here](https://opencollective.com/redom).
-
 ## Open source
 - License: [MIT](https://github.com/redom/redom/blob/master/LICENSE)
+
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="graphs/contributors"><img src="https://opencollective.com/redom/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/redom#backer)]
+
+<a href="https://opencollective.com/redom#backers" target="_blank"><img src="https://opencollective.com/redom/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/redom#sponsor)]
+
+<a href="https://opencollective.com/redom/sponsor/0/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/redom/sponsor/1/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/redom/sponsor/2/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/redom/sponsor/3/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/redom/sponsor/4/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/redom/sponsor/5/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/redom/sponsor/6/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/redom/sponsor/7/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/redom/sponsor/8/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/redom/sponsor/9/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/9/avatar.svg"></a>
+
+

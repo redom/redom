@@ -1,6 +1,6 @@
 {
   "name": "redom",
-  "version": "3.10.6",
+  "version": "3.11.1",
   "description": "Tiny turboboosted JavaScript library for creating user interfaces. 100 % test coverage!",
   "main": "dist/redom.js",
   "module": "dist/redom.es.js",
@@ -25,7 +25,8 @@
     "bench": "npm run lint && rollup -c -n redom -f cjs src/index.js -o bench/redom.js && browserify bench/index.js | tape-run",
     "nocoverage": "semistandard src/index.js && rollup -c -n redom -f cjs src/index.js -o test/redom.js && browserify test/index.js | tape-run",
     "justtest": "browserify -t coverify test/index.js | tape-run | coverify",
-    "build-doc": "node build-doc"
+    "build-doc": "node build-doc",
+    "postinstall": "opencollective postinstall"
   },
   "repository": {
     "type": "git",
@@ -44,18 +45,26 @@
   },
   "homepage": "https://redom.js.org",
   "devDependencies": {
-    "browserify": "^15.2.0",
+    "browserify": "^16.1.0",
     "butternut": "~0.4.6",
     "coverify": "^1.5.0",
     "gh-pages": "~1.1.0",
-    "google-closure-compiler-js": "~20180101.0.0",
-    "marked": "~0.3.12",
-    "rollup": "~0.55.1",
-    "rollup-plugin-buble": "~0.18.0",
-    "rollup-plugin-node-resolve": "~3.0.2",
+    "google-closure-compiler-js": "~20180204.0.0",
+    "marked": "~0.3.16",
+    "rollup": "~0.56.2",
+    "rollup-plugin-buble": "~0.19.2",
+    "rollup-plugin-node-resolve": "~3.0.3",
     "semistandard": "~12.0.0",
-    "tape": "^4.8.0",
-    "tape-run": "^3.0.2",
-    "uglify-js": "~3.3.9"
+    "tape": "^4.9.0",
+    "tape-run": "^3.0.4",
+    "uglify-js": "~3.3.12"
+  },
+  "dependencies": {
+    "opencollective": "^1.0.3"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/redom",
+    "logo": "https://opencollective.com/redom/logo.txt"
   }
 }

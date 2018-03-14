@@ -121,6 +121,13 @@ module.exports = function (redom) {
       );
       t.equals(ul.outerHTML, '<ul><li>1</li><li>2</li><li>3</li></ul>');
     });
+    t.test('dataset', function (t) {
+      t.plan(1);
+
+      var p = el('p', { dataset: { a: 'test' } });
+
+      t.equals(p.outerHTML, '<p data-a="test"></p>');
+    });
     t.test('middleware', function (t) {
       t.plan(1);
       var app = el('app',

@@ -48,16 +48,11 @@
       </p>
 
       <h3>Create HTML elements easily</h3>
-      <pre><code class="language-js">import { el, mount } from 'redom';
+      <pre><code class="language-js">import { el } from 'redom';
 
-// create HTML element
-const hello = el('h1', 'Hello world!');
-
-// mount to DOM
-mount(document.body, hello);</code></pre>
-      <pre><code class="language-markup">&lt;body&gt;
-  &lt;h1&gt;Hello world!&lt;/h1&gt;
-&lt;/body&gt;</code></pre>
+el('h1', 'Hello world!');
+</code></pre>
+      <pre><code class="language-markup">&lt;h1&gt;Hello world!&lt;/h1&gt;</code></pre>
 
       <h3>Add attributes</h3>
       <pre><code class="language-js">import { el, mount } from 'redom';
@@ -89,11 +84,11 @@ export class Login {
     this.el.onsubmit = e => {
       e.preventDefault();
 
-      const email = this.email.value;
-      const pass = this.pass.value;
-
-      console.log(email, pass);
-    };
+      console.log({
+        email: this.email.value,
+        pass: this.pass.value
+      });
+    }
   }
 }</code></pre>
 
