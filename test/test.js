@@ -34,6 +34,13 @@ module.exports = function (redom) {
       var hello = el('p', 'Hello world!');
       t.equals(hello.outerHTML, '<p>Hello world!</p>');
     });
+    t.test('with Component constractur', function (t) {
+      t.plan(1);
+      var hello = el(function () {
+        this.el = el('p');
+      }, 'Hello world!');
+      t.equals(hello.el.outerHTML, '<p>Hello world!</p>');
+    });
     t.test('one class', function (t) {
       t.plan(1);
       var hello = el('p.hello', 'Hello world!');

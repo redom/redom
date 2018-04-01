@@ -1,5 +1,5 @@
 import { createElement } from './create-element';
-import { parseArguments, isString, isNode } from './util';
+import { parseArguments, isString, isNode, isFunction, getEl } from './util';
 
 const htmlCache = {};
 
@@ -12,11 +12,13 @@ export const html = (query, ...args) => {
     element = memoizeHTML(query).cloneNode(false);
   } else if (isNode(query)) {
     element = query.cloneNode(false);
+  } else if (isFunction(query)) {
+    element = new query(...args);
   } else {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(element, args);
+  parseArguments(getEl(element), args);
 
   return element;
 };

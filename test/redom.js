@@ -353,11 +353,13 @@ var html = function (query) {
     element = memoizeHTML(query).cloneNode(false);
   } else if (isNode(query)) {
     element = query.cloneNode(false);
+  } else if (isFunction(query)) {
+    element = new (Function.prototype.bind.apply( query, [ null ].concat( args) ));
   } else {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(element, args);
+  parseArguments(getEl(element), args);
 
   return element;
 };
