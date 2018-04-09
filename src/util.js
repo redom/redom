@@ -32,6 +32,7 @@ export const getEl = parent => (parent.nodeType && parent) || (!parent.el && par
 export const isString = a => typeof a === 'string';
 export const isNumber = a => typeof a === 'number';
 export const isFunction = a => typeof a === 'function';
+export const isConstructor = a => a.prototype && a.prototype.constructor.name;
 
 export const isNode = a => a && a.nodeType;
 export const isList = a => a && a.__redom_list;

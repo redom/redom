@@ -1,4 +1,4 @@
-import { isFunction, getEl } from './util';
+import { isFunction, getEl, isConstructor } from './util';
 
 const propKey = key => item => item[key];
 
@@ -36,11 +36,11 @@ export class ListPool {
 
       if (keySet) {
         const id = key(item);
-        view = oldLookup[id] || new View(initData, item, i, data);
+        view = oldLookup[id] || (isConstructor(View) ? new View(initData, item, i, data) : View(initData, item, i, data));
         newLookup[id] = view;
         view.__redom_id = id;
       } else {
-        view = oldViews[i] || new View(initData, item, i, data);
+        view = oldViews[i] || (isConstructor(View) ? new View(initData, item, i, data) : View(initData, item, i, data));
       }
       view.update && view.update(item, i, data, context);
 
