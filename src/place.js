@@ -3,7 +3,7 @@
 import { text } from './text';
 import { mount } from './mount';
 import { unmount } from './unmount';
-import { getEl } from './util';
+import { getEl, isConstructor, isFunction } from './util';
 
 export const place = (View, initData) => {
   return new Place(View, initData);
@@ -36,7 +36,7 @@ export class Place {
           return;
         }
         const View = this._View;
-        const view = new View(this._initData);
+        const view = isConstructor(View) ? new View(this._initData) : (isFunction(View) ? View(this._initData) : View);
 
         this.el = getEl(view);
         this.view = view;
