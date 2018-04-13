@@ -1,4 +1,4 @@
-import { parseQuery } from './parse-query';
+import { parseQuery } from './parse-query.js';
 
 export const createElement = (query, ns) => {
   const { tag, id, className } = parseQuery(query);
