@@ -1,9 +1,9 @@
 /* global Node */
 
-import { text } from './text';
-import { mount } from './mount';
-import { unmount } from './unmount';
-import { getEl } from './util';
+import { text } from './text.js';
+import { mount } from './mount.js';
+import { unmount } from './unmount.js';
+import { getEl } from './util.js';
 
 export const place = (View, initData) => {
   return new Place(View, initData);

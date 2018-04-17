@@ -1,4 +1,4 @@
-import { isFunction, getEl } from './util';
+import { isFunction, getEl } from './util.js';
 
 const propKey = key => item => item[key];
 

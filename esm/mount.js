@@ -1,5 +1,5 @@
-import { getEl } from './util';
-import { doUnmount } from './unmount';
+import { getEl } from './util.js';
+import { doUnmount } from './unmount.js';
 
 const hookNames = ['onmount', 'onunmount'];
 const shadowRootAvailable = 'ShadowRoot' in window;
