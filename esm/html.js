@@ -1,5 +1,5 @@
-import { createElement } from './create-element';
-import { parseArguments, isString, isNode } from './util';
+import { createElement } from './create-element.js';
+import { parseArguments, isString, isNode } from './util.js';
 
 const htmlCache = {};
 

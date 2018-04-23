@@ -1,7 +1,7 @@
-import { html } from './html';
-import { mount } from './mount';
-import { setAttr } from './setattr';
-import { text } from './text';
+import { html } from './html.js';
+import { mount } from './mount.js';
+import { setAttr } from './setattr.js';
+import { text } from './text.js';
 
 export const parseArguments = (element, args) => {
   for (let i = 0; i < args.length; i++) {

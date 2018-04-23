@@ -1,6 +1,6 @@
 {
   "name": "redom",
-  "version": "3.11.1",
+  "version": "3.12.1",
   "description": "Tiny turboboosted JavaScript library for creating user interfaces. 100 % test coverage!",
   "main": "dist/redom.js",
   "module": "dist/redom.es.js",
@@ -8,8 +8,8 @@
   "scripts": {
     "dev": "node watch",
     "dist": "gh-pages -d dist",
-    "build-es": "rollup -c -n redom -f es -i src/index.js -o dist/redom.es.js",
-    "build-js": "rollup -c -n redom -f umd -i src/index.js -o dist/redom.js",
+    "build-es": "rollup -c -n redom -f es -i esm/index.js -o dist/redom.es.js",
+    "build-js": "rollup -c -n redom -f umd -i esm/index.js -o dist/redom.js",
     "build": "npm run build-es && npm run build-js",
     "compile-js": "google-closure-compiler-js dist/redom.js > dist/redom.min.js",
     "uglify": "npm run compile-js && npm run uglify-es",
@@ -19,11 +19,11 @@
     "postversion": "git push --tags",
     "prepublish": "npm run build && npm run uglify && npm run test",
     "postpublish": "npm run dist",
-    "fixlint": "semistandard 'src/**/*.js' 'test/test.js' --fix",
-    "lint": "semistandard 'src/**/*.js' 'test/test.js'",
-    "test": "npm run lint && rollup -c -n redom -f cjs src/index.js -o test/redom.js && browserify -t coverify test/index.js | tape-run | coverify",
-    "bench": "npm run lint && rollup -c -n redom -f cjs src/index.js -o bench/redom.js && browserify bench/index.js | tape-run",
-    "nocoverage": "semistandard src/index.js && rollup -c -n redom -f cjs src/index.js -o test/redom.js && browserify test/index.js | tape-run",
+    "fixlint": "semistandard 'esm/**/*.js' 'test/test.js' --fix",
+    "lint": "semistandard 'esm/**/*.js' 'test/test.js'",
+    "test": "npm run lint && rollup -c -n redom -f cjs esm/index.js -o test/redom.js && browserify -t coverify test/index.js | tape-run | coverify",
+    "bench": "npm run lint && rollup -c -n redom -f cjs esm/index.js -o bench/redom.js && browserify bench/index.js | tape-run",
+    "nocoverage": "semistandard esm/index.js && rollup -c -n redom -f cjs esm/index.js -o test/redom.js && browserify test/index.js | tape-run",
     "justtest": "browserify -t coverify test/index.js | tape-run | coverify",
     "build-doc": "node build-doc",
     "postinstall": "opencollective postinstall"
@@ -45,19 +45,19 @@
   },
   "homepage": "https://redom.js.org",
   "devDependencies": {
-    "browserify": "^16.1.0",
+    "browserify": "^16.2.0",
     "butternut": "~0.4.6",
     "coverify": "^1.5.0",
     "gh-pages": "~1.1.0",
-    "google-closure-compiler-js": "~20180204.0.0",
-    "marked": "~0.3.16",
-    "rollup": "~0.56.2",
+    "google-closure-compiler-js": "~20180402.0.0",
+    "marked": "~0.3.19",
+    "rollup": "~0.58.1",
     "rollup-plugin-buble": "~0.19.2",
-    "rollup-plugin-node-resolve": "~3.0.3",
-    "semistandard": "~12.0.0",
+    "rollup-plugin-node-resolve": "~3.3.0",
+    "semistandard": "~12.0.1",
     "tape": "^4.9.0",
-    "tape-run": "^3.0.4",
-    "uglify-js": "~3.3.12"
+    "tape-run": "^4.0.0",
+    "uglify-js": "~3.3.22"
   },
   "dependencies": {
     "opencollective": "^1.0.3"
