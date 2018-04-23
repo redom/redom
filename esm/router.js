@@ -1,5 +1,5 @@
-import { ensureEl } from './util.js';
-import { setChildren } from './setchildren.js';
+import { ensureEl, isConstructor, isFunction } from './util';
+import { setChildren } from './setchildren';
 
 export const router = (parent, Views, initData) => {
   return new Router(parent, Views, initData);
@@ -17,7 +17,7 @@ export class Router {
       const View = Views[route];
 
       this.route = route;
-      this.view = View && new View(this.initData, data);
+      this.view = isConstructor(View) ? new View(this.initData, data) : (isFunction(View) ? View(this.initData, data) : View);
 
       setChildren(this.el, [ this.view ]);
     }
