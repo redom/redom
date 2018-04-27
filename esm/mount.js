@@ -2,7 +2,7 @@ import { getEl } from './util.js';
 import { doUnmount } from './unmount.js';
 
 const hookNames = ['onmount', 'onunmount'];
-const shadowRootAvailable = 'ShadowRoot' in window;
+const shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
 
 export const mount = (parent, child, before) => {
   const parentEl = getEl(parent);
