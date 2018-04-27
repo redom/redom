@@ -124,7 +124,7 @@ var doUnmount = function (child, childEl, parentEl) {
 };
 
 var hookNames = ['onmount', 'onunmount'];
-var shadowRootAvailable = 'ShadowRoot' in window;
+var shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
 
 var mount = function (parent, child, before) {
   var parentEl = getEl(parent);
