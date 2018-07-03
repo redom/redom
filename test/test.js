@@ -232,6 +232,32 @@ module.exports = function (redom) {
         onunmount: true
       });
     });
+    t.test('lifecycle events on component when child unmounted using setChildren', function (t) {
+      t.plan(1);
+      var eventsFired = {
+        onmount: 0,
+        onunmount: 0
+      };
+      function Item () {
+        this.el = el('p');
+        this.onmount = function () {
+          eventsFired.onmount++;
+        };
+        this.onunmount = function () {
+          eventsFired.onunmount++;
+        };
+      }
+      var item = new Item();
+      var item2 = new Item();
+      mount(document.body, item);
+      setChildren(item.el, [ el('p') ]);
+      setChildren(item.el, [ item2 ]);
+      unmount(document.body, item);
+      t.deepEqual(eventsFired, {
+        onmount: 2,
+        onunmount: 2
+      });
+    });
     t.test('setChildren', function (t) {
       t.plan(4);
       var h1 = el.extend('h1');
@@ -803,5 +829,28 @@ module.exports = function (redom) {
 
     t.equals(a.el.innerHTML, '');
     unmount(document.body, a);
+  });
+
+  test('component moved below non-redom element', function (t) {
+    t.plan(3);
+    var div = document.createElement('div');
+    document.body.appendChild(div);
+    var targetDiv = document.createElement('div');
+    document.body.appendChild(targetDiv);
+
+    function Item() {
+      this.el = el('p');
+      this.onmount = function () {};
+    }
+
+    var item = new Item();
+    mount(div, item);
+    t.deepEquals(div.__redom_lifecycle, { onmount: 1 });
+    
+    targetDiv.appendChild(div);
+    t.strictEquals(targetDiv.__redom_lifecycle, undefined);
+
+    unmount(div, item);
+    t.strictEquals(targetDiv.__redom_lifecycle, null);
   });
 };
