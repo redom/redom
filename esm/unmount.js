@@ -35,18 +35,14 @@ export const doUnmount = (child, childEl, parentEl) => {
 
   while (traverse) {
     const parentHooks = traverse.__redom_lifecycle || {};
-    let hooksFound = false;
 
     for (const hook in hooks) {
       if (parentHooks[hook]) {
         parentHooks[hook] -= hooks[hook];
       }
-      if (parentHooks[hook]) {
-        hooksFound = true;
-      }
     }
 
-    if (!hooksFound) {
+    if (hooksAreEmpty(parentHooks)) {
       traverse.__redom_lifecycle = null;
     }
 

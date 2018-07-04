@@ -258,6 +258,36 @@ module.exports = function (redom) {
         onunmount: 2
       });
     });
+    t.test('lifecycle events on component when child with hooks unmounted using setChildren', function (t) {
+      t.plan(1);
+      var eventsFired = {
+        onmount: 0,
+        onunmount: 0
+      };
+      function MountHook () {
+        this.el = el('p');
+        this.onmount = function () {
+          eventsFired.onmount++;
+        };
+      }
+      function UnmountHook () {
+        this.el = el('p');
+        this.onunmount = function () {
+          eventsFired.onunmount++;
+        };
+      }
+      var mh = new MountHook();
+      var uh = new UnmountHook();
+      var uh2 = new UnmountHook();
+      mount(document.body, uh);
+      setChildren(uh.el, [ mh ]);
+      setChildren(uh.el, [ uh2 ]);
+      unmount(document.body, uh);
+      t.deepEqual(eventsFired, {
+        onmount: 1,
+        onunmount: 2
+      });
+    });
     t.test('setChildren', function (t) {
       t.plan(4);
       var h1 = el.extend('h1');
