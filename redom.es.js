@@ -91,7 +91,7 @@ var unmount = function (parent, child) {
 var doUnmount = function (child, childEl, parentEl) {
   var hooks = childEl.__redom_lifecycle;
 
-  if (!hooks) {
+  if (hooksAreEmpty(hooks)) {
     childEl.__redom_mounted = false;
     return;
   }
@@ -103,24 +103,24 @@ var doUnmount = function (child, childEl, parentEl) {
   }
 
   while (traverse) {
-    var parentHooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
-    var hooksFound = false;
+    var parentHooks = traverse.__redom_lifecycle || {};
 
     for (var hook in hooks) {
       if (parentHooks[hook]) {
         parentHooks[hook] -= hooks[hook];
       }
-      if (parentHooks[hook]) {
-        hooksFound = true;
-      }
     }
 
-    if (!hooksFound) {
+    if (hooksAreEmpty(parentHooks)) {
       traverse.__redom_lifecycle = null;
     }
 
     traverse = traverse.parentNode;
   }
+};
+
+var hooksAreEmpty = function (hooks) {
+  return !hooks || !Object.keys(hooks).filter(function (hook) { return hooks[hook]; }).length;
 };
 
 var hookNames = ['onmount', 'onunmount'];
