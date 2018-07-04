@@ -868,7 +868,7 @@ module.exports = function (redom) {
     var targetDiv = document.createElement('div');
     document.body.appendChild(targetDiv);
 
-    function Item() {
+    function Item () {
       this.el = el('p');
       this.onmount = function () {};
     }
@@ -876,7 +876,7 @@ module.exports = function (redom) {
     var item = new Item();
     mount(div, item);
     t.deepEquals(div.__redom_lifecycle, { onmount: 1 });
-    
+
     targetDiv.appendChild(div);
     t.strictEquals(targetDiv.__redom_lifecycle, undefined);
 
