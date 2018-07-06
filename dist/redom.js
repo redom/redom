@@ -126,7 +126,15 @@
   };
 
   var hooksAreEmpty = function (hooks) {
-    return !hooks || !Object.keys(hooks).filter(function (hook) { return hooks[hook]; }).length;
+    if (hooks == null) {
+      return true;
+    }
+    for (var key in hooks) {
+      if (hooks[key]) {
+        return false;
+      }
+    }
+    return true;
   };
 
   var hookNames = ['onmount', 'onunmount'];
