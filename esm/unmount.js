@@ -51,5 +51,13 @@ export const doUnmount = (child, childEl, parentEl) => {
 };
 
 const hooksAreEmpty = (hooks) => {
-  return !hooks || !Object.keys(hooks).filter(hook => hooks[hook]).length;
+  if (hooks == null) {
+    return true;
+  }
+  for (const key in hooks) {
+    if (hooks[key]) {
+      return false;
+    }
+  }
+  return true;
 };
