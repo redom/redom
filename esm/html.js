@@ -13,7 +13,8 @@ export const html = (query, ...args) => {
   } else if (isNode(query)) {
     element = query.cloneNode(false);
   } else if (isFunction(query)) {
-    element = new query(...args);
+    const Query = query;
+    element = new Query(...args);
   } else {
     throw new Error('At least one argument required');
   }
