@@ -1,5 +1,5 @@
-import { ensureEl } from './util';
-import { setChildren } from './setchildren';
+import { ensureEl } from './util.js';
+import { setChildren } from './setchildren.js';
 
 export const router = (parent, Views, initData) => {
   return new Router(parent, Views, initData);

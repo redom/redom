@@ -1,4 +1,4 @@
-import { isString, getEl } from './util';
+import { isString, getEl } from './util.js';
 
 export const setStyle = (view, arg1, arg2) => {
   const el = getEl(view);
