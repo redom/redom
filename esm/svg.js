@@ -1,5 +1,5 @@
 import { createElement } from './create-element.js';
-import { parseArguments, isString, isNode } from './util.js';
+import { parseArguments, isString, isNode, isFunction } from './util.js';
 
 const ns = 'http://www.w3.org/2000/svg';
 
