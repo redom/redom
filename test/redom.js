@@ -361,11 +361,14 @@ var html = function (query) {
     element = memoizeHTML(query).cloneNode(false);
   } else if (isNode(query)) {
     element = query.cloneNode(false);
+  } else if (isFunction(query)) {
+    var Query = query;
+    element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
   } else {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(element, args);
+  parseArguments(getEl(element), args);
 
   return element;
 };
@@ -634,11 +637,14 @@ var svg = function (query) {
     element = memoizeSVG(query).cloneNode(false);
   } else if (isNode(query)) {
     element = query.cloneNode(false);
+  } else if (isFunction(query)) {
+    var Query = query;
+    element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
   } else {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(element, args);
+  parseArguments(getEl(element), args);
 
   return element;
 };
