@@ -34,12 +34,17 @@ module.exports = function (redom) {
       var hello = el('p', 'Hello world!');
       t.equals(hello.outerHTML, '<p>Hello world!</p>');
     });
-    t.test('with Component constractur', function (t) {
-      t.plan(1);
+    t.test('with Component constructor', function (t) {
+      t.plan(2);
       var hello = el(function () {
         this.el = el('p');
       }, 'Hello world!');
       t.equals(hello.el.outerHTML, '<p>Hello world!</p>');
+
+      var hello2 = svg(function () {
+        this.el = svg('circle');
+      }, 'Hello world!');
+      t.equals(hello2.el.outerHTML, '<circle>Hello world!</circle>');
     });
     t.test('one class', function (t) {
       t.plan(1);
