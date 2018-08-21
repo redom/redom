@@ -18,13 +18,6 @@ fs.writeFileSync('dist/documentation/index.html',
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54216829-7"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config', 'UA-54216829-7');</script>
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-6944220562573081",
-        enable_page_level_ads: true
-      });
-    </script>
   </head>
   <body>
     <div id="doc">
