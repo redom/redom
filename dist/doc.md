@@ -13,18 +13,6 @@ Another great benefit is, that you can use just __pure JavaScript__, so no compl
 ### Browser support
 Only if you use `el.extend`, `svg.extend` or `list.extend`, you'll need at least IE9. All other features should work even in IE6. So for the most parts basically almost every browser out there is supported.
 
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<ins class="adsbygoogle"
-     style="display:block; text-align:center;
-     margin-top: 3rem;"
-     data-ad-layout="in-article"
-     data-ad-format="fluid"
-     data-ad-client="ca-pub-6944220562573081"
-     data-ad-slot="7066829160"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
 ## Installing
 There's many ways to use RE:DOM.
 
