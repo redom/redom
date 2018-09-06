@@ -50,9 +50,17 @@
       <h3>Create HTML elements easily</h3>
       <pre><code class="language-js">import { el } from 'redom';
 
-el('h1', 'Hello world!');
+el('h1', 'Hello RE:DOM!');
 </code></pre>
-      <pre><code class="language-markup">&lt;h1&gt;Hello world!&lt;/h1&gt;</code></pre>
+      <pre><code class="language-markup">&lt;h1&gt;Hello RE:DOM!&lt;/h1&gt;</code></pre>
+
+      <h3>You don't even need any bundlers!</h3>
+      <pre><code class="language-html">&lt;script type="module"&gt;
+  import { el } from 'https://redom.js.org/redom.es.min.js';
+
+  el('h1', 'Hello modules!');
+&lt;/script&gt;</code></pre>
+      <pre><code class="language-markup">&lt;h1&gt;Hello modules!&lt;/h1&gt;</code></pre>
 
       <h3>Add attributes</h3>
       <pre><code class="language-js">import { el, mount } from 'redom';
