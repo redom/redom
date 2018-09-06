@@ -3,7 +3,11 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 
 export default {
   plugins: [
-    buble(),
+    buble({
+      transforms: {
+        dangerousForOf: true
+      }
+    }),
     nodeResolve()
   ]
 };
