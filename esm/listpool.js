@@ -36,6 +36,7 @@ export class ListPool {
 
       if (keySet) {
         const id = key(item);
+
         view = oldLookup[id] || new View(initData, item, i, data);
         newLookup[id] = view;
         view.__redom_id = id;
@@ -44,7 +45,8 @@ export class ListPool {
       }
       view.update && view.update(item, i, data, context);
 
-      let el = getEl(view.el);
+      const el = getEl(view.el);
+
       el.__redom_view = view;
       newViews[i] = view;
     }
