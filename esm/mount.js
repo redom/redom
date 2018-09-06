@@ -1,7 +1,7 @@
 import { getEl } from './util.js';
 import { doUnmount } from './unmount.js';
 
-const hookNames = ['onmount', 'onunmount'];
+const hookNames = ['onmount', 'onremount', 'onunmount'];
 const shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
 
 export const mount = (parent, child, before) => {
@@ -40,11 +40,13 @@ const doMount = (child, childEl, parentEl, oldParent) => {
   const remount = (parentEl === oldParent);
   let hooksFound = false;
 
-  for (let i = 0; i < hookNames.length; i++) {
-    const hookName = hookNames[i];
-
-    if (!remount && (child !== childEl) && (hookName in child)) {
-      hooks[hookName] = (hooks[hookName] || 0) + 1;
+  for (const hookName of hookNames) {
+    if (!remount) { // if already mounted, skip this phase
+      if (child !== childEl) { // only Views can have lifecycle events
+        if (hookName in child) {
+          hooks[hookName] = (hooks[hookName] || 0) + 1;
+        }
+      }
     }
     if (hooks[hookName]) {
       hooksFound = true;
@@ -59,13 +61,9 @@ const doMount = (child, childEl, parentEl, oldParent) => {
   let traverse = parentEl;
   let triggered = false;
 
-  if (remount || (!triggered && (traverse && traverse.__redom_mounted))) {
+  if (remount || (traverse && traverse.__redom_mounted)) {
     trigger(childEl, remount ? 'onremount' : 'onmount');
     triggered = true;
-  }
-
-  if (remount) {
-    return;
   }
 
   while (traverse) {
@@ -76,17 +74,23 @@ const doMount = (child, childEl, parentEl, oldParent) => {
       parentHooks[hook] = (parentHooks[hook] || 0) + hooks[hook];
     }
 
-    if (!triggered && (traverse === document || (shadowRootAvailable && (traverse instanceof window.ShadowRoot)) || (parent && parent.__redom_mounted))) {
-      trigger(traverse, remount ? 'onremount' : 'onmount');
-      triggered = true;
+    if (triggered) {
+      break;
+    } else {
+      if (traverse === document ||
+        (shadowRootAvailable && (traverse instanceof window.ShadowRoot)) ||
+        (parent && parent.__redom_mounted)
+      ) {
+        trigger(traverse, remount ? 'onremount' : 'onmount');
+        triggered = true;
+      }
+      traverse = parent;
     }
-
-    traverse = parent;
   }
 };
 
 export const trigger = (el, eventName) => {
-  if (eventName === 'onmount') {
+  if (eventName === 'onmount' || eventName === 'onremount') {
     el.__redom_mounted = true;
   } else if (eventName === 'onunmount') {
     el.__redom_mounted = false;
