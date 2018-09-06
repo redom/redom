@@ -18,9 +18,7 @@ export const setChildren = (parent, ...children) => {
 function traverse (parent, children, _current) {
   let current = _current;
 
-  for (let i = 0; i < children.length; i++) {
-    const child = children[i];
-
+  for (const child of children) {
     if (!child) {
       continue;
     }
