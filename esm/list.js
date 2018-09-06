@@ -23,11 +23,13 @@ export class List {
     const oldLookup = keySet && this.lookup;
 
     this.pool.update(data, context);
+
     const { views, lookup } = this.pool;
 
     if (keySet) {
-      for (let i = 0; i < oldViews.length; i++) {
-        const id = oldViews[i].__redom_id;
+      for (const oldView of oldViews) {
+        const id = oldView.__redom_id;
+
         if (!(id in lookup)) {
           unmount(this, oldLookup[id]);
         }
