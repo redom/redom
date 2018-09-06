@@ -5,52 +5,55 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var HASH = '#'.charCodeAt(0);
 var DOT = '.'.charCodeAt(0);
 
-var parseQuery = function (query) {
-  var tag;
-  var id;
-  var className;
+var TAG_NAME = 0;
+var ID = 1;
+var CLASS_NAME = 2;
 
-  var mode = 0;
-  var start = 0;
+var isHash = function (char) { return char === HASH; };
+var isDot = function (char) { return char === DOT; };
+var isEnd = function (char) { return !char; };
+
+var parseQuery = function (query) {
+  var tag = null;
+  var id = null;
+  var className = null;
+  var mode = TAG_NAME;
+  var offset = 0;
 
   for (var i = 0; i <= query.length; i++) {
     var char = query.charCodeAt(i);
 
-    if (char === HASH || char === DOT || !char) {
-      if (mode === 0) {
+    if (isHash(char) || isDot(char) || isEnd(char)) {
+      if (mode === TAG_NAME) {
         if (i === 0) {
           tag = 'div';
-        } else if (!char) {
-          tag = query;
         } else {
-          tag = query.substring(start, i);
+          tag = query.slice(offset, i);
         }
+      } else if (mode === ID) {
+        id = query.slice(offset, i);
       } else {
-        var slice = query.substring(start, i);
-
-        if (mode === 1) {
-          id = slice;
-        } else if (className) {
-          className += ' ' + slice;
+        if (className) {
+          className += ' ' + query.slice(offset, i);
         } else {
-          className = slice;
+          className = query.slice(offset, i);
         }
       }
 
-      start = i + 1;
-
-      if (char === HASH) {
-        mode = 1;
-      } else {
-        mode = 2;
+      if (isHash(char)) {
+        mode = ID;
+      } else if (isDot(char)) {
+        mode = CLASS_NAME;
       }
+
+      offset = i + 1;
     }
   }
 
   return { tag: tag, id: id, className: className };
 };
 
-function createElement (query, ns) {
+var createElement = function (query, ns) {
   var ref = parseQuery(query);
   var tag = ref.tag;
   var id = ref.id;
@@ -70,11 +73,73 @@ function createElement (query, ns) {
   }
 
   return element;
-}
+};
 
-var hookNames = ['onmount', 'onunmount'];
+var unmount = function (parent, child) {
+  var parentEl = getEl(parent);
+  var childEl = getEl(child);
 
-function mount (parent, child, before) {
+  if (child === childEl && childEl.__redom_view) {
+    // try to look up the view if not provided
+    child = childEl.__redom_view;
+  }
+
+  if (childEl.parentNode) {
+    doUnmount(child, childEl, parentEl);
+
+    parentEl.removeChild(childEl);
+  }
+
+  return child;
+};
+
+var doUnmount = function (child, childEl, parentEl) {
+  var hooks = childEl.__redom_lifecycle;
+
+  if (hooksAreEmpty(hooks)) {
+    childEl.__redom_mounted = false;
+    return;
+  }
+
+  var traverse = parentEl;
+
+  if (childEl.__redom_mounted) {
+    trigger(childEl, 'onunmount');
+  }
+
+  while (traverse) {
+    var parentHooks = traverse.__redom_lifecycle || {};
+
+    for (var hook in hooks) {
+      if (parentHooks[hook]) {
+        parentHooks[hook] -= hooks[hook];
+      }
+    }
+
+    if (hooksAreEmpty(parentHooks)) {
+      traverse.__redom_lifecycle = null;
+    }
+
+    traverse = traverse.parentNode;
+  }
+};
+
+var hooksAreEmpty = function (hooks) {
+  if (hooks == null) {
+    return true;
+  }
+  for (var key in hooks) {
+    if (hooks[key]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+var hookNames = ['onmount', 'onremount', 'onunmount'];
+var shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
+
+var mount = function (parent, child, before) {
   var parentEl = getEl(parent);
   var childEl = getEl(child);
 
@@ -103,34 +168,22 @@ function mount (parent, child, before) {
   doMount(child, childEl, parentEl, oldParent);
 
   return child;
-}
+};
 
-function unmount (parent, child) {
-  var parentEl = getEl(parent);
-  var childEl = getEl(child);
-
-  if (child === childEl && childEl.__redom_view) {
-    // try to look up the view if not provided
-    child = childEl.__redom_view;
-  }
-
-  doUnmount(child, childEl, parentEl);
-
-  parentEl.removeChild(childEl);
-
-  return child;
-}
-
-function doMount (child, childEl, parentEl, oldParent) {
+var doMount = function (child, childEl, parentEl, oldParent) {
   var hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
   var remount = (parentEl === oldParent);
   var hooksFound = false;
 
-  for (var i = 0; i < hookNames.length; i++) {
-    var hookName = hookNames[i];
+  for (var i = 0, list = hookNames; i < list.length; i += 1) {
+    var hookName = list[i];
 
-    if (!remount && (child !== childEl) && (hookName in child)) {
-      hooks[hookName] = (hooks[hookName] || 0) + 1;
+    if (!remount) { // if already mounted, skip this phase
+      if (child !== childEl) { // only Views can have lifecycle events
+        if (hookName in child) {
+          hooks[hookName] = (hooks[hookName] || 0) + 1;
+        }
+      }
     }
     if (hooks[hookName]) {
       hooksFound = true;
@@ -145,13 +198,9 @@ function doMount (child, childEl, parentEl, oldParent) {
   var traverse = parentEl;
   var triggered = false;
 
-  if (remount || (!triggered && (traverse && traverse.__redom_mounted))) {
+  if (remount || (traverse && traverse.__redom_mounted)) {
     trigger(childEl, remount ? 'onremount' : 'onmount');
     triggered = true;
-  }
-
-  if (remount) {
-    return;
   }
 
   while (traverse) {
@@ -162,52 +211,23 @@ function doMount (child, childEl, parentEl, oldParent) {
       parentHooks[hook] = (parentHooks[hook] || 0) + hooks[hook];
     }
 
-    if (!triggered && (traverse === document || (parent && parent.__redom_mounted))) {
-      trigger(traverse, remount ? 'onremount' : 'onmount');
-      triggered = true;
-    }
-
-    traverse = parent;
-  }
-}
-
-function doUnmount (child, childEl, parentEl) {
-  var hooks = childEl.__redom_lifecycle;
-
-  if (!hooks) {
-    childEl.__redom_mounted = false;
-    return;
-  }
-
-  var traverse = parentEl;
-
-  if (childEl.__redom_mounted) {
-    trigger(childEl, 'onunmount');
-  }
-
-  while (traverse) {
-    var parentHooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
-    var hooksFound = false;
-
-    for (var hook in hooks) {
-      if (parentHooks[hook]) {
-        parentHooks[hook] -= hooks[hook];
+    if (triggered) {
+      break;
+    } else {
+      if (traverse === document ||
+        (shadowRootAvailable && (traverse instanceof window.ShadowRoot)) ||
+        (parent && parent.__redom_mounted)
+      ) {
+        trigger(traverse, remount ? 'onremount' : 'onmount');
+        triggered = true;
       }
-      if (parentHooks[hook]) {
-        hooksFound = true;
-      }
+      traverse = parent;
     }
-
-    if (!hooksFound) {
-      traverse.__redom_lifecycle = null;
-    }
-
-    traverse = traverse.parentNode;
   }
-}
+};
 
-function trigger (el, eventName) {
-  if (eventName === 'onmount') {
+var trigger = function (el, eventName) {
+  if (eventName === 'onmount' || eventName === 'onremount') {
     el.__redom_mounted = true;
   } else if (eventName === 'onunmount') {
     el.__redom_mounted = false;
@@ -241,9 +261,9 @@ function trigger (el, eventName) {
       traverse = next;
     }
   }
-}
+};
 
-function setStyle (view, arg1, arg2) {
+var setStyle = function (view, arg1, arg2) {
   var el = getEl(view);
 
   if (arg2 !== undefined) {
@@ -255,20 +275,30 @@ function setStyle (view, arg1, arg2) {
       setStyle(el, key, arg1[key]);
     }
   }
-}
+};
 
-function setAttr (view, arg1, arg2) {
+/* global SVGElement */
+
+var xlinkns = 'http://www.w3.org/1999/xlink';
+
+var setAttr = function (view, arg1, arg2) {
   var el = getEl(view);
-  var isSVG = el instanceof window.SVGElement;
+  var isSVG = el instanceof SVGElement;
 
   if (arg2 !== undefined) {
     if (arg1 === 'style') {
       setStyle(el, arg2);
     } else if (isSVG && isFunction(arg2)) {
       el[arg1] = arg2;
+    } else if (arg1 === 'dataset') {
+      setData(el, arg2);
     } else if (!isSVG && (arg1 in el || isFunction(arg2))) {
       el[arg1] = arg2;
     } else {
+      if (isSVG && (arg1 === 'xlink')) {
+        setXlink(el, arg2);
+        return;
+      }
       el.setAttribute(arg1, arg2);
     }
   } else {
@@ -276,11 +306,23 @@ function setAttr (view, arg1, arg2) {
       setAttr(el, key, arg1[key]);
     }
   }
+};
+
+function setXlink (el, obj) {
+  for (var key in obj) {
+    el.setAttributeNS(xlinkns, key, obj[key]);
+  }
 }
 
-var text = function (str) { return document.createTextNode(str); };
+function setData (el, obj) {
+  for (var key in obj) {
+    el.dataset[key] = obj[key];
+  }
+}
 
-function parseArguments (element, args) {
+var text = function (str) { return document.createTextNode((str != null) ? str : ''); };
+
+var parseArguments = function (element, args) {
   for (var i = 0; i < args.length; i++) {
     var arg = args[i];
 
@@ -301,7 +343,7 @@ function parseArguments (element, args) {
       setAttr(element, arg);
     }
   }
-}
+};
 
 var ensureEl = function (parent) { return isString(parent) ? html(parent) : getEl(parent); };
 var getEl = function (parent) { return (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el); };
@@ -316,7 +358,7 @@ var htmlCache = {};
 
 var memoizeHTML = function (query) { return htmlCache[query] || (htmlCache[query] = createElement(query)); };
 
-function html (query) {
+var html = function (query) {
   var args = [], len = arguments.length - 1;
   while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
@@ -326,33 +368,51 @@ function html (query) {
     element = memoizeHTML(query).cloneNode(false);
   } else if (isNode(query)) {
     element = query.cloneNode(false);
+  } else if (isFunction(query)) {
+    var Query = query;
+    element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
   } else {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(element, args);
+  parseArguments(getEl(element), args);
 
   return element;
-}
+};
 
 html.extend = function (query) {
+  var args = [], len = arguments.length - 1;
+  while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+
   var clone = memoizeHTML(query);
 
-  return html.bind(this, clone);
+  return html.bind.apply(html, [ this, clone ].concat( args ));
 };
 
 var el = html;
+var h = html;
 
-function setChildren (parent, children) {
-  if (children.length === undefined) {
-    return setChildren(parent, [children]);
-  }
+var setChildren = function (parent) {
+  var children = [], len = arguments.length - 1;
+  while ( len-- > 0 ) children[ len ] = arguments[ len + 1 ];
 
   var parentEl = getEl(parent);
-  var traverse = parentEl.firstChild;
+  var current = traverse(parent, children, parentEl.firstChild);
 
-  for (var i = 0; i < children.length; i++) {
-    var child = children[i];
+  while (current) {
+    var next = current.nextSibling;
+
+    unmount(parent, current);
+
+    current = next;
+  }
+};
+
+function traverse (parent, children, _current) {
+  var current = _current;
+
+  for (var i = 0, list = children; i < list.length; i += 1) {
+    var child = list[i];
 
     if (!child) {
       continue;
@@ -360,60 +420,55 @@ function setChildren (parent, children) {
 
     var childEl = getEl(child);
 
-    if (childEl === traverse) {
-      traverse = traverse.nextSibling;
+    if (childEl === current) {
+      current = current.nextSibling;
       continue;
     }
 
-    mount(parent, child, traverse);
+    if (isNode(childEl)) {
+      mount(parent, child, current);
+      continue;
+    }
+
+    if (child.length != null) {
+      current = traverse(parent, child, current);
+    }
   }
 
-  while (traverse) {
-    var next = traverse.nextSibling;
-
-    unmount(parent, traverse);
-
-    traverse = next;
-  }
+  return current;
 }
 
 var propKey = function (key) { return function (item) { return item[key]; }; };
 
-function list (parent, View, key, initData) {
-  return new List(parent, View, key, initData);
-}
+var listPool = function (View, key, initData) {
+  return new ListPool(View, key, initData);
+};
 
-function List (parent, View, key, initData) {
-  this.__redom_list = true;
+var ListPool = function ListPool (View, key, initData) {
   this.View = View;
   this.initData = initData;
+  this.oldLookup = {};
+  this.lookup = {};
+  this.oldViews = [];
   this.views = [];
-  this.el = ensureEl(parent);
 
   if (key != null) {
     this.lookup = {};
     this.key = isFunction(key) ? key : propKey(key);
   }
-}
-
-List.extend = function (parent, View, key, initData) {
-  return List.bind(List, parent, View, key, initData);
 };
-
-list.extend = List.extend;
-
-List.prototype.update = function (data) {
-  var this$1 = this;
-  if ( data === void 0 ) data = [];
-
-  var View = this.View;
-  var key = this.key;
+ListPool.prototype.update = function update (data, context) {
+  var ref = this;
+    var View = ref.View;
+    var key = ref.key;
+    var initData = ref.initData;
   var keySet = key != null;
-  var initData = this.initData;
+
+  var oldLookup = this.lookup;
+  var newLookup = {};
+
   var newViews = new Array(data.length);
   var oldViews = this.views;
-  var newLookup = key && {};
-  var oldLookup = key && this.lookup;
 
   for (var i = 0; i < data.length; i++) {
     var item = data[i];
@@ -421,39 +476,151 @@ List.prototype.update = function (data) {
 
     if (keySet) {
       var id = key(item);
+
       view = oldLookup[id] || new View(initData, item, i, data);
       newLookup[id] = view;
       view.__redom_id = id;
     } else {
       view = oldViews[i] || new View(initData, item, i, data);
     }
-    newViews[i] = view;
+    view.update && view.update(item, i, data, context);
+
     var el = getEl(view.el);
+
     el.__redom_view = view;
-    view.update && view.update(item, i, data);
+    newViews[i] = view;
   }
 
-  if (keySet) {
-    for (var i$1 = 0; i$1 < oldViews.length; i$1++) {
-      var id$1 = oldViews[i$1].__redom_id;
+  this.oldViews = oldViews;
+  this.views = newViews;
 
-      if (!(id$1 in newLookup)) {
-        unmount(this$1, oldLookup[id$1]);
+  this.oldLookup = oldLookup;
+  this.lookup = newLookup;
+};
+
+var list = function (parent, View, key, initData) {
+  return new List(parent, View, key, initData);
+};
+
+var List = function List (parent, View, key, initData) {
+  this.__redom_list = true;
+  this.View = View;
+  this.initData = initData;
+  this.views = [];
+  this.pool = new ListPool(View, key, initData);
+  this.el = ensureEl(parent);
+  this.keySet = key != null;
+};
+List.prototype.update = function update (data, context) {
+    var this$1 = this;
+    if ( data === void 0 ) data = [];
+
+  var ref = this;
+    var keySet = ref.keySet;
+  var oldViews = this.views;
+  var oldLookup = keySet && this.lookup;
+
+  this.pool.update(data, context);
+
+  var ref$1 = this.pool;
+    var views = ref$1.views;
+    var lookup = ref$1.lookup;
+
+  if (keySet) {
+    for (var i = 0, list = oldViews; i < list.length; i += 1) {
+      var oldView = list[i];
+
+        var id = oldView.__redom_id;
+
+      if (!(id in lookup)) {
+        unmount(this$1, oldLookup[id]);
       }
     }
   }
 
-  setChildren(this, newViews);
+  setChildren(this, views);
 
   if (keySet) {
-    this.lookup = newLookup;
+    this.lookup = lookup;
   }
-  this.views = newViews;
+  this.views = views;
 };
 
-function router (parent, Views, initData) {
+List.extend = function (parent, View, key, initData) {
+  return List.bind(List, parent, View, key, initData);
+};
+
+list.extend = List.extend;
+
+/* global Node */
+
+var place = function (View, initData) {
+  return new Place(View, initData);
+};
+
+var Place = function Place (View, initData) {
+  this.el = text('');
+  this.visible = false;
+  this.view = null;
+  this._placeholder = this.el;
+
+  if (View instanceof Node) {
+    this._el = View;
+  } else {
+    this._View = View;
+  }
+
+  this._initData = initData;
+};
+Place.prototype.update = function update (visible, data) {
+  var placeholder = this._placeholder;
+  var parentNode = this.el.parentNode;
+
+  if (visible) {
+    if (!this.visible) {
+      if (this._el) {
+        mount(parentNode, this._el, placeholder);
+        unmount(parentNode, placeholder);
+
+        this.el = this._el;
+        this.visible = visible;
+
+        return;
+      }
+      var View = this._View;
+      var view = new View(this._initData);
+
+      this.el = getEl(view);
+      this.view = view;
+
+      mount(parentNode, view, placeholder);
+      unmount(parentNode, placeholder);
+    }
+    this.view && this.view.update && this.view.update(data);
+  } else {
+    if (this.visible) {
+      if (this._el) {
+        mount(parentNode, placeholder, this._el);
+        unmount(parentNode, this._el);
+
+        this.el = placeholder;
+        this.visible = visible;
+
+        return;
+      }
+      mount(parentNode, placeholder, this.view);
+      unmount(parentNode, this.view);
+
+      this.el = placeholder;
+      this.view = null;
+    }
+  }
+  this.visible = visible;
+};
+
+var router = function (parent, Views, initData) {
   return new Router(parent, Views, initData);
-}
+};
 
 var Router = function Router (parent, Views, initData) {
   this.el = ensureEl(parent);
@@ -465,21 +632,21 @@ Router.prototype.update = function update (route, data) {
     var Views = this.Views;
     var View = Views[route];
 
-    this.view = View && new View(this.initData, data);
     this.route = route;
+    this.view = View && new View(this.initData, data);
 
     setChildren(this.el, [ this.view ]);
   }
   this.view && this.view.update && this.view.update(data, route);
 };
 
-var SVG = 'http://www.w3.org/2000/svg';
+var ns = 'http://www.w3.org/2000/svg';
 
 var svgCache = {};
 
-var memoizeSVG = function (query) { return svgCache[query] || (svgCache[query] = createElement(query, SVG)); };
+var memoizeSVG = function (query) { return svgCache[query] || (svgCache[query] = createElement(query, ns)); };
 
-function svg (query) {
+var svg = function (query) {
   var args = [], len = arguments.length - 1;
   while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
@@ -489,14 +656,17 @@ function svg (query) {
     element = memoizeSVG(query).cloneNode(false);
   } else if (isNode(query)) {
     element = query.cloneNode(false);
+  } else if (isFunction(query)) {
+    var Query = query;
+    element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
   } else {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(element, args);
+  parseArguments(getEl(element), args);
 
   return element;
-}
+};
 
 svg.extend = function (query) {
   var clone = memoizeSVG(query);
@@ -504,16 +674,26 @@ svg.extend = function (query) {
   return svg.bind(this, clone);
 };
 
-exports.html = html;
+svg.ns = ns;
+
+var s = svg;
+
 exports.el = el;
+exports.h = h;
+exports.html = html;
 exports.list = list;
 exports.List = List;
+exports.listPool = listPool;
+exports.ListPool = ListPool;
 exports.mount = mount;
 exports.unmount = unmount;
+exports.place = place;
+exports.Place = Place;
 exports.router = router;
 exports.Router = Router;
 exports.setAttr = setAttr;
 exports.setStyle = setStyle;
 exports.setChildren = setChildren;
+exports.s = s;
 exports.svg = svg;
 exports.text = text;

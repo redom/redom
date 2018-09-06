@@ -137,7 +137,7 @@
     return true;
   };
 
-  var hookNames = ['onmount', 'onunmount'];
+  var hookNames = ['onmount', 'onremount', 'onunmount'];
   var shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
 
   var mount = function (parent, child, before) {
@@ -176,11 +176,15 @@
     var remount = (parentEl === oldParent);
     var hooksFound = false;
 
-    for (var i = 0; i < hookNames.length; i++) {
-      var hookName = hookNames[i];
+    for (var i = 0, list = hookNames; i < list.length; i += 1) {
+      var hookName = list[i];
 
-      if (!remount && (child !== childEl) && (hookName in child)) {
-        hooks[hookName] = (hooks[hookName] || 0) + 1;
+      if (!remount) { // if already mounted, skip this phase
+        if (child !== childEl) { // only Views can have lifecycle events
+          if (hookName in child) {
+            hooks[hookName] = (hooks[hookName] || 0) + 1;
+          }
+        }
       }
       if (hooks[hookName]) {
         hooksFound = true;
@@ -195,13 +199,9 @@
     var traverse = parentEl;
     var triggered = false;
 
-    if (remount || (!triggered && (traverse && traverse.__redom_mounted))) {
+    if (remount || (traverse && traverse.__redom_mounted)) {
       trigger(childEl, remount ? 'onremount' : 'onmount');
       triggered = true;
-    }
-
-    if (remount) {
-      return;
     }
 
     while (traverse) {
@@ -212,17 +212,23 @@
         parentHooks[hook] = (parentHooks[hook] || 0) + hooks[hook];
       }
 
-      if (!triggered && (traverse === document || (shadowRootAvailable && (traverse instanceof window.ShadowRoot)) || (parent && parent.__redom_mounted))) {
-        trigger(traverse, remount ? 'onremount' : 'onmount');
-        triggered = true;
+      if (triggered) {
+        break;
+      } else {
+        if (traverse === document ||
+          (shadowRootAvailable && (traverse instanceof window.ShadowRoot)) ||
+          (parent && parent.__redom_mounted)
+        ) {
+          trigger(traverse, remount ? 'onremount' : 'onmount');
+          triggered = true;
+        }
+        traverse = parent;
       }
-
-      traverse = parent;
     }
   };
 
   var trigger = function (el, eventName) {
-    if (eventName === 'onmount') {
+    if (eventName === 'onmount' || eventName === 'onremount') {
       el.__redom_mounted = true;
     } else if (eventName === 'onunmount') {
       el.__redom_mounted = false;
@@ -318,8 +324,8 @@
   var text = function (str) { return document.createTextNode((str != null) ? str : ''); };
 
   var parseArguments = function (element, args) {
-    for (var i = 0; i < args.length; i++) {
-      var arg = args[i];
+    for (var i = 0, list = args; i < list.length; i += 1) {
+      var arg = list[i];
 
       if (arg !== 0 && !arg) {
         continue;
@@ -406,8 +412,8 @@
   function traverse (parent, children, _current) {
     var current = _current;
 
-    for (var i = 0; i < children.length; i++) {
-      var child = children[i];
+    for (var i = 0, list = children; i < list.length; i += 1) {
+      var child = list[i];
 
       if (!child) {
         continue;
@@ -471,6 +477,7 @@
 
       if (keySet) {
         var id = key(item);
+
         view = oldLookup[id] || new View(initData, item, i, data);
         newLookup[id] = view;
         view.__redom_id = id;
@@ -480,6 +487,7 @@
       view.update && view.update(item, i, data, context);
 
       var el = getEl(view.el);
+
       el.__redom_view = view;
       newViews[i] = view;
     }
@@ -514,13 +522,17 @@
     var oldLookup = keySet && this.lookup;
 
     this.pool.update(data, context);
+
     var ref$1 = this.pool;
       var views = ref$1.views;
       var lookup = ref$1.lookup;
 
     if (keySet) {
-      for (var i = 0; i < oldViews.length; i++) {
-        var id = oldViews[i].__redom_id;
+      for (var i = 0, list = oldViews; i < list.length; i += 1) {
+        var oldView = list[i];
+
+          var id = oldView.__redom_id;
+
         if (!(id in lookup)) {
           unmount(this$1, oldLookup[id]);
         }
@@ -552,11 +564,13 @@
     this.visible = false;
     this.view = null;
     this._placeholder = this.el;
+
     if (View instanceof Node) {
       this._el = View;
     } else {
       this._View = View;
     }
+
     this._initData = initData;
   };
   Place.prototype.update = function update (visible, data) {
@@ -568,8 +582,10 @@
         if (this._el) {
           mount(parentNode, this._el, placeholder);
           unmount(parentNode, placeholder);
+
           this.el = this._el;
           this.visible = visible;
+
           return;
         }
         var View = this._View;
@@ -587,8 +603,10 @@
         if (this._el) {
           mount(parentNode, placeholder, this._el);
           unmount(parentNode, this._el);
+
           this.el = placeholder;
           this.visible = visible;
+
           return;
         }
         mount(parentNode, placeholder, this.view);
