@@ -4,9 +4,7 @@ import { setAttr } from './setattr.js';
 import { text } from './text.js';
 
 export const parseArguments = (element, args) => {
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
-
+  for (const arg of args) {
     if (arg !== 0 && !arg) {
       continue;
     }
