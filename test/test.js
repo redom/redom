@@ -168,30 +168,34 @@ module.exports = function (redom) {
     });
     t.test('lifecycle events', function (t) {
       t.plan(1);
-      var eventsFired = {};
-      function Item () {
+      var eventsFired = {
+        onmount: 0,
+        onremount: 0,
+        onunmount: 0
+      };
+      function Item (id) {
         this.el = el('p');
         this.onmount = function () {
-          eventsFired.onmount = true;
+          eventsFired.onmount++;
         };
         this.onremount = function () {
-          eventsFired.onremount = true;
+          eventsFired.onremount++;
         };
         this.onunmount = function () {
-          eventsFired.onunmount = true;
+          eventsFired.onunmount++;
         };
       }
-      var item = new Item();
-      var item2 = new Item();
-      mount(document.body, item);
-      mount(document.head, item2);
-      mount(document.body, item2);
-      mount(document.body, item.el); // test view lookup (__redom_view)
-      unmount(document.body, item);
+      var item = new Item(1);
+      var item2 = new Item(2);
+      mount(document.body, item); // mount
+      mount(document.head, item2); // mount
+      mount(document.body, item2); // unmount & mount
+      mount(document.body, item.el); // remount, test view lookup (__redom_view)
+      unmount(document.body, item); // unmount
       t.deepEqual(eventsFired, {
-        onmount: true,
-        onremount: true,
-        onunmount: true
+        onmount: 3,
+        onremount: 1,
+        onunmount: 2
       });
     });
     t.test('lifecycle with shadow root', function (t) {
