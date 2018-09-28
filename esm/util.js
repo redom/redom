@@ -8,7 +8,7 @@ export const parseArguments = (element, args) => {
     if (arg !== 0 && !arg) {
       continue;
     }
-    
+
     var type = typeof arg;
 
     // support middleware
