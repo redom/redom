@@ -8,17 +8,19 @@ export const parseArguments = (element, args) => {
     if (arg !== 0 && !arg) {
       continue;
     }
+    
+    let type = typeof arg;
 
     // support middleware
-    if (typeof arg === 'function') {
+    if (type === 'function') {
       arg(element);
-    } else if (isString(arg) || isNumber(arg)) {
+    } else if (type === 'string' || type === 'number') {
       element.appendChild(text(arg));
     } else if (isNode(getEl(arg))) {
       mount(element, arg);
     } else if (arg.length) {
       parseArguments(element, arg);
-    } else if (typeof arg === 'object') {
+    } else if (type === 'object') {
       setAttr(element, arg);
     }
   }
