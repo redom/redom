@@ -325,16 +325,18 @@ var parseArguments = function (element, args) {
       continue;
     }
 
+    var type = typeof arg;
+
     // support middleware
-    if (typeof arg === 'function') {
+    if (type === 'function') {
       arg(element);
-    } else if (isString(arg) || isNumber(arg)) {
+    } else if (type === 'string' || type === 'number') {
       element.appendChild(text(arg));
     } else if (isNode(getEl(arg))) {
       mount(element, arg);
     } else if (arg.length) {
       parseArguments(element, arg);
-    } else if (typeof arg === 'object') {
+    } else if (type === 'object') {
       setAttr(element, arg);
     }
   }
@@ -344,7 +346,6 @@ var ensureEl = function (parent) { return isString(parent) ? html(parent) : getE
 var getEl = function (parent) { return (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el); };
 
 var isString = function (a) { return typeof a === 'string'; };
-var isNumber = function (a) { return typeof a === 'number'; };
 var isFunction = function (a) { return typeof a === 'function'; };
 
 var isNode = function (a) { return a && a.nodeType; };
