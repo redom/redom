@@ -20,20 +20,27 @@ export class List {
   update (data = [], context) {
     const { keySet } = this;
     const oldViews = this.views;
-    const oldLookup = keySet && this.lookup;
 
     this.pool.update(data, context);
 
     const { views, lookup } = this.pool;
 
     if (keySet) {
-      for (const oldView of oldViews) {
+      for (let i = 0; i < oldViews.length; i++) {
+        const oldView = oldViews[i];
         const id = oldView.__redom_id;
 
-        if (!(id in lookup)) {
-          unmount(this, oldLookup[id]);
+        if (lookup[id] == null) {
+          oldView.__redom_index = null;
+          unmount(this, oldView);
         }
       }
+    }
+
+    for (let i = 0; i < views.length; i++) {
+      const view = views[i];
+
+      view.__redom_index = i;
     }
 
     setChildren(this, views);
