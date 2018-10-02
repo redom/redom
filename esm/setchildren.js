@@ -21,7 +21,7 @@ function traverse (parent, children, _current) {
   const childEls = new Array(children.length);
 
   for (let i = 0; i < children.length; i++) {
-    childEls[i] = getEl(children[i]);
+    childEls[i] = children[i] && getEl(children[i]);
   }
 
   for (let i = 0; i < children.length; i++) {
