@@ -18,12 +18,20 @@ export const setChildren = (parent, ...children) => {
 function traverse (parent, children, _current) {
   let current = _current;
 
-  for (const child of children) {
+  const childEls = new Array(children.length);
+
+  for (let i = 0; i < children.length; i++) {
+    childEls[i] = getEl(children[i]);
+  }
+
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+
     if (!child) {
       continue;
     }
 
-    let childEl = getEl(child);
+    let childEl = childEls[i];
 
     if (childEl === current) {
       current = current.nextSibling;
@@ -31,7 +39,16 @@ function traverse (parent, children, _current) {
     }
 
     if (isNode(childEl)) {
-      mount(parent, child, current);
+      const next = current && current.nextSibling;
+      const exists = child.__redom_index != null;
+      const replace = exists && next === childEls[i + 1];
+
+      mount(parent, child, current, replace);
+
+      if (replace) {
+        current = next;
+      }
+
       continue;
     }
 
