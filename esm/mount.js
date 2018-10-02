@@ -4,7 +4,7 @@ import { doUnmount } from './unmount.js';
 const hookNames = ['onmount', 'onremount', 'onunmount'];
 const shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
 
-export const mount = (parent, child, before) => {
+export const mount = (parent, child, before, replace) => {
   const parentEl = getEl(parent);
   let childEl = getEl(child);
 
@@ -25,7 +25,11 @@ export const mount = (parent, child, before) => {
   }
 
   if (before != null) {
-    parentEl.insertBefore(childEl, getEl(before));
+    if (replace) {
+      parentEl.replaceChild(childEl, getEl(before));
+    } else {
+      parentEl.insertBefore(childEl, getEl(before));
+    }
   } else {
     parentEl.appendChild(childEl);
   }
