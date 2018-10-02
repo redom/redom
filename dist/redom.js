@@ -140,7 +140,7 @@
   var hookNames = ['onmount', 'onremount', 'onunmount'];
   var shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
 
-  var mount = function (parent, child, before) {
+  var mount = function (parent, child, before, replace) {
     var parentEl = getEl(parent);
     var childEl = getEl(child);
 
@@ -161,7 +161,11 @@
     }
 
     if (before != null) {
-      parentEl.insertBefore(childEl, getEl(before));
+      if (replace) {
+        parentEl.replaceChild(childEl, getEl(before));
+      } else {
+        parentEl.insertBefore(childEl, getEl(before));
+      }
     } else {
       parentEl.appendChild(childEl);
     }
@@ -413,14 +417,20 @@
   function traverse (parent, children, _current) {
     var current = _current;
 
-    for (var i = 0, list = children; i < list.length; i += 1) {
-      var child = list[i];
+    var childEls = new Array(children.length);
+
+    for (var i = 0; i < children.length; i++) {
+      childEls[i] = getEl(children[i]);
+    }
+
+    for (var i$1 = 0; i$1 < children.length; i$1++) {
+      var child = children[i$1];
 
       if (!child) {
         continue;
       }
 
-      var childEl = getEl(child);
+      var childEl = childEls[i$1];
 
       if (childEl === current) {
         current = current.nextSibling;
@@ -428,7 +438,16 @@
       }
 
       if (isNode(childEl)) {
-        mount(parent, child, current);
+        var next = current && current.nextSibling;
+        var exists = child.__redom_index != null;
+        var replace = exists && next === childEls[i$1 + 1];
+
+        mount(parent, child, current, replace);
+
+        if (replace) {
+          current = next;
+        }
+
         continue;
       }
 
@@ -520,7 +539,6 @@
     var ref = this;
       var keySet = ref.keySet;
     var oldViews = this.views;
-    var oldLookup = keySet && this.lookup;
 
     this.pool.update(data, context);
 
@@ -529,15 +547,21 @@
       var lookup = ref$1.lookup;
 
     if (keySet) {
-      for (var i = 0, list = oldViews; i < list.length; i += 1) {
-        var oldView = list[i];
+      for (var i = 0; i < oldViews.length; i++) {
+        var oldView = oldViews[i];
+        var id = oldView.__redom_id;
 
-          var id = oldView.__redom_id;
-
-        if (!(id in lookup)) {
-          unmount(this$1, oldLookup[id]);
+        if (lookup[id] == null) {
+          oldView.__redom_index = null;
+          unmount(this$1, oldView);
         }
       }
+    }
+
+    for (var i$1 = 0; i$1 < views.length; i$1++) {
+      var view = views[i$1];
+
+      view.__redom_index = i$1;
     }
 
     setChildren(this, views);
