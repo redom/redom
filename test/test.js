@@ -899,4 +899,22 @@ module.exports = function (redom) {
     unmount(div, item);
     t.strictEquals(targetDiv.__redom_lifecycle, null);
   });
+
+  test('optimized list diff', function (t) {
+    t.plan(1);
+    var remounts = 0;
+
+    function Item () {
+      this.el = el('p');
+      this.onremount = function () {
+        remounts++;
+      };
+    }
+    var items = list(el('list'), Item, 'id');
+
+    items.update('a b c d e f g'.split(' ').map(function (id) { return { id: id }; }));
+    items.update('a e c d b f g'.split(' ').map(function (id) { return { id: id }; }));
+
+    t.equals(remounts, 1);
+  });
 };
