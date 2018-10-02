@@ -414,7 +414,7 @@ function traverse (parent, children, _current) {
   var childEls = new Array(children.length);
 
   for (var i = 0; i < children.length; i++) {
-    childEls[i] = getEl(children[i]);
+    childEls[i] = children[i] && getEl(children[i]);
   }
 
   for (var i$1 = 0; i$1 < children.length; i$1++) {
