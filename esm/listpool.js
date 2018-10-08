@@ -16,7 +16,6 @@ export class ListPool {
     this.views = [];
 
     if (key != null) {
-      this.lookup = {};
       this.key = isFunction(key) ? key : propKey(key);
     }
   }
