@@ -468,7 +468,6 @@ var ListPool = function ListPool (View, key, initData) {
   this.views = [];
 
   if (key != null) {
-    this.lookup = {};
     this.key = isFunction(key) ? key : propKey(key);
   }
 };
