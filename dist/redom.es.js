@@ -526,7 +526,6 @@ var List = function List (parent, View, key, initData) {
   this.keySet = key != null;
 };
 List.prototype.update = function update (data, context) {
-    var this$1 = this;
     if ( data === void 0 ) data = [];
 
   var ref = this;
@@ -546,7 +545,7 @@ List.prototype.update = function update (data, context) {
 
       if (lookup[id] == null) {
         oldView.__redom_index = null;
-        unmount(this$1, oldView);
+        unmount(this, oldView);
       }
     }
   }
