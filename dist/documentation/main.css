@@ -40,7 +40,7 @@ li {
 }
 
 strong {
-  font-weight: 500;
+  font-weight: 600;
   color: #000;
 }
 
@@ -104,7 +104,7 @@ pre > code {
   color: inherit;
   padding: .75rem 1.25rem;
   font-size: .875rem;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   text-decoration: none;
   cursor: inherit;
@@ -243,7 +243,7 @@ pre > code {
   position: fixed;
   top: 2rem;
   right: 2rem;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   background: linear-gradient(to bottom, hsl(360, 80%, 44%), hsl(346, 80%, 36%));
   background-color: hsl(352, 80%, 40%);
