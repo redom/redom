@@ -38,7 +38,7 @@ section.center {
 
 h2 {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 3rem;
   margin: 1.5rem auto;
   padding: 1rem 3rem;
@@ -62,7 +62,7 @@ p {
 
 strong {
   color: #000;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 pre {
@@ -124,7 +124,7 @@ a:not(:hover) {
   color: inherit;
   padding: .75rem 1.25rem;
   font-size: .875rem;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   text-decoration: none;
   cursor: inherit;
