@@ -13,7 +13,5 @@ dist/prism.js
 test
 .gitignore
 build-doc.js
-CHANGELOG.md
-README.md
 rollup.config.js
 watch.js
