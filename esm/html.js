@@ -3,7 +3,7 @@ import { parseArguments, isNode, getEl } from './util.js';
 
 const htmlCache = {};
 
-const memoizeHTML = query => htmlCache[query] || (htmlCache[query] = createElement(query));
+const memoizeHTML = (query) => htmlCache[query] || (htmlCache[query] = createElement(query));
 
 export const html = (query, ...args) => {
   let element;
@@ -26,10 +26,8 @@ export const html = (query, ...args) => {
   return element;
 };
 
-html.extend = function (query, ...args) {
-  const clone = memoizeHTML(query);
-
-  return html.bind(this, clone, ...args);
+html.extend = (query, ...args) => {
+  return html.bind(this, memoizeHTML(query), ...args);
 };
 
 export const el = html;
