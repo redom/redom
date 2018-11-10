@@ -1,8 +1,9 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.redom = {})));
-}(this, (function (exports) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports)
+    : typeof define === 'function' && define.amd ? define(['exports'], factory)
+      : (factory((global.redom = {})));
+}(this, function (exports) {
+  'use strict';
 
   var HASH = '#'.charCodeAt(0);
   var DOT = '.'.charCodeAt(0);
@@ -363,8 +364,8 @@
   var memoizeHTML = function (query) { return htmlCache[query] || (htmlCache[query] = createElement(query)); };
 
   var html = function (query) {
-    var args = [], len = arguments.length - 1;
-    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+    var args = []; var len = arguments.length - 1;
+    while (len-- > 0) args[ len ] = arguments[ len + 1 ];
 
     var element;
 
@@ -376,7 +377,7 @@
       element = query.cloneNode(false);
     } else if (type === 'function') {
       var Query = query;
-      element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
+      element = new (Function.prototype.bind.apply(Query, [ null ].concat(args)))();
     } else {
       throw new Error('At least one argument required');
     }
@@ -387,20 +388,20 @@
   };
 
   html.extend = function (query) {
-    var args = [], len = arguments.length - 1;
-    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+    var args = []; var len = arguments.length - 1;
+    while (len-- > 0) args[ len ] = arguments[ len + 1 ];
 
     var clone = memoizeHTML(query);
 
-    return html.bind.apply(html, [ this, clone ].concat( args ));
+    return html.bind.apply(html, [ this, clone ].concat(args));
   };
 
   var el = html;
   var h = html;
 
   var setChildren = function (parent) {
-    var children = [], len = arguments.length - 1;
-    while ( len-- > 0 ) children[ len ] = arguments[ len + 1 ];
+    var children = []; var len = arguments.length - 1;
+    while (len-- > 0) children[ len ] = arguments[ len + 1 ];
 
     var parentEl = getEl(parent);
     var current = traverse(parent, children, parentEl.firstChild);
@@ -479,9 +480,9 @@
   };
   ListPool.prototype.update = function update (data, context) {
     var ref = this;
-      var View = ref.View;
-      var key = ref.key;
-      var initData = ref.initData;
+    var View = ref.View;
+    var key = ref.key;
+    var initData = ref.initData;
     var keySet = key != null;
 
     var oldLookup = this.lookup;
@@ -532,17 +533,17 @@
     this.keySet = key != null;
   };
   List.prototype.update = function update (data, context) {
-      if ( data === void 0 ) data = [];
+    if (data === void 0) data = [];
 
     var ref = this;
-      var keySet = ref.keySet;
+    var keySet = ref.keySet;
     var oldViews = this.views;
 
     this.pool.update(data, context);
 
     var ref$1 = this.pool;
-      var views = ref$1.views;
-      var lookup = ref$1.lookup;
+    var views = ref$1.views;
+    var lookup = ref$1.lookup;
 
     if (keySet) {
       for (var i = 0; i < oldViews.length; i++) {
@@ -671,8 +672,8 @@
   var memoizeSVG = function (query) { return svgCache[query] || (svgCache[query] = createElement(query, ns)); };
 
   var svg = function (query) {
-    var args = [], len = arguments.length - 1;
-    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+    var args = []; var len = arguments.length - 1;
+    while (len-- > 0) args[ len ] = arguments[ len + 1 ];
 
     var element;
 
@@ -684,7 +685,7 @@
       element = query.cloneNode(false);
     } else if (type === 'function') {
       var Query = query;
-      element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
+      element = new (Function.prototype.bind.apply(Query, [ null ].concat(args)))();
     } else {
       throw new Error('At least one argument required');
     }
@@ -725,5 +726,4 @@
   exports.text = text;
 
   Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
+}));
