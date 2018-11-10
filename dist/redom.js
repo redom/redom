@@ -354,7 +354,7 @@
     }
   };
 
-  var ensureEl = function (parent) { return isString(parent) ? html(parent) : getEl(parent); };
+  var ensureEl = function (parent) { return typeof parent === 'string' ? html(parent) : getEl(parent); };
   var getEl = function (parent) { return (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el); };
   var isNode = function (a) { return a && a.nodeType; };
 
@@ -474,7 +474,7 @@
     this.views = [];
 
     if (key != null) {
-      this.key = isFunction(key) ? key : propKey(key);
+      this.key = typeof key === 'function' ? key : propKey(key);
     }
   };
   ListPool.prototype.update = function update (data, context) {
