@@ -26,12 +26,7 @@ export const parseArguments = (element, args) => {
   }
 };
 
-export const ensureEl = parent => isString(parent) ? html(parent) : getEl(parent);
+export const ensureEl = parent => typeof parent === 'string' ? html(parent) : getEl(parent);
 export const getEl = parent => (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el);
-
-export const isString = a => typeof a === 'string';
-export const isNumber = a => typeof a === 'number';
-export const isFunction = a => typeof a === 'function';
-
 export const isNode = a => a && a.nodeType;
 export const isList = a => a && a.__redom_list;

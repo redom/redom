@@ -1,5 +1,5 @@
 import { createElement } from './create-element.js';
-import { parseArguments, isString, isNode, isFunction, getEl } from './util.js';
+import { parseArguments, isNode, getEl } from './util.js';
 
 const htmlCache = {};
 
@@ -8,11 +8,13 @@ const memoizeHTML = query => htmlCache[query] || (htmlCache[query] = createEleme
 export const html = (query, ...args) => {
   let element;
 
-  if (isString(query)) {
+  let type = typeof query;
+
+  if (type === 'string') {
     element = memoizeHTML(query).cloneNode(false);
   } else if (isNode(query)) {
     element = query.cloneNode(false);
-  } else if (isFunction(query)) {
+  } else if (type === 'function') {
     const Query = query;
     element = new Query(...args);
   } else {
