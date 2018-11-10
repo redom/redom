@@ -15,7 +15,7 @@ export const setChildren = (parent, ...children) => {
   }
 };
 
-function traverse (parent, children, _current) {
+const traverse = (parent, children, _current) => {
   let current = _current;
 
   const childEls = new Array(children.length);

@@ -1,1 +1,3 @@
-export const text = str => document.createTextNode((str != null) ? str : '');
+export const text = str => {
+  return document.createTextNode((str != null) ? str : '');
+};

@@ -34,13 +34,13 @@ export const setAttr = (view, arg1, arg2) => {
   }
 };
 
-function setXlink (el, obj) {
+const setXlink = (el, obj) => {
   for (const key in obj) {
     el.setAttributeNS(xlinkns, key, obj[key]);
   }
 }
 
-function setData (el, obj) {
+const setData = (el, obj) => {
   for (const key in obj) {
     el.dataset[key] = obj[key];
   }
