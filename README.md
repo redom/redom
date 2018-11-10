@@ -40,7 +40,7 @@ npm i redom
 - [Babel RE:DOM JSX transform](https://github.com/tomerigal/babel-plugin-transform-redom-jsx)
 
 ## Performance
-- [RE:DOM is one of the fastest UI library out there.](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html)
+- [RE:DOM is one of the fastest UI libraries out there.](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html)
 
 ## Open source
 - License: [MIT](https://github.com/redom/redom/blob/master/LICENSE)
@@ -72,5 +72,3 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <a href="https://opencollective.com/redom/sponsor/7/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/7/avatar.svg"></a>
 <a href="https://opencollective.com/redom/sponsor/8/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/redom/sponsor/9/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/9/avatar.svg"></a>
-
-
