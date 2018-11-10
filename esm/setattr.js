@@ -38,10 +38,10 @@ const setXlink = (el, obj) => {
   for (const key in obj) {
     el.setAttributeNS(xlinkns, key, obj[key]);
   }
-}
+};
 
 const setData = (el, obj) => {
   for (const key in obj) {
     el.dataset[key] = obj[key];
   }
-}
+};

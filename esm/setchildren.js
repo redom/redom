@@ -58,4 +58,4 @@ const traverse = (parent, children, _current) => {
   }
 
   return current;
-}
+};
