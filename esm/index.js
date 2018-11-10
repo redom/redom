@@ -1,6 +1,7 @@
 export { el, h, html } from './html.js';
 export { list, List } from './list.js';
 export { listPool, ListPool } from './listpool.js';
+export { use } from './middleware.js';
 export { mount } from './mount.js';
 export { unmount } from './unmount.js';
 export { place, Place } from './place.js';

@@ -3,6 +3,8 @@ import { mount } from './mount.js';
 import { setAttr } from './setattr.js';
 import { text } from './text.js';
 
+export const mwFuncs = []; // this is where middleware lives
+
 export const parseArguments = (element, args) => {
   for (const arg of args) {
     if (arg !== 0 && !arg) {
@@ -10,6 +12,10 @@ export const parseArguments = (element, args) => {
     }
 
     const type = typeof arg;
+
+    for (let func of mwFuncs) {
+      func(element, ...args); // execute middleware
+    }
 
     // support middleware
     if (type === 'function') {
