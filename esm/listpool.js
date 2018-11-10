@@ -1,4 +1,4 @@
-import { isFunction, getEl } from './util.js';
+import { getEl } from './util.js';
 
 const propKey = key => item => item[key];
 
@@ -16,7 +16,7 @@ export class ListPool {
     this.views = [];
 
     if (key != null) {
-      this.key = isFunction(key) ? key : propKey(key);
+      this.key = typeof key === 'function' ? key : propKey(key);
     }
   }
   update (data, context) {

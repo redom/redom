@@ -1,5 +1,5 @@
 import { createElement } from './create-element.js';
-import { parseArguments, isString, isNode, isFunction, getEl } from './util.js';
+import { parseArguments, isNode, getEl } from './util.js';
 
 const ns = 'http://www.w3.org/2000/svg';
 
@@ -10,11 +10,13 @@ const memoizeSVG = query => svgCache[query] || (svgCache[query] = createElement(
 export const svg = (query, ...args) => {
   let element;
 
-  if (isString(query)) {
+  let type = typeof query;
+
+  if (type === 'string') {
     element = memoizeSVG(query).cloneNode(false);
   } else if (isNode(query)) {
     element = query.cloneNode(false);
-  } else if (isFunction(query)) {
+  } else if (type === 'function') {
     const Query = query;
     element = new Query(...args);
   } else {
