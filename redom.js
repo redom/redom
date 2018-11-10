@@ -273,7 +273,7 @@
 
     if (arg2 !== undefined) {
       el.style[arg1] = arg2;
-    } else if (isString(arg1)) {
+    } else if (typeof arg1 === 'string') {
       el.setAttribute('style', arg1);
     } else {
       for (var key in arg1) {
@@ -290,14 +290,16 @@
     var el = getEl(view);
     var isSVG = el instanceof SVGElement;
 
+    var isFunc = typeof arg2 === 'function';
+
     if (arg2 !== undefined) {
       if (arg1 === 'style') {
         setStyle(el, arg2);
-      } else if (isSVG && isFunction(arg2)) {
+      } else if (isSVG && isFunc) {
         el[arg1] = arg2;
       } else if (arg1 === 'dataset') {
         setData(el, arg2);
-      } else if (!isSVG && (arg1 in el || isFunction(arg2))) {
+      } else if (!isSVG && (arg1 in el || isFunc)) {
         el[arg1] = arg2;
       } else {
         if (isSVG && (arg1 === 'xlink')) {
@@ -352,12 +354,8 @@
     }
   };
 
-  var ensureEl = function (parent) { return isString(parent) ? html(parent) : getEl(parent); };
+  var ensureEl = function (parent) { return typeof parent === 'string' ? html(parent) : getEl(parent); };
   var getEl = function (parent) { return (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el); };
-
-  var isString = function (a) { return typeof a === 'string'; };
-  var isFunction = function (a) { return typeof a === 'function'; };
-
   var isNode = function (a) { return a && a.nodeType; };
 
   var htmlCache = {};
@@ -370,11 +368,13 @@
 
     var element;
 
-    if (isString(query)) {
+    var type = typeof query;
+
+    if (type === 'string') {
       element = memoizeHTML(query).cloneNode(false);
     } else if (isNode(query)) {
       element = query.cloneNode(false);
-    } else if (isFunction(query)) {
+    } else if (type === 'function') {
       var Query = query;
       element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
     } else {
@@ -474,7 +474,7 @@
     this.views = [];
 
     if (key != null) {
-      this.key = isFunction(key) ? key : propKey(key);
+      this.key = typeof key === 'function' ? key : propKey(key);
     }
   };
   ListPool.prototype.update = function update (data, context) {
@@ -676,11 +676,13 @@
 
     var element;
 
-    if (isString(query)) {
+    var type = typeof query;
+
+    if (type === 'string') {
       element = memoizeSVG(query).cloneNode(false);
     } else if (isNode(query)) {
       element = query.cloneNode(false);
-    } else if (isFunction(query)) {
+    } else if (type === 'function') {
       var Query = query;
       element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
     } else {
