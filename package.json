@@ -41,6 +41,13 @@
   "bugs": {
     "url": "https://github.com/redom/redom/issues"
   },
+  "semistandard": {
+    "ignore": [
+      "/dist/",
+      "/node_modules/",
+      "/test/"
+    ]
+  },
   "homepage": "https://redom.js.org",
   "devDependencies": {
     "browserify": "^16.2.3",
