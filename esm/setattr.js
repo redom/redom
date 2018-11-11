@@ -1,12 +1,12 @@
 /* global SVGElement */
 
 import { setStyle } from './setstyle.js';
-import { getEl } from './util.js';
+import _getEl from './util/_getEl.js';
 
 const xlinkns = 'http://www.w3.org/1999/xlink';
 
 export const setAttr = (view, arg1, arg2) => {
-  const el = getEl(view);
+  const el = _getEl(view);
   let isSVG = el instanceof SVGElement;
 
   let isFunc = typeof arg2 === 'function';

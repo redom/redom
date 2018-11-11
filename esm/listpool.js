@@ -1,4 +1,4 @@
-import { getEl } from './util.js';
+import _getEl from './util/_getEl.js';
 
 const propKey = key => item => item[key];
 
@@ -44,7 +44,7 @@ export class ListPool {
       }
       view.update && view.update(item, i, data, context);
 
-      const el = getEl(view.el);
+      const el = _getEl(view.el);
 
       el.__redom_view = view;
       newViews[i] = view;

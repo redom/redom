@@ -1,12 +1,12 @@
-import { getEl } from './util.js';
 import { doUnmount } from './unmount.js';
+import _getEl from './util/_getEl.js';
 
 const hookNames = ['onmount', 'onremount', 'onunmount'];
 const shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
 
 export const mount = (parent, child, before, replace) => {
-  const parentEl = getEl(parent);
-  let childEl = getEl(child);
+  const parentEl = _getEl(parent);
+  let childEl = _getEl(child);
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided
@@ -26,9 +26,9 @@ export const mount = (parent, child, before, replace) => {
 
   if (before != null) {
     if (replace) {
-      parentEl.replaceChild(childEl, getEl(before));
+      parentEl.replaceChild(childEl, _getEl(before));
     } else {
-      parentEl.insertBefore(childEl, getEl(before));
+      parentEl.insertBefore(childEl, _getEl(before));
     }
   } else {
     parentEl.appendChild(childEl);

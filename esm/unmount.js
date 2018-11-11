@@ -1,9 +1,9 @@
-import { getEl } from './util.js';
 import { trigger } from './mount.js';
+import _getEl from './util/_getEl.js';
 
 export const unmount = (parent, child) => {
-  const parentEl = getEl(parent);
-  const childEl = getEl(child);
+  const parentEl = _getEl(parent);
+  const childEl = _getEl(child);
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided

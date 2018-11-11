@@ -1,9 +1,10 @@
 import { mount } from './mount.js';
 import { unmount } from './unmount.js';
-import { getEl, isNode } from './util.js';
+import _getEl from './util/_getEl.js';
+import _isNode from './util/_isNode.js';
 
 export const setChildren = (parent, ...children) => {
-  const parentEl = getEl(parent);
+  const parentEl = _getEl(parent);
   let current = traverse(parent, children, parentEl.firstChild);
 
   while (current) {
@@ -21,7 +22,7 @@ const traverse = (parent, children, _current) => {
   const childEls = new Array(children.length);
 
   for (let i = 0; i < children.length; i++) {
-    childEls[i] = children[i] && getEl(children[i]);
+    childEls[i] = children[i] && _getEl(children[i]);
   }
 
   for (let i = 0; i < children.length; i++) {
@@ -38,7 +39,7 @@ const traverse = (parent, children, _current) => {
       continue;
     }
 
-    if (isNode(childEl)) {
+    if (_isNode(childEl)) {
       const next = current && current.nextSibling;
       const exists = child.__redom_index != null;
       const replace = exists && next === childEls[i + 1];

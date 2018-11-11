@@ -1,7 +1,7 @@
-import { getEl } from './util.js';
+import _getEl from './util/_getEl';
 
 export const setStyle = (view, arg1, arg2) => {
-  const el = getEl(view);
+  const el = _getEl(view);
 
   if (arg2 !== undefined) {
     el.style[arg1] = arg2;

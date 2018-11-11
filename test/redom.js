@@ -74,9 +74,11 @@ var createElement = function (query, ns) {
   return element;
 };
 
+var _getEl = function (parent) { return (parent.nodeType && parent) || (!parent.el && parent) || _getEl(parent.el); };
+
 var unmount = function (parent, child) {
-  var parentEl = getEl(parent);
-  var childEl = getEl(child);
+  var parentEl = _getEl(parent);
+  var childEl = _getEl(child);
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided
@@ -139,8 +141,8 @@ var hookNames = ['onmount', 'onremount', 'onunmount'];
 var shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
 
 var mount = function (parent, child, before, replace) {
-  var parentEl = getEl(parent);
-  var childEl = getEl(child);
+  var parentEl = _getEl(parent);
+  var childEl = _getEl(child);
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided
@@ -160,9 +162,9 @@ var mount = function (parent, child, before, replace) {
 
   if (before != null) {
     if (replace) {
-      parentEl.replaceChild(childEl, getEl(before));
+      parentEl.replaceChild(childEl, _getEl(before));
     } else {
-      parentEl.insertBefore(childEl, getEl(before));
+      parentEl.insertBefore(childEl, _getEl(before));
     }
   } else {
     parentEl.appendChild(childEl);
@@ -267,7 +269,7 @@ var trigger = function (el, eventName) {
 };
 
 var setStyle = function (view, arg1, arg2) {
-  var el = getEl(view);
+  var el = _getEl(view);
 
   if (arg2 !== undefined) {
     el.style[arg1] = arg2;
@@ -285,7 +287,7 @@ var setStyle = function (view, arg1, arg2) {
 var xlinkns = 'http://www.w3.org/1999/xlink';
 
 var setAttr = function (view, arg1, arg2) {
-  var el = getEl(view);
+  var el = _getEl(view);
   var isSVG = el instanceof SVGElement;
 
   var isFunc = typeof arg2 === 'function';
@@ -313,21 +315,25 @@ var setAttr = function (view, arg1, arg2) {
   }
 };
 
-function setXlink (el, obj) {
+var setXlink = function (el, obj) {
   for (var key in obj) {
     el.setAttributeNS(xlinkns, key, obj[key]);
   }
-}
+};
 
-function setData (el, obj) {
+var setData = function (el, obj) {
   for (var key in obj) {
     el.dataset[key] = obj[key];
   }
-}
+};
 
-var text = function (str) { return document.createTextNode((str != null) ? str : ''); };
+function _isNode (a) { return a && a.nodeType; }
 
-var parseArguments = function (element, args) {
+var text = function (str) {
+  return document.createTextNode((str != null) ? str : '');
+};
+
+var _parseArguments = function (element, args) {
   for (var i = 0, list = args; i < list.length; i += 1) {
     var arg = list[i];
 
@@ -342,27 +348,23 @@ var parseArguments = function (element, args) {
       arg(element);
     } else if (type === 'string' || type === 'number') {
       element.appendChild(text(arg));
-    } else if (isNode(getEl(arg))) {
+    } else if (_isNode(_getEl(arg))) {
       mount(element, arg);
     } else if (arg.length) {
-      parseArguments(element, arg);
+      _parseArguments(element, arg);
     } else if (type === 'object') {
       setAttr(element, arg);
     }
   }
 };
 
-var ensureEl = function (parent) { return typeof parent === 'string' ? html(parent) : getEl(parent); };
-var getEl = function (parent) { return (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el); };
-var isNode = function (a) { return a && a.nodeType; };
-
 var htmlCache = {};
 
 var memoizeHTML = function (query) { return htmlCache[query] || (htmlCache[query] = createElement(query)); };
 
 var html = function (query) {
-  var args = []; var len = arguments.length - 1;
-  while (len-- > 0) args[ len ] = arguments[ len + 1 ];
+  var args = [], len = arguments.length - 1;
+  while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
   var element;
 
@@ -370,37 +372,35 @@ var html = function (query) {
 
   if (type === 'string') {
     element = memoizeHTML(query).cloneNode(false);
-  } else if (isNode(query)) {
+  } else if (_isNode(query)) {
     element = query.cloneNode(false);
   } else if (type === 'function') {
     var Query = query;
-    element = new (Function.prototype.bind.apply(Query, [ null ].concat(args)))();
+    element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
   } else {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(getEl(element), args);
+  _parseArguments(_getEl(element), args);
 
   return element;
 };
 
 html.extend = function (query) {
-  var args = []; var len = arguments.length - 1;
-  while (len-- > 0) args[ len ] = arguments[ len + 1 ];
+  var args = [], len = arguments.length - 1;
+  while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
-  var clone = memoizeHTML(query);
-
-  return html.bind.apply(html, [ this, clone ].concat(args));
+  return html.bind.apply(html, [ html, memoizeHTML(query) ].concat( args ));
 };
 
 var el = html;
 var h = html;
 
 var setChildren = function (parent) {
-  var children = []; var len = arguments.length - 1;
-  while (len-- > 0) children[ len ] = arguments[ len + 1 ];
+  var children = [], len = arguments.length - 1;
+  while ( len-- > 0 ) children[ len ] = arguments[ len + 1 ];
 
-  var parentEl = getEl(parent);
+  var parentEl = _getEl(parent);
   var current = traverse(parent, children, parentEl.firstChild);
 
   while (current) {
@@ -412,13 +412,13 @@ var setChildren = function (parent) {
   }
 };
 
-function traverse (parent, children, _current) {
+var traverse = function (parent, children, _current) {
   var current = _current;
 
   var childEls = new Array(children.length);
 
   for (var i = 0; i < children.length; i++) {
-    childEls[i] = children[i] && getEl(children[i]);
+    childEls[i] = children[i] && _getEl(children[i]);
   }
 
   for (var i$1 = 0; i$1 < children.length; i$1++) {
@@ -435,7 +435,7 @@ function traverse (parent, children, _current) {
       continue;
     }
 
-    if (isNode(childEl)) {
+    if (_isNode(childEl)) {
       var next = current && current.nextSibling;
       var exists = child.__redom_index != null;
       var replace = exists && next === childEls[i$1 + 1];
@@ -455,7 +455,7 @@ function traverse (parent, children, _current) {
   }
 
   return current;
-}
+};
 
 var propKey = function (key) { return function (item) { return item[key]; }; };
 
@@ -477,9 +477,9 @@ var ListPool = function ListPool (View, key, initData) {
 };
 ListPool.prototype.update = function update (data, context) {
   var ref = this;
-  var View = ref.View;
-  var key = ref.key;
-  var initData = ref.initData;
+    var View = ref.View;
+    var key = ref.key;
+    var initData = ref.initData;
   var keySet = key != null;
 
   var oldLookup = this.lookup;
@@ -503,7 +503,7 @@ ListPool.prototype.update = function update (data, context) {
     }
     view.update && view.update(item, i, data, context);
 
-    var el = getEl(view.el);
+    var el = _getEl(view.el);
 
     el.__redom_view = view;
     newViews[i] = view;
@@ -516,6 +516,8 @@ ListPool.prototype.update = function update (data, context) {
   this.lookup = newLookup;
 };
 
+function _ensureEl (parent) { return typeof parent === 'string' ? html(parent) : _getEl(parent); }
+
 var list = function (parent, View, key, initData) {
   return new List(parent, View, key, initData);
 };
@@ -526,21 +528,21 @@ var List = function List (parent, View, key, initData) {
   this.initData = initData;
   this.views = [];
   this.pool = new ListPool(View, key, initData);
-  this.el = ensureEl(parent);
+  this.el = _ensureEl(parent);
   this.keySet = key != null;
 };
 List.prototype.update = function update (data, context) {
-  if (data === void 0) data = [];
+    if ( data === void 0 ) data = [];
 
   var ref = this;
-  var keySet = ref.keySet;
+    var keySet = ref.keySet;
   var oldViews = this.views;
 
   this.pool.update(data, context);
 
   var ref$1 = this.pool;
-  var views = ref$1.views;
-  var lookup = ref$1.lookup;
+    var views = ref$1.views;
+    var lookup = ref$1.lookup;
 
   if (keySet) {
     for (var i = 0; i < oldViews.length; i++) {
@@ -612,7 +614,7 @@ Place.prototype.update = function update (visible, data) {
       var View = this._View;
       var view = new View(this._initData);
 
-      this.el = getEl(view);
+      this.el = _getEl(view);
       this.view = view;
 
       mount(parentNode, view, placeholder);
@@ -645,7 +647,7 @@ var router = function (parent, Views, initData) {
 };
 
 var Router = function Router (parent, Views, initData) {
-  this.el = ensureEl(parent);
+  this.el = _ensureEl(parent);
   this.Views = Views;
   this.initData = initData;
 };
@@ -669,8 +671,8 @@ var svgCache = {};
 var memoizeSVG = function (query) { return svgCache[query] || (svgCache[query] = createElement(query, ns)); };
 
 var svg = function (query) {
-  var args = []; var len = arguments.length - 1;
-  while (len-- > 0) args[ len ] = arguments[ len + 1 ];
+  var args = [], len = arguments.length - 1;
+  while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
   var element;
 
@@ -678,24 +680,22 @@ var svg = function (query) {
 
   if (type === 'string') {
     element = memoizeSVG(query).cloneNode(false);
-  } else if (isNode(query)) {
+  } else if (_isNode(query)) {
     element = query.cloneNode(false);
   } else if (type === 'function') {
     var Query = query;
-    element = new (Function.prototype.bind.apply(Query, [ null ].concat(args)))();
+    element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
   } else {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(getEl(element), args);
+  _parseArguments(_getEl(element), args);
 
   return element;
 };
 
 svg.extend = function (query) {
-  var clone = memoizeSVG(query);
-
-  return svg.bind(this, clone);
+  return svg.bind(svg, memoizeSVG(query));
 };
 
 svg.ns = ns;

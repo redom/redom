@@ -1,5 +1,7 @@
 import { createElement } from './create-element.js';
-import { parseArguments, isNode, getEl } from './util.js';
+import _parseArguments from './util/_parseArguments.js';
+import _isNode from './util/_isNode.js';
+import _getEl from './util/_getEl.js';
 
 const ns = 'http://www.w3.org/2000/svg';
 
@@ -14,7 +16,7 @@ export const svg = (query, ...args) => {
 
   if (type === 'string') {
     element = memoizeSVG(query).cloneNode(false);
-  } else if (isNode(query)) {
+  } else if (_isNode(query)) {
     element = query.cloneNode(false);
   } else if (type === 'function') {
     const Query = query;
@@ -23,7 +25,7 @@ export const svg = (query, ...args) => {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(getEl(element), args);
+  _parseArguments(_getEl(element), args);
 
   return element;
 };

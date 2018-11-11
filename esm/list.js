@@ -1,7 +1,7 @@
 import { setChildren } from './setchildren.js';
-import { ensureEl } from './util.js';
 import { unmount } from './unmount.js';
 import { ListPool } from './listpool.js';
+import _ensureEl from './util/_ensureEl.js';
 
 export const list = (parent, View, key, initData) => {
   return new List(parent, View, key, initData);
@@ -14,7 +14,7 @@ export class List {
     this.initData = initData;
     this.views = [];
     this.pool = new ListPool(View, key, initData);
-    this.el = ensureEl(parent);
+    this.el = _ensureEl(parent);
     this.keySet = key != null;
   }
   update (data = [], context) {

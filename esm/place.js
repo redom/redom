@@ -3,7 +3,7 @@
 import { text } from './text.js';
 import { mount } from './mount.js';
 import { unmount } from './unmount.js';
-import { getEl } from './util.js';
+import _getEl from './util/_getEl.js';
 
 export const place = (View, initData) => {
   return new Place(View, initData);
@@ -42,7 +42,7 @@ export class Place {
         const View = this._View;
         const view = new View(this._initData);
 
-        this.el = getEl(view);
+        this.el = _getEl(view);
         this.view = view;
 
         mount(parentNode, view, placeholder);
