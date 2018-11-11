@@ -29,7 +29,7 @@ export const svg = (query, ...args) => {
 };
 
 svg.extend = (query) => {
-  return svg.bind(this, memoizeSVG(query));
+  return svg.bind(svg, memoizeSVG(query));
 };
 
 svg.ns = ns;

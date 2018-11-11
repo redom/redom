@@ -27,7 +27,7 @@ export const html = (query, ...args) => {
 };
 
 html.extend = (query, ...args) => {
-  return html.bind(this, memoizeHTML(query), ...args);
+  return html.bind(html, memoizeHTML(query), ...args);
 };
 
 export const el = html;
