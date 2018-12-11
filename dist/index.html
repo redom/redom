@@ -62,6 +62,14 @@ el('h1', 'Hello RE:DOM!');
 &lt;/script&gt;</code></pre>
       <pre><code class="language-markup">&lt;h1&gt;Hello modules!&lt;/h1&gt;</code></pre>
 
+      <h3>You can even use plain old ES5</h3>
+      <pre><code class="language-html">&lt;script src='https://redom.js.org/redom.min.js'&gt;&lt;/script&gt;
+&lt;script&gt
+    var element = redom.el('h1', 'Hello ES5!');
+    redom.mount(document.body, element);
+&lt;/script&gt;</code></pre>
+      <pre><code class="language-markup">&lt;h1&gt;Hello ES5!&lt;/h1&gt;</code></pre>
+      
       <h3>Add attributes</h3>
       <pre><code class="language-js">import { el, mount } from 'redom';
 
