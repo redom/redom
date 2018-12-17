@@ -1,8 +1,8 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.redom = {})));
-}(this, (function (exports) { 'use strict';
+  factory(global.redom = {});
+}(typeof self !== 'undefined' ? self : this, function (exports) { 'use strict';
 
   var HASH = '#'.charCodeAt(0);
   var DOT = '.'.charCodeAt(0);
@@ -726,4 +726,4 @@
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
