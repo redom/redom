@@ -586,43 +586,6 @@ this.list = list('tr', Td);
 this.el = this.list.el;
 ```
 
-## ListPool
-Sometimes you need more flexible lists. Luckily there's `ListPool(View, key, initData)`
-
-```js
-import { el, listPool, setChildren, mount } from 'redom';
-
-class Item {
-  constructor (name) {
-    this.el = el('li', name);
-    this.update(name);
-  }
-  update (name) {
-    this.el.textContent = name;
-  }
-}
-
-class GroceryList {
-  constructor () {
-    this.el = el('ul',
-      this.milk = new Item('Milk')
-    );
-    this.others = listPool(Item)
-  }
-  update (items) {
-    this.others.update(items);
-    setChildren(this.el, this.milk, this.others.views);
-  }
-}
-
-const groceryList = new GroceryList();
-
-mount(document.body, groceryList);
-
-setTimeout(() => {
-  groceryList.update(['Bread', 'Butter', 'Ham']);
-}, 1000);
-```
 ## Place
 Sometimes you might need to create/destroy a component while reserving it's place. That's when [`place(View, initData)`](https://github.com/redom/redom/blob/master/esm/place.js) come in handy!
 
