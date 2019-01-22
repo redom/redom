@@ -652,7 +652,7 @@ The example will:
 - call all defined [lifecycle events](#component-lifecycle)
 
 ## More examples
-You can find more examples on [RE:DOM website](https://redom.js.org)!
+You can find more examples on the [RE:DOM website](https://redom.js.org)!
 
 ## Support / feedback
 You're welcome to join  [#redom](https://koodiklinikka.slack.com/messages/redom/) @ [koodiklinikka.slack.com](koodiklinikka.slack.com) (get invitation by entering your email at [koodiklinikka.fi](https://koodiklinikka.fi)). If you have any questions / feedback, you can also raise an issue on [GitHub](https://github.com/redom/redom).
