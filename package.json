@@ -61,7 +61,7 @@
     "semistandard": "~13.0.1",
     "tape": "^4.9.2",
     "tape-run": "^5.0.0",
-    "terser": "~3.14.1"
+    "terser": "~3.16.1"
   },
   "dependencies": {
     "opencollective": "^1.0.3"
