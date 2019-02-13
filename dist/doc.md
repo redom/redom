@@ -11,7 +11,7 @@ It's also easy to create __reusable components__ with RE:DOM.
 Another great benefit is, that you can use just __pure JavaScript__, so no complicated templating languages to learn and hassle with.
 
 ### Browser support
-Only if you use `el.extend`, `svg.extend` or `list.extend`, you'll need at least IE9. All other features should work even in IE6. So for the most parts basically almost every browser out there is supported.
+Only if you use `el.extend()`, `svg.extend()` or `list.extend()`, you'll need at least IE9. All other features should work even in IE6. So for the most parts basically almost every browser out there is supported.
 
 ## Installing
 There's many ways to use RE:DOM.
@@ -56,9 +56,9 @@ You can install [RE:DOM dev tools for Chrome](https://github.com/redom/redom-dev
 
 ## Elements
 
-`el` (actually [alias](#alias) for [`html`](https://github.com/redom/redom/blob/master/esm/html.js)) is a helper for `document.createElement` with couple of differences.
+`el()` (actually an [alias](#alias) for [`html()`](https://github.com/redom/redom/blob/master/esm/html.js)) is a helper for `document.createElement()` with a couple of differences.
 
-The basic idea is to simply create elements with `el` and mount them with `mount`, almost like you would do with plain JavaScript:
+The basic idea is to simply create elements with `el()` and mount them with `mount()`, almost like you would do with plain JavaScript:
 ```js
 import { el, mount } from 'redom';
 
@@ -73,7 +73,7 @@ mount(document.body, hello);
 ```
 
 ### Text reference
-String and Number arguments (after the query) generate text nodes. You can also use the [`text`](https://github.com/redom/redom/blob/master/esm/text.js) helper, which will return a reference to the text node:
+String and Number arguments (after the query) generate text nodes. You can also use the [`text()`](https://github.com/redom/redom/blob/master/esm/text.js) helper, which will return a reference to the text node:
 ```js
 import { text, mount } from 'redom';
 
@@ -197,7 +197,7 @@ el('a',
 ```
 
 ### Alias
-You can use `el` or `html`:
+You can use `el()` or `html()`:
 
 ```js
 import { el, html } from 'redom';
@@ -211,7 +211,7 @@ html('div')
 ```
 
 ### SVG
-`el` and `html` only create HTML elements. If you want to create a SVG element, you must use [`svg(query)`](https://github.com/redom/redom/blob/master/esm/svg.js):
+`el()` and `html()` only create HTML elements. If you want to create a SVG element, you must use [`svg(query)`](https://github.com/redom/redom/blob/master/esm/svg.js):
 ```js
 import { svg, mount } from 'redom';
 
@@ -230,12 +230,12 @@ mount(document.body, drawing);
 ```
 
 ## Mounting
-Please use `mount`/`unmount`/`setChildren` every time you need to mount/unmount elements inside a RE:DOM app. These functions will trigger lifecycle events, add references to components etc.
+Please use `mount()`/`unmount()`/`setChildren()` every time you need to mount/unmount elements inside a RE:DOM app. These functions will trigger lifecycle events, add references to components etc.
 
 ### Mount
-You can mount elements/components with [`mount(parent, child, [before])`](https://github.com/redom/redom/blob/master/esm/mount.js). If you define the third parameter, it works like `insertBefore` and otherwise it's like `appendChild`.
+You can mount elements/components with [`mount(parent, child, /*opt.*/ before, /*opt.*/ replace)`](https://github.com/redom/redom/blob/master/esm/mount.js). If you omit the optional arguments, it works like [`appendChild()`](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild). If you pass a `before` value, it works like [`insertBefore()`](https://developer.mozilla.org/en-US/docs/Web/API/Node/insertBefore). If you, additionally, pass `true` as the `replace` argument, it works like [`replaceChild()`](https://developer.mozilla.org/en-US/docs/Web/API/Node/replaceChild) (in this case, the name `before` can be viewed in a chronological manner).
 
-Mount will trigger the `onmount` [lifecycle event](#component-lifecycle) the first time you mount a child. If you mount the same child again to the same parent, `onremount` gets called. If you mount it to another place, `onunmount` and `onmount` get called. Read more about lifecycle events [here](#component-lifecycle).
+The first time you mount a child, the `onmount` [lifecycle event](#component-lifecycle) will be triggered. If you mount the same child again to the same parent, `onremount` will be triggered. If you mount it to another place, `onunmount` and `onmount` will be triggered. Read more about lifecycle events [here](#component-lifecycle).
 
 ```js
 import { el, mount } from 'redom';
@@ -247,6 +247,10 @@ mount(document.body, hello);
 
 // insert before the first element:
 mount(document.body, hello, document.body.firstChild);
+
+// replace an existing element:
+const revamped = el('h1', 'Revamped!');
+mount(document.body, hello, revamped, true);
 ```
 
 ### Unmount
@@ -257,7 +261,7 @@ unmount(document.body, hello);
 ```
 
 ### Set children
-RE:DOM uses [`setChildren(parent, ...children)`](https://github.com/redom/redom/blob/master/esm/setchildren.js) under the hood for [lists](#lists). When you call `setChildren`, RE:DOM will add/reorder/remove elements/components automatically by reference:
+RE:DOM uses [`setChildren(parent, ...children)`](https://github.com/redom/redom/blob/master/esm/setchildren.js) under the hood for [lists](#lists). When you call `setChildren()`, RE:DOM will add/reorder/remove elements/components automatically by reference:
 ```js
 import { el, setChildren } from 'redom';
 
@@ -352,9 +356,11 @@ class Image {
 ### Component lifecycle
 RE:DOM supports true lifecycle events. Three events are defined: `onmount`, `onremount` and `onunmount`.
 
-* First time you mount the element, `onmount` gets called.
-* If you mount the same element again to the same parent, `onremount` gets called.
-* If you move an element from a parent to another parent, `onunmount` gets called.
+* The first time you mount an element to a specific parent, `onmount` will be triggered.
+* If you mount an element again to the same parent, `onremount` will be triggered.
+* If you unmount an element or move it from one parent to another, `onunmount` will be triggered.
+
+This means that `onunmount` and `onmount` will be triggered in succession when moving an element from one parent to another.
 
 ```js
 import { el, mount } from 'redom';
@@ -414,7 +420,7 @@ unmounted Hello
 When you have dynamic data, it's not that easy to manually keep the elements and the data in sync.
 That's when the [`list(parent, View, key, initData)`](https://github.com/redom/redom/blob/master/esm/list.js) helper comes to rescue.
 
-To use `list`, just define a parent node and component:
+To use `list()`, just define a parent node and component:
 ```js
 import { el, list, mount } from 'redom';
 
@@ -436,12 +442,12 @@ ul.update([2, 2, 4]);
 ```
 
 ### Item update parameters
-`Item.update` will be called with several parameters:
+`Item.update()` will be called with several parameters:
 
-1. data: data of this item
-2. index: index of this item in the items array
-3. items: data of all items
-4. context: contextual data forwarded from the second `List.update` parameter
+1. `data` &mdash; data of this item
+2. `index` &mdash; index of this item in the items array
+3. `items` &mdash; data of all items
+4. `context` &mdash; contextual data forwarded from the second `List.update()` parameter
 
 ```js
 import { el, list, mount } from 'redom';
@@ -465,19 +471,19 @@ ul.update([1, 2, 3], { colors: { accent: 'red' } });
 
 ### List lifecycle
 
-When you call `List.update`, the list will automatically:
+When you call `List.update()`, the list will automatically:
 
 - Create new components for new items
 - Mount new components in the right place
 - Reorder moved items (remount)
 - Remove deleted items
 - Trigger any [lifecycle](#component-lifecycle) events
-- Call `.update` for all components, except removed ones
+- Call `.update()` for all components, except removed ones
 
 ### Keyed list
-Normally `list` will update by index, so it only adds/removes the last item.
+Normally `list()` will update by index, so it only adds/removes the last item.
 
-If you want to define a key, you can do that by adding a third parameter to the `list`. With key, the list will automatically insert/reorder/remove elements by that key of each object in the list.
+If you want to define a key, you can do that by adding a third parameter to `list()`. With a key, the list will automatically insert/reorder/remove elements by that key of each object in the list.
 
 ```js
 import { el, list, mount } from 'redom';
@@ -641,12 +647,12 @@ The example will:
 - create a `Home` component
 - update it with `data`
 - remove it
-- create a `About` component
+- create an `About` component
 - update it with `data`
 - call all defined [lifecycle events](#component-lifecycle)
 
 ## More examples
-You can find more examples on [RE:DOM website](https://redom.js.org)!
+You can find more examples on the [RE:DOM website](https://redom.js.org)!
 
 ## Support / feedback
 You're welcome to join  [#redom](https://koodiklinikka.slack.com/messages/redom/) @ [koodiklinikka.slack.com](koodiklinikka.slack.com) (get invitation by entering your email at [koodiklinikka.fi](https://koodiklinikka.fi)). If you have any questions / feedback, you can also raise an issue on [GitHub](https://github.com/redom/redom).
