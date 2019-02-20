@@ -219,7 +219,8 @@ const drawing = svg('svg',
   svg('symbol', { id: 'box', viewBox: '0 0 100 100' },
     svg('rect', { x: 25, y: 25, width: 50, height: 50 })
   ),
-  svg('circle', { r: 50, cx: 25, cy: 25 })
+  svg('circle', { r: 50, cx: 25, cy: 25 }),
+  svg('use', { xlink: { href: '#box' } })
 );
 
 mount(document.body, drawing);
