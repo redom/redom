@@ -258,7 +258,7 @@ mount(document.body, hello, document.body.firstChild);
 
 // replace an existing element:
 const revamped = el('h1', 'Revamped!');
-mount(document.body, hello, revamped, true);
+mount(document.body, revamped, hello, true);
 ```
 
 ### Unmount
