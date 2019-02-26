@@ -216,7 +216,11 @@ html('div')
 import { svg, mount } from 'redom';
 
 const drawing = svg('svg',
-  svg('circle', { r: 50, cx: 25, cy: 25 })
+  svg('symbol', { id: 'box', viewBox: '0 0 100 100' },
+    svg('rect', { x: 25, y: 25, width: 50, height: 50 })
+  ),
+  svg('circle', { r: 50, cx: 25, cy: 25 }),
+  svg('use', { xlink: { href: '#box' } })
 );
 
 mount(document.body, drawing);
@@ -224,7 +228,11 @@ mount(document.body, drawing);
 ```html
 <body>
   <svg>
+    <symbol id="box" viewBox="0 0 100 100">
+      <rect x="25" y="25" width="50" height="50"></rect>
+    </symbol>
     <circle r="50" cx="25" cy="25"></circle>
+    <use xlink:href="#box"></use>
   </svg>
 </body>
 ```

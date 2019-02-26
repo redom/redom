@@ -155,13 +155,21 @@ html(&#39;div&#39;)</code></pre>
       <pre><code class="language-js">import { svg, mount } from &#39;redom&#39;;
 
 const drawing = svg(&#39;svg&#39;,
-  svg(&#39;circle&#39;, { r: 50, cx: 25, cy: 25 })
+  svg(&#39;symbol&#39;, { id: &#39;box&#39;, viewBox: &#39;0 0 100 100&#39; },
+    svg(&#39;rect&#39;, { x: 25, y: 25, width: 50, height: 50 })
+  ),
+  svg(&#39;circle&#39;, { r: 50, cx: 25, cy: 25 }),
+  svg(&#39;use&#39;, { xlink: { href: &#39;#box&#39; } })
 );
 
 mount(document.body, drawing);</code></pre>
       <pre><code class="language-html">&lt;body&gt;
   &lt;svg&gt;
+    &lt;symbol id=&quot;box&quot; viewBox=&quot;0 0 100 100&quot;&gt;
+      &lt;rect x=&quot;25&quot; y=&quot;25&quot; width=&quot;50&quot; height=&quot;50&quot;&gt;&lt;/rect&gt;
+    &lt;/symbol&gt;
     &lt;circle r=&quot;50&quot; cx=&quot;25&quot; cy=&quot;25&quot;&gt;&lt;/circle&gt;
+    &lt;use xlink:href=&quot;#box&quot;&gt;&lt;/use&gt;
   &lt;/svg&gt;
 &lt;/body&gt;</code></pre>
       <h2 id="mounting">Mounting</h2>
