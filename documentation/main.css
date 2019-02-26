@@ -13,9 +13,16 @@ h1 {
 }
 
 h1, h2 {
-  font-weight: 900;
   margin-top: 6rem;
   margin-bottom: 3rem;
+}
+
+h1 {
+  font-weight: 900;
+}
+
+h2 {
+  font-weight: 800;
 }
 
 h3, h4 {
