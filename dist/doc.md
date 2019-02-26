@@ -557,7 +557,7 @@ class Tr {
   }
 }
 
-const table = el('table', Tr);
+const table = list('table', Tr);
 
 mount(document.body, table);
 ```
@@ -582,7 +582,7 @@ class Tr {
     this.list.update(data);
   }
 }
-const table = el('table', Tr);
+const table = list('table', Tr);
 
 mount(document.body, table);
 ```
