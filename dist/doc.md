@@ -14,7 +14,7 @@ Another great benefit is, that you can use just __pure JavaScript__, so no compl
 Only if you use `el.extend()`, `svg.extend()` or `list.extend()`, you'll need at least IE9. All other features should work even in IE6. So for the most parts basically almost every browser out there is supported.
 
 ## Installing
-There's many ways to use RE:DOM.
+There are many ways to use RE:DOM.
 
 ### npm
 You can install RE:DOM from npm by calling:
