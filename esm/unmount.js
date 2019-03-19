@@ -1,7 +1,7 @@
 import { getEl } from './util.js';
 import { trigger } from './mount.js';
 
-export const unmount = (parent, child) => {
+export function unmount (parent, child) {
   const parentEl = getEl(parent);
   const childEl = getEl(child);
 
@@ -17,9 +17,9 @@ export const unmount = (parent, child) => {
   }
 
   return child;
-};
+}
 
-export const doUnmount = (child, childEl, parentEl) => {
+export function doUnmount (child, childEl, parentEl) {
   const hooks = childEl.__redom_lifecycle;
 
   if (hooksAreEmpty(hooks)) {
@@ -48,9 +48,9 @@ export const doUnmount = (child, childEl, parentEl) => {
 
     traverse = traverse.parentNode;
   }
-};
+}
 
-const hooksAreEmpty = (hooks) => {
+function hooksAreEmpty (hooks) {
   if (hooks == null) {
     return true;
   }
@@ -60,4 +60,4 @@ const hooksAreEmpty = (hooks) => {
     }
   }
   return true;
-};
+}

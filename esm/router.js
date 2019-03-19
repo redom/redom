@@ -1,9 +1,9 @@
 import { ensureEl } from './util.js';
 import { setChildren } from './setchildren.js';
 
-export const router = (parent, Views, initData) => {
+export function router (parent, Views, initData) {
   return new Router(parent, Views, initData);
-};
+}
 
 export class Router {
   constructor (parent, Views, initData) {

@@ -52,7 +52,7 @@ var parseQuery = function (query) {
   return { tag: tag, id: id, className: className };
 };
 
-var createElement = function (query, ns) {
+function createElement (query, ns) {
   var ref = parseQuery(query);
   var tag = ref.tag;
   var id = ref.id;
@@ -72,7 +72,7 @@ var createElement = function (query, ns) {
   }
 
   return element;
-};
+}
 
 var unmount = function (parent, child) {
   var parentEl = getEl(parent);
@@ -358,9 +358,7 @@ var isNode = function (a) { return a && a.nodeType; };
 
 var htmlCache = {};
 
-var memoizeHTML = function (query) { return htmlCache[query] || (htmlCache[query] = createElement(query)); };
-
-var html = function (query) {
+function html (query) {
   var args = [], len = arguments.length - 1;
   while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
@@ -382,9 +380,12 @@ var html = function (query) {
   parseArguments(getEl(element), args);
 
   return element;
-};
+}
 
-html.extend = function (query) {
+var el = html;
+var h = html;
+
+html.extend = function extendHtml (query) {
   var args = [], len = arguments.length - 1;
   while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
@@ -393,8 +394,9 @@ html.extend = function (query) {
   return html.bind.apply(html, [ this, clone ].concat( args ));
 };
 
-var el = html;
-var h = html;
+function memoizeHTML (query) {
+  return htmlCache[query] || (htmlCache[query] = createElement(query));
+}
 
 var setChildren = function (parent) {
   var children = [], len = arguments.length - 1;

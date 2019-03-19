@@ -5,9 +5,9 @@ import { mount } from './mount.js';
 import { unmount } from './unmount.js';
 import { getEl } from './util.js';
 
-export const place = (View, initData) => {
+export function place (View, initData) {
   return new Place(View, initData);
-};
+}
 
 export class Place {
   constructor (View, initData) {

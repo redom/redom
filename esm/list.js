@@ -3,9 +3,9 @@ import { ensureEl } from './util.js';
 import { unmount } from './unmount.js';
 import { ListPool } from './listpool.js';
 
-export const list = (parent, View, key, initData) => {
+export function list (parent, View, key, initData) {
   return new List(parent, View, key, initData);
-};
+}
 
 export class List {
   constructor (parent, View, key, initData) {
@@ -52,7 +52,7 @@ export class List {
   }
 }
 
-List.extend = (parent, View, key, initData) => {
+List.extend = function extendList (parent, View, key, initData) {
   return List.bind(List, parent, View, key, initData);
 };
 

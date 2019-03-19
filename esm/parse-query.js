@@ -5,7 +5,7 @@ const TAG_NAME = 0;
 const ID = 1;
 const CLASS_NAME = 2;
 
-export const parseQuery = (query) => {
+export function parseQuery (query) {
   let tag = null;
   let id = null;
   let className = null;
@@ -46,4 +46,4 @@ export const parseQuery = (query) => {
   }
 
   return { tag, id, className };
-};
+}

@@ -5,7 +5,7 @@ import { getEl } from './util.js';
 
 const xlinkns = 'http://www.w3.org/1999/xlink';
 
-export const setAttr = (view, arg1, arg2) => {
+export function setAttr (view, arg1, arg2) {
   const el = getEl(view);
   let isSVG = el instanceof SVGElement;
 
@@ -32,7 +32,7 @@ export const setAttr = (view, arg1, arg2) => {
       setAttr(el, key, arg1[key]);
     }
   }
-};
+}
 
 function setXlink (el, obj) {
   for (const key in obj) {

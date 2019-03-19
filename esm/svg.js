@@ -5,9 +5,7 @@ const ns = 'http://www.w3.org/2000/svg';
 
 const svgCache = {};
 
-const memoizeSVG = query => svgCache[query] || (svgCache[query] = createElement(query, ns));
-
-export const svg = (query, ...args) => {
+export function svg (query, ...args) {
   let element;
 
   let type = typeof query;
@@ -26,9 +24,11 @@ export const svg = (query, ...args) => {
   parseArguments(getEl(element), args);
 
   return element;
-};
+}
 
-svg.extend = function (query) {
+export const s = svg;
+
+svg.extend = function extendSvg (query) {
   const clone = memoizeSVG(query);
 
   return svg.bind(this, clone);
@@ -36,4 +36,6 @@ svg.extend = function (query) {
 
 svg.ns = ns;
 
-export const s = svg;
+function memoizeSVG (query) {
+  return svgCache[query] || (svgCache[query] = createElement(query, ns));
+}

@@ -1,6 +1,6 @@
 import { getEl } from './util.js';
 
-export const setStyle = (view, arg1, arg2) => {
+export function setStyle (view, arg1, arg2) {
   const el = getEl(view);
 
   if (arg2 !== undefined) {
@@ -12,4 +12,4 @@ export const setStyle = (view, arg1, arg2) => {
       setStyle(el, key, arg1[key]);
     }
   }
-};
+}

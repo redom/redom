@@ -11,7 +11,7 @@
   var ID = 1;
   var CLASS_NAME = 2;
 
-  var parseQuery = function (query) {
+  function parseQuery (query) {
     var tag = null;
     var id = null;
     var className = null;
@@ -52,9 +52,9 @@
     }
 
     return { tag: tag, id: id, className: className };
-  };
+  }
 
-  var createElement = function (query, ns) {
+  function createElement (query, ns) {
     var ref = parseQuery(query);
     var tag = ref.tag;
     var id = ref.id;
@@ -74,9 +74,9 @@
     }
 
     return element;
-  };
+  }
 
-  var unmount = function (parent, child) {
+  function unmount (parent, child) {
     var parentEl = getEl(parent);
     var childEl = getEl(child);
 
@@ -92,9 +92,9 @@
     }
 
     return child;
-  };
+  }
 
-  var doUnmount = function (child, childEl, parentEl) {
+  function doUnmount (child, childEl, parentEl) {
     var hooks = childEl.__redom_lifecycle;
 
     if (hooksAreEmpty(hooks)) {
@@ -123,9 +123,9 @@
 
       traverse = traverse.parentNode;
     }
-  };
+  }
 
-  var hooksAreEmpty = function (hooks) {
+  function hooksAreEmpty (hooks) {
     if (hooks == null) {
       return true;
     }
@@ -135,12 +135,12 @@
       }
     }
     return true;
-  };
+  }
 
   var hookNames = ['onmount', 'onremount', 'onunmount'];
   var shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
 
-  var mount = function (parent, child, before, replace) {
+  function mount (parent, child, before, replace) {
     var parentEl = getEl(parent);
     var childEl = getEl(child);
 
@@ -173,9 +173,46 @@
     doMount(child, childEl, parentEl, oldParent);
 
     return child;
-  };
+  }
 
-  var doMount = function (child, childEl, parentEl, oldParent) {
+  function trigger (el, eventName) {
+    if (eventName === 'onmount' || eventName === 'onremount') {
+      el.__redom_mounted = true;
+    } else if (eventName === 'onunmount') {
+      el.__redom_mounted = false;
+    }
+
+    var hooks = el.__redom_lifecycle;
+
+    if (!hooks) {
+      return;
+    }
+
+    var view = el.__redom_view;
+    var hookCount = 0;
+
+    view && view[eventName] && view[eventName]();
+
+    for (var hook in hooks) {
+      if (hook) {
+        hookCount++;
+      }
+    }
+
+    if (hookCount) {
+      var traverse = el.firstChild;
+
+      while (traverse) {
+        var next = traverse.nextSibling;
+
+        trigger(traverse, eventName);
+
+        traverse = next;
+      }
+    }
+  }
+
+  function doMount (child, childEl, parentEl, oldParent) {
     var hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
     var remount = (parentEl === oldParent);
     var hooksFound = false;
@@ -229,46 +266,9 @@
         traverse = parent;
       }
     }
-  };
+  }
 
-  var trigger = function (el, eventName) {
-    if (eventName === 'onmount' || eventName === 'onremount') {
-      el.__redom_mounted = true;
-    } else if (eventName === 'onunmount') {
-      el.__redom_mounted = false;
-    }
-
-    var hooks = el.__redom_lifecycle;
-
-    if (!hooks) {
-      return;
-    }
-
-    var view = el.__redom_view;
-    var hookCount = 0;
-
-    view && view[eventName] && view[eventName]();
-
-    for (var hook in hooks) {
-      if (hook) {
-        hookCount++;
-      }
-    }
-
-    if (hookCount) {
-      var traverse = el.firstChild;
-
-      while (traverse) {
-        var next = traverse.nextSibling;
-
-        trigger(traverse, eventName);
-
-        traverse = next;
-      }
-    }
-  };
-
-  var setStyle = function (view, arg1, arg2) {
+  function setStyle (view, arg1, arg2) {
     var el = getEl(view);
 
     if (arg2 !== undefined) {
@@ -280,13 +280,13 @@
         setStyle(el, key, arg1[key]);
       }
     }
-  };
+  }
 
   /* global SVGElement */
 
   var xlinkns = 'http://www.w3.org/1999/xlink';
 
-  var setAttr = function (view, arg1, arg2) {
+  function setAttr (view, arg1, arg2) {
     var el = getEl(view);
     var isSVG = el instanceof SVGElement;
 
@@ -313,7 +313,7 @@
         setAttr(el, key, arg1[key]);
       }
     }
-  };
+  }
 
   function setXlink (el, obj) {
     for (var key in obj) {
@@ -327,9 +327,11 @@
     }
   }
 
-  var text = function (str) { return document.createTextNode((str != null) ? str : ''); };
+  function text (str) {
+    return document.createTextNode((str != null) ? str : '');
+  }
 
-  var parseArguments = function (element, args) {
+  function parseArguments (element, args) {
     for (var i = 0, list = args; i < list.length; i += 1) {
       var arg = list[i];
 
@@ -339,7 +341,6 @@
 
       var type = typeof arg;
 
-      // support middleware
       if (type === 'function') {
         arg(element);
       } else if (type === 'string' || type === 'number') {
@@ -352,17 +353,23 @@
         setAttr(element, arg);
       }
     }
-  };
+  }
 
-  var ensureEl = function (parent) { return typeof parent === 'string' ? html(parent) : getEl(parent); };
-  var getEl = function (parent) { return (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el); };
-  var isNode = function (a) { return a && a.nodeType; };
+  function ensureEl (parent) {
+    return typeof parent === 'string' ? html(parent) : getEl(parent);
+  }
+
+  function getEl (parent) {
+    return (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el);
+  }
+
+  function isNode (arg) {
+    return arg && arg.nodeType;
+  }
 
   var htmlCache = {};
 
-  var memoizeHTML = function (query) { return htmlCache[query] || (htmlCache[query] = createElement(query)); };
-
-  var html = function (query) {
+  function html (query) {
     var args = [], len = arguments.length - 1;
     while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
@@ -384,9 +391,12 @@
     parseArguments(getEl(element), args);
 
     return element;
-  };
+  }
 
-  html.extend = function (query) {
+  var el = html;
+  var h = html;
+
+  html.extend = function extendHtml (query) {
     var args = [], len = arguments.length - 1;
     while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
@@ -395,10 +405,11 @@
     return html.bind.apply(html, [ this, clone ].concat( args ));
   };
 
-  var el = html;
-  var h = html;
+  function memoizeHTML (query) {
+    return htmlCache[query] || (htmlCache[query] = createElement(query));
+  }
 
-  var setChildren = function (parent) {
+  function setChildren (parent) {
     var children = [], len = arguments.length - 1;
     while ( len-- > 0 ) children[ len ] = arguments[ len + 1 ];
 
@@ -412,7 +423,7 @@
 
       current = next;
     }
-  };
+  }
 
   function traverse (parent, children, _current) {
     var current = _current;
@@ -459,11 +470,9 @@
     return current;
   }
 
-  var propKey = function (key) { return function (item) { return item[key]; }; };
-
-  var listPool = function (View, key, initData) {
+  function listPool (View, key, initData) {
     return new ListPool(View, key, initData);
-  };
+  }
 
   var ListPool = function ListPool (View, key, initData) {
     this.View = View;
@@ -518,9 +527,15 @@
     this.lookup = newLookup;
   };
 
-  var list = function (parent, View, key, initData) {
+  function propKey (key) {
+    return function (item) {
+      return item[key];
+    };
+  }
+
+  function list (parent, View, key, initData) {
     return new List(parent, View, key, initData);
-  };
+  }
 
   var List = function List (parent, View, key, initData) {
     this.__redom_list = true;
@@ -570,7 +585,7 @@
     this.views = views;
   };
 
-  List.extend = function (parent, View, key, initData) {
+  List.extend = function extendList (parent, View, key, initData) {
     return List.bind(List, parent, View, key, initData);
   };
 
@@ -578,9 +593,9 @@
 
   /* global Node */
 
-  var place = function (View, initData) {
+  function place (View, initData) {
     return new Place(View, initData);
-  };
+  }
 
   var Place = function Place (View, initData) {
     this.el = text('');
@@ -642,9 +657,9 @@
     this.visible = visible;
   };
 
-  var router = function (parent, Views, initData) {
+  function router (parent, Views, initData) {
     return new Router(parent, Views, initData);
-  };
+  }
 
   var Router = function Router (parent, Views, initData) {
     this.el = ensureEl(parent);
@@ -668,9 +683,7 @@
 
   var svgCache = {};
 
-  var memoizeSVG = function (query) { return svgCache[query] || (svgCache[query] = createElement(query, ns)); };
-
-  var svg = function (query) {
+  function svg (query) {
     var args = [], len = arguments.length - 1;
     while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
@@ -692,9 +705,11 @@
     parseArguments(getEl(element), args);
 
     return element;
-  };
+  }
 
-  svg.extend = function (query) {
+  var s = svg;
+
+  svg.extend = function extendSvg (query) {
     var clone = memoizeSVG(query);
 
     return svg.bind(this, clone);
@@ -702,7 +717,9 @@
 
   svg.ns = ns;
 
-  var s = svg;
+  function memoizeSVG (query) {
+    return svgCache[query] || (svgCache[query] = createElement(query, ns));
+  }
 
   exports.el = el;
   exports.h = h;

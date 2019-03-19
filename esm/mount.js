@@ -4,7 +4,7 @@ import { doUnmount } from './unmount.js';
 const hookNames = ['onmount', 'onremount', 'onunmount'];
 const shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
 
-export const mount = (parent, child, before, replace) => {
+export function mount (parent, child, before, replace) {
   const parentEl = getEl(parent);
   let childEl = getEl(child);
 
@@ -37,9 +37,46 @@ export const mount = (parent, child, before, replace) => {
   doMount(child, childEl, parentEl, oldParent);
 
   return child;
-};
+}
 
-const doMount = (child, childEl, parentEl, oldParent) => {
+export function trigger (el, eventName) {
+  if (eventName === 'onmount' || eventName === 'onremount') {
+    el.__redom_mounted = true;
+  } else if (eventName === 'onunmount') {
+    el.__redom_mounted = false;
+  }
+
+  const hooks = el.__redom_lifecycle;
+
+  if (!hooks) {
+    return;
+  }
+
+  const view = el.__redom_view;
+  let hookCount = 0;
+
+  view && view[eventName] && view[eventName]();
+
+  for (const hook in hooks) {
+    if (hook) {
+      hookCount++;
+    }
+  }
+
+  if (hookCount) {
+    let traverse = el.firstChild;
+
+    while (traverse) {
+      const next = traverse.nextSibling;
+
+      trigger(traverse, eventName);
+
+      traverse = next;
+    }
+  }
+}
+
+function doMount (child, childEl, parentEl, oldParent) {
   const hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
   const remount = (parentEl === oldParent);
   let hooksFound = false;
@@ -91,41 +128,4 @@ const doMount = (child, childEl, parentEl, oldParent) => {
       traverse = parent;
     }
   }
-};
-
-export const trigger = (el, eventName) => {
-  if (eventName === 'onmount' || eventName === 'onremount') {
-    el.__redom_mounted = true;
-  } else if (eventName === 'onunmount') {
-    el.__redom_mounted = false;
-  }
-
-  const hooks = el.__redom_lifecycle;
-
-  if (!hooks) {
-    return;
-  }
-
-  const view = el.__redom_view;
-  let hookCount = 0;
-
-  view && view[eventName] && view[eventName]();
-
-  for (const hook in hooks) {
-    if (hook) {
-      hookCount++;
-    }
-  }
-
-  if (hookCount) {
-    let traverse = el.firstChild;
-
-    while (traverse) {
-      const next = traverse.nextSibling;
-
-      trigger(traverse, eventName);
-
-      traverse = next;
-    }
-  }
-};
+}

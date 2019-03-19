@@ -1,10 +1,8 @@
 import { getEl } from './util.js';
 
-const propKey = key => item => item[key];
-
-export const listPool = (View, key, initData) => {
+export function listPool (View, key, initData) {
   return new ListPool(View, key, initData);
-};
+}
 
 export class ListPool {
   constructor (View, key, initData) {
@@ -56,4 +54,10 @@ export class ListPool {
     this.oldLookup = oldLookup;
     this.lookup = newLookup;
   }
+}
+
+function propKey (key) {
+  return function (item) {
+    return item[key];
+  };
 }
