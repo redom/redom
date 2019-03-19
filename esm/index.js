@@ -5,7 +5,7 @@ export { mount } from './mount.js';
 export { unmount } from './unmount.js';
 export { place, Place } from './place.js';
 export { router, Router } from './router.js';
-export { setAttr } from './setattr.js';
+export { setAttr, setXlink, setData } from './setattr.js';
 export { setStyle } from './setstyle.js';
 export { setChildren } from './setchildren.js';
 export { s, svg } from './svg.js';

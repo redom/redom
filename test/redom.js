@@ -269,14 +269,20 @@ function doMount (child, childEl, parentEl, oldParent) {
 function setStyle (view, arg1, arg2) {
   var el = getEl(view);
 
-  if (arg2 !== undefined) {
-    el.style[arg1] = arg2;
-  } else if (typeof arg1 === 'string') {
-    el.setAttribute('style', arg1);
-  } else {
+  if (typeof arg1 === 'object') {
     for (var key in arg1) {
-      setStyle(el, key, arg1[key]);
+      setStyleValue(el, key, arg1[key]);
     }
+  } else {
+    setStyleValue(el, arg1, arg2);
+  }
+}
+
+function setStyleValue (el, key, value) {
+  if (value == null) {
+    el.style[key] = '';
+  } else {
+    el.style[key] = value;
   }
 }
 
@@ -290,12 +296,18 @@ function setAttr (view, arg1, arg2) {
 
 function setAttrInternal (view, arg1, arg2, initial) {
   var el = getEl(view);
-  var isSVG = el instanceof SVGElement;
 
-  var isFunc = typeof arg2 === 'function';
+  var isObj = typeof arg1 === 'object';
 
-  if (arg2 != null) {
-    if (arg1 === 'style') {
+  if (isObj) {
+    for (var key in arg1) {
+      setAttrInternal(el, key, arg1[key], initial);
+    }
+  } else {
+    var isSVG = el instanceof SVGElement;
+    var isFunc = typeof arg2 === 'function';
+
+    if (arg1 === 'style' && typeof arg2 === 'object') {
       setStyle(el, arg2);
     } else if (isSVG && isFunc) {
       el[arg1] = arg2;
@@ -311,24 +323,40 @@ function setAttrInternal (view, arg1, arg2, initial) {
       if (initial && arg1 === 'class') {
         arg2 = el.className + ' ' + arg2;
       }
-      el.setAttribute(arg1, arg2);
+      if (arg2 == null) {
+        el.removeAttribute(arg1);
+      } else {
+        el.setAttribute(arg1, arg2);
+      }
+    }
+  }
+}
+
+function setXlink (el, arg1, arg2) {
+  if (typeof arg1 === 'object') {
+    for (var key in arg1) {
+      setXlink(el, key, arg1[key]);
     }
   } else {
-    for (var key in arg1) {
-      setAttrInternal(el, key, arg1[key], initial);
+    if (arg2 != null) {
+      el.setAttributeNS(xlinkns, arg1, arg2);
+    } else {
+      el.removeAttributeNS(xlinkns, arg1, arg2);
     }
   }
 }
 
-function setXlink (el, obj) {
-  for (var key in obj) {
-    el.setAttributeNS(xlinkns, key, obj[key]);
-  }
-}
-
-function setData (el, obj) {
-  for (var key in obj) {
-    el.dataset[key] = obj[key];
+function setData (el, arg1, arg2) {
+  if (typeof arg1 === 'object') {
+    for (var key in arg1) {
+      setData(el, key, arg1[key]);
+    }
+  } else {
+    if (arg2 != null) {
+      el.dataset[arg1] = arg2;
+    } else {
+      delete el.dataset[arg1];
+    }
   }
 }
 
@@ -740,6 +768,8 @@ exports.Place = Place;
 exports.router = router;
 exports.Router = Router;
 exports.setAttr = setAttr;
+exports.setXlink = setXlink;
+exports.setData = setData;
 exports.setStyle = setStyle;
 exports.setChildren = setChildren;
 exports.s = s;

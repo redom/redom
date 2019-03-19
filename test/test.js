@@ -15,7 +15,7 @@ document.createElement = function (tagName) {
 };
 
 module.exports = function (redom) {
-  var { el, html, list, listPool, place, router, svg, mount, unmount, setChildren, setAttr, setStyle, text } = redom;
+  var { el, html, list, listPool, place, router, svg, mount, unmount, setChildren, setAttr, setStyle, setXlink, setData, text } = redom;
 
   test('exports utils', function (t) {
     t.plan(2);
@@ -65,13 +65,17 @@ module.exports = function (redom) {
       var hello = el('p.hello.world', 'Hello world!');
       t.equals(hello.outerHTML, '<p class="hello world">Hello world!</p>');
     });
-    t.test('multiple class, mixed + setAttr', function (t) {
-      t.plan(2);
+    t.test('multiple class, mixed + setAttr + remove attribute', function (t) {
+      t.plan(3);
+
       var hello = el('p.hello', { class: 'world' }, 'Hello world!');
       t.equals(hello.outerHTML, '<p class="hello world">Hello world!</p>');
 
       setAttr(hello, { class: 'world' });
       t.equals(hello.outerHTML, '<p class="world">Hello world!</p>');
+
+      setAttr(hello, { class: null });
+      t.equals(hello.outerHTML, '<p>Hello world!</p>');
     });
     t.test('append text', function (t) {
       t.plan(1);
@@ -83,10 +87,14 @@ module.exports = function (redom) {
       var hello = el('p#hello', 'Hello world!');
       t.equals(hello.outerHTML, '<p id="hello">Hello world!</p>');
     });
-    t.test('styles with object', function (t) {
-      t.plan(1);
+    t.test('styles with object + remove style', function (t) {
+      t.plan(2);
+
       var hello = el('p', { style: { color: 'red', opacity: 0 } });
       t.equals(hello.outerHTML, '<p style="color: red; opacity: 0;"></p>');
+
+      setStyle(hello, 'opacity', null);
+      t.equals(hello.outerHTML, '<p style="color: red;"></p>');
     });
     t.test('styles with String', function (t) {
       t.plan(1);
@@ -141,12 +149,16 @@ module.exports = function (redom) {
       );
       t.equals(ul.outerHTML, '<ul><li>1</li><li>2</li><li>3</li></ul>');
     });
-    t.test('dataset', function (t) {
-      t.plan(1);
+    t.test('dataset + remove', function (t) {
+      t.plan(2);
 
       var p = el('p', { dataset: { a: 'test' } });
 
       t.equals(p.outerHTML, '<p data-a="test"></p>');
+
+      setData(p, 'a', null);
+
+      t.equals(p.outerHTML, '<p></p>');
     });
     t.test('middleware', function (t) {
       t.plan(1);
@@ -694,10 +706,14 @@ module.exports = function (redom) {
       t.plan(1);
       t.throws(svg, new Error('At least one argument required'));
     });
-    t.test('xlink', function (t) {
-      t.plan(1);
+    t.test('xlink + remove', function (t) {
+      t.plan(2);
+
       var use = svg('use', { xlink: { href: '#menu' } });
       t.equals(use.outerHTML, '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use>');
+
+      setXlink(use, 'href', null);
+      t.equals(use.outerHTML, '<use></use>');
     });
   });
 
