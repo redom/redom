@@ -1,5 +1,5 @@
 import { createElement } from './create-element.js';
-import { parseArguments, isNode, getEl } from './util.js';
+import { parseArgumentsInternal, isNode, getEl } from './util.js';
 
 const htmlCache = {};
 
@@ -19,7 +19,7 @@ export function html (query, ...args) {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(getEl(element), args);
+  parseArgumentsInternal(getEl(element), args, true);
 
   return element;
 }

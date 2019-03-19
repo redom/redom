@@ -1,5 +1,5 @@
 import { createElement } from './create-element.js';
-import { parseArguments, isNode, getEl } from './util.js';
+import { parseArgumentsInternal, isNode, getEl } from './util.js';
 
 const ns = 'http://www.w3.org/2000/svg';
 
@@ -21,7 +21,7 @@ export function svg (query, ...args) {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(getEl(element), args);
+  parseArgumentsInternal(getEl(element), args, true);
 
   return element;
 }

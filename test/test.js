@@ -65,6 +65,14 @@ module.exports = function (redom) {
       var hello = el('p.hello.world', 'Hello world!');
       t.equals(hello.outerHTML, '<p class="hello world">Hello world!</p>');
     });
+    t.test('multiple class, mixed + setAttr', function (t) {
+      t.plan(2);
+      var hello = el('p.hello', { class: 'world' }, 'Hello world!');
+      t.equals(hello.outerHTML, '<p class="hello world">Hello world!</p>');
+
+      setAttr(hello, { class: 'world' });
+      t.equals(hello.outerHTML, '<p class="world">Hello world!</p>');
+    });
     t.test('append text', function (t) {
       t.plan(1);
       var hello = el('p', 'Hello', ' ', 'world!');

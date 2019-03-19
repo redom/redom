@@ -281,12 +281,16 @@ function setStyle (view, arg1, arg2) {
 var xlinkns = 'http://www.w3.org/1999/xlink';
 
 function setAttr (view, arg1, arg2) {
+  setAttrInternal(view, arg1, arg2);
+}
+
+function setAttrInternal (view, arg1, arg2, initial) {
   var el = getEl(view);
   var isSVG = el instanceof SVGElement;
 
   var isFunc = typeof arg2 === 'function';
 
-  if (arg2 !== undefined) {
+  if (arg2 != null) {
     if (arg1 === 'style') {
       setStyle(el, arg2);
     } else if (isSVG && isFunc) {
@@ -300,11 +304,14 @@ function setAttr (view, arg1, arg2) {
         setXlink(el, arg2);
         return;
       }
+      if (initial && arg1 === 'class') {
+        arg2 = el.className + ' ' + arg2;
+      }
       el.setAttribute(arg1, arg2);
     }
   } else {
     for (var key in arg1) {
-      setAttr(el, key, arg1[key]);
+      setAttrInternal(el, key, arg1[key], initial);
     }
   }
 }
@@ -325,7 +332,7 @@ function text (str) {
   return document.createTextNode((str != null) ? str : '');
 }
 
-function parseArguments (element, args) {
+function parseArgumentsInternal (element, args, initial) {
   for (var i = 0, list = args; i < list.length; i += 1) {
     var arg = list[i];
 
@@ -342,9 +349,9 @@ function parseArguments (element, args) {
     } else if (isNode(getEl(arg))) {
       mount(element, arg);
     } else if (arg.length) {
-      parseArguments(element, arg);
+      parseArgumentsInternal(element, arg, initial);
     } else if (type === 'object') {
-      setAttr(element, arg);
+      setAttrInternal(element, arg, null, initial);
     }
   }
 }
@@ -382,7 +389,7 @@ function html (query) {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(getEl(element), args);
+  parseArgumentsInternal(getEl(element), args, true);
 
   return element;
 }
@@ -696,7 +703,7 @@ function svg (query) {
     throw new Error('At least one argument required');
   }
 
-  parseArguments(getEl(element), args);
+  parseArgumentsInternal(getEl(element), args, true);
 
   return element;
 }

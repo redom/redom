@@ -1,9 +1,13 @@
 import { html } from './html.js';
 import { mount } from './mount.js';
-import { setAttr } from './setattr.js';
+import { setAttrInternal } from './setattr.js';
 import { text } from './text.js';
 
 export function parseArguments (element, args) {
+  parseArgumentsInternal(element, args);
+}
+
+export function parseArgumentsInternal (element, args, initial) {
   for (const arg of args) {
     if (arg !== 0 && !arg) {
       continue;
@@ -18,9 +22,9 @@ export function parseArguments (element, args) {
     } else if (isNode(getEl(arg))) {
       mount(element, arg);
     } else if (arg.length) {
-      parseArguments(element, arg);
+      parseArgumentsInternal(element, arg, initial);
     } else if (type === 'object') {
-      setAttr(element, arg);
+      setAttrInternal(element, arg, null, initial);
     }
   }
 }
