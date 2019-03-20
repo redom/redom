@@ -160,6 +160,12 @@ module.exports = function (redom) {
 
       t.equals(p.outerHTML, '<p></p>');
     });
+    t.test('input list attribute', function (t) {
+      t.plan(1);
+
+      var input = el('input', { list: 'asd' });
+      t.equals(input.outerHTML, '<input list="asd">');
+    });
     t.test('middleware', function (t) {
       t.plan(1);
       var app = el('app',

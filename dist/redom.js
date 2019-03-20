@@ -315,7 +315,7 @@
         el[arg1] = arg2;
       } else if (arg1 === 'dataset') {
         setData(el, arg2);
-      } else if (!isSVG && (arg1 in el || isFunc)) {
+      } else if (!isSVG && (arg1 in el || isFunc) && (arg1 !== 'list')) {
         el[arg1] = arg2;
       } else {
         if (isSVG && (arg1 === 'xlink')) {
