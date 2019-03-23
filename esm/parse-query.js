@@ -1,49 +1,36 @@
-const HASH = '#'.charCodeAt(0);
-const DOT = '.'.charCodeAt(0);
-
-const TAG_NAME = 0;
-const ID = 1;
-const CLASS_NAME = 2;
-
 export function parseQuery (query) {
-  let tag = null;
-  let id = null;
-  let className = null;
-  let mode = TAG_NAME;
-  let offset = 0;
-
-  for (let i = 0; i <= query.length; i++) {
-    const char = query.charCodeAt(i);
-    const isHash = char === HASH;
-    const isDot = char === DOT;
-    const isEnd = !char;
-
-    if (isHash || isDot || isEnd) {
-      if (mode === TAG_NAME) {
-        if (i === 0) {
-          tag = 'div';
-        } else {
-          tag = query.substring(offset, i);
-        }
-      } else if (mode === ID) {
-        id = query.substring(offset, i);
-      } else {
-        if (className) {
-          className += ' ' + query.substring(offset, i);
-        } else {
-          className = query.substring(offset, i);
-        }
+  let isId = false;
+  let isClass = false;
+  let tag = '';
+  let id = '';
+  let className = '';
+  for (var i = 0; i < query.length; i++) {
+    let char = query[i];
+    if (char === '.') {
+      isClass = true;
+      isId = false;
+      if (className.length > 0) {
+        className += ' ';
       }
-
-      if (isHash) {
-        mode = ID;
-      } else if (isDot) {
-        mode = CLASS_NAME;
-      }
-
-      offset = i + 1;
+    }
+    if (char === '#') {
+      isId = true;
+      isClass = false;
+    }
+    if (isId && !isClass && char !== '#') {
+      id += char;
+    }
+    if (isClass && !isId && char !== '.') {
+      className += char;
+    }
+    if (!isId && !isClass) {
+      tag += char;
     }
   }
 
-  return { tag, id, className };
+  return {
+    tag: tag || 'div',
+    id,
+    className
+  };
 }
