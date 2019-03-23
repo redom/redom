@@ -1,51 +1,38 @@
-var HASH = '#'.charCodeAt(0);
-var DOT = '.'.charCodeAt(0);
-
-var TAG_NAME = 0;
-var ID = 1;
-var CLASS_NAME = 2;
-
 function parseQuery (query) {
-  var tag = null;
-  var id = null;
-  var className = null;
-  var mode = TAG_NAME;
-  var offset = 0;
-
-  for (var i = 0; i <= query.length; i++) {
-    var char = query.charCodeAt(i);
-    var isHash = char === HASH;
-    var isDot = char === DOT;
-    var isEnd = !char;
-
-    if (isHash || isDot || isEnd) {
-      if (mode === TAG_NAME) {
-        if (i === 0) {
-          tag = 'div';
-        } else {
-          tag = query.substring(offset, i);
-        }
-      } else if (mode === ID) {
-        id = query.substring(offset, i);
-      } else {
-        if (className) {
-          className += ' ' + query.substring(offset, i);
-        } else {
-          className = query.substring(offset, i);
-        }
+  var isId = false;
+  var isClass = false;
+  var tag = '';
+  var id = '';
+  var className = '';
+  for (var i = 0; i < query.length; i++) {
+    var char = query[i];
+    if (char === '.') {
+      isClass = true;
+      isId = false;
+      if (className.length > 0) {
+        className += ' ';
       }
-
-      if (isHash) {
-        mode = ID;
-      } else if (isDot) {
-        mode = CLASS_NAME;
-      }
-
-      offset = i + 1;
+    }
+    if (char === '#') {
+      isId = true;
+      isClass = false;
+    }
+    if (isId && !isClass && char !== '#') {
+      id += char;
+    }
+    if (isClass && !isId && char !== '.') {
+      className += char;
+    }
+    if (!isId && !isClass) {
+      tag += char;
     }
   }
 
-  return { tag: tag, id: id, className: className };
+  return {
+    tag: tag || 'div',
+    id: id,
+    className: className
+  };
 }
 
 function createElement (query, ns) {
@@ -750,4 +737,4 @@ function memoizeSVG (query) {
   return svgCache[query] || (svgCache[query] = createElement(query, ns));
 }
 
-export { el, h, html, list, List, listPool, ListPool, mount, unmount, place, Place, router, Router, setAttr, setXlink, setData, setStyle, setChildren, s, svg, text };
+export { List, ListPool, Place, Router, el, h, html, list, listPool, mount, place, router, s, setAttr, setChildren, setData, setStyle, setXlink, svg, text, unmount };

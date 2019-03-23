@@ -741,24 +741,24 @@ function memoizeSVG (query) {
   return svgCache[query] || (svgCache[query] = createElement(query, ns));
 }
 
+exports.List = List;
+exports.ListPool = ListPool;
+exports.Place = Place;
+exports.Router = Router;
 exports.el = el;
 exports.h = h;
 exports.html = html;
 exports.list = list;
-exports.List = List;
 exports.listPool = listPool;
-exports.ListPool = ListPool;
 exports.mount = mount;
-exports.unmount = unmount;
 exports.place = place;
-exports.Place = Place;
 exports.router = router;
-exports.Router = Router;
+exports.s = s;
 exports.setAttr = setAttr;
-exports.setXlink = setXlink;
+exports.setChildren = setChildren;
 exports.setData = setData;
 exports.setStyle = setStyle;
-exports.setChildren = setChildren;
-exports.s = s;
+exports.setXlink = setXlink;
 exports.svg = svg;
 exports.text = text;
+exports.unmount = unmount;
