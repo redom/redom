@@ -1,36 +1,35 @@
-export function parseQuery (query) {
-  let isId = false;
-  let isClass = false;
-  let tag = '';
-  let id = '';
-  let className = '';
-  for (var i = 0; i < query.length; i++) {
-    let char = query[i];
-    if (char === '.') {
-      isClass = true;
-      isId = false;
-      if (className.length > 0) {
-        className += ' ';
+export function parseQuery(query) {
+  let isId = false, isClass = false , tag = '', id = '', className = '';
+  [...query].forEach(char => {
+      switch (char) {
+          case '.':
+              isClass = true;
+              isId = false;
+              className = className.length > 0 ? (className + ' ') : className;
+              if (char !== '.') {
+                  className += char;
+                }
+              break;
+          case '#': 
+              isId = true;
+              isClass = false;
+              break;
+          default:
+                if(isId && !isClass) {
+                    id += char;
+                }
+                if(isClass && !isId) {
+                    className += char;
+                }
+                if (!isId && !isClass) {
+                  tag += char;
+                }
+              break;
       }
-    }
-    if (char === '#') {
-      isId = true;
-      isClass = false;
-    }
-    if (isId && !isClass && char !== '#') {
-      id += char;
-    }
-    if (isClass && !isId && char !== '.') {
-      className += char;
-    }
-    if (!isId && !isClass) {
-      tag += char;
-    }
-  }
-
+  });
   return {
-    tag: tag || 'div',
-    id,
-    className
-  };
+      tag: tag || 'div',
+      id,
+      className
+    };
 }

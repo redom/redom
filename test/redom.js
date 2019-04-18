@@ -2,41 +2,40 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function parseQuery (query) {
-  var isId = false;
-  var isClass = false;
-  var tag = '';
-  var id = '';
-  var className = '';
-  for (var i = 0; i < query.length; i++) {
-    var char = query[i];
-    if (char === '.') {
-      isClass = true;
-      isId = false;
-      if (className.length > 0) {
-        className += ' ';
+function parseQuery(query) {
+  var isId = false, isClass = false , tag = '', id = '', className = '';
+  [].concat( query ).forEach(function (char) {
+      switch (char) {
+          case '.':
+              isClass = true;
+              isId = false;
+              className = className.length > 0 ? (className + ' ') : className;
+              if (char !== '.') {
+                  className += char;
+                }
+              break;
+          case '#': 
+              isId = true;
+              isClass = false;
+              break;
+          default:
+                if(isId && !isClass) {
+                    id += char;
+                }
+                if(isClass && !isId) {
+                    className += char;
+                }
+                if (!isId && !isClass) {
+                  tag += char;
+                }
+              break;
       }
-    }
-    if (char === '#') {
-      isId = true;
-      isClass = false;
-    }
-    if (isId && !isClass && char !== '#') {
-      id += char;
-    }
-    if (isClass && !isId && char !== '.') {
-      className += char;
-    }
-    if (!isId && !isClass) {
-      tag += char;
-    }
-  }
-
+  });
   return {
-    tag: tag || 'div',
-    id: id,
-    className: className
-  };
+      tag: tag || 'div',
+      id: id,
+      className: className
+    };
 }
 
 function createElement (query, ns) {
