@@ -5,13 +5,14 @@ export function listPool (View, key, initData) {
 }
 
 export class ListPool {
-  constructor (View, key, initData) {
+  constructor (View, key, initData, functional) {
     this.View = View;
     this.initData = initData;
     this.oldLookup = {};
     this.lookup = {};
     this.oldViews = [];
     this.views = [];
+    this.functional = functional;
 
     if (key != null) {
       this.key = typeof key === 'function' ? key : propKey(key);
@@ -30,16 +31,24 @@ export class ListPool {
     for (let i = 0; i < data.length; i++) {
       const item = data[i];
       let view;
+      let id;
 
       if (keySet) {
-        const id = key(item);
+        id = key(item);
+        view = oldLookup[id];
+      } else {
+        view = oldViews[i];
+      }
 
-        view = oldLookup[id] || new View(initData, item, i, data);
+      if (!view) {
+        view = (this.functional) ? View(initData, item, i, data) : new View(initData, item, i, data);
+      }
+
+      if (id != null) {
         newLookup[id] = view;
         view.__redom_id = id;
-      } else {
-        view = oldViews[i] || new View(initData, item, i, data);
       }
+
       view.update && view.update(item, i, data, context);
 
       const el = getEl(view.el);

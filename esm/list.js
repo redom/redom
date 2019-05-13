@@ -3,17 +3,17 @@ import { ensureEl } from './util.js';
 import { unmount } from './unmount.js';
 import { ListPool } from './listpool.js';
 
-export function list (parent, View, key, initData) {
-  return new List(parent, View, key, initData);
+export function list (parent, View, key, initData, functional) {
+  return new List(parent, View, key, initData, functional);
 }
 
 export class List {
-  constructor (parent, View, key, initData) {
+  constructor (parent, View, key, initData, functional) {
     this.__redom_list = true;
     this.View = View;
     this.initData = initData;
     this.views = [];
-    this.pool = new ListPool(View, key, initData);
+    this.pool = new ListPool(View, key, initData, functional);
     this.el = ensureEl(parent);
     this.keySet = key != null;
   }

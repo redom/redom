@@ -536,6 +536,17 @@ module.exports = function (redom) {
       table.update([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
       t.equals(table.el.outerHTML, '<table><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table>');
     });
+    t.test('functional view', function (t) {
+      t.plan(2)
+      function createView (_, data) {
+        t.equals(this instanceof createView, false)
+        return { el: el('li', data) }
+      }
+      var items = list('ul', createView, null, null, true);
+
+      items.update([1]);
+      t.equals(items.el.outerHTML, '<ul><li>1</li></ul>');
+    });
     t.test('mount / unmount / remount', function (t) {
       t.plan(8);
       function Test () {
