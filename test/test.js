@@ -716,7 +716,7 @@ module.exports = function (redom) {
       t.plan(2);
 
       var use = svg('use', { xlink: { href: '#menu' } });
-      t.equals(use.outerHTML, '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use>');
+      t.equals(use.outerHTML, '<use xlink:href="#menu"></use>');
 
       setXlink(use, 'href', null);
       t.equals(use.outerHTML, '<use></use>');
