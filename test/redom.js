@@ -16,18 +16,14 @@ function parseQuery (query) {
       if (className.length > 0) {
         className += ' ';
       }
-    }
-    if (char === '#') {
+    } else if (char === '#') {
       isId = true;
       isClass = false;
-    }
-    if (isId && !isClass && char !== '#') {
+    } else if (isId) {
       id += char;
-    }
-    if (isClass && !isId && char !== '.') {
+    } else if (isClass) {
       className += char;
-    }
-    if (!isId && !isClass) {
+    } else {
       tag += char;
     }
   }
