@@ -20,7 +20,7 @@ export class Router {
 
       this.route = route;
 
-      if (View instanceof Node) {
+      if (View instanceof Node || View.el instanceof Node) {
         this.view = View;
       } else {
         this.view = View && new View(this.initData, data);
