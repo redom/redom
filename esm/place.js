@@ -18,6 +18,9 @@ export class Place {
 
     if (View instanceof Node) {
       this._el = View;
+    } else if (View.el instanceof Node) {
+      this._el = View;
+      this.view = View;
     } else {
       this._View = View;
     }
@@ -34,19 +37,18 @@ export class Place {
           mount(parentNode, this._el, placeholder);
           unmount(parentNode, placeholder);
 
-          this.el = this._el;
+          this.el = getEl(this._el);
           this.visible = visible;
+        } else {
+          const View = this._View;
+          const view = new View(this._initData);
 
-          return;
+          this.el = getEl(view);
+          this.view = view;
+
+          mount(parentNode, view, placeholder);
+          unmount(parentNode, placeholder);
         }
-        const View = this._View;
-        const view = new View(this._initData);
-
-        this.el = getEl(view);
-        this.view = view;
-
-        mount(parentNode, view, placeholder);
-        unmount(parentNode, placeholder);
       }
       this.view && this.view.update && this.view.update(data);
     } else {

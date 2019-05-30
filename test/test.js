@@ -943,6 +943,37 @@ module.exports = function (redom) {
     unmount(document.body, a);
   });
 
+  test('component instance place', function (t) {
+    t.plan(2);
+
+    function B (initData) {
+      this.el = el('.b', 'place!');
+    }
+
+    B.prototype.update = function (data) {
+      this.el.textContent = data;
+    };
+
+    function A () {
+      this.el = el('.a',
+        this.place = place(new B())
+      );
+    }
+
+    var a = new A();
+
+    mount(document.body, a);
+
+    a.place.update(true, 2);
+
+    t.equals(a.el.innerHTML, '<div class="b">2</div>');
+
+    a.place.update(false);
+
+    t.equals(a.el.innerHTML, '');
+    unmount(document.body, a);
+  });
+
   test('component moved below non-redom element', function (t) {
     t.plan(3);
     var div = document.createElement('div');
