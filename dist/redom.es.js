@@ -636,7 +636,7 @@ Place.prototype.update = function update (visible, data) {
         mount(parentNode, this._el, placeholder);
         unmount(parentNode, placeholder);
 
-        this.el = this._el;
+        this.el = getEl(this._el);
         this.visible = visible;
       } else {
         var View = this._View;
