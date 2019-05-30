@@ -1,3 +1,5 @@
+/* global Node */
+
 import { ensureEl } from './util.js';
 import { setChildren } from './setchildren.js';
 
@@ -17,7 +19,12 @@ export class Router {
       const View = Views[route];
 
       this.route = route;
-      this.view = View && new View(this.initData, data);
+
+      if (View instanceof Node) {
+        this.view = View;
+      } else {
+        this.view = View && new View(this.initData, data);
+      }
 
       setChildren(this.el, [ this.view ]);
     }

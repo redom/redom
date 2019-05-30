@@ -749,6 +749,20 @@ module.exports = function (redom) {
     _router.update('b', 2);
     t.equals(_router.el.outerHTML, '<div class="test"><b>2</b></div>');
   });
+  test('router with elements', function (t) {
+    t.plan(2);
+
+    var _router = router('.test', {
+      a: el('.a'),
+      b: el('.b')
+    });
+
+    _router.update('a');
+    t.equals(_router.el.outerHTML, '<div class="test"><div class="a"></div></div>');
+
+    _router.update('b');
+    t.equals(_router.el.outerHTML, '<div class="test"><div class="b"></div></div>');
+  });
   test('lifecycle event order consistency check', function (t) {
     t.plan(1);
     var logs = [];
