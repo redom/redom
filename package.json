@@ -68,5 +68,6 @@
     "type": "opencollective",
     "url": "https://opencollective.com/redom",
     "logo": "https://opencollective.com/redom/logo.txt"
-  }
+  },
+  "types": "index.d.ts"
 }
