@@ -5,6 +5,7 @@
   "main": "dist/redom.js",
   "module": "dist/redom.es.js",
   "jsnext:main": "dist/redom.es.js",
+  "sideEffects": false,
   "scripts": {
     "dev": "node watch",
     "dist": "gh-pages -d dist",
