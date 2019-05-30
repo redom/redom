@@ -55,13 +55,13 @@
     "coverify": "^1.5.1",
     "gh-pages": "~2.0.1",
     "marked": "~0.6.2",
-    "rollup": "~1.12.1",
+    "rollup": "~1.12.4",
     "rollup-plugin-buble": "~0.19.6",
     "rollup-plugin-node-resolve": "~5.0.0",
     "semistandard": "~13.0.1",
-    "tape": "^4.10.1",
+    "tape": "^4.10.2",
     "tape-run": "^6.0.0",
-    "terser": "~3.17.0"
+    "terser": "~4.0.0"
   },
   "dependencies": {},
   "collective": {
