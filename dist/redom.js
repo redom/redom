@@ -81,7 +81,7 @@
     var hooks = childEl.__redom_lifecycle;
 
     if (hooksAreEmpty(hooks)) {
-      childEl.__redom_mounted = false;
+      childEl.__redom_lifecycle = {};
       return;
     }
 
@@ -216,7 +216,7 @@
     }
 
     if (!hooksFound) {
-      childEl.__redom_mounted = true;
+      childEl.__redom_lifecycle = {};
       return;
     }
 
