@@ -23,7 +23,7 @@ export function doUnmount (child, childEl, parentEl) {
   const hooks = childEl.__redom_lifecycle;
 
   if (hooksAreEmpty(hooks)) {
-    childEl.__redom_mounted = false;
+    childEl.__redom_lifecycle = {};
     return;
   }
 

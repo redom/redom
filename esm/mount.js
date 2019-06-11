@@ -95,7 +95,7 @@ function doMount (child, childEl, parentEl, oldParent) {
   }
 
   if (!hooksFound) {
-    childEl.__redom_mounted = true;
+    childEl.__redom_lifecycle = {};
     return;
   }
 
