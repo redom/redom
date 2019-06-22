@@ -69,9 +69,44 @@ export interface RouterDictionary {
     [key: string]: RedomComponentConstructor;
 }
 
-export function html(query: RedomQuery, ...args: RedomQueryArgument[]): HTMLElement;
-export function h(query: RedomQuery, ...args: RedomQueryArgument[]): HTMLElement;
-export function el(query: RedomQuery, ...args: RedomQueryArgument[]): HTMLElement;
+type HTMLElementOfStringLiteral<Q extends string> =
+    Q extends 'div' ? HTMLDivElement:
+    Q extends 'a' ? HTMLAnchorElement:
+    Q extends 'span' ? HTMLSpanElement:
+    Q extends 'pre' ? HTMLPreElement:
+    Q extends 'p' ? HTMLParagraphElement:
+    Q extends 'hr' ? HTMLHRElement:
+    Q extends 'br' ? HTMLBRElement:
+    Q extends 'img' ? HTMLImageElement:
+    Q extends 'iframe' ? HTMLIFrameElement:
+    Q extends 'ul' ? HTMLUListElement:
+    Q extends 'li' ? HTMLLIElement:
+    Q extends 'ol' ? HTMLOListElement:
+    Q extends 'form' ? HTMLFormElement:
+    Q extends 'input' ? HTMLInputElement:
+    Q extends 'label' ? HTMLLabelElement:
+    Q extends 'textarea' ? HTMLTextAreaElement:
+    Q extends 'select' ? HTMLSelectElement:
+    Q extends 'option' ? HTMLOptionElement:
+    Q extends 'button' ? HTMLButtonElement:
+    Q extends 'h1'|'h2'|'h3'|'h4'|'h5'|'h6' ? HTMLHeadingElement:
+    Q extends 'table' ? HTMLTableElement:
+    Q extends 'tr' ? HTMLTableRowElement:
+    Q extends 'td' ? HTMLTableCellElement:
+    Q extends 'thead'|'tbody'|'tfoot' ? HTMLTableSectionElement:
+    Q extends 'th' ? HTMLTableHeaderCellElement:
+    Q extends 'style' ? HTMLStyleElement:
+    Q extends 'svg' ? SVGElement:
+    HTMLElement
+
+type HTMLElementOfRedomQuery<Q extends RedomQuery> =
+    Q extends RedomElement ? Q:
+    Q extends string ? HTMLElementOfStringLiteral<Q>:
+    never
+
+export function html<Q extends RedomQuery>(query: Q, ...args: RedomQueryArgument[]): HTMLElementOfRedomQuery<Q>;
+export function h<Q extends RedomQuery>(query: Q, ...args: RedomQueryArgument[]): HTMLElementOfRedomQuery<Q>;
+export function el<Q extends RedomQuery>(query: Q, ...args: RedomQueryArgument[]): HTMLElementOfRedomQuery<Q>;
 
 export function listPool(View: RedomComponentConstructor, key?: string, initData?: any): ListPool;
 export function list(parent: RedomQuery, View: RedomComponentConstructor, key?: string, initData?: any): List;
