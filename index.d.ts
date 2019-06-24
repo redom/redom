@@ -10,6 +10,7 @@ export type RedomQuery = string | RedomElement;
 export type RedomMiddleware = (el: HTMLElement) => void;
 export type RedomQueryArgumentValue = RedomElement | string | number | { [key: string]: any } | RedomMiddleware;
 export type RedomQueryArgument = RedomQueryArgumentValue | RedomQueryArgumentValue[];
+export type RedomElQuery = string | Node | RedomComponentCreator;
 
 export interface RedomComponent {
     el: HTMLElement;
@@ -32,6 +33,8 @@ export class RedomComponentClass implements RedomComponent {
 }
 
 export type RedomComponentConstructor = RedomComponentClass | RedomComponentFunction;
+export type RedomComponentFactoryFunction = () => RedomComponent
+export type RedomComponentCreator = RedomComponentConstructor | RedomComponentFactoryFunction | Function
 
 export class ListPool {
     constructor(View: RedomComponentConstructor, key?: string, initData?: any);
@@ -105,14 +108,18 @@ type HTMLElementOfStringLiteral<Q extends string> =
     Q extends 'svg' ? SVGElement:
     HTMLElement
 
-type HTMLElementOfRedomQuery<Q extends RedomQuery> =
-    Q extends RedomElement ? Q:
+type RedomElementOfElQuery<Q extends RedomElQuery> =
+    Q extends Node ? Q:
+    Q extends RedomComponentFunction ? InstanceType<Q>:
+    Q extends RedomComponentClass ? Q:
+    Q extends RedomComponentFactoryFunction ? ReturnType<Q>:
+    Q extends Function ? HTMLElement:
     Q extends string ? HTMLElementOfStringLiteral<Q>:
     never
 
-export function html<Q extends RedomQuery>(query: Q, ...args: RedomQueryArgument[]): HTMLElementOfRedomQuery<Q>;
-export function h<Q extends RedomQuery>(query: Q, ...args: RedomQueryArgument[]): HTMLElementOfRedomQuery<Q>;
-export function el<Q extends RedomQuery>(query: Q, ...args: RedomQueryArgument[]): HTMLElementOfRedomQuery<Q>;
+export function html<Q extends RedomElQuery>(query: Q, ...args: RedomQueryArgument[]): RedomElementOfElQuery<Q>;
+export function h<Q extends RedomElQuery>(query: Q, ...args: RedomQueryArgument[]): RedomElementOfElQuery<Q>;
+export function el<Q extends RedomElQuery>(query: Q, ...args: RedomQueryArgument[]): RedomElementOfElQuery<Q>;
 
 export function listPool(View: RedomComponentConstructor, key?: string, initData?: any): ListPool;
 export function list(parent: RedomQuery, View: RedomComponentConstructor, key?: string, initData?: any): List;
