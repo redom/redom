@@ -120,6 +120,8 @@
     return true;
   }
 
+  /* global Node, ShadowRoot */
+
   var hookNames = ['onmount', 'onremount', 'onunmount'];
   var shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
 
@@ -239,8 +241,8 @@
       if (triggered) {
         break;
       } else {
-        if (traverse === document ||
-          (shadowRootAvailable && (traverse instanceof window.ShadowRoot)) ||
+        if (traverse.nodeType === Node.DOCUMENT_NODE ||
+          (shadowRootAvailable && (traverse instanceof ShadowRoot)) ||
           (parent && parent.__redom_mounted)
         ) {
           trigger(traverse, remount ? 'onremount' : 'onmount');
