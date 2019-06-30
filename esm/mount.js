@@ -1,3 +1,5 @@
+/* global Node, ShadowRoot */
+
 import { getEl } from './util.js';
 import { doUnmount } from './unmount.js';
 
@@ -118,8 +120,8 @@ function doMount (child, childEl, parentEl, oldParent) {
     if (triggered) {
       break;
     } else {
-      if (traverse.nodeType === window.Node.DOCUMENT_NODE ||
-        (shadowRootAvailable && (traverse instanceof window.ShadowRoot)) ||
+      if (traverse.nodeType === Node.DOCUMENT_NODE ||
+        (shadowRootAvailable && (traverse instanceof ShadowRoot)) ||
         (parent && parent.__redom_mounted)
       ) {
         trigger(traverse, remount ? 'onremount' : 'onmount');
