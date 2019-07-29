@@ -23,9 +23,15 @@ export interface RedomComponent {
     onunmount?(): void;
 }
 
-export interface RedomComponentConstructor {
+export interface RedomComponentFunction {
     new (): RedomComponent;
 }
+
+export class RedomComponentClass implements RedomComponent {
+    el: HTMLElement;
+}
+
+export type RedomComponentConstructor = RedomComponentClass | RedomComponentFunction;
 
 export class ListPool {
     constructor(View: RedomComponentConstructor, key?: string, initData?: any);
