@@ -50,18 +50,18 @@
   },
   "homepage": "https://redom.js.org",
   "devDependencies": {
-    "browserify": "^16.2.3",
+    "browserify": "^16.5.0",
     "butternut": "~0.4.6",
     "coverify": "^1.5.1",
-    "gh-pages": "~2.0.1",
-    "marked": "~0.6.2",
-    "rollup": "~1.12.4",
-    "rollup-plugin-buble": "~0.19.6",
-    "rollup-plugin-node-resolve": "~5.0.0",
+    "gh-pages": "~2.1.1",
+    "marked": "~0.7.0",
+    "rollup": "~1.19.4",
+    "rollup-plugin-buble": "~0.19.8",
+    "rollup-plugin-node-resolve": "~5.2.0",
     "semistandard": "~13.0.1",
-    "tape": "^4.10.2",
+    "tape": "^4.11.0",
     "tape-run": "^6.0.0",
-    "terser": "~4.0.0"
+    "terser": "~4.1.4"
   },
   "dependencies": {},
   "collective": {
