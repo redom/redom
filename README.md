@@ -28,7 +28,7 @@ npm i redom
 ```
 
 ## Get started
-- [Documentation](https://redom.js.org/documentation)
+- [Documentation](https://redom.js.org/#installation)
 - ["Minimum viable view library"](https://www.youtube.com/watch?v=0nh2EK1xveg) - talk @ HelsinkiJS - see what's happening under the hood
 
 ## Tools
