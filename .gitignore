@@ -1,7 +1,10 @@
-.DS_Store
+# Folders
 node_modules
-npm-debug.log
-bench/build.js
 
-*.sw?
-.source*
+# Files
+*.log
+*-lock
+*.lock
+
+# Other
+.DS_Store
