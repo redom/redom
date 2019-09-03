@@ -6,8 +6,6 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=60)](https://twitter.com/pakastin)
 [![Twitter Follow](https://img.shields.io/twitter/follow/redomjs.svg?style=social&maxAge=60)](https://twitter.com/redomjs)
 
-[![RE:DOM](https://redom.js.org/img/title.png?5)](https://redom.js.org)
-
 # RE:DOM
 
 Develop web apps with 100 % JavaScript and web standards. 🚀
