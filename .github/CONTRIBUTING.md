@@ -3,10 +3,6 @@
 
 The [issue tracker](https://github.com/redom/redom/issues) is the preferred channel for bug reports, feature requests, and submitting pull requests.
 
-Please do not use the issue tracker for personal support requests.
-
-Stack Overflow **[RE:DOM](https://stackoverflow.com/questions/tagged/redom)** is a better place to get help.
-
 ### Setting up your development environment
 
 You'll need a recent version of [Node](https://nodejs.org/en/) to work this project.
@@ -55,13 +51,13 @@ A bug is a demonstrable, reproducible problem that is caused by the code in the 
 
 1. Use the GitHub issue search — check if the issue has already been reported.
 2. Check if the issue has been fixed — try to reproduce it using the latest **develop** branch in the repository.
-3. Isolate the problem - you NEED to provide a live example — ideally also create a reduced test case.
+3. Isolate the problem - you should provide a live example — ideally also create a reduced test case.
 
 This [CodePen](https://codepen.io/anon/pen/prvbMp), [JSFiddle](https://jsfiddle.net/h8x8bvn9/2/) are helpful templates you can fork or clone.
 
 ### Submitting Pull requests
 
-Good pull requests are a amazing help.
+Good pull requests are an amazing help.
 
 They should remain focused in scope and avoid containing unrelated commits.
 
