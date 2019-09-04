@@ -1,17 +1,4 @@
-dist/devtools
-dist/documentation
-dist/img
-dist/CNAME
-dist/doc.md
-dist/index.html
-dist/main.css
-dist/meme.jpg
-dist/perf-release.html
-dist/perf.html
-dist/prism.css
-dist/prism.js
 test
 .gitignore
-build-doc.js
 rollup.config.js
 watch.js

@@ -1,20 +1,27 @@
-[![Backers on Open Collective](https://opencollective.com/redom/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/redom/sponsors/badge.svg)](#sponsors) [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Flet/semistandard)
-[![Build Status](https://img.shields.io/travis/redom/redom/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/redom/redom?branch=master)
-[![npm](https://img.shields.io/npm/v/redom.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/redom)
-[![npm](https://img.shields.io/npm/l/redom.svg?maxAge=60&style=flat-square)](https://github.com/redom/redom/blob/master/LICENSE)
-[![Join the chat at https://gitter.im/pakastin/redom](https://badges.gitter.im/pakastin/redom.svg)](https://gitter.im/pakastin/redom?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Twitter Follow](https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=60)](https://twitter.com/pakastin)
-[![Twitter Follow](https://img.shields.io/twitter/follow/redomjs.svg?style=social&maxAge=60)](https://twitter.com/redomjs)
+<p align="center">
+    <a href="https://redom.js.org/" target="_blank" rel="noopener">
+        <img width="220" src="https://redom.js.org/static/images/redomjs.svg" alt="RE:DOM logo">
+    </a>
+    <br>
+    Develop web applications with <strong>100% JavaScript</strong> and web standards. 🚀
+</p>
+<p align="center">
+    <br>
+    <a href="https://www.npmjs.com/package/redom"><img src="https://img.shields.io/npm/v/redom.svg?maxAge=60" alt="Version"></a>
+    <a href="https://travis-ci.org/redom/redom?branch=master"><img src="https://img.shields.io/travis/redom/redom/master.svg?maxAge=60" alt="Build Status"></a>
+    <a href="https://github.com/Flet/semistandard"><img src="https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?maxAge=60" alt="JavaScript Semi-Standard Style"></a>
+    <a href="https://github.com/redom/redom/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/redom.svg?maxAge=60" alt="License"></a>
+    <a href="#backers"><img src="https://opencollective.com/redom/backers/badge.svg" alt="Backers on Open Collective"></a>
+    <a href="#sponsors"><img src="https://opencollective.com/redom/sponsors/badge.svg" alt="Sponsors on Open Collective"></a>
+    <a href="https://gitter.im/pakastin/redom"><img src="https://badges.gitter.im/pakastin/redom.svg" alt="Join the chat"></a>
+    <br>
+    <a href="https://twitter.com/pakastin"><img src="https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=60" alt="Follow @pakastin"></a>
+    <a href="https://twitter.com/redomjs"><img src="https://img.shields.io/twitter/follow/redomjs.svg?style=social&maxAge=60" alt="Follow @redomjs"></a>
+    <br>
+    <br>
+</p>
 
-# RE:DOM
-
-Develop web apps with 100 % JavaScript and web standards. 🚀
-
-https://redom.js.org
-
-## Introduction
-
-RE:DOM is a tiny (2 KB) UI library by [Juha Lindstedt](https://github.com/pakastin) and [contributors](https://github.com/redom/redom/graphs/contributors), which adds some useful helpers to create DOM elements and keeping them in sync with the data.
+**[RE:DOM](https://redom.js.org)** is a tiny **(2 KB) UI library** by [Juha Lindstedt](https://github.com/pakastin) and [contributors](https://github.com/redom/redom/graphs/contributors), which adds some useful helpers to create DOM elements and keeping them in sync with the data.
 
 Because RE:DOM is so close to the metal and **doesn't use virtual dom**, it's actually **faster** and uses **less memory** than almost all virtual dom based libraries, including React ([benchmark](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html)).
 
@@ -22,51 +29,63 @@ It's also easy to create **reusable components** with RE:DOM.
 
 Another great benefit is, that you can use just **pure JavaScript**, so no complicated templating languages to learn and hassle with.
 
-## Installing
-```
-npm i redom
+## Supporting RE:DOM
+
+RE:DOM is an MIT-licensed open source project with its ongoing development made possible entirely by the support of these awesome [backers](https://github.com/redom/redom/blob/dev/BACKERS.md).
+
+**If you'd like to join them, please consider:**
+
+- [Become a backer or sponsor on Open Collective](https://opencollective.com/redom).
+
+## Installation
+
+```bash
+# Using npm
+npm install redom
+
+# Using Yarn
+yarn add redom
 ```
 
-## Get started
-- [Documentation](https://redom.js.org/#installation)
-- ["Minimum viable view library"](https://www.youtube.com/watch?v=0nh2EK1xveg) - talk @ HelsinkiJS - see what's happening under the hood
+## Documentation
+
+To check out [live examples](https://redom.js.org/#todomvc) and docs, visit [RE:DOM](https://redom.js.org/).
+
+## Questions
+
+For questions and support please use [community chat](https://gitter.im/pakastin/redom/).\
+The issue list of this repo is **exclusively** for bug reports and feature requests.
 
 ## Tools
+
 - [NO:DOM](https://github.com/redom/nodom) (server-side rendering)
 - [Project generator](https://github.com/redom/redom-cli)
 - [Dev tools for Chrome](https://github.com/redom/redom-devtools)
 - [Babel RE:DOM JSX transform](https://github.com/tomerigal/babel-plugin-transform-redom-jsx)
 
 ## Performance
+
 - [RE:DOM is one of the fastest UI libraries out there.](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html)
 
-## Open source
-- License: [MIT](https://github.com/redom/redom/blob/master/LICENSE)
+## Issues
 
-## Contributors
+Please make sure to read the [Issue Reporting Checklist](https://github.com/redom/redom/blob/dev/.github/CONTRIBUTING.md#issue-reporting-guidelines) before opening an issue. Issues not conforming to the guidelines may be closed immediately.
 
-This project exists thanks to all the people who contribute.
-<a href="https://github.com/redom/redom/graphs/contributors"><img src="https://opencollective.com/redom/contributors.svg?width=890&button=false" /></a>
+## Changelog
 
+Detailed changes for each release are documented in the [release notes](https://github.com/redom/redom/releases).
 
-## Backers
+## Contribution
 
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/redom#backer)]
+Please make sure to read the [Contributing Guide](https://github.com/redom/redom/blob/dev/.github/CONTRIBUTING.md) before making a pull request.\
+Thank you to all the people who already contributed to RE:DOM!
 
-<a href="https://opencollective.com/redom#backers" target="_blank"><img src="https://opencollective.com/redom/backers.svg?width=890"></a>
+<a href="https://github.com/redom/redom/graphs/contributors">
+    <img src="https://opencollective.com/redom/contributors.svg?width=890&button=false" />
+</a>
 
+## License
 
-## Sponsors
+[MIT](http://opensource.org/licenses/MIT)
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/redom#sponsor)]
-
-<a href="https://opencollective.com/redom/sponsor/0/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/redom/sponsor/1/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/redom/sponsor/2/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/redom/sponsor/3/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/redom/sponsor/4/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/redom/sponsor/5/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/redom/sponsor/6/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/redom/sponsor/7/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/redom/sponsor/8/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/redom/sponsor/9/website" target="_blank"><img src="https://opencollective.com/redom/sponsor/9/avatar.svg"></a>
+Copyright (c) 2016-present, [Juha Lindstedt](https://github.com/pakastin)
