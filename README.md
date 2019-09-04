@@ -88,4 +88,4 @@ Thank you to all the people who already contributed to RE:DOM!
 
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2016-present, [Juha Lindstedt](https://github.com/pakastin)
+Copyright (c) 2016-present, [Juha Lindstedt](https://github.com/pakastin) and contributors
