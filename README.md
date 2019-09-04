@@ -53,8 +53,7 @@ To check out [live examples](https://redom.js.org/#todomvc) and docs, visit [RE:
 
 ## Questions
 
-For questions and support please use [community chat](https://gitter.im/pakastin/redom/).\
-The issue list of this repo is **exclusively** for bug reports and feature requests.
+For questions and support please use [community chat](https://gitter.im/pakastin/redom/).
 
 ## Tools
 
