@@ -34,7 +34,7 @@ export class RedomComponentClass implements RedomComponent {
 
 export type RedomComponentConstructor = RedomComponentClass | RedomComponentFunction;
 export type RedomComponentFactoryFunction = () => RedomComponent
-export type RedomComponentCreator = RedomComponentConstructor | RedomComponentFactoryFunction | Function
+export type RedomComponentCreator = RedomComponentConstructor | RedomComponentFactoryFunction
 
 export class ListPool {
     constructor(View: RedomComponentConstructor, key?: string, initData?: any);
@@ -113,7 +113,6 @@ type RedomElementOfElQuery<Q extends RedomElQuery> =
     Q extends RedomComponentFunction ? InstanceType<Q>:
     Q extends RedomComponentClass ? Q:
     Q extends RedomComponentFactoryFunction ? ReturnType<Q>:
-    Q extends Function ? HTMLElement:
     Q extends string ? HTMLElementOfStringLiteral<Q>:
     never
 
