@@ -28,11 +28,7 @@ export interface RedomComponentFunction {
     new (): RedomComponent;
 }
 
-export class RedomComponentClass implements RedomComponent {
-    el: HTMLElement;
-}
-
-export type RedomComponentConstructor = RedomComponentClass | RedomComponentFunction;
+export type RedomComponentConstructor = RedomComponentFunction;
 export type RedomComponentFactoryFunction = () => RedomComponent
 export type RedomComponentCreator = RedomComponentConstructor | RedomComponentFactoryFunction
 
@@ -111,7 +107,6 @@ type HTMLElementOfStringLiteral<Q extends string> =
 type RedomElementOfElQuery<Q extends RedomElQuery> =
     Q extends Node ? Q:
     Q extends RedomComponentFunction ? InstanceType<Q>:
-    Q extends RedomComponentClass ? Q:
     Q extends RedomComponentFactoryFunction ? ReturnType<Q>:
     Q extends string ? HTMLElementOfStringLiteral<Q>:
     never
