@@ -69,5 +69,11 @@
     "url": "https://opencollective.com/redom",
     "logo": "https://opencollective.com/redom/logo.txt"
   },
+  "funding": [
+    {
+      "type": "opencollective",
+      "url": "https://opencollective.com/redom"      
+    }
+  ],
   "types": "index.d.ts"
 }
