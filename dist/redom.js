@@ -2,7 +2,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = global || self, factory(global.redom = {}));
-}(this, function (exports) { 'use strict';
+}(this, (function (exports) { 'use strict';
 
   function parseQuery (query) {
     var isId = false;
@@ -774,4 +774,4 @@
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));
