@@ -13,6 +13,7 @@ export class Router {
     this.Views = Views;
     this.initData = initData;
   }
+
   update (route, data) {
     if (route !== this.route) {
       const Views = this.Views;
@@ -26,7 +27,7 @@ export class Router {
         this.view = View && new View(this.initData, data);
       }
 
-      setChildren(this.el, [ this.view ]);
+      setChildren(this.el, [this.view]);
     }
     this.view && this.view.update && this.view.update(data, route);
   }

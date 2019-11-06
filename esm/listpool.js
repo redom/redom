@@ -17,6 +17,7 @@ export class ListPool {
       this.key = typeof key === 'function' ? key : propKey(key);
     }
   }
+
   update (data, context) {
     const { View, key, initData } = this;
     const keySet = key != null;

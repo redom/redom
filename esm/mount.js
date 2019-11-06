@@ -8,7 +8,7 @@ const shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in win
 
 export function mount (parent, child, before, replace) {
   const parentEl = getEl(parent);
-  let childEl = getEl(child);
+  const childEl = getEl(child);
 
   if (child === childEl && childEl.__redom_view) {
     // try to look up the view if not provided

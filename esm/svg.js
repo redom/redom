@@ -8,7 +8,7 @@ const svgCache = {};
 export function svg (query, ...args) {
   let element;
 
-  let type = typeof query;
+  const type = typeof query;
 
   if (type === 'string') {
     element = memoizeSVG(query).cloneNode(false);

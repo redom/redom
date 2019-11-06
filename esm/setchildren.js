@@ -31,7 +31,7 @@ function traverse (parent, children, _current) {
       continue;
     }
 
-    let childEl = childEls[i];
+    const childEl = childEls[i];
 
     if (childEl === current) {
       current = current.nextSibling;

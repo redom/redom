@@ -17,6 +17,7 @@ export class List {
     this.el = ensureEl(parent);
     this.keySet = key != null;
   }
+
   update (data = [], context) {
     const { keySet } = this;
     const oldViews = this.views;

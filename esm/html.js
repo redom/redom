@@ -6,7 +6,7 @@ const htmlCache = {};
 export function html (query, ...args) {
   let element;
 
-  let type = typeof query;
+  const type = typeof query;
 
   if (type === 'string') {
     element = memoizeHTML(query).cloneNode(false);

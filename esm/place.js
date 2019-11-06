@@ -27,6 +27,7 @@ export class Place {
 
     this._initData = initData;
   }
+
   update (visible, data) {
     const placeholder = this._placeholder;
     const parentNode = this.el.parentNode;

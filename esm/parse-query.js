@@ -5,7 +5,7 @@ export function parseQuery (query) {
   let id = '';
   let className = '';
   for (var i = 0; i < query.length; i++) {
-    let char = query[i];
+    const char = query[i];
     if (char === '.') {
       isClass = true;
       isId = false;
