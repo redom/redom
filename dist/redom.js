@@ -506,6 +506,7 @@
       this.key = typeof key === 'function' ? key : propKey(key);
     }
   };
+
   ListPool.prototype.update = function update (data, context) {
     var ref = this;
       var View = ref.View;
@@ -566,6 +567,7 @@
     this.el = ensureEl(parent);
     this.keySet = key != null;
   };
+
   List.prototype.update = function update (data, context) {
       if ( data === void 0 ) data = [];
 
@@ -634,6 +636,7 @@
 
     this._initData = initData;
   };
+
   Place.prototype.update = function update (visible, data) {
     var placeholder = this._placeholder;
     var parentNode = this.el.parentNode;
@@ -690,6 +693,7 @@
     this.Views = Views;
     this.initData = initData;
   };
+
   Router.prototype.update = function update (route, data) {
     if (route !== this.route) {
       var Views = this.Views;
@@ -703,7 +707,7 @@
         this.view = View && new View(this.initData, data);
       }
 
-      setChildren(this.el, [ this.view ]);
+      setChildren(this.el, [this.view]);
     }
     this.view && this.view.update && this.view.update(data, route);
   };
