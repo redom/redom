@@ -1,6 +1,6 @@
 {
   "name": "redom",
-  "version": "3.24.1",
+  "version": "3.24.2",
   "description": "Tiny turboboosted JavaScript library for creating user interfaces. 100 % test coverage!",
   "main": "dist/redom.js",
   "module": "dist/redom.es.js",
@@ -72,7 +72,7 @@
   "funding": [
     {
       "type": "opencollective",
-      "url": "https://opencollective.com/redom"      
+      "url": "https://opencollective.com/redom"
     }
   ],
   "types": "index.d.ts"
