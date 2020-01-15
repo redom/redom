@@ -5,35 +5,26 @@
 }(this, (function (exports) { 'use strict';
 
   function parseQuery (query) {
-    var isId = false;
-    var isClass = false;
-    var tag = '';
+    var chunks = query.split(/([#.])/);
+    var tagName = '';
     var id = '';
-    var className = '';
-    for (var i = 0; i < query.length; i++) {
-      var char = query[i];
-      if (char === '.') {
-        isClass = true;
-        isId = false;
-        if (className.length > 0) {
-          className += ' ';
-        }
-      } else if (char === '#') {
-        isId = true;
-        isClass = false;
-      } else if (isId) {
-        id += char;
-      } else if (isClass) {
-        className += char;
-      } else {
-        tag += char;
+    var classNames = [];
+
+    for (var i = 0; i < chunks.length; i++) {
+      var chunk = chunks[i];
+      if (chunk === '#') {
+        id = chunks[++i];
+      } else if (chunk === '.') {
+        classNames.push(chunks[++i]);
+      } else if (chunk.length) {
+        tagName = chunk;
       }
     }
 
     return {
-      tag: tag || 'div',
+      tag: tagName || 'div',
       id: id,
-      className: className
+      className: classNames.join(' ')
     };
   }
 

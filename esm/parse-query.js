@@ -1,32 +1,23 @@
 export function parseQuery (query) {
-  let isId = false;
-  let isClass = false;
-  let tag = '';
+  const chunks = query.split(/([#.])/);
+  let tagName = '';
   let id = '';
-  let className = '';
-  for (var i = 0; i < query.length; i++) {
-    const char = query[i];
-    if (char === '.') {
-      isClass = true;
-      isId = false;
-      if (className.length > 0) {
-        className += ' ';
-      }
-    } else if (char === '#') {
-      isId = true;
-      isClass = false;
-    } else if (isId) {
-      id += char;
-    } else if (isClass) {
-      className += char;
-    } else {
-      tag += char;
+  const classNames = [];
+
+  for (var i = 0; i < chunks.length; i++) {
+    const chunk = chunks[i];
+    if (chunk === '#') {
+      id = chunks[++i];
+    } else if (chunk === '.') {
+      classNames.push(chunks[++i]);
+    } else if (chunk.length) {
+      tagName = chunk;
     }
   }
 
   return {
-    tag: tag || 'div',
+    tag: tagName || 'div',
     id,
-    className
+    className: classNames.join(' ')
   };
 }
