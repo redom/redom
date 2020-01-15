@@ -1,6 +1,6 @@
 {
   "name": "redom",
-  "version": "3.24.3",
+  "version": "3.25.0",
   "description": "Tiny turboboosted JavaScript library for creating user interfaces. 100 % test coverage!",
   "main": "dist/redom.js",
   "module": "dist/redom.es.js",
