@@ -40,7 +40,3 @@ export function getEl (parent) {
 export function isNode (arg) {
   return arg && arg.nodeType;
 }
-
-export function isList (arg) {
-  return arg && arg.__redom_list;
-}
