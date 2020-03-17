@@ -5,6 +5,7 @@ node_modules
 *.log
 *-lock
 *.lock
+package-lock.json
 
 # Other
 .DS_Store
