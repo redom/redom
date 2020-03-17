@@ -9,7 +9,6 @@ export function list (parent, View, key, initData) {
 
 export class List {
   constructor (parent, View, key, initData) {
-    this.__redom_list = true;
     this.View = View;
     this.initData = initData;
     this.views = [];
