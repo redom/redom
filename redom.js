@@ -550,7 +550,6 @@
   }
 
   var List = function List (parent, View, key, initData) {
-    this.__redom_list = true;
     this.View = View;
     this.initData = initData;
     this.views = [];
