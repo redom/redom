@@ -41,7 +41,7 @@ export class ListPool {
 export class List implements RedomComponent {
     el: HTMLElement;
 
-    constructor(parent: RedomQuery, View: RedomComponentConstructor, key?: string, initData?: any);
+    constructor(parent: RedomQuery, View: RedomComponentCreator, key?: string, initData?: any);
 
     update(data: any[], context?: any): void;
 
