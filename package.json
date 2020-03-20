@@ -54,14 +54,14 @@
     "butternut": "~0.4.6",
     "coverify": "^1.5.1",
     "gh-pages": "~2.2.0",
-    "rollup": "~2.0.6",
-    "marked": "~0.8.0",
+    "rollup": "~2.1.0",
+    "marked": "~0.8.1",
     "rollup-plugin-buble": "~0.19.8",
     "rollup-plugin-node-resolve": "~5.2.0",
     "semistandard": "~14.2.0",
     "tape": "^4.13.2",
     "tape-run": "^6.0.1",
-    "terser": "~4.6.6"
+    "terser": "~4.6.7"
   },
   "dependencies": {},
   "collective": {
