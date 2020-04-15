@@ -7,13 +7,13 @@
 
 export type RedomElement = Node | RedomComponent;
 export type RedomQuery = string | RedomElement;
-export type RedomMiddleware = (el: HTMLElement) => void;
+export type RedomMiddleware = (el: HTMLElement | SVGElement) => void;
 export type RedomQueryArgumentValue = RedomElement | string | number | { [key: string]: any } | RedomMiddleware;
 export type RedomQueryArgument = RedomQueryArgumentValue | RedomQueryArgumentValue[];
 export type RedomElQuery = string | Node | RedomComponentCreator;
 
 export interface RedomComponent {
-    el: HTMLElement;
+    el: HTMLElement | SVGElement;
 
     update?(item: any, index: number, data: any, context?: any): void;
 
@@ -39,7 +39,7 @@ export class ListPool {
 }
 
 export class List implements RedomComponent {
-    el: HTMLElement;
+    el: HTMLElement | SVGElement;
 
     constructor(parent: RedomQuery, View: RedomComponentCreator, key?: string, initData?: any);
 
@@ -55,7 +55,7 @@ export class List implements RedomComponent {
 }
 
 export class Place implements RedomComponent {
-    el: HTMLElement;
+    el: HTMLElement | SVGElement;
 
     constructor(View: RedomComponentConstructor, initData?: any);
 
@@ -63,7 +63,7 @@ export class Place implements RedomComponent {
 }
 
 export class Router implements RedomComponent {
-    el: HTMLElement;
+    el: HTMLElement | SVGElement;
 
     constructor(parent: RedomQuery, Views: RouterDictionary, initData?: any);
 
