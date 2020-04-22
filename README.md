@@ -31,7 +31,7 @@ Another great benefit is, that you can use just **pure JavaScript**, so no compl
 
 ## Supporting RE:DOM
 
-RE:DOM is an MIT-licensed open source project with its ongoing development made possible entirely by the support of these awesome [backers](https://github.com/redom/redom/blob/dev/BACKERS.md).
+RE:DOM is an MIT-licensed open source project with its ongoing development made possible entirely by the support of these awesome [backers](./BACKERS.md).
 
 **If you'd like to join them, please consider:**
 
@@ -68,7 +68,7 @@ For questions and support please use [community chat](https://gitter.im/pakastin
 
 ## Issues
 
-Please make sure to read the [Issue Reporting Checklist](https://github.com/redom/redom/blob/dev/.github/CONTRIBUTING.md#issue-reporting-guidelines) before opening an issue. Issues not conforming to the guidelines may be closed immediately.
+Please make sure to read the [Issue Reporting Checklist](./.github/CONTRIBUTING.md#issue-reporting-guidelines) before opening an issue. Issues not conforming to the guidelines may be closed immediately.
 
 ## Changelog
 
@@ -76,7 +76,7 @@ Detailed changes for each release are documented in the [release notes](https://
 
 ## Contribution
 
-Please make sure to read the [Contributing Guide](https://github.com/redom/redom/blob/dev/.github/CONTRIBUTING.md) before making a pull request.\
+Please make sure to read the [Contributing Guide](./.github/CONTRIBUTING.md) before making a pull request.\
 Thank you to all the people who already contributed to RE:DOM!
 
 <a href="https://github.com/redom/redom/graphs/contributors">
