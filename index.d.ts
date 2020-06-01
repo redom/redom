@@ -13,7 +13,7 @@ export type RedomQueryArgument = RedomQueryArgumentValue | RedomQueryArgumentVal
 export type RedomElQuery = string | Node | RedomComponentCreator;
 
 export interface RedomComponent {
-    el: HTMLElement | SVGElement;
+    el: HTMLElement | SVGElement | RedomComponent;
 
     update?(item: any, index: number, data: any, context?: any): void;
 
