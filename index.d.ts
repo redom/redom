@@ -102,6 +102,7 @@ type HTMLElementOfStringLiteral<Q extends string> =
     Q extends 'th' ? HTMLTableHeaderCellElement:
     Q extends 'style' ? HTMLStyleElement:
     Q extends 'svg' ? SVGElement:
+    Q extends 'canvas' ? HTMLCanvasElement:
     HTMLElement
 
 type RedomElementOfElQuery<Q extends RedomElQuery> =
