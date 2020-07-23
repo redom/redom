@@ -60,7 +60,7 @@
     "rollup-plugin-node-resolve": "~5.2.0",
     "semistandard": "~14.2.0",
     "tape": "^5.0.1",
-    "tape-run": "^7.0.0",
+    "tape-run": "^8.0.0",
     "terser": "~4.7.0"
   },
   "dependencies": {},
