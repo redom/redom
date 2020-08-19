@@ -61,7 +61,7 @@
     "semistandard": "~14.2.0",
     "tape": "^5.0.1",
     "tape-run": "^7.0.0",
-    "terser": "~4.7.0"
+    "terser": "~5.2.0"
   },
   "dependencies": {},
   "collective": {
