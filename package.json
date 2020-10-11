@@ -50,7 +50,7 @@
   },
   "homepage": "https://redom.js.org",
   "devDependencies": {
-    "browserify": "^16.5.2",
+    "browserify": "^17.0.0",
     "butternut": "~0.4.6",
     "coverify": "^1.5.1",
     "gh-pages": "~3.1.0",
