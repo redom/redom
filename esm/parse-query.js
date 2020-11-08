@@ -4,7 +4,7 @@ export function parseQuery (query) {
   let id = '';
   const classNames = [];
 
-  for (var i = 0; i < chunks.length; i++) {
+  for (let i = 0; i < chunks.length; i++) {
     const chunk = chunks[i];
     if (chunk === '#') {
       id = chunks[++i];
