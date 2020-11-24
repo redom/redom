@@ -25,7 +25,7 @@ export class ListPool {
     const oldLookup = this.lookup;
     const newLookup = {};
 
-    const newViews = new Array(data.length);
+    const newViews = Array(data.length);
     const oldViews = this.views;
 
     for (let i = 0; i < data.length; i++) {

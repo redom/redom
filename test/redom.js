@@ -255,11 +255,7 @@ function setStyle (view, arg1, arg2) {
 }
 
 function setStyleValue (el, key, value) {
-  if (value == null) {
-    el.style[key] = '';
-  } else {
-    el.style[key] = value;
-  }
+  el.style[key] = value == null ? '' : value;
 }
 
 /* global SVGElement */
@@ -437,7 +433,7 @@ function setChildren (parent) {
 function traverse (parent, children, _current) {
   var current = _current;
 
-  var childEls = new Array(children.length);
+  var childEls = Array(children.length);
 
   for (var i = 0; i < children.length; i++) {
     childEls[i] = children[i] && getEl(children[i]);
@@ -506,7 +502,7 @@ ListPool.prototype.update = function update (data, context) {
   var oldLookup = this.lookup;
   var newLookup = {};
 
-  var newViews = new Array(data.length);
+  var newViews = Array(data.length);
   var oldViews = this.views;
 
   for (var i = 0; i < data.length; i++) {
