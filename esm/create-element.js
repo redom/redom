@@ -3,7 +3,9 @@ export function createElement (query, ns) {
   const { tag, id, className } = parse(query);
   const element = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
 
-  if (id) element.id = id;
+  if (id) {
+    element.id = id;
+  }
 
   if (className) {
     if (ns) {
