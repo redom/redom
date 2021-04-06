@@ -13,9 +13,5 @@ export function setStyle (view, arg1, arg2) {
 }
 
 function setStyleValue (el, key, value) {
-  if (value == null) {
-    el.style[key] = '';
-  } else {
-    el.style[key] = value;
-  }
+  el.style[key] = value == null ? '' : value;
 }

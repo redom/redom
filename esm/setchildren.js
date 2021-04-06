@@ -18,7 +18,7 @@ export function setChildren (parent, ...children) {
 function traverse (parent, children, _current) {
   let current = _current;
 
-  const childEls = new Array(children.length);
+  const childEls = Array(children.length);
 
   for (let i = 0; i < children.length; i++) {
     childEls[i] = children[i] && getEl(children[i]);
