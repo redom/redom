@@ -1,29 +1,5 @@
-function parseQuery (query) {
-  var chunks = query.split(/([#.])/);
-  var tagName = '';
-  var id = '';
-  var classNames = [];
-
-  for (var i = 0; i < chunks.length; i++) {
-    var chunk = chunks[i];
-    if (chunk === '#') {
-      id = chunks[++i];
-    } else if (chunk === '.') {
-      classNames.push(chunks[++i]);
-    } else if (chunk.length) {
-      tagName = chunk;
-    }
-  }
-
-  return {
-    tag: tagName || 'div',
-    id: id,
-    className: classNames.join(' ')
-  };
-}
-
 function createElement (query, ns) {
-  var ref = parseQuery(query);
+  var ref = parse(query);
   var tag = ref.tag;
   var id = ref.id;
   var className = ref.className;
@@ -42,6 +18,29 @@ function createElement (query, ns) {
   }
 
   return element;
+}
+
+function parse (query) {
+  var chunks = query.split(/([.#])/);
+  var className = '';
+  var id = '';
+
+  for (var i = 1; i < chunks.length; i += 2) {
+    switch (chunks[i]) {
+      case '.':
+        className += " " + (chunks[i + 1]);
+        break;
+
+      case '#':
+        id = chunks[i + 1];
+    }
+  }
+
+  return {
+    className: className.trim(),
+    tag: chunks[0] || 'div',
+    id: id
+  };
 }
 
 function unmount (parent, child) {
@@ -251,11 +250,7 @@ function setStyle (view, arg1, arg2) {
 }
 
 function setStyleValue (el, key, value) {
-  if (value == null) {
-    el.style[key] = '';
-  } else {
-    el.style[key] = value;
-  }
+  el.style[key] = value == null ? '' : value;
 }
 
 /* global SVGElement */
@@ -433,7 +428,7 @@ function setChildren (parent) {
 function traverse (parent, children, _current) {
   var current = _current;
 
-  var childEls = new Array(children.length);
+  var childEls = Array(children.length);
 
   for (var i = 0; i < children.length; i++) {
     childEls[i] = children[i] && getEl(children[i]);
@@ -502,7 +497,7 @@ ListPool.prototype.update = function update (data, context) {
   var oldLookup = this.lookup;
   var newLookup = {};
 
-  var newViews = new Array(data.length);
+  var newViews = Array(data.length);
   var oldViews = this.views;
 
   for (var i = 0; i < data.length; i++) {
