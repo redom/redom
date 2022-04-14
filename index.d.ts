@@ -75,34 +75,67 @@ export interface RouterDictionary {
 }
 
 type HTMLElementOfStringLiteral<Q extends string> =
-    Q extends 'div' ? HTMLDivElement:
     Q extends 'a' ? HTMLAnchorElement:
-    Q extends 'span' ? HTMLSpanElement:
-    Q extends 'pre' ? HTMLPreElement:
-    Q extends 'p' ? HTMLParagraphElement:
-    Q extends 'hr' ? HTMLHRElement:
+    Q extends 'area' ? HTMLAreaElement:
+    Q extends 'audio' ? HTMLAudioElement:
+    Q extends 'base' ? HTMLBaseElement:
+    Q extends 'body' ? HTMLBodyElement:
     Q extends 'br' ? HTMLBRElement:
-    Q extends 'img' ? HTMLImageElement:
-    Q extends 'iframe' ? HTMLIFrameElement:
-    Q extends 'ul' ? HTMLUListElement:
-    Q extends 'li' ? HTMLLIElement:
-    Q extends 'ol' ? HTMLOListElement:
+    Q extends 'button' ? HTMLButtonElement:
+    Q extends 'canvas' ? HTMLCanvasElement:
+    Q extends 'data' ? HTMLDataElement:
+    Q extends 'datalist' ? HTMLDataListElement:
+    Q extends 'details' ? HTMLDetailsElement:
+    Q extends 'div' ? HTMLDivElement:
+    Q extends 'dl' ? HTMLDListElement:
+    Q extends 'embed' ? HTMLEmbedElement:
+    Q extends 'fieldset' ? HTMLFieldSetElement:
     Q extends 'form' ? HTMLFormElement:
+    Q extends 'hr' ? HTMLHRElement:
+    Q extends 'head' ? HTMLHeadElement:
+    Q extends 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' ? HTMLHeadingElement:
+    Q extends 'html' ? HTMLHtmlElement:
+    Q extends 'iframe' ? HTMLIFrameElement:
+    Q extends 'img' ? HTMLImageElement:
     Q extends 'input' ? HTMLInputElement:
     Q extends 'label' ? HTMLLabelElement:
-    Q extends 'textarea' ? HTMLTextAreaElement:
-    Q extends 'select' ? HTMLSelectElement:
+    Q extends 'legend' ? HTMLLegendElement:
+    Q extends 'li' ? HTMLLIElement:
+    Q extends 'link' ? HTMLLinkElement:
+    Q extends 'map' ? HTMLMapElement:
+    Q extends 'meta' ? HTMLMetaElement:
+    Q extends 'meter' ? HTMLMeterElement:
+    Q extends 'del' | 'ins' ? HTMLModElement:
+    Q extends 'object' ? HTMLObjectElement:
+    Q extends 'ol' ? HTMLOListElement:
+    Q extends 'optgroup' ? HTMLOptGroupElement:
     Q extends 'option' ? HTMLOptionElement:
-    Q extends 'button' ? HTMLButtonElement:
-    Q extends 'h1'|'h2'|'h3'|'h4'|'h5'|'h6' ? HTMLHeadingElement:
+    Q extends 'output' ? HTMLOutputElement:
+    Q extends 'p' ? HTMLParagraphElement:
+    Q extends 'param' ? HTMLParamElement:
+    Q extends 'pre' ? HTMLPreElement:
+    Q extends 'progress' ? HTMLProgressElement:
+    Q extends 'blockquote' | 'q' ? HTMLQuoteElement:
+    Q extends 'script' ? HTMLScriptElement:
+    Q extends 'select' ? HTMLSelectElement:
+    Q extends 'slot' ? HTMLSlotElement:
+    Q extends 'source' ? HTMLSourceElement:
+    Q extends 'span' ? HTMLSpanElement:
+    Q extends 'style' ? HTMLStyleElement:
+    Q extends 'caption' ? HTMLTableCaptionElement:
+    Q extends 'th' | 'td' ? HTMLTableCellElement:
+    Q extends 'col' | 'colgroup' ? HTMLTableColElement:
     Q extends 'table' ? HTMLTableElement:
     Q extends 'tr' ? HTMLTableRowElement:
-    Q extends 'td' ? HTMLTableCellElement:
-    Q extends 'thead'|'tbody'|'tfoot' ? HTMLTableSectionElement:
-    Q extends 'th' ? HTMLTableHeaderCellElement:
-    Q extends 'style' ? HTMLStyleElement:
+    Q extends 'thead' | 'tbody' | 'tfoot' ? HTMLTableSectionElement:
+    Q extends 'template' ? HTMLTemplateElement:
+    Q extends 'textarea' ? HTMLTextAreaElement:
+    Q extends 'time' ? HTMLTimeElement:
+    Q extends 'title' ? HTMLTitleElement:
+    Q extends 'track' ? HTMLTrackElement:
+    Q extends 'ul' ? HTMLUListElement:
+    Q extends 'video' ? HTMLVideoElement:
     Q extends 'svg' ? SVGElement:
-    Q extends 'canvas' ? HTMLCanvasElement:
     HTMLElement
 
 type RedomElementOfElQuery<Q extends RedomElQuery> =
