@@ -2,32 +2,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function parseQuery (query) {
-  var chunks = query.split(/([#.])/);
-  var tagName = '';
-  var id = '';
-  var classNames = [];
-
-  for (var i = 0; i < chunks.length; i++) {
-    var chunk = chunks[i];
-    if (chunk === '#') {
-      id = chunks[++i];
-    } else if (chunk === '.') {
-      classNames.push(chunks[++i]);
-    } else if (chunk.length) {
-      tagName = chunk;
-    }
-  }
-
-  return {
-    tag: tagName || 'div',
-    id: id,
-    className: classNames.join(' ')
-  };
-}
-
 function createElement (query, ns) {
-  var ref = parseQuery(query);
+  var ref = parse(query);
   var tag = ref.tag;
   var id = ref.id;
   var className = ref.className;
@@ -46,6 +22,29 @@ function createElement (query, ns) {
   }
 
   return element;
+}
+
+function parse (query) {
+  var chunks = query.split(/([.#])/);
+  var className = '';
+  var id = '';
+
+  for (var i = 1; i < chunks.length; i += 2) {
+    switch (chunks[i]) {
+      case '.':
+        className += " " + (chunks[i + 1]);
+        break;
+
+      case '#':
+        id = chunks[i + 1];
+    }
+  }
+
+  return {
+    className: className.trim(),
+    tag: chunks[0] || 'div',
+    id: id
+  };
 }
 
 function unmount (parent, child) {
