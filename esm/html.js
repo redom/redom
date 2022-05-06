@@ -34,5 +34,5 @@ html.extend = function extendHtml (query, ...args) {
 };
 
 function memoizeHTML (query) {
-  return htmlCache[query] || (htmlCache[query] = createElement(query));
+  return htmlCache[query] ||= createElement(query);
 }
