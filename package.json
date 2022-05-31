@@ -53,15 +53,15 @@
     "browserify": "^17.0.0",
     "butternut": "~0.4.6",
     "coverify": "^1.5.1",
-    "gh-pages": "~3.2.3",
-    "rollup": "~2.70.1",
-    "marked": "~4.0.14",
+    "gh-pages": "~4.0.0",
+    "rollup": "~2.75.3",
+    "marked": "~4.0.16",
     "rollup-plugin-buble": "~0.19.8",
     "rollup-plugin-node-resolve": "~5.2.0",
     "semistandard": "~16.0.1",
     "tape": "^5.5.3",
-    "tape-run": "^9.0.0",
-    "terser": "~5.12.1"
+    "tape-run": "^10.0.0",
+    "terser": "~5.14.0"
   },
   "dependencies": {},
   "collective": {
