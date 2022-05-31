@@ -218,10 +218,11 @@ module.exports = function (redom) {
       mount(document.body, item2); // unmount & mount
       mount(document.body, item.el); // remount, test view lookup (__redom_view)
       unmount(document.body, item); // unmount
+      mount(document.body, item, item2, true); // replace (unmount + mount)
       t.deepEqual(eventsFired, {
-        onmount: 3,
+        onmount: 4,
         onremount: 1,
-        onunmount: 2
+        onunmount: 3
       });
     });
     t.test('component lifecycle events inside node element', function (t) {
