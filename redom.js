@@ -137,7 +137,13 @@
 
     if (before != null) {
       if (replace) {
-        parentEl.replaceChild(childEl, getEl(before));
+        var beforeEl = getEl(before);
+
+        if (beforeEl.__redom_mounted) {
+          trigger(before.el, 'onunmount');
+        }
+
+        parentEl.replaceChild(childEl, beforeEl);
       } else {
         parentEl.insertBefore(childEl, getEl(before));
       }
