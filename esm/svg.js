@@ -1,9 +1,7 @@
 import { createElement } from './create-element.js';
-import { parseArgumentsInternal, isNode, getEl } from './util.js';
+import { parseArgumentsInternal, getEl } from './util.js';
 
 const ns = 'http://www.w3.org/2000/svg';
-
-const svgCache = {};
 
 export function svg (query, ...args) {
   let element;
@@ -11,9 +9,7 @@ export function svg (query, ...args) {
   const type = typeof query;
 
   if (type === 'string') {
-    element = memoizeSVG(query).cloneNode(false);
-  } else if (isNode(query)) {
-    element = query.cloneNode(false);
+    element = createElement(query, ns);
   } else if (type === 'function') {
     const Query = query;
     element = new Query(...args);
@@ -28,14 +24,8 @@ export function svg (query, ...args) {
 
 export const s = svg;
 
-svg.extend = function extendSvg (query) {
-  const clone = memoizeSVG(query);
-
-  return svg.bind(this, clone);
+svg.extend = function extendSvg (...args) {
+  return svg.bind(this, ...args);
 };
 
 svg.ns = ns;
-
-function memoizeSVG (query) {
-  return svgCache[query] || (svgCache[query] = createElement(query, ns));
-}

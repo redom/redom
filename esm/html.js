@@ -1,7 +1,5 @@
 import { createElement } from './create-element.js';
-import { parseArgumentsInternal, isNode, getEl } from './util.js';
-
-const htmlCache = {};
+import { parseArgumentsInternal, getEl } from './util.js';
 
 export function html (query, ...args) {
   let element;
@@ -9,9 +7,7 @@ export function html (query, ...args) {
   const type = typeof query;
 
   if (type === 'string') {
-    element = memoizeHTML(query).cloneNode(false);
-  } else if (isNode(query)) {
-    element = query.cloneNode(false);
+    element = createElement(query);
   } else if (type === 'function') {
     const Query = query;
     element = new Query(...args);
@@ -27,12 +23,6 @@ export function html (query, ...args) {
 export const el = html;
 export const h = html;
 
-html.extend = function extendHtml (query, ...args) {
-  const clone = memoizeHTML(query);
-
-  return html.bind(this, clone, ...args);
+html.extend = function extendHtml (...args) {
+  return html.bind(this, ...args);
 };
-
-function memoizeHTML (query) {
-  return htmlCache[query] || (htmlCache[query] = createElement(query));
-}

@@ -377,8 +377,6 @@ function isNode (arg) {
   return arg && arg.nodeType;
 }
 
-var htmlCache = {};
-
 function html (query) {
   var args = [], len = arguments.length - 1;
   while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
@@ -388,9 +386,7 @@ function html (query) {
   var type = typeof query;
 
   if (type === 'string') {
-    element = memoizeHTML(query).cloneNode(false);
-  } else if (isNode(query)) {
-    element = query.cloneNode(false);
+    element = createElement(query);
   } else if (type === 'function') {
     var Query = query;
     element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
@@ -406,18 +402,12 @@ function html (query) {
 var el = html;
 var h = html;
 
-html.extend = function extendHtml (query) {
-  var args = [], len = arguments.length - 1;
-  while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+html.extend = function extendHtml () {
+  var args = [], len = arguments.length;
+  while ( len-- ) args[ len ] = arguments[ len ];
 
-  var clone = memoizeHTML(query);
-
-  return html.bind.apply(html, [ this, clone ].concat( args ));
+  return html.bind.apply(html, [ this ].concat( args ));
 };
-
-function memoizeHTML (query) {
-  return htmlCache[query] || (htmlCache[query] = createElement(query));
-}
 
 function setChildren (parent) {
   var children = [], len = arguments.length - 1;
@@ -703,8 +693,6 @@ Router.prototype.update = function update (route, data) {
 
 var ns = 'http://www.w3.org/2000/svg';
 
-var svgCache = {};
-
 function svg (query) {
   var args = [], len = arguments.length - 1;
   while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
@@ -714,9 +702,7 @@ function svg (query) {
   var type = typeof query;
 
   if (type === 'string') {
-    element = memoizeSVG(query).cloneNode(false);
-  } else if (isNode(query)) {
-    element = query.cloneNode(false);
+    element = createElement(query, ns);
   } else if (type === 'function') {
     var Query = query;
     element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
@@ -731,17 +717,14 @@ function svg (query) {
 
 var s = svg;
 
-svg.extend = function extendSvg (query) {
-  var clone = memoizeSVG(query);
+svg.extend = function extendSvg () {
+  var args = [], len = arguments.length;
+  while ( len-- ) args[ len ] = arguments[ len ];
 
-  return svg.bind(this, clone);
+  return svg.bind.apply(svg, [ this ].concat( args ));
 };
 
 svg.ns = ns;
-
-function memoizeSVG (query) {
-  return svgCache[query] || (svgCache[query] = createElement(query, ns));
-}
 
 exports.List = List;
 exports.ListPool = ListPool;
