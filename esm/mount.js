@@ -31,7 +31,7 @@ export function mount (parent, child, before, replace) {
       const beforeEl = getEl(before);
 
       if (beforeEl.__redom_mounted) {
-        trigger(before.el, 'onunmount');
+        trigger(beforeEl, 'onunmount');
       }
 
       parentEl.replaceChild(childEl, beforeEl);
