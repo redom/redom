@@ -138,7 +138,7 @@ function mount (parent, child, before, replace) {
       var beforeEl = getEl(before);
 
       if (beforeEl.__redom_mounted) {
-        trigger(before.el, 'onunmount');
+        trigger(beforeEl, 'onunmount');
       }
 
       parentEl.replaceChild(childEl, beforeEl);
