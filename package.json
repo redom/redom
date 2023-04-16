@@ -3,7 +3,7 @@
   "version": "3.29.1",
   "description": "Tiny turboboosted JavaScript library for creating user interfaces. 100 % test coverage!",
   "main": "dist/redom.js",
-  "module": "dist/redom.es.js",
+  "module": "esm/index.js",
   "jsnext:main": "dist/redom.es.js",
   "sideEffects": false,
   "scripts": {
