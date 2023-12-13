@@ -1,7 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 function createElement (query, ns) {
   var ref = parse(query);
   var tag = ref.tag;
@@ -109,6 +107,7 @@ function hooksAreEmpty (hooks) {
 }
 
 /* global Node, ShadowRoot */
+
 
 var hookNames = ['onmount', 'onremount', 'onunmount'];
 var shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
@@ -264,6 +263,7 @@ function setStyleValue (el, key, value) {
 }
 
 /* global SVGElement */
+
 
 var xlinkns = 'http://www.w3.org/1999/xlink';
 
@@ -594,6 +594,7 @@ list.extend = List.extend;
 
 /* global Node */
 
+
 function place (View, initData) {
   return new Place(View, initData);
 }
@@ -663,20 +664,22 @@ Place.prototype.update = function update (visible, data) {
 
 /* global Node */
 
-function router (parent, Views, initData) {
-  return new Router(parent, Views, initData);
+
+function router (parent, views, initData) {
+  return new Router(parent, views, initData);
 }
 
-var Router = function Router (parent, Views, initData) {
+var Router = function Router (parent, views, initData) {
   this.el = ensureEl(parent);
-  this.Views = Views;
+  this.views = views;
+  this.Views = views; // backwards compatibility
   this.initData = initData;
 };
 
 Router.prototype.update = function update (route, data) {
   if (route !== this.route) {
-    var Views = this.Views;
-    var View = Views[route];
+    var views = this.views;
+    var View = views[route];
 
     this.route = route;
 
@@ -726,6 +729,25 @@ svg.extend = function extendSvg () {
 
 svg.ns = ns;
 
+function viewFactory (views, key) {
+  if (!views || typeof views !== 'object') {
+    throw new Error('views must be an object');
+  }
+  if (!key || typeof key !== 'string') {
+    throw new Error('key must be a string');
+  }
+  return function (initData, item, i, data) {
+    var viewKey = item[key];
+    var View = views[viewKey];
+
+    if (View) {
+      return new View(initData, item, i, data);
+    } else {
+      throw new Error(("view " + viewKey + " not found"));
+    }
+  };
+}
+
 exports.List = List;
 exports.ListPool = ListPool;
 exports.Place = Place;
@@ -747,3 +769,4 @@ exports.setXlink = setXlink;
 exports.svg = svg;
 exports.text = text;
 exports.unmount = unmount;
+exports.viewFactory = viewFactory;

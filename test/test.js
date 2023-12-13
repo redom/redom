@@ -15,7 +15,24 @@ document.createElement = function (tagName) {
 };
 
 module.exports = function (redom) {
-  var { el, html, list, listPool, place, router, svg, mount, unmount, setChildren, setAttr, setStyle, setXlink, setData, text } = redom;
+  var {
+    el,
+    html,
+    list,
+    listPool,
+    place,
+    router,
+    svg,
+    mount,
+    unmount,
+    setChildren,
+    setAttr,
+    setStyle,
+    setXlink,
+    setData,
+    text,
+    viewFactory
+  } = redom;
 
   test('exports utils', function (t) {
     t.plan(2);
@@ -989,5 +1006,55 @@ module.exports = function (redom) {
     items.update('a e c d b f g'.split(' ').map(function (id) { return { id: id }; }));
 
     t.equals(remounts, 1);
+  });
+
+  test('view factory', function (t) {
+    t.plan(4);
+
+    function A () {
+      this.el = el('a');
+      t.ok('A class constructor called');
+    }
+
+    A.prototype.update = function () {
+      t.ok('A class update called');
+    }
+
+    function B () {
+      this.el = el('b');
+      t.ok('B class constructor called');
+    }
+
+    B.prototype.update = function () {
+      t.ok('B class update called');
+    }
+
+    var items = list('list', viewFactory({
+      a: A,
+      b: B
+    }, 'type'), 'id', { a: 1, b: 2 });
+
+    items.update([{ type: 'a' }, { type: 'b' }]);
+  });
+
+  test('view factory edge cases', function (t) {
+    t.plan(3);
+    try {
+      viewFactory();
+    } catch (err) {
+      t.equals(err.message, 'views must be an object');
+    }
+    try {
+      viewFactory({});
+    } catch (err) {
+      t.equals(err.message, 'key must be a string');
+    }
+    var items = list('list', viewFactory({}, 'type'));
+
+    try {
+      items.update([{ type: 'a' }]);
+    } catch (err) {
+      t.equals(err.message, 'view a not found');
+    }
   });
 };

@@ -3,21 +3,22 @@
 import { ensureEl } from './util.js';
 import { setChildren } from './setchildren.js';
 
-export function router (parent, Views, initData) {
-  return new Router(parent, Views, initData);
+export function router (parent, views, initData) {
+  return new Router(parent, views, initData);
 }
 
 export class Router {
-  constructor (parent, Views, initData) {
+  constructor (parent, views, initData) {
     this.el = ensureEl(parent);
-    this.Views = Views;
+    this.views = views;
+    this.Views = views; // backwards compatibility
     this.initData = initData;
   }
 
   update (route, data) {
     if (route !== this.route) {
-      const Views = this.Views;
-      const View = Views[route];
+      const views = this.views;
+      const View = views[route];
 
       this.route = route;
 

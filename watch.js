@@ -1,5 +1,5 @@
-const cp = require('child_process');
-const fs = require('fs');
+import cp from 'child_process';
+import fs from 'fs';
 
 fs.watch('esm', run('build'));
 fs.watch('dist/redom.js', () => run('minify')); // don't do init run
