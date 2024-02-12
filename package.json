@@ -54,7 +54,7 @@
     "butternut": "~0.4.6",
     "coverify": "^1.5.1",
     "gh-pages": "~6.1.0",
-    "rollup": "~4.9.0",
+    "rollup": "~4.10.0",
     "marked": "~11.1.0",
     "rollup-plugin-buble": "~0.19.8",
     "rollup-plugin-node-resolve": "~5.2.0",
