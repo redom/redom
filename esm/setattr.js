@@ -36,7 +36,8 @@ export function setAttrInternal (view, arg1, arg2, initial) {
         return;
       }
       if (initial && arg1 === 'class') {
-        arg2 = el.className + ' ' + arg2;
+        setClassName(el, arg2);
+        return;
       }
       if (arg2 == null) {
         el.removeAttribute(arg1);
@@ -44,6 +45,18 @@ export function setAttrInternal (view, arg1, arg2, initial) {
         el.setAttribute(arg1, arg2);
       }
     }
+  }
+}
+
+function setClassName (el, additionToClassName) {
+  if (additionToClassName == null) {
+    el.removeAttribute('class');
+  } else if (el.classList) {
+    el.classList.add(additionToClassName);
+  } else if (typeof el.className === 'object' && el.className && el.className.baseVal) {
+    el.className.baseVal = (el.className.baseVal + ' ' + additionToClassName).trim();
+  } else {
+    el.className = (el.className + ' ' + additionToClassName).trim();
   }
 }
 
