@@ -1,4 +1,7 @@
-export function dispatch(el, data, eventName = "redom") {
+import { getEl } from "./util.js";
+
+export function dispatch(child, data, eventName = "redom") {
+  const childEl = getEl(child);
   const event = new CustomEvent(eventName, { bubbles: true, detail: data });
-  el.dispatchEvent(event);
+  childEl.dispatchEvent(event);
 }

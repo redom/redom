@@ -1,10 +1,3 @@
-function dispatch(el, data, eventName) {
-  if ( eventName === void 0 ) eventName = "redom";
-
-  var event = new CustomEvent(eventName, { bubbles: true, detail: data });
-  el.dispatchEvent(event);
-}
-
 function createElement(query, ns) {
   var ref = parse(query);
   var tag = ref.tag;
@@ -51,6 +44,38 @@ function parse(query) {
     id: id,
   };
 }
+
+function html(query) {
+  var args = [], len = arguments.length - 1;
+  while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+
+  var element;
+
+  var type = typeof query;
+
+  if (type === "string") {
+    element = createElement(query);
+  } else if (type === "function") {
+    var Query = query;
+    element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
+  } else {
+    throw new Error("At least one argument required");
+  }
+
+  parseArgumentsInternal(getEl(element), args, true);
+
+  return element;
+}
+
+var el = html;
+var h = html;
+
+html.extend = function extendHtml() {
+  var args = [], len = arguments.length;
+  while ( len-- ) args[ len ] = arguments[ len ];
+
+  return html.bind.apply(html, [ this ].concat( args ));
+};
 
 function unmount(parent, child) {
   var parentEl = getEl(parent);
@@ -391,37 +416,13 @@ function isNode(arg) {
   return arg && arg.nodeType;
 }
 
-function html(query) {
-  var args = [], len = arguments.length - 1;
-  while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+function dispatch(child, data, eventName) {
+  if ( eventName === void 0 ) eventName = "redom";
 
-  var element;
-
-  var type = typeof query;
-
-  if (type === "string") {
-    element = createElement(query);
-  } else if (type === "function") {
-    var Query = query;
-    element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
-  } else {
-    throw new Error("At least one argument required");
-  }
-
-  parseArgumentsInternal(getEl(element), args, true);
-
-  return element;
+  var childEl = getEl(child);
+  var event = new CustomEvent(eventName, { bubbles: true, detail: data });
+  childEl.dispatchEvent(event);
 }
-
-var el = html;
-var h = html;
-
-html.extend = function extendHtml() {
-  var args = [], len = arguments.length;
-  while ( len-- ) args[ len ] = arguments[ len ];
-
-  return html.bind.apply(html, [ this ].concat( args ));
-};
 
 function setChildren(parent) {
   var children = [], len = arguments.length - 1;
