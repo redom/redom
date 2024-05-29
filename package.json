@@ -1,6 +1,6 @@
 {
   "name": "redom",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Tiny turboboosted JavaScript library for creating user interfaces.",
   "main": "esm/index.js",
   "type": "module",
@@ -24,14 +24,24 @@
     "type": "git",
     "url": "git+https://github.com/redom/redom.git"
   },
-  "keywords": ["redom", "javascript", "tiny", "dom", "library"],
+  "keywords": [
+    "redom",
+    "javascript",
+    "tiny",
+    "dom",
+    "library"
+  ],
   "author": "Juha Lindstedt",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/redom/redom/issues"
   },
   "semistandard": {
-    "ignore": ["/dist/", "/node_modules/", "/test/"]
+    "ignore": [
+      "/dist/",
+      "/node_modules/",
+      "/test/"
+    ]
   },
   "homepage": "https://redom.js.org",
   "devDependencies": {
