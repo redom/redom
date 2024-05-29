@@ -11,7 +11,7 @@
     <a href="https://github.com/redom/redom/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/redom.svg?maxAge=60" alt="License"></a>
     <a href="#backers"><img src="https://opencollective.com/redom/backers/badge.svg" alt="Backers on Open Collective"></a>
     <a href="#sponsors"><img src="https://opencollective.com/redom/sponsors/badge.svg" alt="Sponsors on Open Collective"></a>
-    <a href="https://gitter.im/pakastin/redom"><img src="https://badges.gitter.im/pakastin/redom.svg" alt="Join the chat"></a>
+    <a href="https://gitter.im/redom/redom"><img src="https://badges.gitter.im/pakastin/redom.svg" alt="Join the chat"></a>
     <br>
     <a href="https://twitter.com/pakastin"><img src="https://img.shields.io/twitter/follow/pakastin.svg?style=social&maxAge=60" alt="Follow @pakastin"></a>
     <a href="https://twitter.com/redomjs"><img src="https://img.shields.io/twitter/follow/redomjs.svg?style=social&maxAge=60" alt="Follow @redomjs"></a>
