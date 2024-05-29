@@ -1,7 +1,8 @@
-
-export function createElement (query, ns) {
+export function createElement(query, ns) {
   const { tag, id, className } = parse(query);
-  const element = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
+  const element = ns
+    ? document.createElementNS(ns, tag)
+    : document.createElement(tag);
 
   if (id) {
     element.id = id;
@@ -9,7 +10,7 @@ export function createElement (query, ns) {
 
   if (className) {
     if (ns) {
-      element.setAttribute('class', className);
+      element.setAttribute("class", className);
     } else {
       element.className = className;
     }
@@ -18,25 +19,25 @@ export function createElement (query, ns) {
   return element;
 }
 
-function parse (query) {
+function parse(query) {
   const chunks = query.split(/([.#])/);
-  let className = '';
-  let id = '';
+  let className = "";
+  let id = "";
 
   for (let i = 1; i < chunks.length; i += 2) {
     switch (chunks[i]) {
-      case '.':
+      case ".":
         className += ` ${chunks[i + 1]}`;
         break;
 
-      case '#':
+      case "#":
         id = chunks[i + 1];
     }
   }
 
   return {
     className: className.trim(),
-    tag: chunks[0] || 'div',
-    id
+    tag: chunks[0] || "div",
+    id,
   };
 }

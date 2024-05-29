@@ -1,7 +1,7 @@
-import { getEl } from './util.js';
-import { trigger } from './mount.js';
+import { getEl } from "./util.js";
+import { trigger } from "./mount.js";
 
-export function unmount (parent, child) {
+export function unmount(parent, child) {
   const parentEl = getEl(parent);
   const childEl = getEl(child);
 
@@ -19,7 +19,7 @@ export function unmount (parent, child) {
   return child;
 }
 
-export function doUnmount (child, childEl, parentEl) {
+export function doUnmount(child, childEl, parentEl) {
   const hooks = childEl.__redom_lifecycle;
 
   if (hooksAreEmpty(hooks)) {
@@ -30,7 +30,7 @@ export function doUnmount (child, childEl, parentEl) {
   let traverse = parentEl;
 
   if (childEl.__redom_mounted) {
-    trigger(childEl, 'onunmount');
+    trigger(childEl, "onunmount");
   }
 
   while (traverse) {
@@ -50,7 +50,7 @@ export function doUnmount (child, childEl, parentEl) {
   }
 }
 
-function hooksAreEmpty (hooks) {
+function hooksAreEmpty(hooks) {
   if (hooks == null) {
     return true;
   }

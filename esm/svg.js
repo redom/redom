@@ -1,20 +1,20 @@
-import { createElement } from './create-element.js';
-import { parseArgumentsInternal, getEl } from './util.js';
+import { createElement } from "./create-element.js";
+import { parseArgumentsInternal, getEl } from "./util.js";
 
-const ns = 'http://www.w3.org/2000/svg';
+const ns = "http://www.w3.org/2000/svg";
 
-export function svg (query, ...args) {
+export function svg(query, ...args) {
   let element;
 
   const type = typeof query;
 
-  if (type === 'string') {
+  if (type === "string") {
     element = createElement(query, ns);
-  } else if (type === 'function') {
+  } else if (type === "function") {
     const Query = query;
     element = new Query(...args);
   } else {
-    throw new Error('At least one argument required');
+    throw new Error("At least one argument required");
   }
 
   parseArgumentsInternal(getEl(element), args, true);
@@ -24,7 +24,7 @@ export function svg (query, ...args) {
 
 export const s = svg;
 
-svg.extend = function extendSvg (...args) {
+svg.extend = function extendSvg(...args) {
   return svg.bind(this, ...args);
 };
 

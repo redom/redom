@@ -1,9 +1,8 @@
 {
   "name": "redom",
   "version": "4.0.0",
-  "description": "Tiny turboboosted JavaScript library for creating user interfaces. 100 % test coverage!",
-  "main": "dist/redom.js",
-  "module": "esm/index.js",
+  "description": "Tiny turboboosted JavaScript library for creating user interfaces.",
+  "main": "esm/index.js",
   "type": "module",
   "sideEffects": false,
   "scripts": {
@@ -19,51 +18,32 @@
     "postversion": "git push --tags",
     "prepublish": "npm run build && npm run minify && npm run test",
     "postpublish": "npm run dist",
-    "fixlint": "semistandard 'esm/**/*.js' 'test/test.js' --fix",
-    "lint": "semistandard 'esm/**/*.js' 'test/test.js'",
-    "test": "npm run lint && rollup -c -n redom -f cjs esm/index.js -o test/redom.js && browserify -t coverify test/index.js | tape-run | coverify",
-    "nocoverage": "semistandard esm/index.js && rollup -c -n redom -f cjs esm/index.js -o test/redom.js && browserify test/index.js | tape-run",
-    "justtest": "browserify -t coverify test/index.js | tape-run | coverify"
+    "test": "node test/index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/redom/redom.git"
   },
-  "keywords": [
-    "redom",
-    "javascript",
-    "tiny",
-    "dom",
-    "library"
-  ],
+  "keywords": ["redom", "javascript", "tiny", "dom", "library"],
   "author": "Juha Lindstedt",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/redom/redom/issues"
   },
   "semistandard": {
-    "ignore": [
-      "/dist/",
-      "/node_modules/",
-      "/test/"
-    ]
+    "ignore": ["/dist/", "/node_modules/", "/test/"]
   },
   "homepage": "https://redom.js.org",
   "devDependencies": {
-    "browserify": "^17.0.0",
-    "butternut": "~0.4.6",
-    "coverify": "^1.5.1",
     "gh-pages": "~6.1.1",
-    "rollup": "~4.14.0",
-    "marked": "~12.0.1",
+    "jsdom": "^24.1.0",
+    "marked": "~12.0.2",
+    "rollup": "~4.18.0",
     "rollup-plugin-buble": "~0.19.8",
     "rollup-plugin-node-resolve": "~5.2.0",
     "semistandard": "~17.0.0",
-    "tape": "^5.7.5",
-    "tape-run": "^11.0.0",
-    "terser": "~5.30.3"
+    "terser": "~5.31.0"
   },
-  "dependencies": {},
   "collective": {
     "type": "opencollective",
     "url": "https://opencollective.com/redom",
@@ -73,5 +53,8 @@
     "type": "opencollective",
     "url": "https://opencollective.com/redom"
   },
-  "types": "index.d.ts"
+  "types": "index.d.ts",
+  "dependencies": {
+    "teston": "^0.9.6"
+  }
 }
