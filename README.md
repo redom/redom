@@ -8,8 +8,6 @@
 <p align="center">
     <br>
     <a href="https://www.npmjs.com/package/redom"><img src="https://img.shields.io/npm/v/redom.svg?maxAge=60" alt="Version"></a>
-    <a href="https://travis-ci.org/redom/redom?branch=master"><img src="https://img.shields.io/travis/redom/redom/master.svg?maxAge=60" alt="Build Status"></a>
-    <a href="https://github.com/Flet/semistandard"><img src="https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?maxAge=3600" alt="JavaScript Semi-Standard Style"></a>
     <a href="https://github.com/redom/redom/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/redom.svg?maxAge=60" alt="License"></a>
     <a href="#backers"><img src="https://opencollective.com/redom/backers/badge.svg" alt="Backers on Open Collective"></a>
     <a href="#sponsors"><img src="https://opencollective.com/redom/sponsors/badge.svg" alt="Sponsors on Open Collective"></a>
