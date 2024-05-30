@@ -2,7 +2,7 @@
   "name": "redom",
   "version": "4.1.3",
   "description": "Tiny turboboosted JavaScript library for creating user interfaces.",
-  "main": "dist/redom.js",
+  "main": "./dist/redom.cjs",
   "exports": "./esm/index.js",
   "type": "module",
   "sideEffects": false,
@@ -11,7 +11,7 @@
     "dist": "gh-pages -d dist",
     "build-es": "rollup -c -i esm/index.js -f es -o dist/redom.es.js",
     "build-js": "rollup -c -n redom -f umd -i esm/index.js -o dist/redom.js",
-    "build": "npm run build-es && npm run build-js",
+    "build": "npm run build-es && npm run build-js && cp dist/redom.js dist/redom.cjs",
     "minify": "npm run minify-js && npm run minify-es",
     "minify-js": "terser dist/redom.js -cmo dist/redom.min.js",
     "minify-es": "terser dist/redom.es.js -o dist/redom.es.min.js",
@@ -53,7 +53,8 @@
     "rollup-plugin-buble": "~0.19.8",
     "rollup-plugin-node-resolve": "~5.2.0",
     "semistandard": "~17.0.0",
-    "terser": "~5.31.0"
+    "terser": "~5.31.0",
+    "teston": "^0.9.6"
   },
   "collective": {
     "type": "opencollective",
@@ -65,7 +66,5 @@
     "url": "https://opencollective.com/redom"
   },
   "types": "index.d.ts",
-  "dependencies": {
-    "teston": "^0.9.6"
-  }
+  "dependencies": {}
 }
