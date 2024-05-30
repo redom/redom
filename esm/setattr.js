@@ -35,7 +35,7 @@ export function setAttrInternal(view, arg1, arg2, initial) {
         setXlink(el, arg2);
         return;
       }
-      if (initial && arg1 === 'class') {
+      if (initial && arg1 === "class") {
         setClassName(el, arg2);
         return;
       }
@@ -48,20 +48,28 @@ export function setAttrInternal(view, arg1, arg2, initial) {
   }
 }
 
-function setClassName (el, additionToClassName) {
+function setClassName(el, additionToClassName) {
   if (additionToClassName == null) {
-    el.removeAttribute('class');
+    el.removeAttribute("class");
   } else if (el.classList) {
     el.classList.add(additionToClassName);
-  } else if (typeof el.className === 'object' && el.className && el.className.baseVal) {
-    el.className.baseVal = (el.className.baseVal + ' ' + additionToClassName).trim();
+  } else if (
+    typeof el.className === "object" &&
+    el.className &&
+    el.className.baseVal
+  ) {
+    el.className.baseVal = (
+      el.className.baseVal +
+      " " +
+      additionToClassName
+    ).trim();
   } else {
-    el.className = (el.className + ' ' + additionToClassName).trim();
+    el.className = (el.className + " " + additionToClassName).trim();
   }
 }
 
-export function setXlink (el, arg1, arg2) {
-  if (typeof arg1 === 'object') {
+export function setXlink(el, arg1, arg2) {
+  if (typeof arg1 === "object") {
     for (const key in arg1) {
       setXlink(el, key, arg1[key]);
     }

@@ -40,13 +40,6 @@
   "bugs": {
     "url": "https://github.com/redom/redom/issues"
   },
-  "semistandard": {
-    "ignore": [
-      "/dist/",
-      "/node_modules/",
-      "/test/"
-    ]
-  },
   "homepage": "https://redom.js.org",
   "devDependencies": {
     "gh-pages": "~6.1.1",
@@ -55,7 +48,6 @@
     "rollup": "~4.18.0",
     "rollup-plugin-buble": "~0.19.8",
     "rollup-plugin-node-resolve": "~5.2.0",
-    "semistandard": "~17.0.0",
     "terser": "~5.31.0",
     "teston": "^0.9.6"
   },
