@@ -2,7 +2,8 @@
   "name": "redom",
   "version": "4.1.2",
   "description": "Tiny turboboosted JavaScript library for creating user interfaces.",
-  "main": "esm/index.js",
+  "main": "dist/redom.js",
+  "exports": "./esm/index.js",
   "type": "module",
   "sideEffects": false,
   "scripts": {
