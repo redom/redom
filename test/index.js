@@ -683,7 +683,7 @@ t("SVG", function (t) {
     t.equals(text.outerHTML, "<text>Hello!</text>");
   });
   t("append text", function (t) {
-    t.plan(t);
+    t.plan(1);
 
     var text = svg("text", "Hello", " ", "world!");
     t.equals(text.outerHTML, "<text>Hello world!</text>");
