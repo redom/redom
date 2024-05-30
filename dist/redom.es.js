@@ -1,9 +1,11 @@
-function createElement (query, ns) {
+function createElement(query, ns) {
   var ref = parse(query);
   var tag = ref.tag;
   var id = ref.id;
   var className = ref.className;
-  var element = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
+  var element = ns
+    ? document.createElementNS(ns, tag)
+    : document.createElement(tag);
 
   if (id) {
     element.id = id;
@@ -11,7 +13,7 @@ function createElement (query, ns) {
 
   if (className) {
     if (ns) {
-      element.setAttribute('class', className);
+      element.setAttribute("class", className);
     } else {
       element.className = className;
     }
@@ -20,30 +22,62 @@ function createElement (query, ns) {
   return element;
 }
 
-function parse (query) {
+function parse(query) {
   var chunks = query.split(/([.#])/);
-  var className = '';
-  var id = '';
+  var className = "";
+  var id = "";
 
   for (var i = 1; i < chunks.length; i += 2) {
     switch (chunks[i]) {
-      case '.':
+      case ".":
         className += " " + (chunks[i + 1]);
         break;
 
-      case '#':
+      case "#":
         id = chunks[i + 1];
     }
   }
 
   return {
     className: className.trim(),
-    tag: chunks[0] || 'div',
-    id: id
+    tag: chunks[0] || "div",
+    id: id,
   };
 }
 
-function unmount (parent, child) {
+function html(query) {
+  var args = [], len = arguments.length - 1;
+  while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+
+  var element;
+
+  var type = typeof query;
+
+  if (type === "string") {
+    element = createElement(query);
+  } else if (type === "function") {
+    var Query = query;
+    element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
+  } else {
+    throw new Error("At least one argument required");
+  }
+
+  parseArgumentsInternal(getEl(element), args, true);
+
+  return element;
+}
+
+var el = html;
+var h = html;
+
+html.extend = function extendHtml() {
+  var args = [], len = arguments.length;
+  while ( len-- ) args[ len ] = arguments[ len ];
+
+  return html.bind.apply(html, [ this ].concat( args ));
+};
+
+function unmount(parent, child) {
   var parentEl = getEl(parent);
   var childEl = getEl(child);
 
@@ -61,7 +95,7 @@ function unmount (parent, child) {
   return child;
 }
 
-function doUnmount (child, childEl, parentEl) {
+function doUnmount(child, childEl, parentEl) {
   var hooks = childEl.__redom_lifecycle;
 
   if (hooksAreEmpty(hooks)) {
@@ -72,7 +106,7 @@ function doUnmount (child, childEl, parentEl) {
   var traverse = parentEl;
 
   if (childEl.__redom_mounted) {
-    trigger(childEl, 'onunmount');
+    trigger(childEl, "onunmount");
   }
 
   while (traverse) {
@@ -92,7 +126,7 @@ function doUnmount (child, childEl, parentEl) {
   }
 }
 
-function hooksAreEmpty (hooks) {
+function hooksAreEmpty(hooks) {
   if (hooks == null) {
     return true;
   }
@@ -107,10 +141,11 @@ function hooksAreEmpty (hooks) {
 /* global Node, ShadowRoot */
 
 
-var hookNames = ['onmount', 'onremount', 'onunmount'];
-var shadowRootAvailable = typeof window !== 'undefined' && 'ShadowRoot' in window;
+var hookNames = ["onmount", "onremount", "onunmount"];
+var shadowRootAvailable =
+  typeof window !== "undefined" && "ShadowRoot" in window;
 
-function mount (parent, child, before, replace) {
+function mount(parent, child, before, replace) {
   var parentEl = getEl(parent);
   var childEl = getEl(child);
 
@@ -126,7 +161,7 @@ function mount (parent, child, before, replace) {
   var wasMounted = childEl.__redom_mounted;
   var oldParent = childEl.parentNode;
 
-  if (wasMounted && (oldParent !== parentEl)) {
+  if (wasMounted && oldParent !== parentEl) {
     doUnmount(child, childEl, oldParent);
   }
 
@@ -135,7 +170,7 @@ function mount (parent, child, before, replace) {
       var beforeEl = getEl(before);
 
       if (beforeEl.__redom_mounted) {
-        trigger(beforeEl, 'onunmount');
+        trigger(beforeEl, "onunmount");
       }
 
       parentEl.replaceChild(childEl, beforeEl);
@@ -151,10 +186,10 @@ function mount (parent, child, before, replace) {
   return child;
 }
 
-function trigger (el, eventName) {
-  if (eventName === 'onmount' || eventName === 'onremount') {
+function trigger(el, eventName) {
+  if (eventName === "onmount" || eventName === "onremount") {
     el.__redom_mounted = true;
-  } else if (eventName === 'onunmount') {
+  } else if (eventName === "onunmount") {
     el.__redom_mounted = false;
   }
 
@@ -188,16 +223,18 @@ function trigger (el, eventName) {
   }
 }
 
-function doMount (child, childEl, parentEl, oldParent) {
+function doMount(child, childEl, parentEl, oldParent) {
   var hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
-  var remount = (parentEl === oldParent);
+  var remount = parentEl === oldParent;
   var hooksFound = false;
 
   for (var i = 0, list = hookNames; i < list.length; i += 1) {
     var hookName = list[i];
 
-    if (!remount) { // if already mounted, skip this phase
-      if (child !== childEl) { // only Views can have lifecycle events
+    if (!remount) {
+      // if already mounted, skip this phase
+      if (child !== childEl) {
+        // only Views can have lifecycle events
         if (hookName in child) {
           hooks[hookName] = (hooks[hookName] || 0) + 1;
         }
@@ -217,13 +254,14 @@ function doMount (child, childEl, parentEl, oldParent) {
   var triggered = false;
 
   if (remount || (traverse && traverse.__redom_mounted)) {
-    trigger(childEl, remount ? 'onremount' : 'onmount');
+    trigger(childEl, remount ? "onremount" : "onmount");
     triggered = true;
   }
 
   while (traverse) {
     var parent = traverse.parentNode;
-    var parentHooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
+    var parentHooks =
+      traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
 
     for (var hook in hooks) {
       parentHooks[hook] = (parentHooks[hook] || 0) + hooks[hook];
@@ -232,11 +270,12 @@ function doMount (child, childEl, parentEl, oldParent) {
     if (triggered) {
       break;
     } else {
-      if (traverse.nodeType === Node.DOCUMENT_NODE ||
-        (shadowRootAvailable && (traverse instanceof ShadowRoot)) ||
+      if (
+        traverse.nodeType === Node.DOCUMENT_NODE ||
+        (shadowRootAvailable && traverse instanceof ShadowRoot) ||
         (parent && parent.__redom_mounted)
       ) {
-        trigger(traverse, remount ? 'onremount' : 'onmount');
+        trigger(traverse, remount ? "onremount" : "onmount");
         triggered = true;
       }
       traverse = parent;
@@ -244,10 +283,10 @@ function doMount (child, childEl, parentEl, oldParent) {
   }
 }
 
-function setStyle (view, arg1, arg2) {
+function setStyle(view, arg1, arg2) {
   var el = getEl(view);
 
-  if (typeof arg1 === 'object') {
+  if (typeof arg1 === "object") {
     for (var key in arg1) {
       setStyleValue(el, key, arg1[key]);
     }
@@ -256,23 +295,23 @@ function setStyle (view, arg1, arg2) {
   }
 }
 
-function setStyleValue (el, key, value) {
-  el.style[key] = value == null ? '' : value;
+function setStyleValue(el, key, value) {
+  el.style[key] = value == null ? "" : value;
 }
 
 /* global SVGElement */
 
 
-var xlinkns = 'http://www.w3.org/1999/xlink';
+var xlinkns = "http://www.w3.org/1999/xlink";
 
-function setAttr (view, arg1, arg2) {
+function setAttr(view, arg1, arg2) {
   setAttrInternal(view, arg1, arg2);
 }
 
-function setAttrInternal (view, arg1, arg2, initial) {
+function setAttrInternal(view, arg1, arg2, initial) {
   var el = getEl(view);
 
-  var isObj = typeof arg1 === 'object';
+  var isObj = typeof arg1 === "object";
 
   if (isObj) {
     for (var key in arg1) {
@@ -280,23 +319,23 @@ function setAttrInternal (view, arg1, arg2, initial) {
     }
   } else {
     var isSVG = el instanceof SVGElement;
-    var isFunc = typeof arg2 === 'function';
+    var isFunc = typeof arg2 === "function";
 
-    if (arg1 === 'style' && typeof arg2 === 'object') {
+    if (arg1 === "style" && typeof arg2 === "object") {
       setStyle(el, arg2);
     } else if (isSVG && isFunc) {
       el[arg1] = arg2;
-    } else if (arg1 === 'dataset') {
+    } else if (arg1 === "dataset") {
       setData(el, arg2);
-    } else if (!isSVG && (arg1 in el || isFunc) && (arg1 !== 'list')) {
+    } else if (!isSVG && (arg1 in el || isFunc) && arg1 !== "list") {
       el[arg1] = arg2;
     } else {
-      if (isSVG && (arg1 === 'xlink')) {
+      if (isSVG && arg1 === "xlink") {
         setXlink(el, arg2);
         return;
       }
-      if (initial && arg1 === 'class') {
-        arg2 = el.className + ' ' + arg2;
+      if (initial && arg1 === "class") {
+        arg2 = el.className + " " + arg2;
       }
       if (arg2 == null) {
         el.removeAttribute(arg1);
@@ -307,8 +346,8 @@ function setAttrInternal (view, arg1, arg2, initial) {
   }
 }
 
-function setXlink (el, arg1, arg2) {
-  if (typeof arg1 === 'object') {
+function setXlink(el, arg1, arg2) {
+  if (typeof arg1 === "object") {
     for (var key in arg1) {
       setXlink(el, key, arg1[key]);
     }
@@ -321,8 +360,8 @@ function setXlink (el, arg1, arg2) {
   }
 }
 
-function setData (el, arg1, arg2) {
-  if (typeof arg1 === 'object') {
+function setData(el, arg1, arg2) {
+  if (typeof arg1 === "object") {
     for (var key in arg1) {
       setData(el, key, arg1[key]);
     }
@@ -335,11 +374,11 @@ function setData (el, arg1, arg2) {
   }
 }
 
-function text (str) {
-  return document.createTextNode((str != null) ? str : '');
+function text(str) {
+  return document.createTextNode(str != null ? str : "");
 }
 
-function parseArgumentsInternal (element, args, initial) {
+function parseArgumentsInternal(element, args, initial) {
   for (var i = 0, list = args; i < list.length; i += 1) {
     var arg = list[i];
 
@@ -349,65 +388,43 @@ function parseArgumentsInternal (element, args, initial) {
 
     var type = typeof arg;
 
-    if (type === 'function') {
+    if (type === "function") {
       arg(element);
-    } else if (type === 'string' || type === 'number') {
+    } else if (type === "string" || type === "number") {
       element.appendChild(text(arg));
     } else if (isNode(getEl(arg))) {
       mount(element, arg);
     } else if (arg.length) {
       parseArgumentsInternal(element, arg, initial);
-    } else if (type === 'object') {
+    } else if (type === "object") {
       setAttrInternal(element, arg, null, initial);
     }
   }
 }
 
-function ensureEl (parent) {
-  return typeof parent === 'string' ? html(parent) : getEl(parent);
+function ensureEl(parent) {
+  return typeof parent === "string" ? html(parent) : getEl(parent);
 }
 
-function getEl (parent) {
-  return (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el);
+function getEl(parent) {
+  return (
+    (parent.nodeType && parent) || (!parent.el && parent) || getEl(parent.el)
+  );
 }
 
-function isNode (arg) {
+function isNode(arg) {
   return arg && arg.nodeType;
 }
 
-function html (query) {
-  var args = [], len = arguments.length - 1;
-  while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+function dispatch(child, data, eventName) {
+  if ( eventName === void 0 ) eventName = "redom";
 
-  var element;
-
-  var type = typeof query;
-
-  if (type === 'string') {
-    element = createElement(query);
-  } else if (type === 'function') {
-    var Query = query;
-    element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
-  } else {
-    throw new Error('At least one argument required');
-  }
-
-  parseArgumentsInternal(getEl(element), args, true);
-
-  return element;
+  var childEl = getEl(child);
+  var event = new CustomEvent(eventName, { bubbles: true, detail: data });
+  childEl.dispatchEvent(event);
 }
 
-var el = html;
-var h = html;
-
-html.extend = function extendHtml () {
-  var args = [], len = arguments.length;
-  while ( len-- ) args[ len ] = arguments[ len ];
-
-  return html.bind.apply(html, [ this ].concat( args ));
-};
-
-function setChildren (parent) {
+function setChildren(parent) {
   var children = [], len = arguments.length - 1;
   while ( len-- > 0 ) children[ len ] = arguments[ len + 1 ];
 
@@ -423,7 +440,7 @@ function setChildren (parent) {
   }
 }
 
-function traverse (parent, children, _current) {
+function traverse(parent, children, _current) {
   var current = _current;
 
   var childEls = Array(children.length);
@@ -468,11 +485,11 @@ function traverse (parent, children, _current) {
   return current;
 }
 
-function listPool (View, key, initData) {
+function listPool(View, key, initData) {
   return new ListPool(View, key, initData);
 }
 
-var ListPool = function ListPool (View, key, initData) {
+var ListPool = function ListPool(View, key, initData) {
   this.View = View;
   this.initData = initData;
   this.oldLookup = {};
@@ -481,7 +498,7 @@ var ListPool = function ListPool (View, key, initData) {
   this.views = [];
 
   if (key != null) {
-    this.key = typeof key === 'function' ? key : propKey(key);
+    this.key = typeof key === "function" ? key : propKey(key);
   }
 };
 
@@ -526,17 +543,17 @@ ListPool.prototype.update = function update (data, context) {
   this.lookup = newLookup;
 };
 
-function propKey (key) {
+function propKey(key) {
   return function (item) {
     return item[key];
   };
 }
 
-function list (parent, View, key, initData) {
+function list(parent, View, key, initData) {
   return new List(parent, View, key, initData);
 }
 
-var List = function List (parent, View, key, initData) {
+var List = function List(parent, View, key, initData) {
   this.View = View;
   this.initData = initData;
   this.views = [];
@@ -584,7 +601,7 @@ List.prototype.update = function update (data, context) {
   this.views = views;
 };
 
-List.extend = function extendList (parent, View, key, initData) {
+List.extend = function extendList(parent, View, key, initData) {
   return List.bind(List, parent, View, key, initData);
 };
 
@@ -593,12 +610,12 @@ list.extend = List.extend;
 /* global Node */
 
 
-function place (View, initData) {
+function place(View, initData) {
   return new Place(View, initData);
 }
 
-var Place = function Place (View, initData) {
-  this.el = text('');
+var Place = function Place(View, initData) {
+  this.el = text("");
   this.visible = false;
   this.view = null;
   this._placeholder = this.el;
@@ -663,11 +680,11 @@ Place.prototype.update = function update (visible, data) {
 /* global Node */
 
 
-function router (parent, views, initData) {
+function router(parent, views, initData) {
   return new Router(parent, views, initData);
 }
 
-var Router = function Router (parent, views, initData) {
+var Router = function Router(parent, views, initData) {
   this.el = ensureEl(parent);
   this.views = views;
   this.Views = views; // backwards compatibility
@@ -692,9 +709,9 @@ Router.prototype.update = function update (route, data) {
   this.view && this.view.update && this.view.update(data, route);
 };
 
-var ns = 'http://www.w3.org/2000/svg';
+var ns = "http://www.w3.org/2000/svg";
 
-function svg (query) {
+function svg(query) {
   var args = [], len = arguments.length - 1;
   while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
@@ -702,13 +719,13 @@ function svg (query) {
 
   var type = typeof query;
 
-  if (type === 'string') {
+  if (type === "string") {
     element = createElement(query, ns);
-  } else if (type === 'function') {
+  } else if (type === "function") {
     var Query = query;
     element = new (Function.prototype.bind.apply( Query, [ null ].concat( args) ));
   } else {
-    throw new Error('At least one argument required');
+    throw new Error("At least one argument required");
   }
 
   parseArgumentsInternal(getEl(element), args, true);
@@ -718,7 +735,7 @@ function svg (query) {
 
 var s = svg;
 
-svg.extend = function extendSvg () {
+svg.extend = function extendSvg() {
   var args = [], len = arguments.length;
   while ( len-- ) args[ len ] = arguments[ len ];
 
@@ -727,12 +744,12 @@ svg.extend = function extendSvg () {
 
 svg.ns = ns;
 
-function viewFactory (views, key) {
-  if (!views || typeof views !== 'object') {
-    throw new Error('views must be an object');
+function viewFactory(views, key) {
+  if (!views || typeof views !== "object") {
+    throw new Error("views must be an object");
   }
-  if (!key || typeof key !== 'string') {
-    throw new Error('key must be a string');
+  if (!key || typeof key !== "string") {
+    throw new Error("key must be a string");
   }
   return function (initData, item, i, data) {
     var viewKey = item[key];
@@ -746,4 +763,4 @@ function viewFactory (views, key) {
   };
 }
 
-export { List, ListPool, Place, Router, el, h, html, list, listPool, mount, place, router, s, setAttr, setChildren, setData, setStyle, setXlink, svg, text, unmount, viewFactory };
+export { List, ListPool, Place, Router, dispatch, el, h, html, list, listPool, mount, place, router, s, setAttr, setChildren, setData, setStyle, setXlink, svg, text, unmount, viewFactory };

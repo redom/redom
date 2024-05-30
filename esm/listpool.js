@@ -1,11 +1,11 @@
-import { getEl } from './util.js';
+import { getEl } from "./util.js";
 
-export function listPool (View, key, initData) {
+export function listPool(View, key, initData) {
   return new ListPool(View, key, initData);
 }
 
 export class ListPool {
-  constructor (View, key, initData) {
+  constructor(View, key, initData) {
     this.View = View;
     this.initData = initData;
     this.oldLookup = {};
@@ -14,11 +14,11 @@ export class ListPool {
     this.views = [];
 
     if (key != null) {
-      this.key = typeof key === 'function' ? key : propKey(key);
+      this.key = typeof key === "function" ? key : propKey(key);
     }
   }
 
-  update (data, context) {
+  update(data, context) {
     const { View, key, initData } = this;
     const keySet = key != null;
 
@@ -57,7 +57,7 @@ export class ListPool {
   }
 }
 
-function propKey (key) {
+function propKey(key) {
   return function (item) {
     return item[key];
   };

@@ -1,8 +1,8 @@
-import { mount } from './mount.js';
-import { unmount } from './unmount.js';
-import { getEl, isNode } from './util.js';
+import { mount } from "./mount.js";
+import { unmount } from "./unmount.js";
+import { getEl, isNode } from "./util.js";
 
-export function setChildren (parent, ...children) {
+export function setChildren(parent, ...children) {
   const parentEl = getEl(parent);
   let current = traverse(parent, children, parentEl.firstChild);
 
@@ -15,7 +15,7 @@ export function setChildren (parent, ...children) {
   }
 }
 
-function traverse (parent, children, _current) {
+function traverse(parent, children, _current) {
   let current = _current;
 
   const childEls = Array(children.length);

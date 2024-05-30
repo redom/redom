@@ -1,21 +1,21 @@
 /* global Node */
 
-import { ensureEl } from './util.js';
-import { setChildren } from './setchildren.js';
+import { ensureEl } from "./util.js";
+import { setChildren } from "./setchildren.js";
 
-export function router (parent, views, initData) {
+export function router(parent, views, initData) {
   return new Router(parent, views, initData);
 }
 
 export class Router {
-  constructor (parent, views, initData) {
+  constructor(parent, views, initData) {
     this.el = ensureEl(parent);
     this.views = views;
     this.Views = views; // backwards compatibility
     this.initData = initData;
   }
 
-  update (route, data) {
+  update(route, data) {
     if (route !== this.route) {
       const views = this.views;
       const View = views[route];

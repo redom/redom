@@ -1,9 +1,9 @@
-export function viewFactory (views, key) {
-  if (!views || typeof views !== 'object') {
-    throw new Error('views must be an object');
+export function viewFactory(views, key) {
+  if (!views || typeof views !== "object") {
+    throw new Error("views must be an object");
   }
-  if (!key || typeof key !== 'string') {
-    throw new Error('key must be a string');
+  if (!key || typeof key !== "string") {
+    throw new Error("key must be a string");
   }
   return function (initData, item, i, data) {
     const viewKey = item[key];

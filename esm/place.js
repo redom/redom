@@ -1,17 +1,17 @@
 /* global Node */
 
-import { text } from './text.js';
-import { mount } from './mount.js';
-import { unmount } from './unmount.js';
-import { getEl } from './util.js';
+import { text } from "./text.js";
+import { mount } from "./mount.js";
+import { unmount } from "./unmount.js";
+import { getEl } from "./util.js";
 
-export function place (View, initData) {
+export function place(View, initData) {
   return new Place(View, initData);
 }
 
 export class Place {
-  constructor (View, initData) {
-    this.el = text('');
+  constructor(View, initData) {
+    this.el = text("");
     this.visible = false;
     this.view = null;
     this._placeholder = this.el;
@@ -28,7 +28,7 @@ export class Place {
     this._initData = initData;
   }
 
-  update (visible, data) {
+  update(visible, data) {
     const placeholder = this._placeholder;
     const parentNode = this.el.parentNode;
 
