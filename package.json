@@ -44,7 +44,7 @@
   "devDependencies": {
     "gh-pages": "~6.1.1",
     "jsdom": "^24.1.0",
-    "marked": "~12.0.2",
+    "marked": "~13.0.0",
     "rollup": "~4.18.0",
     "rollup-plugin-buble": "~0.19.8",
     "rollup-plugin-node-resolve": "~5.2.0",
