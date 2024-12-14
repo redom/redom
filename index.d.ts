@@ -152,6 +152,7 @@ export function el<Q extends RedomElQuery>(query: Q, ...args: RedomQueryArgument
 export function listPool(View: RedomComponentConstructor, key?: string, initData?: any): ListPool;
 export function list(parent: RedomQuery, View: RedomComponentConstructor, key?: string, initData?: any): List;
 
+export function mount<T extends HTMLElement>(parent: RedomElement, child: T, before?: RedomElement, replace?: boolean): T;
 export function mount(parent: RedomElement, child: RedomElement, before?: RedomElement, replace?: boolean): RedomElement;
 export function unmount(parent: RedomElement, child: RedomElement): RedomElement;
 
