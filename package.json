@@ -4,8 +4,14 @@
   "description": "Tiny turboboosted JavaScript library for creating user interfaces.",
   "main": "./dist/redom.cjs",
   "exports": {
-    "import": "./esm/index.js",
-    "require": "./dist/redom.cjs"
+    "import": {
+      "default": "./esm/index.js",
+      "types": "./index.d.ts"
+    },
+    "require": {
+      "default": "./dist/redom.cjs",
+      "types": "./index.d.ts"
+    }
   },
   "type": "module",
   "sideEffects": false,
