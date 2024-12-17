@@ -52,7 +52,7 @@ function setClassName(el, additionToClassName) {
   if (additionToClassName == null) {
     el.removeAttribute("class");
   } else if (el.classList) {
-    el.classList.add(additionToClassName);
+    el.classList.add(...additionToClassName.split(" "));
   } else if (
     typeof el.className === "object" &&
     el.className &&
