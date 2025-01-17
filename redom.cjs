@@ -181,7 +181,8 @@
     return html.bind.apply(html, [this].concat(args));
   };
 
-  function unmount(parent, child) {
+  function unmount(parent, _child) {
+    var child = _child;
     var parentEl = getEl(parent);
     var childEl = getEl(child);
     if (child === childEl && childEl.__redom_view) {
@@ -231,7 +232,8 @@
 
   var hookNames = ["onmount", "onremount", "onunmount"];
   var shadowRootAvailable = typeof window !== "undefined" && "ShadowRoot" in window;
-  function mount(parent, child, before, replace) {
+  function mount(parent, _child, before, replace) {
+    var child = _child;
     var parentEl = getEl(parent);
     var childEl = getEl(child);
     if (child === childEl && childEl.__redom_view) {
@@ -263,6 +265,7 @@
     return child;
   }
   function trigger(el, eventName) {
+    var _view$eventName;
     if (eventName === "onmount" || eventName === "onremount") {
       el.__redom_mounted = true;
     } else if (eventName === "onunmount") {
@@ -274,7 +277,7 @@
     }
     var view = el.__redom_view;
     var hookCount = 0;
-    view && view[eventName] && view[eventName]();
+    view === null || view === undefined || (_view$eventName = view[eventName]) === null || _view$eventName === undefined || _view$eventName.call(view);
     for (var hook in hooks) {
       if (hook) {
         hookCount++;
@@ -290,7 +293,11 @@
     }
   }
   function doMount(child, childEl, parentEl, oldParent) {
-    var hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
+    var _traverse;
+    if (!childEl.__redom_lifecycle) {
+      childEl.__redom_lifecycle = {};
+    }
+    var hooks = childEl.__redom_lifecycle;
     var remount = parentEl === oldParent;
     var hooksFound = false;
     var _iterator = _createForOfIteratorHelper(hookNames),
@@ -322,25 +329,27 @@
     }
     var traverse = parentEl;
     var triggered = false;
-    if (remount || traverse && traverse.__redom_mounted) {
+    if (remount || (_traverse = traverse) !== null && _traverse !== undefined && _traverse.__redom_mounted) {
       trigger(childEl, remount ? "onremount" : "onmount");
       triggered = true;
     }
     while (traverse) {
       var parent = traverse.parentNode;
-      var parentHooks = traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
+      if (!traverse.__redom_lifecycle) {
+        traverse.__redom_lifecycle = {};
+      }
+      var parentHooks = traverse.__redom_lifecycle;
       for (var hook in hooks) {
         parentHooks[hook] = (parentHooks[hook] || 0) + hooks[hook];
       }
       if (triggered) {
         break;
-      } else {
-        if (traverse.nodeType === Node.DOCUMENT_NODE || shadowRootAvailable && traverse instanceof ShadowRoot || parent && parent.__redom_mounted) {
-          trigger(traverse, remount ? "onremount" : "onmount");
-          triggered = true;
-        }
-        traverse = parent;
       }
+      if (traverse.nodeType === Node.DOCUMENT_NODE || shadowRootAvailable && traverse instanceof ShadowRoot || parent !== null && parent !== undefined && parent.__redom_mounted) {
+        trigger(traverse, remount ? "onremount" : "onmount");
+        triggered = true;
+      }
+      traverse = parent;
     }
   }
 
@@ -403,9 +412,9 @@
     } else if (el.classList) {
       el.classList.add(additionToClassName);
     } else if (_typeof(el.className) === "object" && el.className && el.className.baseVal) {
-      el.className.baseVal = (el.className.baseVal + " " + additionToClassName).trim();
+      el.className.baseVal = "".concat(el.className.baseVal, " ").concat(additionToClassName).trim();
     } else {
-      el.className = (el.className + " " + additionToClassName).trim();
+      el.className = "".concat(el.className, " ").concat(additionToClassName).trim();
     }
   }
   function setXlink(el, arg1, arg2) {
@@ -474,7 +483,7 @@
     return parent.nodeType && parent || !parent.el && parent || getEl(parent.el);
   }
   function isNode(arg) {
-    return arg && arg.nodeType;
+    return arg === null || arg === undefined ? undefined : arg.nodeType;
   }
 
   function dispatch(child, data) {
@@ -516,7 +525,8 @@
         continue;
       }
       if (isNode(childEl)) {
-        var next = current && current.nextSibling;
+        var _current2;
+        var next = (_current2 = current) === null || _current2 === undefined ? undefined : _current2.nextSibling;
         var exists = child.__redom_index != null;
         var replace = exists && next === childEls[_i + 1];
         mount(parent, child, current, replace);
@@ -560,6 +570,7 @@
         var newViews = Array(data.length);
         var oldViews = this.views;
         for (var i = 0; i < data.length; i++) {
+          var _view$update, _view;
           var item = data[i];
           var view = undefined;
           if (keySet) {
@@ -570,7 +581,7 @@
           } else {
             view = oldViews[i] || new View(initData, item, i, data);
           }
-          view.update && view.update(item, i, data, context);
+          (_view$update = (_view = view).update) === null || _view$update === undefined || _view$update.call(_view, item, i, data, context);
           var el = getEl(view.el);
           el.__redom_view = view;
           newViews[i] = view;
@@ -583,7 +594,7 @@
     }]);
   }();
   function propKey(key) {
-    return function (item) {
+    return function proppedKey(item) {
       return item[key];
     };
   }
@@ -603,12 +614,10 @@
     }
     return _createClass(List, [{
       key: "update",
-      value: function update() {
-        var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-        var context = arguments.length > 1 ? arguments[1] : undefined;
+      value: function update(data, context) {
         var keySet = this.keySet;
         var oldViews = this.views;
-        this.pool.update(data, context);
+        this.pool.update(data || [], context);
         var _this$pool = this.pool,
           views = _this$pool.views,
           lookup = _this$pool.lookup;
@@ -665,6 +674,7 @@
         var placeholder = this._placeholder;
         var parentNode = this.el.parentNode;
         if (visible) {
+          var _this$view, _this$view$update;
           if (!this.visible) {
             if (this._el) {
               mount(parentNode, this._el, placeholder);
@@ -680,7 +690,7 @@
               unmount(parentNode, placeholder);
             }
           }
-          this.view && this.view.update && this.view.update(data);
+          (_this$view = this.view) === null || _this$view === undefined || (_this$view$update = _this$view.update) === null || _this$view$update === undefined || _this$view$update.call(_this$view, data);
         } else {
           if (this.visible) {
             if (this._el) {
@@ -720,6 +730,7 @@
     return _createClass(Router, [{
       key: "update",
       value: function update(route, data) {
+        var _this$view, _this$view$update;
         if (route !== this.route) {
           var views = this.views;
           var View = views[route];
@@ -731,7 +742,7 @@
           }
           setChildren(this.el, [this.view]);
         }
-        this.view && this.view.update && this.view.update(data, route);
+        (_this$view = this.view) === null || _this$view === undefined || (_this$view$update = _this$view.update) === null || _this$view$update === undefined || _this$view$update.call(_this$view, data, route);
       }
     }]);
   }();
@@ -770,14 +781,13 @@
     if (!key || typeof key !== "string") {
       throw new Error("key must be a string");
     }
-    return function (initData, item, i, data) {
+    return function factoryView(initData, item, i, data) {
       var viewKey = item[key];
       var View = views[viewKey];
       if (View) {
         return new View(initData, item, i, data);
-      } else {
-        throw new Error("view ".concat(viewKey, " not found"));
       }
+      throw new Error("view ".concat(viewKey, " not found"));
     };
   }
 
