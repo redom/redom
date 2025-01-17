@@ -1,13 +1,5 @@
-import buble from 'rollup-plugin-buble';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import babel from "@rollup/plugin-babel";
 
 export default {
-  plugins: [
-    buble({
-      transforms: {
-        dangerousForOf: true
-      }
-    }),
-    nodeResolve()
-  ]
+  plugins: [babel({ babelHelpers: "bundled", presets: ["@babel/preset-env"] })],
 };

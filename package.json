@@ -18,7 +18,7 @@
   "scripts": {
     "dev": "node watch",
     "dist": "gh-pages -d dist",
-    "build-es": "rollup -c -i esm/index.js -f es -o dist/redom.es.js",
+    "build-es": "rollup -i esm/index.js -f es -o dist/redom.es.js",
     "build-js": "rollup -c -n redom -f umd -i esm/index.js -o dist/redom.js",
     "build": "npm run build-es && npm run build-js && cp dist/redom.js dist/redom.cjs",
     "minify": "npm run minify-js && npm run minify-es",
@@ -48,13 +48,15 @@
   },
   "homepage": "https://redom.js.org",
   "devDependencies": {
-    "gh-pages": "~6.1.1",
-    "jsdom": "^24.1.0",
-    "marked": "~13.0.2",
-    "rollup": "~4.28.1",
+    "@babel/preset-env": "^7.26.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "gh-pages": "~6.3.0",
+    "jsdom": "^26.0.0",
+    "marked": "~15.0.6",
+    "rollup": "~4.30.1",
     "rollup-plugin-buble": "~0.19.8",
     "rollup-plugin-node-resolve": "~5.2.0",
-    "terser": "~5.31.0",
+    "terser": "~5.37.0",
     "teston": "^0.9.6"
   },
   "collective": {
@@ -66,6 +68,5 @@
     "type": "opencollective",
     "url": "https://opencollective.com/redom"
   },
-  "types": "index.d.ts",
-  "dependencies": {}
+  "types": "index.d.ts"
 }

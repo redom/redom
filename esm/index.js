@@ -5,6 +5,7 @@ export { listPool, ListPool } from "./listpool.js";
 export { mount } from "./mount.js";
 export { unmount } from "./unmount.js";
 export { place, Place } from "./place.js";
+export { ref } from "./ref.js";
 export { router, Router } from "./router.js";
 export { setAttr, setXlink, setData } from "./setattr.js";
 export { setStyle } from "./setstyle.js";
