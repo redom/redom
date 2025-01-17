@@ -39,7 +39,7 @@ function traverse(parent, children, _current) {
     }
 
     if (isNode(childEl)) {
-      const next = current && current.nextSibling;
+      const next = current?.nextSibling;
       const exists = child.__redom_index != null;
       const replace = exists && next === childEls[i + 1];
 

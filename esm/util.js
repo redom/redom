@@ -40,5 +40,5 @@ export function getEl(parent) {
 }
 
 export function isNode(arg) {
-  return arg && arg.nodeType;
+  return arg?.nodeType;
 }

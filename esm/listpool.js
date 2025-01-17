@@ -41,7 +41,7 @@ export class ListPool {
       } else {
         view = oldViews[i] || new View(initData, item, i, data);
       }
-      view.update && view.update(item, i, data, context);
+      view.update?.(item, i, data, context);
 
       const el = getEl(view.el);
 
@@ -58,7 +58,7 @@ export class ListPool {
 }
 
 function propKey(key) {
-  return function (item) {
+  return function proppedKey(item) {
     return item[key];
   };
 }

@@ -58,13 +58,10 @@ function setClassName(el, additionToClassName) {
     el.className &&
     el.className.baseVal
   ) {
-    el.className.baseVal = (
-      el.className.baseVal +
-      " " +
-      additionToClassName
-    ).trim();
+    el.className.baseVal =
+      `${el.className.baseVal} ${additionToClassName}`.trim();
   } else {
-    el.className = (el.className + " " + additionToClassName).trim();
+    el.className = `${el.className} ${additionToClassName}`.trim();
   }
 }
 

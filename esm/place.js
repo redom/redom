@@ -51,7 +51,7 @@ export class Place {
           unmount(parentNode, placeholder);
         }
       }
-      this.view && this.view.update && this.view.update(data);
+      this.view?.update?.(data);
     } else {
       if (this.visible) {
         if (this._el) {

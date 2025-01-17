@@ -7,7 +7,8 @@ const hookNames = ["onmount", "onremount", "onunmount"];
 const shadowRootAvailable =
   typeof window !== "undefined" && "ShadowRoot" in window;
 
-export function mount(parent, child, before, replace) {
+export function mount(parent, _child, before, replace) {
+  let child = _child;
   const parentEl = getEl(parent);
   const childEl = getEl(child);
 
@@ -64,7 +65,7 @@ export function trigger(el, eventName) {
   const view = el.__redom_view;
   let hookCount = 0;
 
-  view && view[eventName] && view[eventName]();
+  view?.[eventName]?.();
 
   for (const hook in hooks) {
     if (hook) {
@@ -86,7 +87,11 @@ export function trigger(el, eventName) {
 }
 
 function doMount(child, childEl, parentEl, oldParent) {
-  const hooks = childEl.__redom_lifecycle || (childEl.__redom_lifecycle = {});
+  if (!childEl.__redom_lifecycle) {
+    childEl.__redom_lifecycle = {};
+  }
+
+  const hooks = childEl.__redom_lifecycle;
   const remount = parentEl === oldParent;
   let hooksFound = false;
 
@@ -113,15 +118,19 @@ function doMount(child, childEl, parentEl, oldParent) {
   let traverse = parentEl;
   let triggered = false;
 
-  if (remount || (traverse && traverse.__redom_mounted)) {
+  if (remount || traverse?.__redom_mounted) {
     trigger(childEl, remount ? "onremount" : "onmount");
     triggered = true;
   }
 
   while (traverse) {
     const parent = traverse.parentNode;
-    const parentHooks =
-      traverse.__redom_lifecycle || (traverse.__redom_lifecycle = {});
+
+    if (!traverse.__redom_lifecycle) {
+      traverse.__redom_lifecycle = {};
+    }
+
+    const parentHooks = traverse.__redom_lifecycle;
 
     for (const hook in hooks) {
       parentHooks[hook] = (parentHooks[hook] || 0) + hooks[hook];
@@ -129,16 +138,15 @@ function doMount(child, childEl, parentEl, oldParent) {
 
     if (triggered) {
       break;
-    } else {
-      if (
-        traverse.nodeType === Node.DOCUMENT_NODE ||
-        (shadowRootAvailable && traverse instanceof ShadowRoot) ||
-        (parent && parent.__redom_mounted)
-      ) {
-        trigger(traverse, remount ? "onremount" : "onmount");
-        triggered = true;
-      }
-      traverse = parent;
     }
+    if (
+      traverse.nodeType === Node.DOCUMENT_NODE ||
+      (shadowRootAvailable && traverse instanceof ShadowRoot) ||
+      parent?.__redom_mounted
+    ) {
+      trigger(traverse, remount ? "onremount" : "onmount");
+      triggered = true;
+    }
+    traverse = parent;
   }
 }

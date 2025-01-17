@@ -17,11 +17,11 @@ export class List {
     this.keySet = key != null;
   }
 
-  update(data = [], context) {
+  update(data, context) {
     const { keySet } = this;
     const oldViews = this.views;
 
-    this.pool.update(data, context);
+    this.pool.update(data || [], context);
 
     const { views, lookup } = this.pool;
 

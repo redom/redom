@@ -1,7 +1,8 @@
 import { getEl } from "./util.js";
 import { trigger } from "./mount.js";
 
-export function unmount(parent, child) {
+export function unmount(parent, _child) {
+  let child = _child;
   const parentEl = getEl(parent);
   const childEl = getEl(child);
 

@@ -30,6 +30,6 @@ export class Router {
 
       setChildren(this.el, [this.view]);
     }
-    this.view && this.view.update && this.view.update(data, route);
+    this.view?.update?.(data, route);
   }
 }
